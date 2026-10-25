@@ -217,17 +217,33 @@
       }
     },
 
-    // Đăng nhập
-    async login(emailOrPhone, password) {
+    // Đăng nhập tài khoản & nhận mã phiên (Session Token)
+    async login(emailOrPhone, password, rememberMe = true) {
       try {
         const res = await fetch(`${API_BASE_URL}/users/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ emailOrPhone, password })
+          body: JSON.stringify({ emailOrPhone, password, rememberMe })
         });
         return await res.json();
       } catch (err) {
         return { success: false, message: 'Không thể kết nối đến máy chủ.' };
+      }
+    },
+
+    // Kiểm tra tính hợp lệ của phiên trên máy chủ
+    async validateSession(token) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/users/validate-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        return await res.json();
+      } catch (err) {
+        return { success: false, offline: true };
       }
     },
 

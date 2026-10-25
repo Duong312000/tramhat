@@ -1515,10 +1515,15 @@
   <div id="adminTopBar" class="admin-sticky-bar py-2 px-3 d-none align-items-center justify-content-between sticky-top"
     style="z-index: 1090;">
     <div class="d-flex align-items-center gap-2">
-      <span class="badge bg-danger text-uppercase px-2 py-1"><i class="bi bi-shield-lock-fill me-1"></i> Cổng Quản
-        Trị</span>
-      <span class="d-none d-sm-inline text-light">Phiên làm việc: <strong class="text-white" id="adminUserBadge">Quản
-          Trị Viên</strong></span>
+      <span class="badge bg-danger text-uppercase px-2 py-1"><i class="bi bi-shield-lock-fill me-1"></i> Cổng Quản Trị</span>
+      <span class="d-none d-sm-inline text-light">Phiên làm việc: <strong class="text-white" id="adminUserBadge">Quản Trị Viên</strong></span>
+      <span class="badge bg-dark border border-secondary text-light px-2 py-1 d-inline-flex align-items-center gap-1" id="adminSessionCountdownBadge" title="Thời gian phiên làm việc còn lại">
+        <i class="bi bi-clock-history text-warning"></i>
+        <span id="adminSessionCountdownText">02:00:00</span>
+      </span>
+      <button class="btn btn-sm btn-outline-warning py-0 px-2 text-warning border-warning" style="font-size: 11px;" onclick="TramHatSession.extendSession(60)" title="Gia hạn phiên làm việc thêm 60 phút">
+        Gia hạn
+      </button>
     </div>
     <div class="d-flex align-items-center gap-2">
       <button class="btn btn-sm btn-light py-1 px-3" onclick="switchTab('admin'); refreshAdminAnalytics();">
@@ -3189,6 +3194,16 @@
             </div>
             <div class="col-lg-5">
               <h3 class="h5 font-serif fw-bold text-dark mb-3">Bảo Mật Tài Khoản</h3>
+              <!-- PHIÊN ĐĂNG NHẬP HIỆN TẠI (ACTIVE SESSION STATUS) -->
+              <div class="border rounded-3 p-3 mb-3 bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="fw-semibold small text-dark"><i class="bi bi-shield-check text-primary me-1"></i> Trạng Thái Phiên Đăng Nhập</div>
+                  <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size: 11px;"><i class="bi bi-circle-fill text-success" style="font-size: 7px;"></i> Đang hoạt động</span>
+                </div>
+                <div id="profSessionStatusBox" class="small text-muted">
+                  Đang khởi tạo thông tin phiên làm việc...
+                </div>
+              </div>
               <div class="border rounded-3 p-3 mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <div>
@@ -3292,7 +3307,7 @@
           <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; font-size: 13px; flex-shrink: 0;">AD</div>
           <div class="overflow-hidden">
             <div class="fw-bold text-white small text-truncate">Quản Trị Viên Trạm Hạt</div>
-            <div class="text-white-50" style="font-size: 11px;"><i class="bi bi-circle-fill text-success" style="font-size: 8px;"></i> Super Admin &bull; Trực tuyến</div>
+            <div class="text-white-50" style="font-size: 11px;"><i class="bi bi-circle-fill text-success" style="font-size: 8px;"></i> Super Admin &bull; <span id="adminSidebarSessionTime">Phiên còn: 2h 00m</span></div>
           </div>
         </div>
 
@@ -6722,6 +6737,279 @@
     // ==========================================================================
     // AUTHENTICATION & USER PROFILE MANAGEMENT (REGISTER, LOGIN, PROFILE VIEW)
     // ==========================================================================
+    // ==========================================================================
+    // MODULE QUẢN LÝ PHIÊN ĐĂNG NHẬP (TRAMHAT SESSION & AUTH SECURITY SYSTEM)
+    // - Quản lý Session Token, thời gian sống (TTL), Remember Me (7 ngày) vs Session (2 giờ)
+    // - Inactivity Timeout: Tự động hết hạn phiên khi không thao tác
+    // - Heartbeat & Sliding Expiration: Tự động gia hạn khi người dùng tương tác
+    // - Live Countdown Timer trên thanh Admin & trang cá nhân
+    // - Đồng bộ phiên đa tab / đa thiết bị qua storage event
+    // ==========================================================================
+    const TramHatSession = (function() {
+      const SESSION_KEY = 'tramhat_auth_session';
+      const INACTIVITY_TIMEOUT_ADMIN = 45 * 60 * 1000; // 45 phút không thao tác đối với Admin
+      const INACTIVITY_TIMEOUT_USER = 120 * 60 * 1000; // 2 giờ không thao tác đối với Khách hàng
+      const DEFAULT_SESSION_DURATION = 2 * 60 * 60 * 1000; // 2 giờ tiêu chuẩn
+      const REMEMBER_ME_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 ngày nếu tick "Ghi nhớ"
+
+      let sessionCheckTimer = null;
+
+      function getSession() {
+        try {
+          let raw = sessionStorage.getItem(SESSION_KEY);
+          if (!raw) raw = localStorage.getItem(SESSION_KEY);
+          if (raw) {
+            const sess = JSON.parse(raw);
+            if (sess && sess.token && sess.expiresAt) return sess;
+          }
+        } catch(e) {}
+        return null;
+      }
+
+      function createSession(userObj, rememberMe = true) {
+        const now = Date.now();
+        const duration = rememberMe ? REMEMBER_ME_DURATION : DEFAULT_SESSION_DURATION;
+        const sessionToken = 'th_sess_' + now + '_' + Math.random().toString(36).substring(2, 10);
+        
+        const session = {
+          token: sessionToken,
+          userId: userObj.id || (userObj.role === 'admin' ? 'admin' : (userObj.email || userObj.phone || 'guest')),
+          role: userObj.role || 'customer',
+          user: {
+            name: userObj.name || 'Khách Hàng',
+            email: userObj.email || '',
+            phone: userObj.phone || '',
+            tier: userObj.tier || 'Thành Viên',
+            points: userObj.points || 0,
+            bottlesReturned: userObj.bottlesReturned || 0,
+            ordersCount: userObj.ordersCount || 0,
+            address: userObj.address || ''
+          },
+          createdAt: now,
+          lastActiveAt: now,
+          expiresAt: now + duration,
+          rememberMe: !!rememberMe,
+          device: window.innerWidth < 768 ? 'Điện thoại (Mobile)' : 'Máy tính (Desktop)'
+        };
+
+        saveSession(session);
+
+        if (session.role === 'admin') {
+          sessionStorage.setItem('tramhat_admin_auth', 'true');
+          localStorage.setItem('tramhat_admin_auth', 'true');
+          sessionStorage.setItem('tramhat_is_admin', 'true');
+          if (typeof TramHatTracker !== 'undefined' && TramHatTracker.purgeAdminSession) {
+            TramHatTracker.purgeAdminSession();
+          }
+        } else {
+          sessionStorage.removeItem('tramhat_admin_auth');
+          localStorage.removeItem('tramhat_admin_auth');
+          sessionStorage.removeItem('tramhat_is_admin');
+        }
+
+        const currentUser = { ...session.user, role: session.role, isLoggedIn: true };
+        localStorage.setItem('tramhat_current_user', JSON.stringify(currentUser));
+        sessionStorage.setItem('tramhat_current_user', JSON.stringify(currentUser));
+
+        startSessionMonitor();
+        updateSessionCountdownUI();
+        return session;
+      }
+
+      function saveSession(session) {
+        try {
+          const str = JSON.stringify(session);
+          sessionStorage.setItem(SESSION_KEY, str);
+          if (session.rememberMe) {
+            localStorage.setItem(SESSION_KEY, str);
+          } else {
+            localStorage.removeItem(SESSION_KEY);
+          }
+        } catch(e) {}
+      }
+
+      function validateSession() {
+        const session = getSession();
+        if (!session) return { valid: false, reason: 'no_session' };
+
+        const now = Date.now();
+        // 1. Kiểm tra hạn tuyệt đối
+        if (now >= session.expiresAt) {
+          expireSession('Phiên đăng nhập của bạn đã hết hạn bảo mật. Vui lòng đăng nhập lại để tiếp tục.');
+          return { valid: false, reason: 'expired' };
+        }
+
+        // 2. Kiểm tra Inactivity Timeout
+        const maxInactivity = session.role === 'admin' ? INACTIVITY_TIMEOUT_ADMIN : INACTIVITY_TIMEOUT_USER;
+        if (now - session.lastActiveAt > maxInactivity) {
+          expireSession('Phiên làm việc tự động khóa do không có thao tác trong hơn ' + Math.round(maxInactivity / 60000) + ' phút.');
+          return { valid: false, reason: 'inactive' };
+        }
+
+        return { valid: true, session };
+      }
+
+      function recordUserActivity() {
+        const session = getSession();
+        if (!session) return;
+        const now = Date.now();
+
+        if (now - session.lastActiveAt > 10000) {
+          session.lastActiveAt = now;
+          const remaining = session.expiresAt - now;
+          const minBuffer = session.role === 'admin' ? 30 * 60 * 1000 : 60 * 60 * 1000;
+          if (remaining < minBuffer) {
+            session.expiresAt = now + (session.rememberMe ? REMEMBER_ME_DURATION : DEFAULT_SESSION_DURATION);
+          }
+          saveSession(session);
+        }
+      }
+
+      function extendSession(extraMinutes = 60) {
+        const session = getSession();
+        if (!session) return;
+        session.expiresAt = Math.max(session.expiresAt, Date.now()) + (extraMinutes * 60 * 1000);
+        session.lastActiveAt = Date.now();
+        saveSession(session);
+        updateSessionCountdownUI();
+        alert('Đã gia hạn phiên làm việc thêm ' + extraMinutes + ' phút thành công!');
+      }
+
+      function expireSession(noticeMessage = 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.') {
+        destroySession();
+        if (typeof checkAdminAuth === 'function') checkAdminAuth();
+        if (typeof syncUserUI === 'function') syncUserUI();
+
+        const hash = window.location.hash;
+        if (hash === '#admin' || hash === '#profile') {
+          if (typeof switchTab === 'function') switchTab('home');
+        }
+
+        alert(noticeMessage);
+        if (typeof openAccountModal === 'function') {
+          openAccountModal(true);
+        }
+      }
+
+      function destroySession() {
+        sessionStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem('tramhat_admin_auth');
+        localStorage.removeItem('tramhat_admin_auth');
+        sessionStorage.removeItem('tramhat_is_admin');
+        sessionStorage.removeItem('tramhat_current_user');
+        localStorage.removeItem('tramhat_current_user');
+
+        if (sessionCheckTimer) {
+          clearInterval(sessionCheckTimer);
+          sessionCheckTimer = null;
+        }
+      }
+
+      function updateSessionCountdownUI() {
+        const session = getSession();
+        const countdownEl = document.getElementById('adminSessionCountdownText');
+        const badgeEl = document.getElementById('adminSessionCountdownBadge');
+        const sideTimeEl = document.getElementById('adminSidebarSessionTime');
+        const profSessionInfoEl = document.getElementById('profSessionStatusBox');
+
+        if (!session) {
+          if (countdownEl) countdownEl.innerText = '--:--:--';
+          if (sideTimeEl) sideTimeEl.innerText = 'Chưa đăng nhập';
+          if (profSessionInfoEl) {
+            profSessionInfoEl.innerHTML = '<span class="text-muted">Chưa có phiên hoạt động. Vui lòng đăng nhập để xem thông tin.</span>';
+          }
+          return;
+        }
+
+        const remainingMs = Math.max(0, session.expiresAt - Date.now());
+        const totalSecs = Math.floor(remainingMs / 1000);
+        const hrs = Math.floor(totalSecs / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+        const secs = totalSecs % 60;
+
+        const formatted = String(hrs).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        if (countdownEl) countdownEl.innerText = formatted;
+        if (sideTimeEl) sideTimeEl.innerText = 'Phiên còn: ' + (hrs > 0 ? hrs + 'h ' : '') + mins + 'm';
+
+        if (badgeEl) {
+          if (totalSecs < 300) {
+            badgeEl.className = 'badge bg-danger text-white px-2 py-1 border border-light';
+          } else if (totalSecs < 900) {
+            badgeEl.className = 'badge bg-warning text-dark px-2 py-1 border border-warning';
+          } else {
+            badgeEl.className = 'badge bg-dark border border-secondary text-light px-2 py-1';
+          }
+        }
+
+        if (profSessionInfoEl) {
+          const loginDate = new Date(session.createdAt);
+          const expDate = new Date(session.expiresAt);
+          profSessionInfoEl.innerHTML = `
+            <div class="row g-2">
+              <div class="col-sm-6"><strong>Mã Phiên (Token):</strong> <code class="text-primary">${session.token.substring(0, 15)}...</code></div>
+              <div class="col-sm-6"><strong>Loại Phiên:</strong> ${session.rememberMe ? '<span class="badge bg-primary-subtle text-primary border">Duy Trì (7 Ngày)</span>' : '<span class="badge bg-secondary-subtle text-dark border">Tiêu Chuẩn (2 Giờ)</span>'}</div>
+              <div class="col-sm-6"><strong>Bắt Đầu:</strong> ${loginDate.toLocaleTimeString('vi-VN')} ${loginDate.toLocaleDateString('vi-VN')}</div>
+              <div class="col-sm-6"><strong>Hết Hạn:</strong> ${expDate.toLocaleTimeString('vi-VN')} ${expDate.toLocaleDateString('vi-VN')}</div>
+              <div class="col-12"><strong>Thiết Bị:</strong> ${session.device}</div>
+              <div class="col-12 mt-2 pt-2 border-top d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-primary py-1 px-3" onclick="TramHatSession.extendSession(120)">
+                  <i class="bi bi-arrow-repeat me-1"></i> Gia Hạn Phiên (+2 Giờ)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger py-1 px-3" onclick="userLogout()">
+                  <i class="bi bi-box-arrow-right me-1"></i> Đăng Xuất Khỏi Thiết Bị Này
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      function startSessionMonitor() {
+        if (sessionCheckTimer) clearInterval(sessionCheckTimer);
+        
+        sessionCheckTimer = setInterval(() => {
+          const res = validateSession();
+          if (res.valid) {
+            updateSessionCountdownUI();
+          }
+        }, 1000);
+
+        ['click', 'keydown', 'scroll'].forEach(evt => {
+          window.addEventListener(evt, recordUserActivity, { passive: true });
+        });
+      }
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === SESSION_KEY) {
+          if (!e.newValue) {
+            destroySession();
+            if (typeof checkAdminAuth === 'function') checkAdminAuth();
+            if (typeof syncUserUI === 'function') syncUserUI();
+            if (window.location.hash === '#admin' || window.location.hash === '#profile') {
+              if (typeof switchTab === 'function') switchTab('home');
+            }
+          } else {
+            if (typeof syncUserUI === 'function') syncUserUI();
+            if (typeof checkAdminAuth === 'function') checkAdminAuth();
+          }
+        }
+      });
+
+      return {
+        getSession,
+        createSession,
+        validateSession,
+        recordUserActivity,
+        extendSession,
+        expireSession,
+        destroySession,
+        updateSessionCountdownUI,
+        startSessionMonitor
+      };
+    })();
+    window.TramHatSession = TramHatSession;
+
     const DEFAULT_USER = {
       name: 'Khách Hàng',
       phone: '',
@@ -6734,6 +7022,12 @@
     };
 
     function getCurrentUser() {
+      if (typeof TramHatSession !== 'undefined') {
+        const sess = TramHatSession.getSession();
+        if (sess && sess.user) {
+          return { ...sess.user, role: sess.role, isLoggedIn: true };
+        }
+      }
       try {
         const stored = localStorage.getItem('tramhat_current_user');
         if (stored) {
@@ -6813,6 +7107,8 @@
         return;
       }
 
+      const isRemember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
+
       // 1. Kiểm tra tài khoản Quản Trị Viên (admin)
       if (id === 'admin' || id === 'admin@tramhat.vn') {
         if (pwd && pwd !== 'admin' && pwd !== 'admin123' && pwd !== '123') {
@@ -6821,6 +7117,7 @@
         }
 
         const adminUser = {
+          id: 'admin',
           name: 'Quản Trị Viên Trạm Hạt',
           email: 'admin@tramhat.vn',
           phone: '0909999999',
@@ -6832,19 +7129,13 @@
           isLoggedIn: true
         };
 
-        sessionStorage.setItem('tramhat_admin_auth', 'true');
-        localStorage.setItem('tramhat_admin_auth', 'true');
-        sessionStorage.setItem('tramhat_is_admin', 'true');
-        if (typeof TramHatTracker !== 'undefined' && TramHatTracker.purgeAdminSession) {
-          TramHatTracker.purgeAdminSession();
-        }
-        saveCurrentUser(adminUser);
+        TramHatSession.createSession(adminUser, isRemember);
         closeAccountModal();
 
         setTimeout(() => {
           switchTab('admin');
           if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-          alert('Đăng nhập quyền Quản Trị Viên thành công! Hệ thống ở chế độ Quản Trị và KHÔNG thu thập dữ liệu của Admin.');
+          alert('Đăng nhập quyền Quản Trị Viên thành công! Phiên làm việc bảo mật đã được kích hoạt.');
         }, 150);
         return;
       }
@@ -6866,8 +7157,9 @@
         userObj = { ...matched, isLoggedIn: true };
       } else {
         userObj = {
+          id: 'kh_' + Date.now(),
           name: id.includes('@') ? id.split('@')[0] : 'Khách Hàng (' + id + ')',
-          phone: id.includes('@') ? '0901.888.777' : id,
+          phone: id.includes('@') ? '0901888777' : id,
           email: id.includes('@') ? id : 'khachhang@tramhat.vn',
           address: 'Hà Nội, Việt Nam',
           points: 50,
@@ -6877,7 +7169,7 @@
         };
       }
 
-      saveCurrentUser(userObj);
+      TramHatSession.createSession(userObj, isRemember);
       closeAccountModal();
       setTimeout(() => {
         switchTab('profile');
@@ -6885,14 +7177,13 @@
     }
 
     function adminLogout() {
-      sessionStorage.removeItem('tramhat_admin_auth');
-      localStorage.removeItem('tramhat_admin_auth');
-      localStorage.removeItem('tramhat_current_user');
-      sessionStorage.removeItem('tramhat_current_user');
+      if (typeof TramHatSession !== 'undefined') {
+        TramHatSession.destroySession();
+      }
       checkAdminAuth();
       syncUserUI();
       switchTab('home');
-      alert("Đã đăng xuất khỏi tài khoản Quản Trị Viên thành công!");
+      alert("Đã đăng xuất phiên làm việc Quản Trị Viên an toàn!");
     }
 
     function userLogout() {
@@ -6908,6 +7199,7 @@
 
     function mockSocialLogin(provider) {
       let user = {
+        id: 'user_' + provider.toLowerCase() + '_' + Date.now(),
         name: 'Thành viên (' + provider + ')',
         phone: '0901888777',
         email: 'user.' + provider.toLowerCase() + '@tramhat.vn',
@@ -6917,7 +7209,11 @@
         ordersCount: 1,
         isLoggedIn: true
       };
-      saveCurrentUser(user);
+      if (typeof TramHatSession !== 'undefined') {
+        TramHatSession.createSession(user, true);
+      } else {
+        saveCurrentUser(user);
+      }
       closeAccountModal();
       setTimeout(() => {
         switchTab('profile');
@@ -7934,12 +8230,19 @@
 
       // Accept admin credentials (flexible for convenience)
       if ((u === 'admin' || u === 'admin@tramhat.vn') && (p === 'admin' || p === 'admin123' || p === '123456')) {
-        sessionStorage.setItem('tramhat_admin_auth', 'true');
-        localStorage.setItem('tramhat_admin_auth', 'true');
-        sessionStorage.setItem('tramhat_is_admin', 'true');
-        if (typeof TramHatTracker !== 'undefined' && TramHatTracker.purgeAdminSession) {
-          TramHatTracker.purgeAdminSession();
-        }
+        const adminUser = {
+          id: 'admin',
+          name: 'Quản Trị Viên Trạm Hạt',
+          email: 'admin@tramhat.vn',
+          phone: '0909999999',
+          role: 'admin',
+          tier: 'Quản Trị Hệ Thống',
+          points: 999,
+          bottlesReturned: 50,
+          ordersCount: 0,
+          isLoggedIn: true
+        };
+        TramHatSession.createSession(adminUser, true);
         checkAdminAuth();
 
         // Close account modal
@@ -7949,21 +8252,20 @@
         // Chuyển sang giao diện quản trị riêng biệt (Dedicated Admin Portal)
         switchTab('admin');
         if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-        alert("Đăng nhập quyền Quản Trị Viên thành công! Chế độ Quản Trị đang bật: KHÔNG thu thập dữ liệu hoạt động của Admin.");
+        alert("Đăng nhập quyền Quản Trị Viên thành công! Phiên làm việc đã khởi tạo an toàn.");
       } else {
         alert("Thông tin đăng nhập không chính xác! Vui lòng thử lại với tài khoản: admin / mật khẩu: admin123");
       }
     }
 
     function adminLogout() {
-      sessionStorage.removeItem('tramhat_admin_auth');
-      localStorage.removeItem('tramhat_admin_auth');
-      localStorage.removeItem('tramhat_current_user');
-      sessionStorage.removeItem('tramhat_current_user');
+      if (typeof TramHatSession !== 'undefined') {
+        TramHatSession.destroySession();
+      }
       checkAdminAuth();
       syncUserUI();
       switchTab('home');
-      alert("Đã đăng xuất khỏi tài khoản Quản Trị Viên thành công!");
+      alert("Đã đăng xuất phiên làm việc Quản Trị Viên an toàn!");
     }
 
     
@@ -8154,6 +8456,16 @@
 
     // Attach initialization
     document.addEventListener('DOMContentLoaded', () => {
+      // Xác thực & theo dõi phiên đăng nhập bảo mật (Session Security Monitor)
+      if (typeof TramHatSession !== 'undefined') {
+        const sessCheck = TramHatSession.validateSession();
+        if (sessCheck.valid) {
+          TramHatSession.startSessionMonitor();
+          TramHatSession.updateSessionCountdownUI();
+        } else {
+          TramHatSession.destroySession();
+        }
+      }
       checkAdminAuth();
       initStarRatingPicker();
       fetchAndApplyJSONData();
