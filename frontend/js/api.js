@@ -118,6 +118,17 @@
     // Gửi sự kiện vi mô lên Database Server (Tracking Engine)
     async sendEvent(eventType, extraData = {}) {
       try {
+        // TUYỆT ĐỐI LOẠI TRỪ ADMIN: Khi đăng nhập Admin sẽ không thu thập bất kỳ dữ liệu nào
+        if (
+          sessionStorage.getItem('tramhat_admin_auth') === 'true' ||
+          localStorage.getItem('tramhat_admin_auth') === 'true' ||
+          sessionStorage.getItem('tramhat_is_admin') === 'true' ||
+          (window.currentUser && window.currentUser.role === 'admin') ||
+          window.location.hash === '#admin'
+        ) {
+          return;
+        }
+
         const payload = {
           sessionId: currentSessionId,
           eventType,
@@ -243,12 +254,27 @@
 
   // --- 3. TỰ ĐỘNG THU THẬP SỰ KIỆN KHI NGƯỜI DÙNG DUYỆT WEB ---
   window.addEventListener('DOMContentLoaded', () => {
+    function isAdminActive() {
+      try {
+        return (
+          sessionStorage.getItem('tramhat_admin_auth') === 'true' ||
+          localStorage.getItem('tramhat_admin_auth') === 'true' ||
+          sessionStorage.getItem('tramhat_is_admin') === 'true' ||
+          (window.currentUser && window.currentUser.role === 'admin') ||
+          window.location.hash === '#admin'
+        );
+      } catch(e) { return false; }
+    }
+
+    if (isAdminActive()) return; // Tuyệt đối KHÔNG tự động thu thập sự kiện nếu là Admin
+
     // 3.1 Ghi nhận Page View ngay khi vào trang
     TramHatAPI.sendEvent('page_view', { tab: 'home' });
 
     // 3.2 Tự động theo dõi Scroll Depth (25%, 50%, 75%, 100%)
     const scrollMilestones = { 25: false, 50: false, 75: false, 100: false };
     window.addEventListener('scroll', () => {
+      if (isAdminActive()) return;
       const h = document.documentElement,
             b = document.body,
             st = 'scrollTop',
@@ -266,6 +292,7 @@
     // 3.3 Tự động đo thời gian người dùng ở lại trang (Time on page)
     let secondsSpent = 0;
     setInterval(() => {
+      if (isAdminActive()) return;
       secondsSpent += 15;
       if (secondsSpent === 30 || secondsSpent === 60 || secondsSpent === 180) {
         TramHatAPI.sendEvent('time_spent', { secondsSpent });
@@ -275,6 +302,7 @@
     // 3.4 Bắt sự kiện khi click vào nút Chat Messenger hoặc Zalo
     document.querySelectorAll('a[href*="m.me"], a[href*="zalo.me"]').forEach(el => {
       el.addEventListener('click', () => {
+        if (isAdminActive()) return;
         TramHatAPI.sendEvent('inbox_click', { metadata: { href: el.href } });
       });
     });

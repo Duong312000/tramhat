@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -3388,13 +3388,10 @@
           <div class="d-flex align-items-center gap-2 flex-wrap">
             <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 d-flex align-items-center gap-2" style="font-size: 12px;">
               <span class="spinner-grow spinner-grow-sm text-success" role="status" style="width: 8px; height: 8px;"></span>
-              <span>Thu Thập Trực Tiếp (Live 24/7)</span>
+              <span>Dữ Liệu Khách Hàng Thời Gian Thực (Loại Trừ Admin)</span>
             </span>
             <button class="btn btn-sm btn-light border py-2 px-3" onclick="refreshAdminAnalytics()" title="Tải lại số liệu">
               <i class="bi bi-arrow-clockwise"></i> Làm mới
-            </button>
-            <button class="btn btn-sm btn-outline-danger py-2 px-3 fw-medium" onclick="resetAllAnalyticsToZero()" title="Xóa toàn bộ dữ liệu mẫu, bắt đầu đo thật từ số 0">
-              <i class="bi bi-arrow-counterclockwise"></i> Đặt Lại Về 0 (Khởi Tạo Thật)
             </button>
           </div>
         </div>
@@ -4697,11 +4694,17 @@
           renderAdminOrdersTable();
           loadAdminContentForm();
         }, 50);
+        if (typeof startAdminRealtimePolling === 'function') {
+          startAdminRealtimePolling();
+        }
       } else {
         if (publicHeader) publicHeader.classList.remove('d-none');
         if (publicFooter) publicFooter.classList.remove('d-none');
         if (mobileNav) mobileNav.classList.remove('d-none');
         checkAdminAuth();
+        if (typeof stopAdminRealtimePolling === 'function') {
+          stopAdminRealtimePolling();
+        }
       }
 
       if (typeof TramHatTracker !== "undefined" && tabId !== "admin") {
@@ -4776,9 +4779,24 @@
       let currentTab = 'home';
       let lastSecondTick = Date.now();
 
-      // Quản lý mã khách định danh phiên hiện tại
+      // Kiểm tra trạng thái Quản Trị Viên (Admin) để tuyệt đối không thu thập data của Admin
+      function isAdminActive() {
+        try {
+          if (sessionStorage.getItem('tramhat_admin_auth') === 'true') return true;
+          if (localStorage.getItem('tramhat_admin_auth') === 'true') return true;
+          if (sessionStorage.getItem('tramhat_is_admin') === 'true') return true;
+          if (window.currentUser && window.currentUser.role === 'admin') return true;
+          if (window.location.hash === '#admin') return true;
+          const vAdmin = document.getElementById('view-admin');
+          if (vAdmin && !vAdmin.classList.contains('d-none')) return true;
+        } catch(e) {}
+        return false;
+      }
+      window.isTramHatAdminActive = isAdminActive;
+
+      // Quản lý mã khách định danh phiên hiện tại (chỉ tạo khi không phải admin)
       let currentVisitorCode = sessionStorage.getItem('tramhat_visitor_code');
-      if (!currentVisitorCode) {
+      if (!currentVisitorCode && !isAdminActive()) {
         currentVisitorCode = '#KH-' + Math.floor(1000 + Math.random() * 9000);
         sessionStorage.setItem('tramhat_visitor_code', currentVisitorCode);
       }
@@ -4819,6 +4837,7 @@
       }
 
       function updateCurrentVisitor(updater) {
+        if (isAdminActive()) return; // TUYỆT ĐỐI KHÔNG THU THẬP DỮ LIỆU CỦA ADMIN
         const list = getVisitorSessions();
         let v = list.find(item => item.id === currentVisitorCode);
         const now = new Date();
@@ -4904,6 +4923,7 @@
       }
 
       function logEvent(action, detail, tab = currentTab) {
+        if (isAdminActive()) return; // TUYỆT ĐỐI KHÔNG THU THẬP SỰ KIỆN CỦA ADMIN
         const now = new Date();
         const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const dev = getDeviceType();
@@ -4935,6 +4955,10 @@
 
       // Real-time ticking timer (tính giây thực tế)
       setInterval(() => {
+        if (isAdminActive()) {
+          lastSecondTick = Date.now();
+          return; // Bỏ qua không tính thời gian của Admin
+        }
         const now = Date.now();
         const elapsed = Math.round((now - lastSecondTick) / 1000);
         lastSecondTick = now;
@@ -4965,6 +4989,7 @@
       // Real Scroll tracking
       let loggedDepths = {};
       window.addEventListener('scroll', () => {
+        if (isAdminActive()) return; // Bỏ qua cuộn trang của Admin
         const docH = document.documentElement.scrollHeight - window.innerHeight;
         if (docH <= 0) return;
         const pct = Math.round((window.scrollY / docH) * 100);
@@ -4983,21 +5008,25 @@
         });
       }, { passive: true });
 
-      // Ghi nhận thiết bị khách
-      const currentDev = getDeviceType().toLowerCase();
-      if (data.devices[currentDev] !== undefined) {
-        data.devices[currentDev]++;
-        persist();
+      // Ghi nhận thiết bị khách (chỉ khi không phải Admin)
+      if (!isAdminActive()) {
+        const currentDev = getDeviceType().toLowerCase();
+        if (data.devices && data.devices[currentDev] !== undefined) {
+          data.devices[currentDev]++;
+          persist();
+        }
+
+        // Khởi tạo phiên khách ban đầu
+        updateCurrentVisitor((v) => {
+          v.device = getDeviceType();
+          v.source = getUtmSource();
+        });
       }
 
-      // Khởi tạo phiên khách ban đầu
-      updateCurrentVisitor((v) => {
-        v.device = getDeviceType();
-        v.source = getUtmSource();
-      });
-
       return {
+        isAdminActive: isAdminActive,
         recordPageView: function(tabId) {
+          if (isAdminActive()) return; // KHÔNG THU THẬP KHI ADMIN LÀM VIỆC
           currentTab = tabId || 'home';
           loggedDepths = {}; // reset scroll tracker for new tab
           if (!data.pageViews[currentTab]) {
@@ -5008,6 +5037,7 @@
           logEvent('Xem Trang', 'Khách truy cập mục ' + (data.pageViews[currentTab].name || currentTab));
         },
         recordProductView: function(key, name) {
+          if (isAdminActive()) return;
           data.productViews++;
           const pName = name || key;
           logEvent('Xem Sản Phẩm', 'Khách xem chi tiết: ' + pName);
@@ -5016,6 +5046,7 @@
           });
         },
         recordAddToCart: function(key, name) {
+          if (isAdminActive()) return;
           data.addToCartCount++;
           const pName = name || key;
           logEvent('Thêm Giỏ Hàng', 'Khách thêm vào giỏ: ' + pName);
@@ -5026,10 +5057,12 @@
           });
         },
         recordCheckoutStart: function() {
+          if (isAdminActive()) return;
           data.checkoutCount++;
           logEvent('Mở Giỏ Hàng', 'Khách mở giỏ hàng chuẩn bị đặt mua');
         },
         recordPurchase: function(totalVND, orderId) {
+          if (isAdminActive()) return;
           data.purchasesCount++;
           data.revenueVND += (totalVND || 0);
           logEvent('Đặt Hàng Thành Công', 'Đơn hàng #' + orderId + ' (' + (totalVND || 0).toLocaleString('vi-VN') + 'đ)');
@@ -5040,10 +5073,24 @@
           persist();
         },
         getData: function() {
+          // Luôn đọc lại từ localStorage để dữ liệu cập nhật thời gian thực tức thì
+          try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) data = JSON.parse(stored);
+          } catch(e) {}
           return data;
         },
         getVisitors: function() {
           return getVisitorSessions();
+        },
+        purgeAdminSession: function() {
+          const adminVisCode = sessionStorage.getItem('tramhat_visitor_code');
+          if (adminVisCode) {
+            try {
+              const list = getVisitorSessions().filter(item => item.id !== adminVisCode);
+              saveVisitorSessions(list);
+            } catch(e) {}
+          }
         },
         resetAll: function() {
           data = {
@@ -5099,6 +5146,39 @@
         localStorage.setItem('tramhat_real_orders', JSON.stringify(adminOrdersList));
       } catch(e) {}
     }
+
+    // --- CƠ CHẾ DỮ LIỆU THỜI GIAN THỰC (REAL-TIME LIVE POLLING & STORAGE SYNC) ---
+    let adminRealtimePollingInterval = null;
+
+    function startAdminRealtimePolling() {
+      if (adminRealtimePollingInterval) return;
+      adminRealtimePollingInterval = setInterval(() => {
+        const vAdmin = document.getElementById('view-admin');
+        const secAnalytics = document.getElementById('adminSecAnalytics');
+        if (vAdmin && !vAdmin.classList.contains('d-none') && secAnalytics && !secAnalytics.classList.contains('d-none')) {
+          refreshAdminAnalytics();
+        }
+      }, 2500);
+    }
+
+    function stopAdminRealtimePolling() {
+      if (adminRealtimePollingInterval) {
+        clearInterval(adminRealtimePollingInterval);
+        adminRealtimePollingInterval = null;
+      }
+    }
+
+    // Lắng nghe sự kiện storage để đồng bộ thời gian thực đa tab / đa thiết bị
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'tramhat_real_analytics' || e.key === 'tramhat_visitor_sessions' || e.key === 'tramhat_real_orders' || e.key === 'tramhat_custom_orders') {
+        const vAdmin = document.getElementById('view-admin');
+        if (vAdmin && !vAdmin.classList.contains('d-none')) {
+          if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
+          if (typeof renderAdminVisitorsTable === 'function') renderAdminVisitorsTable();
+          if (typeof renderAdminOrdersTable === 'function') renderAdminOrdersTable();
+        }
+      }
+    });
 
     function switchAdminSection(sec) {
       const sections = ['analytics', 'content', 'products', 'orders', 'settings'];
@@ -5257,6 +5337,13 @@
       if (!tbody) return;
 
       let visitors = TramHatTracker.getVisitors();
+      // TUYỆT ĐỐI LOẠI BỎ ADMIN KHỎI DANH SÁCH KHÁCH HÀNG
+      if (typeof isTramHatAdminActive === 'function' && isTramHatAdminActive()) {
+        const adminVisCode = sessionStorage.getItem('tramhat_visitor_code');
+        if (adminVisCode) {
+          visitors = visitors.filter(item => item.id !== adminVisCode);
+        }
+      }
       if (badgeCount) badgeCount.innerText = visitors.length + ' khách';
 
       if (filter === 'cart') {
@@ -6747,13 +6834,17 @@
 
         sessionStorage.setItem('tramhat_admin_auth', 'true');
         localStorage.setItem('tramhat_admin_auth', 'true');
+        sessionStorage.setItem('tramhat_is_admin', 'true');
+        if (typeof TramHatTracker !== 'undefined' && TramHatTracker.purgeAdminSession) {
+          TramHatTracker.purgeAdminSession();
+        }
         saveCurrentUser(adminUser);
         closeAccountModal();
 
         setTimeout(() => {
           switchTab('admin');
           if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-          alert('Đăng nhập quyền Quản Trị Viên thành công!');
+          alert('Đăng nhập quyền Quản Trị Viên thành công! Hệ thống ở chế độ Quản Trị và KHÔNG thu thập dữ liệu của Admin.');
         }, 150);
         return;
       }
@@ -7844,6 +7935,11 @@
       // Accept admin credentials (flexible for convenience)
       if ((u === 'admin' || u === 'admin@tramhat.vn') && (p === 'admin' || p === 'admin123' || p === '123456')) {
         sessionStorage.setItem('tramhat_admin_auth', 'true');
+        localStorage.setItem('tramhat_admin_auth', 'true');
+        sessionStorage.setItem('tramhat_is_admin', 'true');
+        if (typeof TramHatTracker !== 'undefined' && TramHatTracker.purgeAdminSession) {
+          TramHatTracker.purgeAdminSession();
+        }
         checkAdminAuth();
 
         // Close account modal
@@ -7853,7 +7949,7 @@
         // Chuyển sang giao diện quản trị riêng biệt (Dedicated Admin Portal)
         switchTab('admin');
         if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-        alert("Đăng nhập quyền Quản Trị Viên thành công! Bạn đang ở chế độ Quản Trị Trạm Hạt.");
+        alert("Đăng nhập quyền Quản Trị Viên thành công! Chế độ Quản Trị đang bật: KHÔNG thu thập dữ liệu hoạt động của Admin.");
       } else {
         alert("Thông tin đăng nhập không chính xác! Vui lòng thử lại với tài khoản: admin / mật khẩu: admin123");
       }
