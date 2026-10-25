@@ -1,0 +1,99 @@
+{
+  "totalVisits": 142,
+  "totalTimeSeconds": 28400,
+  "productViews": 98,
+  "addToCartCount": 46,
+  "checkoutCount": 28,
+  "purchasesCount": 2,
+  "revenueVND": 169000,
+  "pageViews": {
+    "home": {
+      "name": "Trang Chủ",
+      "views": 142,
+      "totalSeconds": 8500
+    },
+    "menu": {
+      "name": "Thực Đơn",
+      "views": 98,
+      "totalSeconds": 9200
+    },
+    "about": {
+      "name": "Về Trạm Hạt",
+      "views": 45,
+      "totalSeconds": 4100
+    },
+    "campaign": {
+      "name": "Chiến Dịch Xanh",
+      "views": 32,
+      "totalSeconds": 2300
+    },
+    "knowledge": {
+      "name": "Góc Kiến Thức",
+      "views": 28,
+      "totalSeconds": 1900
+    },
+    "reviews": {
+      "name": "Cảm Nhận",
+      "views": 39,
+      "totalSeconds": 2400
+    },
+    "product-detail": {
+      "name": "Chi Tiết Sản Phẩm",
+      "views": 64,
+      "totalSeconds": 3800
+    },
+    "profile": {
+      "name": "Trang Cá Nhân",
+      "views": 14,
+      "totalSeconds": 900
+    }
+  },
+  "scrollDepth": {
+    "depth25": 126,
+    "depth50": 105,
+    "depth75": 79,
+    "depth100": 54
+  },
+  "devices": {
+    "mobile": 96,
+    "desktop": 38,
+    "tablet": 8
+  },
+  "events": [
+    {
+      "time": "08:15:20",
+      "action": "Xem Trang",
+      "detail": "Khách truy cập mục Trang Chủ",
+      "tab": "home",
+      "device": "Mobile"
+    },
+    {
+      "time": "08:16:05",
+      "action": "Xem Sản Phẩm",
+      "detail": "Khách xem chi tiết: Sữa Điều Tự Nhiên Bình Phước",
+      "tab": "product-detail",
+      "device": "Mobile"
+    },
+    {
+      "time": "08:17:12",
+      "action": "Thêm Giỏ Hàng",
+      "detail": "Khách thêm vào giỏ: Sữa Điều Tự Nhiên Bình Phước",
+      "tab": "menu",
+      "device": "Mobile"
+    },
+    {
+      "time": "08:18:40",
+      "action": "Mở Giỏ Hàng",
+      "detail": "Khách mở giỏ hàng chuẩn bị đặt mua",
+      "tab": "menu",
+      "device": "Mobile"
+    },
+    {
+      "time": "08:20:15",
+      "action": "Đặt Hàng Thành Công",
+      "detail": "Đơn hàng #TH-2026-8801 (99.000đ)",
+      "tab": "menu",
+      "device": "Mobile"
+    }
+  ]
+}

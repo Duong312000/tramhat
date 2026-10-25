@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/media-portal", "destination": "/media_portal_tramhat.html" },
+    { "source": "/campaign", "destination": "/campaign_media_tramhat.html" }
+  ]
+}

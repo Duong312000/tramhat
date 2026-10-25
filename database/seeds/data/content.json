@@ -1,0 +1,123 @@
+{
+  "brand": {
+    "name": "Trạm Hạt®",
+    "tagline": "Thương Hiệu Sữa Hạt Tươi Thủ Công",
+    "slogan": "Nấu Mới Mỗi 05:00 Sáng • 100% Nông Sản Việt",
+    "hotline": "0901.888.777",
+    "email": "cskh@tramhat.vn",
+    "factory": "120 Huyện Bù Gia Mập, Tỉnh Bình Phước",
+    "certifications": ["ISO 22000:2018", "HACCP CODEX", "ZERO PLASTIC", "100% VEGAN"]
+  },
+  "hero": {
+    "badge": "SỮA HẠT TƯƠI NẤU MỚI MỖI 05:00 SÁNG",
+    "titleLine1": "Tươi mới từng giọt sữa sớm,",
+    "titleLine2": "gõ cửa đúng giờ thức giấc.",
+    "desc": "Mô hình sữa hạt tươi thủ công chuẩn quốc tế: Tự chọn gu vị hạt, dung tích và lịch giao hàng. Sữa được nấu tươi lúc 05:00 sáng từ 100% hạt nông sản Bù Gia Mập & Tây Nguyên, đóng chai thủy tinh tiệt trùng và giao lạnh trước 07:30. Tự do đổi vị, hoãn lịch hoặc hủy bất kỳ lúc nào chỉ bằng 1 click.",
+    "ctaPrimary": "Khám Phá Thực Đơn →",
+    "ctaSecondary": "Gói Định Kỳ (Tiết Kiệm 15%)",
+    "stats": [
+      { "value": "05:00", "label": "Nấu mới mỗi sớm" },
+      { "value": "100%", "label": "Nông sản thuần Việt" },
+      { "value": "0g", "label": "Không đường hóa học" }
+    ]
+  },
+  "trustBar": [
+    {
+      "icon": "bi-arrow-repeat",
+      "title": "Linh Hoạt 100%",
+      "desc": "Đổi vị, hoãn lịch hoặc hủy bất kỳ lúc nào."
+    },
+    {
+      "icon": "bi-clock-history",
+      "title": "Nấu Mới 05:00 Sáng",
+      "desc": "Chỉ nấu sau khi chốt lịch, giữ trọn enzyme."
+    },
+    {
+      "icon": "bi-truck",
+      "title": "Giao Trước 07:30 Sáng",
+      "desc": "Miễn phí vận chuyển tận cửa trước giờ làm."
+    },
+    {
+      "icon": "bi-recycle",
+      "title": "Chai Thủy Tinh Tuần Hoàn",
+      "desc": "Thu hồi chai tiệt trùng, giảm thêm 10.000đ."
+    }
+  ],
+  "about": {
+    "title": "Câu Chuyện & Giá Trị Bản Địa",
+    "subtitle": "Khởi nguồn từ trăn trở trước những hộp sữa hạt công nghiệp nhiều phụ gia, Trạm Hạt tìm về sự thuần khiết nguyên sơ nhất của nông sản quê nhà.",
+    "story1": {
+      "num": "01 • KHỞI NGUỒN",
+      "title": "Từ Đất Đỏ Bù Gia Mập Đến Ly Sữa Tươi Sáng Sớm",
+      "desc": "Trạm Hạt ra đời từ trăn trở trước những hộp sữa hạt công nghiệp nhiều phụ gia, chất ổn định và đường hóa học. Chúng tôi tìm về vùng đất đỏ bazan Bù Gia Mập — thủ phủ hạt điều trứ danh của Việt Nam — để kiến tạo dòng sữa hạt tươi nguyên bản, thơm lành và tử tế nhất cho gia đình Việt.",
+      "meta": "Vùng nguyên liệu: Huyện Bù Gia Mập, Tỉnh Bình Phước • Canh tác nông nghiệp hữu cơ.",
+      "img": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=85"
+    },
+    "story2": {
+      "num": "02 • NGHỆ NHÂN THỦ CÔNG",
+      "title": "Nghiền Cối Đá Chậm Rãi < 45°C",
+      "desc": "Khác với máy xay lưỡi dao kim loại sinh nhiệt cao làm biến tính chất béo và phân hủy enzyme, Trạm Hạt sử dụng cối đá granit thủy lực nghiền chậm. Hạt được ngâm hoạt hóa mầm sống, nghiền cùng nước lọc kiềm RO pH 7.2 dưới 45°C để giữ trọn vị béo ngậy thanh tao và độ êm bụng tuyệt đối.",
+      "meta": "Nghiền chậm 4 tiếng mỗi đêm • Nấu mới lúc 05:00 sáng.",
+      "img": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=85"
+    },
+    "commitments": [
+      {
+        "num": "01 • TƯƠI THẬT",
+        "title": "Nấu Mới Mỗi 05:00 Sáng",
+        "desc": "Chỉ bắt đầu nấu sau khi chốt đơn đặt trước. 0 chất bảo quản, 0 hương liệu nhân tạo, giao lạnh tận tay trước 07:30 sáng.",
+        "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        "num": "02 • LÀNH THẬT",
+        "title": "Ngọt Thanh Từ Quả Chà Là",
+        "desc": "Cam kết 0g đường tinh luyện. Vị ngọt thanh tao tự nhiên chiết xuất từ quả chà là hữu cơ giàu chất xơ và khoáng chất.",
+        "img": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        "num": "03 • BỀN VỮNG",
+        "title": "Chai Thủy Tinh Tuần Hoàn",
+        "desc": "100% chai thủy tinh tiệt trùng thu hồi đổi trả khi giao đơn mới. Giảm 10.000đ/kỳ và bảo vệ môi trường khỏi rác nhựa.",
+        "img": "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=800&q=85"
+      }
+    ],
+    "steps": [
+      {
+        "num": "1. Vườn Hạt Bù Gia Mập",
+        "desc": "Tuyển chọn hạt điều loại 1, béo bùi và thuần khiết.",
+        "img": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "num": "2. Ngâm Hoạt Hóa Mầm",
+        "desc": "Ngâm 8h kích hoạt enzyme sống, loại bỏ acid phytic.",
+        "img": "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "num": "3. Cối Đá Nghiền Mát",
+        "desc": "Nghiền chậm dưới 45°C bảo toàn trọn vẹn chất béo tốt.",
+        "img": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        "num": "4. Giao Lạnh 07:30 Sáng",
+        "desc": "Đóng chai thủy tinh tiệt trùng, giao tận cửa trước giờ làm.",
+        "img": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+      }
+    ]
+  },
+  "campaign": {
+    "title": "Ghé Trạm Có Chuyện — Chậm Lại 5 Phút Sáng Nay",
+    "desc": "Giữa guồng quay hối hả của phố thị, Trạm Hạt tạo nên một trạm dừng chân an yên: nơi bạn có thể chậm lại 5 phút, uống một ngụm sữa hạt tươi ấm nóng, hít thở sâu và lắng nghe câu chuyện về đất, về người nông dân quê hương.",
+    "heroImg": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85",
+    "activity1": {
+      "tag": "HOẠT ĐỘNG 01 • TUẦN HOÀN",
+      "title": "Trạm Đổi Chai • Nhận Mầm Xanh",
+      "desc": "Mỗi khi shipper giao sữa sáng, bạn chỉ cần gửi lại 5 vỏ chai thủy tinh sạch. Trạm tự động trừ 10.000đ/kỳ và tặng bạn 1 gói hạt giống rau mầm để phủ xanh góc bàn làm việc văn phòng.",
+      "img": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80"
+    },
+    "activity2": {
+      "tag": "HOẠT ĐỘNG 02 • SỐNG LÀNH",
+      "title": "Thử Thách 7 Ngày Nhẹ Bụng",
+      "desc": "Thay thế bữa sáng nhanh nhiều dầu mỡ bằng 1 chai sữa hạt tươi 500ml lúc 07:30 sáng liên tục trong 7 ngày để cảm nhận đường ruột êm dịu, không ợ chua và tâm trí tỉnh táo sảng khoái.",
+      "img": "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80"
+    }
+  }
+}

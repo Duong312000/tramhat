@@ -1,0 +1,26 @@
+{
+  "name": "tramhat-nutrition-platform",
+  "version": "2.0.0",
+  "description": "Nền tảng thương mại điện tử & truyền thông Trạm Hạt - Kiến trúc 3 tầng: Frontend, Backend, Database MongoDB Server (Zero Docker)",
+  "scripts": {
+    "install:backend": "npm --prefix backend install",
+    "install:all": "npm run install:backend",
+    "start:database": "node database/server.js",
+    "start:backend": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:frontend": "npm --prefix frontend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "seed": "npm --prefix backend run seed",
+    "dev": "npm run install:backend && (start cmd /k npm run start:database) && (start cmd /k npm run dev:backend) && npm run dev:frontend"
+  },
+  "keywords": [
+    "tramhat",
+    "ecommerce",
+    "fullstack",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Trạm Hạt Team",
+  "license": "ISC"
+}

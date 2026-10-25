@@ -1,0 +1,9 @@
+{
+  "name": "tramhat-database-server",
+  "version": "1.0.0",
+  "description": "Standalone Native MongoDB Database Server for Tram Hat (Zero Docker)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

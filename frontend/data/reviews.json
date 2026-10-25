@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Thu Trang",
+    "role": "Quản trị nhân sự • Hà Nội",
+    "avatar": "TT",
+    "stars": 5,
+    "date": "23/10/2026",
+    "tag": "Gói Sáng Định Kỳ",
+    "comment": "Trước đây mình hay bị đầy bụng và ợ hơi khi uống sữa bò buổi sáng. Chuyển sang Sữa Điều Bình Phước của Trạm Hạt cảm thấy bụng êm ru, vị béo bùi thanh nhẹ vô cùng dễ chịu. Shipper giao lúc 07:15 sáng, chai còn mát rượi."
+  },
+  {
+    "id": 2,
+    "name": "Minh Hoàng",
+    "role": "Kỹ sư phần mềm • TP.HCM",
+    "avatar": "MH",
+    "stars": 5,
+    "date": "21/10/2026",
+    "tag": "Khách Hàng 1 Năm",
+    "comment": "Dân lập trình ngồi máy cả ngày rất cần món bổ não buổi chiều. Vị Óc Chó Mè Đen thơm mùi mè rang mộc, uống xong tỉnh táo hẳn mà không bị hồi hộp tim như uống nước tăng lực hay cà phê đậm."
+  },
+  {
+    "id": 3,
+    "name": "Phương Anh",
+    "role": "Sáng lập Studio Thiết kế • Đà Nẵng",
+    "avatar": "PA",
+    "stars": 5,
+    "date": "18/10/2026",
+    "tag": "Đổi Chai Tuần Hoàn",
+    "comment": "Chấm điểm tuyệt đối cho cơ chế thu hồi chai thủy tinh! Chai dày dặn, bọc thùng giữ nhiệt giao tận bàn làm việc. Ủng hộ nông sản Việt tử tế và lối sống zero plastic."
+  },
+  {
+    "id": 4,
+    "name": "Bác sĩ Lê Hải",
+    "role": "Bác sĩ Tim Mạch • Bệnh viện Chợ Rẫy",
+    "avatar": "LH",
+    "stars": 5,
+    "date": "14/10/2026",
+    "tag": "Khuyên Dùng Bệnh Nhân",
+    "comment": "Đánh giá cao việc Trạm Hạt không dùng đường hóa học mà chỉ tạo ngọt nhẹ từ quả chà là. Rất phù hợp cho người bệnh tiểu đường nhẹ và người cần kiểm soát chỉ số mỡ máu."
+  },
+  {
+    "id": 5,
+    "name": "Hải Yến",
+    "role": "Huấn luyện viên Yoga • TP. Thủ Đức",
+    "avatar": "HY",
+    "stars": 5,
+    "date": "10/10/2026",
+    "tag": "High Protein",
+    "comment": "Hạnh Nhân Cacao và Macca Yến Mạch là combo phục hồi sau giờ tập yoga của mình. Uống no êm dạ dày 4 tiếng, cơ thể nhẹ nhàng sảng khoái."
+  }
+]

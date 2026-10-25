@@ -1,0 +1,9 @@
+{
+  "name": "tramhat-frontend",
+  "version": "1.0.0",
+  "description": "Frontend UI Client for Tram Hat - Plant-based Nutrition Store",
+  "scripts": {
+    "start": "npx -y serve -p 3000 .",
+    "dev": "npx -y live-server --port=3000 ."
+  }
+}

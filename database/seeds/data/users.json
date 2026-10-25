@@ -1,0 +1,54 @@
+[
+  {
+    "id": "user_001",
+    "name": "Nguyễn An Nhiên",
+    "email": "annhien@gmail.com",
+    "phone": "0901888777",
+    "password": "123",
+    "role": "customer",
+    "tier": "Eco Citizen (Sống Xanh)",
+    "address": "Phòng 402, Tòa nhà A, 123 Phố Trúc Bạch, Ba Đình, Hà Nội",
+    "points": 120,
+    "bottlesReturned": 8,
+    "ordersCount": 3
+  },
+  {
+    "id": "user_002",
+    "name": "Trần Minh",
+    "email": "tranminh@gmail.com",
+    "phone": "0902345678",
+    "password": "123",
+    "role": "customer",
+    "tier": "Thành Viên Thân Thiết",
+    "address": "Số 45 Lê Lợi, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh",
+    "points": 85,
+    "bottlesReturned": 5,
+    "ordersCount": 2
+  },
+  {
+    "id": "user_003",
+    "name": "Hoàng Lan",
+    "email": "hoanglan@gmail.com",
+    "phone": "0903456789",
+    "password": "123",
+    "role": "customer",
+    "tier": "Thành Viên Mới",
+    "address": "12 ngõ 89 Hoàng Hoa Thám, Ba Đình, Hà Nội",
+    "points": 50,
+    "bottlesReturned": 2,
+    "ordersCount": 1
+  },
+  {
+    "id": "admin",
+    "name": "Quản Trị Viên Trạm Hạt",
+    "email": "admin@tramhat.vn",
+    "phone": "0909999999",
+    "password": "admin",
+    "role": "admin",
+    "tier": "Quản Trị Hệ Thống",
+    "address": "Trạm Hạt - Bù Gia Mập, Bình Phước",
+    "points": 999,
+    "bottlesReturned": 50,
+    "ordersCount": 0
+  }
+]

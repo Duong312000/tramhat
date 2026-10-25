@@ -1,0 +1,26 @@
+[
+  {
+    "id": "#TH-2026-8801",
+    "customer": "Nguyễn Thị Thu Hà",
+    "phone": "0912.888.777",
+    "address": "Số 45 Lê Duẩn, P. Bến Nghé, Quận 1, TP.HCM",
+    "items": "2x Sữa Điều Tự Nhiên (500ml), 1x Óc Chó Mè Đen (300ml)",
+    "total": "99.000đ",
+    "totalVND": 99000,
+    "payment": "Chuyển Khoản VietQR",
+    "time": "08:20 - 24/10/2026",
+    "status": "Đang Giao 45 Phút"
+  },
+  {
+    "id": "#TH-2026-8802",
+    "customer": "Trần Quốc Bảo",
+    "phone": "0988.123.456",
+    "address": "Tòa nhà Landmark 81, Bình Thạnh, TP.HCM",
+    "items": "1x Hạnh Nhân Cacao Đắk Lắk (1000ml)",
+    "total": "70.000đ",
+    "totalVND": 70000,
+    "payment": "Thanh Toán Khi Nhận (COD)",
+    "time": "07:45 - 24/10/2026",
+    "status": "Hoàn Tất"
+  }
+]
