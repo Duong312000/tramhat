@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -3385,9 +3385,16 @@
               <div class="text-muted small" id="adminWorkspaceSubtitle" style="font-size: 12px;">Đo lường thời gian lưu trú thực tế, lượt xem sản phẩm và tỷ lệ mua hàng</div>
             </div>
           </div>
-          <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 d-flex align-items-center gap-2" style="font-size: 12px;">
+              <span class="spinner-grow spinner-grow-sm text-success" role="status" style="width: 8px; height: 8px;"></span>
+              <span>Thu Thập Trực Tiếp (Live 24/7)</span>
+            </span>
             <button class="btn btn-sm btn-light border py-2 px-3" onclick="refreshAdminAnalytics()" title="Tải lại số liệu">
-              <i class="bi bi-arrow-clockwise"></i> Làm mới dữ liệu
+              <i class="bi bi-arrow-clockwise"></i> Làm mới
+            </button>
+            <button class="btn btn-sm btn-outline-danger py-2 px-3 fw-medium" onclick="resetAllAnalyticsToZero()" title="Xóa toàn bộ dữ liệu mẫu, bắt đầu đo thật từ số 0">
+              <i class="bi bi-arrow-counterclockwise"></i> Đặt Lại Về 0 (Khởi Tạo Thật)
             </button>
           </div>
         </div>
@@ -3547,6 +3554,53 @@
 
               </div>
 
+            </div>
+
+            <!-- BẢNG THEO DÕI HÀNH TRÌNH TỪNG KHÁCH HÀNG (INDIVIDUAL VISITORS & USER SESSIONS LOG) -->
+            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-3 border-bottom gap-2">
+                <div>
+                  <h3 class="h6 fw-bold font-serif text-dark mb-1">
+                    <i class="bi bi-people-fill text-primary me-1"></i> Theo Dõi Hành Trình Từng Khách Hàng (Individual Visitors Log)
+                  </h3>
+                  <div class="text-muted small" style="font-size: 11px;">
+                    Hệ thống tự động định danh từng vị khách ghé thăm: Ghi nhận nguồn chiến dịch, thiết bị, thời gian on-site và từng cú click chi tiết
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-primary rounded-pill px-3 py-2" id="visitorTotalCountBadge">0 khách</span>
+                </div>
+              </div>
+
+              <!-- Bộ Lọc Nhanh -->
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <button class="btn btn-sm btn-dark px-3 py-1" onclick="filterVisitorLog('all', this)" id="filterBtnAll">Tất Cả Khách</button>
+                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('cart', this)">Đã Thêm Giỏ Hàng</button>
+                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('order', this)">Đã Đặt Mua</button>
+                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('campaign', this)">Đến Từ Chiến Dịch (TikTok / Meta)</button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
+                  <thead class="table-light">
+                    <tr>
+                      <th style="min-width: 140px;">Mã Khách Hàng</th>
+                      <th style="min-width: 130px;">Thời Điểm Vào</th>
+                      <th style="min-width: 150px;">Nguồn Chiến Dịch (UTM)</th>
+                      <th style="min-width: 120px;">Thiết Bị</th>
+                      <th style="min-width: 180px;">Vị Sữa Đã Xem</th>
+                      <th style="min-width: 110px;" class="text-center">Cuộn Trang</th>
+                      <th style="min-width: 110px;" class="text-center">Thời Gian</th>
+                      <th style="min-width: 130px;" class="text-end">Hành Trình</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminVisitorsTableBody">
+                    <tr>
+                      <td colspan="8" class="text-center py-4 text-muted">Đang tải danh sách người dùng...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <!-- 2 BEHAVIOR TABLES: TIME ON PAGE & SCROLL DEPTH (REAL DATA) -->
@@ -4718,22 +4772,99 @@
     // ==========================================================================
     const TramHatTracker = (function() {
       const STORAGE_KEY = 'tramhat_real_analytics';
+      const VISITORS_KEY = 'tramhat_visitor_sessions';
       let currentTab = 'home';
       let lastSecondTick = Date.now();
 
-      // Khởi tạo từ file data/analytics.json hoặc localStorage
+      // Quản lý mã khách định danh phiên hiện tại
+      let currentVisitorCode = sessionStorage.getItem('tramhat_visitor_code');
+      if (!currentVisitorCode) {
+        currentVisitorCode = '#KH-' + Math.floor(1000 + Math.random() * 9000);
+        sessionStorage.setItem('tramhat_visitor_code', currentVisitorCode);
+      }
+
+      function getDeviceType() {
+        const w = window.innerWidth;
+        if (w < 768) return 'Mobile';
+        if (w <= 1024) return 'Tablet';
+        return 'Desktop';
+      }
+
+      function getUtmSource() {
+        try {
+          const raw = sessionStorage.getItem('tramhat_utm');
+          if (raw) {
+            const u = JSON.parse(raw);
+            if (u.source && u.source !== 'direct') {
+              return u.source.toUpperCase() + (u.campaign ? ' (' + u.campaign + ')' : '');
+            }
+          }
+        } catch(e) {}
+        return 'Trực Tiếp (Direct)';
+      }
+
+      // Lấy hoặc khởi tạo danh sách khách hàng cá nhân
+      function getVisitorSessions() {
+        try {
+          const s = localStorage.getItem(VISITORS_KEY);
+          if (s) return JSON.parse(s);
+        } catch(e) {}
+        return [];
+      }
+
+      function saveVisitorSessions(list) {
+        try {
+          localStorage.setItem(VISITORS_KEY, JSON.stringify(list));
+        } catch(e) {}
+      }
+
+      function updateCurrentVisitor(updater) {
+        const list = getVisitorSessions();
+        let v = list.find(item => item.id === currentVisitorCode);
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        if (!v) {
+          v = {
+            id: currentVisitorCode,
+            time: timeStr,
+            date: now.toLocaleDateString('vi-VN'),
+            source: getUtmSource(),
+            device: getDeviceType(),
+            flavors: [],
+            maxScroll: 0,
+            seconds: 0,
+            status: 'Đang Xem Trang',
+            steps: [{ time: timeStr, action: 'Truy cập trang web Trạm Hạt' }]
+          };
+          list.unshift(v);
+        }
+
+        if (typeof updater === 'function') {
+          updater(v, timeStr);
+        }
+
+        // Giới hạn 100 khách gần nhất
+        if (list.length > 100) list.pop();
+        saveVisitorSessions(list);
+
+        // Cập nhật ngay giao diện Admin nếu đang mở
+        const adminBody = document.getElementById('adminVisitorsTableBody');
+        if (adminBody && !document.getElementById('view-admin').classList.contains('d-none')) {
+          renderAdminVisitorsTable();
+        }
+      }
+
+      // Khởi tạo từ localStorage hoặc hoàn toàn từ 0 (Zero-State)
       function getInitialAnalytics() {
         try {
           const stored = localStorage.getItem(STORAGE_KEY);
           if (stored) return JSON.parse(stored);
         } catch(e) {}
 
-        if (window.TRAMHAT_DATA && window.TRAMHAT_DATA.analytics) {
-          return JSON.parse(JSON.stringify(window.TRAMHAT_DATA.analytics));
-        }
-
+        // Mặc định hoàn toàn từ 0 để đảm bảo đo thật 100%
         return {
-          totalVisits: 1,
+          totalVisits: 0,
           totalTimeSeconds: 0,
           productViews: 0,
           addToCartCount: 0,
@@ -4741,10 +4872,9 @@
           purchasesCount: 0,
           revenueVND: 0,
           pageViews: {
-            home: { name: "Trang Chủ", views: 1, totalSeconds: 0 },
+            home: { name: "Trang Chủ", views: 0, totalSeconds: 0 },
             menu: { name: "Thực Đơn", views: 0, totalSeconds: 0 },
             about: { name: "Về Trạm Hạt", views: 0, totalSeconds: 0 },
-            campaign: { name: "Chiến Dịch Xanh", views: 0, totalSeconds: 0 },
             knowledge: { name: "Góc Kiến Thức", views: 0, totalSeconds: 0 },
             reviews: { name: "Cảm Nhận", views: 0, totalSeconds: 0 },
             "product-detail": { name: "Chi Tiết Sản Phẩm", views: 0, totalSeconds: 0 },
@@ -4758,7 +4888,7 @@
           },
           devices: {
             mobile: 0,
-            desktop: 1,
+            desktop: 0,
             tablet: 0
           },
           events: []
@@ -4771,13 +4901,6 @@
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         } catch(e) {}
-      }
-
-      function getDeviceType() {
-        const w = window.innerWidth;
-        if (w < 768) return 'Mobile';
-        if (w <= 1024) return 'Tablet';
-        return 'Desktop';
       }
 
       function logEvent(action, detail, tab = currentTab) {
@@ -4797,14 +4920,20 @@
         if (data.events.length > 50) data.events.pop();
         persist();
 
-        // If currently on admin analytics tab, update live stream
+        // Ghi lại bước thao tác của khách hàng cá nhân này
+        updateCurrentVisitor((v, t) => {
+          v.steps.unshift({ time: t, action: `${action}: ${detail}` });
+          if (v.steps.length > 30) v.steps.pop();
+        });
+
+        // Cập nhật bảng live stream nếu đang xem admin
         const streamBody = document.getElementById('adminLiveEventStreamBody');
         if (streamBody) {
           renderAdminEventLog();
         }
       }
 
-      // Real-time ticking timer (counts actual elapsed seconds)
+      // Real-time ticking timer (tính giây thực tế)
       setInterval(() => {
         const now = Date.now();
         const elapsed = Math.round((now - lastSecondTick) / 1000);
@@ -4816,6 +4945,11 @@
             data.pageViews[currentTab].totalSeconds += elapsed;
           }
           persist();
+
+          // Cập nhật thời gian cho khách hàng hiện tại
+          updateCurrentVisitor(v => {
+            v.seconds = (v.seconds || 0) + elapsed;
+          });
 
           // Live update stats on dashboard if view is visible
           const avgEl = document.getElementById('funnelStatAvgTime');
@@ -4835,34 +4969,32 @@
         if (docH <= 0) return;
         const pct = Math.round((window.scrollY / docH) * 100);
 
-        if (pct >= 25 && !loggedDepths['25']) {
-          loggedDepths['25'] = true;
-          data.scrollDepth.depth25++;
-          logEvent('Cuộn Trang', 'Người dùng cuộn qua 25% nội dung trang');
-        }
-        if (pct >= 50 && !loggedDepths['50']) {
-          loggedDepths['50'] = true;
-          data.scrollDepth.depth50++;
-          logEvent('Cuộn Trang', 'Người dùng cuộn qua 50% nội dung trang');
-        }
-        if (pct >= 75 && !loggedDepths['75']) {
-          loggedDepths['75'] = true;
-          data.scrollDepth.depth75++;
-          logEvent('Cuộn Trang', 'Người dùng cuộn qua 75% nội dung trang');
-        }
-        if (pct >= 95 && !loggedDepths['100']) {
-          loggedDepths['100'] = true;
-          data.scrollDepth.depth100++;
-          logEvent('Cuộn Trang', 'Người dùng cuộn chạm đáy trang (100%)');
-        }
+        [25, 50, 75, 95].forEach(mark => {
+          const key = mark === 95 ? '100' : String(mark);
+          const label = mark === 95 ? 100 : mark;
+          if (pct >= mark && !loggedDepths[key]) {
+            loggedDepths[key] = true;
+            data.scrollDepth['depth' + key]++;
+            logEvent('Cuộn Trang', `Khách cuộn qua ${label}% nội dung`);
+            updateCurrentVisitor(v => {
+              if (label > (v.maxScroll || 0)) v.maxScroll = label;
+            });
+          }
+        });
       }, { passive: true });
 
-      // Detect current device
+      // Ghi nhận thiết bị khách
       const currentDev = getDeviceType().toLowerCase();
       if (data.devices[currentDev] !== undefined) {
         data.devices[currentDev]++;
         persist();
       }
+
+      // Khởi tạo phiên khách ban đầu
+      updateCurrentVisitor((v) => {
+        v.device = getDeviceType();
+        v.source = getUtmSource();
+      });
 
       return {
         recordPageView: function(tabId) {
@@ -4877,11 +5009,21 @@
         },
         recordProductView: function(key, name) {
           data.productViews++;
-          logEvent('Xem Sản Phẩm', 'Khách xem chi tiết: ' + (name || key));
+          const pName = name || key;
+          logEvent('Xem Sản Phẩm', 'Khách xem chi tiết: ' + pName);
+          updateCurrentVisitor(v => {
+            if (!v.flavors.includes(pName)) v.flavors.push(pName);
+          });
         },
         recordAddToCart: function(key, name) {
           data.addToCartCount++;
-          logEvent('Thêm Giỏ Hàng', 'Khách thêm vào giỏ: ' + (name || key));
+          const pName = name || key;
+          logEvent('Thêm Giỏ Hàng', 'Khách thêm vào giỏ: ' + pName);
+          updateCurrentVisitor(v => {
+            v.hasCart = true;
+            v.status = 'Đã Thêm Giỏ Hàng';
+            if (!v.flavors.includes(pName)) v.flavors.push(pName);
+          });
         },
         recordCheckoutStart: function() {
           data.checkoutCount++;
@@ -4891,10 +5033,44 @@
           data.purchasesCount++;
           data.revenueVND += (totalVND || 0);
           logEvent('Đặt Hàng Thành Công', 'Đơn hàng #' + orderId + ' (' + (totalVND || 0).toLocaleString('vi-VN') + 'đ)');
+          updateCurrentVisitor(v => {
+            v.hasOrdered = true;
+            v.status = 'Đã Đặt Hàng Thành Công';
+          });
           persist();
         },
         getData: function() {
           return data;
+        },
+        getVisitors: function() {
+          return getVisitorSessions();
+        },
+        resetAll: function() {
+          data = {
+            totalVisits: 0,
+            totalTimeSeconds: 0,
+            productViews: 0,
+            addToCartCount: 0,
+            checkoutCount: 0,
+            purchasesCount: 0,
+            revenueVND: 0,
+            pageViews: {
+              home: { name: "Trang Chủ", views: 0, totalSeconds: 0 },
+              menu: { name: "Thực Đơn", views: 0, totalSeconds: 0 },
+              about: { name: "Về Trạm Hạt", views: 0, totalSeconds: 0 },
+              knowledge: { name: "Góc Kiến Thức", views: 0, totalSeconds: 0 },
+              reviews: { name: "Cảm Nhận", views: 0, totalSeconds: 0 },
+              "product-detail": { name: "Chi Tiết Sản Phẩm", views: 0, totalSeconds: 0 },
+              profile: { name: "Trang Cá Nhân", views: 0, totalSeconds: 0 }
+            },
+            scrollDepth: { depth25: 0, depth50: 0, depth75: 0, depth100: 0 },
+            devices: { mobile: 0, desktop: 0, tablet: 0 },
+            events: []
+          };
+          localStorage.removeItem(STORAGE_KEY);
+          localStorage.removeItem(VISITORS_KEY);
+          localStorage.removeItem('tramhat_real_orders');
+          adminOrdersList = [];
         },
         exportJSON: function() {
           return JSON.stringify(data, null, 2);
@@ -5041,6 +5217,154 @@
 
       // 5. Real Event Stream Log
       renderAdminEventLog();
+
+      // 6. Real Individual Visitors Log (Theo Dõi Từng Khách Hàng)
+      renderAdminVisitorsTable();
+    }
+
+    // --- RESET DATA TO ZERO (KHỞI TẠO ĐO THẬT TỪ 0) ---
+    function resetAllAnalyticsToZero() {
+      if (confirm('Xác nhận đặt toàn bộ chỉ số phân tích, phễu chuyển đổi và danh sách khách hàng về 0 để bắt đầu đo thật 100%?')) {
+        TramHatTracker.resetAll();
+        refreshAdminAnalytics();
+        renderAdminVisitorsTable();
+        renderAdminOrdersTable();
+        alert('Đã xóa toàn bộ dữ liệu mẫu và đưa các chỉ số về 0 thành công!\nTừ bây giờ, mọi lượt truy cập, xem sản phẩm, thêm giỏ hay đặt mua sẽ bắt đầu nhảy số đo thật 100%.');
+      }
+    }
+
+    // --- RENDER VISITOR SESSIONS TABLE (THEO DÕI TỪNG NGƯỜI DÙNG) ---
+    let currentVisitorFilter = 'all';
+
+    function filterVisitorLog(type, btn) {
+      currentVisitorFilter = type;
+      document.querySelectorAll('#adminSecAnalytics .btn-sm').forEach(b => {
+        if (b.innerText.includes('Khách') || b.innerText.includes('Giỏ Hàng') || b.innerText.includes('Đặt Mua') || b.innerText.includes('Chiến Dịch')) {
+          b.classList.remove('btn-dark');
+          b.classList.add('btn-outline-dark');
+        }
+      });
+      if (btn) {
+        btn.classList.remove('btn-outline-dark');
+        btn.classList.add('btn-dark');
+      }
+      renderAdminVisitorsTable(type);
+    }
+
+    function renderAdminVisitorsTable(filter = currentVisitorFilter) {
+      const tbody = document.getElementById('adminVisitorsTableBody');
+      const badgeCount = document.getElementById('visitorTotalCountBadge');
+      if (!tbody) return;
+
+      let visitors = TramHatTracker.getVisitors();
+      if (badgeCount) badgeCount.innerText = visitors.length + ' khách';
+
+      if (filter === 'cart') {
+        visitors = visitors.filter(v => v.hasCart);
+      } else if (filter === 'order') {
+        visitors = visitors.filter(v => v.hasOrdered);
+      } else if (filter === 'campaign') {
+        visitors = visitors.filter(v => v.source && !v.source.includes('Trực Tiếp'));
+      }
+
+      if (visitors.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="bi bi-person-x fs-4 d-block mb-1"></i>Chưa có lượt khách nào thỏa mãn bộ lọc. Hãy mở một tab khác duyệt web để thấy dữ liệu nhảy số ngay lập tức!</td></tr>';
+        return;
+      }
+
+      let html = '';
+      visitors.forEach(v => {
+        let statusBadge = '<span class="badge bg-secondary-subtle text-secondary border">Đang xem</span>';
+        if (v.status && v.status.includes('Đặt Hàng')) {
+          statusBadge = '<span class="badge bg-success text-white"><i class="bi bi-bag-check me-1"></i>Đã Đặt Mua</span>';
+        } else if (v.status && v.status.includes('Giỏ Hàng')) {
+          statusBadge = '<span class="badge bg-warning text-dark"><i class="bi bi-cart me-1"></i>Đã Thêm Giỏ</span>';
+        }
+
+        const flavorsStr = v.flavors && v.flavors.length > 0 
+          ? v.flavors.map(f => `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 11px;">${f}</span>`).join('') 
+          : '<span class="text-muted small">Chưa bấm xem vị cụ thể</span>';
+
+        const mins = Math.floor((v.seconds || 0) / 60);
+        const secs = (v.seconds || 0) % 60;
+        const timeSpent = mins > 0 ? (mins + 'm ' + secs + 's') : (secs + 's');
+
+        html += `
+          <tr>
+            <td>
+              <div class="fw-bold font-serif text-dark">${v.id}</div>
+              <div class="mt-1">${statusBadge}</div>
+            </td>
+            <td>
+              <div class="text-dark small">${v.time}</div>
+              <div class="text-muted" style="font-size: 11px;">${v.date}</div>
+            </td>
+            <td>
+              <span class="badge bg-info-subtle text-dark border px-2 py-1">${v.source || 'Trực Tiếp'}</span>
+            </td>
+            <td>
+              <span class="small text-muted"><i class="bi bi-${(v.device || '').toLowerCase() === 'mobile' ? 'phone' : 'laptop'} me-1"></i>${v.device || 'Desktop'}</span>
+            </td>
+            <td>${flavorsStr}</td>
+            <td class="text-center font-serif fw-bold text-primary">${v.maxScroll || 0}%</td>
+            <td class="text-center font-serif text-danger fw-bold">${timeSpent}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="openVisitorDetailModal('${v.id}')">
+                <i class="bi bi-eye"></i> Xem Lịch Sử
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function openVisitorDetailModal(visitorId) {
+      const visitors = TramHatTracker.getVisitors();
+      const v = visitors.find(item => item.id === visitorId);
+      if (!v) return;
+
+      const titleEl = document.getElementById('visitorModalTitle');
+      const infoEl = document.getElementById('visitorModalInfo');
+      const timelineEl = document.getElementById('visitorModalTimeline');
+      if (titleEl) titleEl.innerText = `Chi Tiết Hành Trình: ${v.id}`;
+
+      if (infoEl) {
+        infoEl.innerHTML = `
+          <div class="row g-2 p-2 bg-light rounded border mb-3 small">
+            <div class="col-6 col-md-3"><strong>Nguồn vào:</strong> <span class="text-primary">${v.source}</span></div>
+            <div class="col-6 col-md-3"><strong>Thiết bị:</strong> ${v.device}</div>
+            <div class="col-6 col-md-3"><strong>Thời gian lưu lại:</strong> <span class="text-danger fw-bold">${Math.round(v.seconds || 0)} giây</span></div>
+            <div class="col-6 col-md-3"><strong>Cuộn sâu nhất:</strong> <span class="text-success fw-bold">${v.maxScroll || 0}%</span></div>
+          </div>
+        `;
+      }
+
+      if (timelineEl) {
+        const steps = v.steps || [];
+        if (steps.length === 0) {
+          timelineEl.innerHTML = '<div class="text-muted text-center py-3">Chưa có thao tác chi tiết.</div>';
+        } else {
+          let tHtml = '<ul class="list-group list-group-flush small">';
+          steps.forEach((st, idx) => {
+            tHtml += `
+              <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                <span><span class="badge bg-secondary me-2">#${steps.length - idx}</span> ${st.action}</span>
+                <span class="text-muted" style="font-size: 11px;">${st.time}</span>
+              </li>
+            `;
+          });
+          tHtml += '</ul>';
+          timelineEl.innerHTML = tHtml;
+        }
+      }
+
+      const modalEl = document.getElementById('visitorDetailModal');
+      if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      }
     }
 
     function renderRealTimeOnPageTable(d) {
@@ -6870,7 +7194,31 @@
             Cảm ơn bạn đã đồng hành cùng nông sản đất lành!<br>
             Vui lòng giữ lạnh và thưởng thức trong 48h.
           </div>
-        </body>
+        
+  <!-- MODAL CHI TIET HANH TRINH TUNG KHACH HANG (VISITOR JOURNEY MODAL) -->
+  <div class="modal fade" id="visitorDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white py-3">
+          <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2" id="visitorModalTitle">
+            <i class="bi bi-person-badge"></i> Chi Tiết Hành Trình Khách Hàng
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="visitorModalInfo"></div>
+          <h6 class="fw-bold font-serif text-dark mb-2 border-bottom pb-2">
+            <i class="bi bi-clock-history me-1 text-primary"></i> Dòng Thời Gian Thao Tác (Click Timeline):
+          </h6>
+          <div id="visitorModalTimeline" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+        <div class="modal-footer bg-light py-2">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
         </html>
       `);
       printWindow.document.close();
@@ -7722,6 +8070,30 @@
     });
 
   </script>
+
+  <!-- MODAL CHI TIET HANH TRINH TUNG KHACH HANG (VISITOR JOURNEY MODAL) -->
+  <div class="modal fade" id="visitorDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white py-3">
+          <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2" id="visitorModalTitle">
+            <i class="bi bi-person-badge"></i> Chi Tiết Hành Trình Khách Hàng
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div id="visitorModalInfo"></div>
+          <h6 class="fw-bold font-serif text-dark mb-2 border-bottom pb-2">
+            <i class="bi bi-clock-history me-1 text-primary"></i> Dòng Thời Gian Thao Tác (Click Timeline):
+          </h6>
+          <div id="visitorModalTimeline" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+        <div class="modal-footer bg-light py-2">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
