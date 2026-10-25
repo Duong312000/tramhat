@@ -2,3 +2,7 @@
 .git
 .vscode
 *.log
+backend/
+database/
+node_modules/
+C:\*
