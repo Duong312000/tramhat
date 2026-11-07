@@ -12,12 +12,6 @@
 
   <script src="data/data.js"></script>
   <script src="js/config.js"></script>
-  <script>
-    window.TRAMHAT_API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? 'http://localhost:5000/api'
-      : '/api';
-  </script>
-
   <script src="js/api.js"></script>
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,9 +21,9 @@
   <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
@@ -56,8 +50,8 @@
       --text-light: #999999;
       --brand-green: #4E7A36;
 
-      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-body: 'Be Vietnam Pro', -apple-system, sans-serif;
+      --font-serif: 'Nunito', -apple-system, sans-serif;
     }
 
     * {
@@ -1702,7 +1696,7 @@
                   <!-- Slide 1: Rót sữa tươi mới -->
                   <div class="hero-scroll-slide">
                     <img
-                      src="images/campaign_halloween_6vi.jpg"
+                      src="images/prod_real_dieu.jpg"
                       alt="Rót tươi mỗi 05:00 sáng" class="hero-slide-img">
 
                   </div>
@@ -1710,7 +1704,7 @@
                   <!-- Slide 2: Hạt nông sản tuyển chọn -->
                   <div class="hero-scroll-slide">
                     <img
-                      src="images/product_sen_tramhat.jpg"
+                      src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1200&q=85"
                       alt="Hạt nông sản thuần Việt" class="hero-slide-img">
 
                   </div>
@@ -1726,7 +1720,7 @@
                   <!-- Slide 4: Chai thủy tinh giao sáng sớm -->
                   <div class="hero-scroll-slide">
                     <img
-                      src="images/brand_identity_guide.jpg"
+                      src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85"
                       alt="Giao lạnh trước 07:30" class="hero-slide-img">
 
                   </div>
@@ -1783,9 +1777,9 @@
                 <div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="product-category-text">Vị Nguyên Bản</span>
-                    <span class="product-price-text item-price-display" data-base="32000">32.000đ</span>
+                    <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
-                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Điều Tự Nhiên Bình Phước</h3>
+                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Điều Tự Nhiên</h3>
                   <p class="text-muted small mb-3">Hạt điều hữu cơ xay mịn bằng cối đá thủy lực. Vị béo bùi thanh nhẹ,
                     êm bụng tuyệt đối.</p>
                   <div class="mb-3">
@@ -1818,7 +1812,7 @@
                     <span class="product-category-text">Tập Trung Trí Não</span>
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
-                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Óc Chó Mè Đen Rang Mộc</h3>
+                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Óc Chó Mè Đen</h3>
                   <p class="text-muted small mb-3">Mè đen rang mộc và óc chó béo ngậy, dồi dào Omega-3 bổ não cho dân
                     văn phòng.</p>
                   <div class="mb-3">
@@ -1851,7 +1845,7 @@
                     <span class="product-category-text">Phục Hồi Thể Lực</span>
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
-                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Hạnh Nhân Cacao Đắk Lắk</h3>
+                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Hạnh Nhân Cacao</h3>
                   <p class="text-muted small mb-3">Bột cacao nguyên chất sấy thủ công và hạnh nhân nghiền mịn, hỗ trợ
                     phục hồi cơ bắp.</p>
                   <div class="mb-3">
@@ -1975,7 +1969,7 @@
             </div>
             <div class="col-lg-5 d-none d-lg-block">
               <div class="menu-hero-img-box shadow-sm">
-                <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80"
+                <img src="images/prod_real_dieu.jpg"
                   alt="Sữa hạt tươi thủ công Trạm Hạt" class="menu-hero-img">
               </div>
             </div>
@@ -2023,10 +2017,10 @@
                 <div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="product-category-text">Vị Nguyên Bản</span>
-                    <span class="product-price-text item-price-display" data-base="32000">32.000đ</span>
+                    <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Sữa Điều Tự Nhiên Bình Phước
+                    Sữa Điều Tự Nhiên
                   </h3>
                   <p class="text-muted small mb-3">Hạt điều hữu cơ xay mịn bằng cối đá thủy lực. Vị béo bùi thanh nhẹ,
                     êm bụng tuyệt đối.</p>
@@ -2065,7 +2059,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Óc Chó Mè Đen Rang Mộc
+                    Sữa Óc Chó Mè Đen
                   </h3>
                   <p class="text-muted small mb-3">Sự kết hợp giữa mè đen rang mộc và hạt óc chó béo ngậy, dồi dào
                     Omega-3 bổ não.</p>
@@ -2104,7 +2098,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Hạnh Nhân Cacao Đắk Lắk
+                    Sữa Hạnh Nhân Cacao
                   </h3>
                   <p class="text-muted small mb-3">Bột cacao nguyên chất phơi sấy thủ công và hạnh nhân nghiền mịn, hỗ
                     trợ cơ bắp.</p>
@@ -2143,7 +2137,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Macca Yến Mạch Đắk Lắk
+                    Sữa Macca Yến Mạch
                   </h3>
                   <p class="text-muted small mb-3">Macca Cư M'gar giàu acid béo palmitoleic và yến mạch hữu cơ giàu
                     beta-glucan.</p>
@@ -2172,17 +2166,17 @@
                   title="So sánh sản phẩm">
                   <i class="bi bi-bar-chart-line"></i>
                 </button>
-                <img src="images/product_sen_tramhat.jpg"
+                <img src="images/prod_real_sen.jpg"
                   alt="Hạt Sen Lá Dứa" class="product-card-img">
               </div>
               <div class="product-card-body">
                 <div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="product-category-text">Dưỡng Tâm &amp; Ngủ Ngon</span>
-                    <span class="product-price-text item-price-display" data-base="32000">32.000đ</span>
+                    <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Hạt Sen Tươi Lá Dứa Nếp
+                    Sữa Hạt Sen Lá Dứa
                   </h3>
                   <p class="text-muted small mb-3">Hạt sen bách diệp Đồng Tháp ninh mềm xay cùng nước cốt lá dứa thơm
                     thảo mộc.</p>
@@ -2221,7 +2215,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">
-                    Đậu Đỏ Kỷ Tử Dưỡng Nhan
+                    Sữa Đậu Đỏ Kỷ Tử
                   </h3>
                   <p class="text-muted small mb-3">Đậu đỏ quê thơm bùi kết hợp kỷ tử đỏ mọng giàu chất chống oxy hóa
                     anthocyanin.</p>
@@ -2290,7 +2284,7 @@
         <div class="row align-items-center g-5 mb-5 pb-4 border-bottom flex-lg-row-reverse">
           <div class="col-lg-7">
             <div class="editorial-split-img-box shadow-sm">
-              <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=85"
+              <img src="images/campaign_2010_dieu_occho.jpg"
                 alt="Cối đá nghiền lạnh">
             </div>
           </div>
@@ -2326,7 +2320,7 @@
               <div class="visual-story-card shadow-sm">
                 <div class="visual-story-card-img-wrap">
                   <img
-                    src="https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=800&q=85"
+                    src="images/prod_real_cacao.jpg"
                     alt="Tươi thật mỗi sớm">
                 </div>
                 <div class="visual-story-card-body">
@@ -2345,7 +2339,7 @@
               <div class="visual-story-card shadow-sm">
                 <div class="visual-story-card-img-wrap">
                   <img
-                    src="https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=85"
+                    src="images/prod_real_daudo.jpg"
                     alt="Lành thật từ quả chà là">
                 </div>
                 <div class="visual-story-card-body">
@@ -2484,7 +2478,7 @@
         <div class="row align-items-center g-5 mb-5 pb-4 border-bottom">
           <div class="col-lg-7">
             <div class="editorial-split-img-box shadow-sm">
-              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85"
+              <img src="images/campaign_halloween_6vi.jpg"
                 alt="Cộng đồng Ghé Trạm Có Chuyện">
             </div>
           </div>
@@ -2914,7 +2908,7 @@
             <a href="javascript:void(0)" onclick="closeProductDetail()" class="text-muted text-decoration-none">Thực
               Đơn</a>
             <span>/</span>
-            <span class="text-dark fw-bold" id="detailBreadcrumbName">Sữa Điều Tự Nhiên Bình Phước</span>
+            <span class="text-dark fw-bold" id="detailBreadcrumbName">Sữa Điều Tự Nhiên</span>
           </div>
         </div>
 
@@ -2938,7 +2932,7 @@
               </div>
 
               <h1 class="display-6 font-serif fw-bold text-dark mb-2" id="detailTitle">
-                Sữa Điều Tự Nhiên Bình Phước
+                Sữa Điều Tự Nhiên
               </h1>
 
               <!-- Đánh giá sao -->
@@ -2954,7 +2948,7 @@
               </div>
 
               <div class="d-flex align-items-baseline gap-3 mb-3">
-                <span class="product-price-text fs-2" id="detailPrice">32.000đ</span>
+                <span class="product-price-text fs-2" id="detailPrice">35.000đ</span>
                 <span class="text-muted small">/ Chai thủy tinh tiệt trùng tuần hoàn</span>
               </div>
 
@@ -6046,7 +6040,7 @@
       let htmlStr = '';
       Object.keys(productsDB).forEach(k => {
         const p = productsDB[k];
-        const priceFmt = (p.priceVND || 32000).toLocaleString('vi-VN') + 'đ';
+        const priceFmt = (p.priceVND || 35000).toLocaleString('vi-VN') + 'đ';
         htmlStr += `
           <div class="col-md-6 col-lg-4 product-col-item">
             <div class="product-card shadow-sm" onclick="viewProductDetail('${k}')" style="cursor: pointer;">
@@ -6126,61 +6120,61 @@
     const productsDB = {
       cashew: {
         id: "01",
-        name: "Sữa Điều Tự Nhiên Bình Phước",
+        name: "Sữa Điều Tự Nhiên",
         category: "VỊ NGUYÊN BẢN",
         origin: "Bù Gia Mập &bull; Nấu Mới 05:00",
-        priceVND: 32000,
-        img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1000&q=85",
+        priceVND: 35000,
+        img: "images/prod_real_dieu.jpg",
         desc: "Hạt điều hữu cơ loại A+ từ vùng đất đỏ bazan Bù Gia Mập. Hạt được hấp chín chậm và nghiền bằng cối đá granit thủy lực dưới 45°C để bảo tồn vẹn nguyên acid béo tự nhiên và vị ngọt lành.",
         nutrition: { kcal: "185", protein: "7.5g", fat: "9.2g" }
       },
       walnut: {
         id: "02",
-        name: "Óc Chó Mè Đen Rang Mộc",
+        name: "Sữa Óc Chó Mè Đen",
         category: "TẬP TRUNG TRÍ NÃO",
         origin: "Mè Đen Rang Củi &bull; Giàu Omega-3",
         priceVND: 35000,
-        img: "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=1000&q=85",
+        img: "images/prod_real_occho.jpg",
         desc: "Sự hòa quyện giữa mè đen rang mộc và óc chó béo ngậy. Nguồn dinh dưỡng vàng cho não bộ, giúp tăng cường khả năng tập trung cho dân văn phòng và công nghệ.",
         nutrition: { kcal: "190", protein: "8.4g", fat: "10.1g" }
       },
       almond: {
         id: "03",
-        name: "Hạnh Nhân Cacao Đắk Lắk",
+        name: "Sữa Hạnh Nhân Cacao",
         category: "PHỤC HỒI THỂ LỰC",
         origin: "Cacao Lên Men Tự Nhiên",
         priceVND: 35000,
-        img: "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=1000&q=85",
+        img: "images/prod_real_cacao.jpg",
         desc: "Bột cacao phơi sấy thủ công cùng hạnh nhân nghiền mịn. Vị đắng ngọt cân bằng, bổ sung 9.1g đạm thực vật giúp cơ bắp phục hồi nhanh sau khi tập luyện.",
         nutrition: { kcal: "170", protein: "9.1g", fat: "8.5g" }
       },
       macca: {
         id: "04",
-        name: "Macca Yến Mạch Đắk Lắk",
+        name: "Sữa Macca Yến Mạch",
         category: "NĂNG LƯỢNG BỀN BỈ",
         origin: "Macca Cư M'gar &bull; No Êm 4h",
         priceVND: 35000,
-        img: "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1000&q=85",
+        img: "images/prod_real_macca.jpg",
         desc: "Hạt macca giàu acid béo palmitoleic phối hợp cùng yến mạch nguyên cám giàu chất xơ hòa tan beta-glucan. Cung cấp năng lượng giải phóng chậm, giữ cảm giác no dịu suốt sáng.",
         nutrition: { kcal: "210", protein: "6.8g", fat: "11.0g" }
       },
       lotus: {
         id: "05",
-        name: "Hạt Sen Tươi Lá Dứa Nếp",
+        name: "Sữa Hạt Sen Lá Dứa",
         category: "DƯỠNG TÂM & NGỦ NGON",
         origin: "Sen Bách Diệp Đồng Tháp",
-        priceVND: 32000,
-        img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1000&q=85",
+        priceVND: 35000,
+        img: "images/prod_real_sen.jpg",
         desc: "Hạt sen tươi bóc vỏ ninh mềm cùng lá dứa nếp vườn nhà tỏa hương thảo mộc dịu nhẹ. Hỗ trợ an dịu thần kinh, tạo cảm giác thư thái và giấc ngủ sâu tự nhiên.",
         nutrition: { kcal: "160", protein: "5.5g", fat: "3.8g" }
       },
       redbean: {
         id: "06",
-        name: "Đậu Đỏ Kỷ Tử Dưỡng Nhan",
+        name: "Sữa Đậu Đỏ Kỷ Tử",
         category: "DƯỠNG NHAN KHÍ HUYẾT",
         origin: "Thực Dưỡng Bản Địa",
         priceVND: 35000,
-        img: "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=1000&q=85",
+        img: "images/prod_real_daudo.jpg",
         desc: "Đậu đỏ quê thơm bùi phối hợp kỷ tử đỏ mọng giàu anthocyanin. Bài thức uống dưỡng nhan truyền thống nuôi dưỡng làn da hồng hào và bồi bổ thể chất tự nhiên.",
         nutrition: { kcal: "175", protein: "7.2g", fat: "4.5g" }
       }
@@ -6286,7 +6280,7 @@
 
     function updateAllPriceDisplays() {
       document.querySelectorAll('.item-price-display').forEach(el => {
-        const base = parseInt(el.getAttribute('data-base')) || 32000;
+        const base = parseInt(el.getAttribute('data-base')) || 35000;
         el.innerText = formatPrice(base);
       });
       const detailPage = document.getElementById('productDetailPage');
@@ -6408,27 +6402,6 @@
     }
 
     function openCartDrawer() {
-      
-      // TỰ ĐỘNG GỬI LEAD & ORDER VÀO MONGODB THỜI GIAN THỰC
-      const apiEndpoint = window.TRAMHAT_API_URL || 'http://localhost:5000/api';
-      fetch(apiEndpoint + '/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerName: name,
-          phone: phone,
-          district: address,
-          address: address,
-          channel: 'Website Form',
-          interestedProduct: itemNames,
-          inquiryContent: 'Đơn hàng #' + orderId + ': ' + itemNames + ' - ' + totalText,
-          timeSpentSeconds: 75,
-          completedQuiz: true,
-          addedToCart: true,
-          askedShippingFee: true
-        })
-      }).catch(function(e) { console.warn('Sync lead failed', e); });
-
       if (typeof TramHatTracker !== 'undefined') {
         TramHatTracker.trackOpenCart();
       }
@@ -6547,6 +6520,94 @@
     }
 
     function confirmCartCheckout() {
+      const name = (document.getElementById('checkoutCustomerName')?.value || '').trim();
+      const phone = (document.getElementById('checkoutCustomerPhone')?.value || '').trim();
+      const address = (document.getElementById('checkoutCustomerAddress')?.value || '').trim();
+      const notes = (document.getElementById('checkoutOrderNotes')?.value || '').trim();
+
+      if (!name) {
+        alert("Vui lòng nhập họ và tên của bạn để Trạm Hạt giao sữa.");
+        return;
+      }
+      if (!phone || phone.length < 9) {
+        alert("Vui lòng nhập số điện thoại hợp lệ để shipper xác nhận đơn giao tươi.");
+        return;
+      }
+      if (!address) {
+        alert("Vui lòng nhập địa chỉ nhận hàng.");
+        return;
+      }
+
+      const orderId = 'TH-' + Math.floor(100000 + Math.random() * 900000);
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const discount = Math.round(subtotal * (currentCouponDiscount / 100));
+      const total = subtotal - discount;
+
+      const orderData = {
+        id: orderId,
+        customerName: name,
+        phone: phone,
+        address: address,
+        notes: notes,
+        items: cart.map(i => ({ id: i.key, name: i.name, qty: i.quantity, price: i.price, size: i.size })),
+        totalVND: total,
+        status: 'pending',
+        channel: 'Website Trạm Hạt',
+        createdAt: new Date().toISOString()
+      };
+
+      // Real Martech Lead Scoring
+      let leadScore = 40;
+      if (total >= 100000) leadScore += 30;
+      else if (total >= 50000) leadScore += 20;
+      if (cart.length >= 2) leadScore += 15;
+      if (phone.length >= 10) leadScore += 15;
+
+      const leadData = {
+        id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+        name: name,
+        phone: phone,
+        address: address,
+        notes: notes,
+        channel: 'Website',
+        productInterest: cart.map(i => i.name).join(', '),
+        score: leadScore,
+        stage: leadScore >= 70 ? 'Hot' : 'Warm',
+        orderId: orderId,
+        orderTotal: total,
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to localStorage so admin.html immediately sees the real lead and order
+      try {
+        let existingLeads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
+        existingLeads.unshift(leadData);
+        localStorage.setItem('tramhat_crm_leads', JSON.stringify(existingLeads));
+
+        let existingOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
+        existingOrders.unshift(orderData);
+        localStorage.setItem('tramhat_orders_list', JSON.stringify(existingOrders));
+      } catch(e) {}
+
+      // Send to Backend API if active
+      if (window.TramHatAPI) {
+        window.TramHatAPI.createOrder(orderData);
+        window.TramHatAPI.submitLead(leadData);
+      }
+
+      // Close modal & clear cart
+      const modalEl = document.getElementById('checkoutModal');
+      if (modalEl) {
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+      }
+      cart = [];
+      updateCartUI();
+
+      alert(`ĐẶT HÀNG THÀNH CÔNG!\n\n- Mã đơn hàng: #${orderId}\n- Khách hàng: ${name} (${phone})\n- Địa chỉ: ${address}\n- Tổng thanh toán: ${total.toLocaleString('vi-VN')}đ\n\nNhân viên xưởng nấu Trạm Hạt sẽ liên hệ xác nhận giờ giao tươi lạnh lúc 08:30 sáng mai!`);
+      return;
+    }
+    function _unused_old_confirmCartCheckout() {
       if (cart.length === 0) {
         alert("Giỏ hàng của bạn đang trống!");
         return;
@@ -7385,7 +7446,7 @@
         {
           id: 'TH-20261021-42',
           date: '21/10/2026 - Giao 07:25 sáng',
-          items: '2x Hạnh Nhân Cacao Đắk Lắk (500ml)',
+          items: '2x Sữa Hạnh Nhân Cacao (500ml)',
           total: '102.000đ',
           status: 'Đã Giao Lạnh Thành Công',
           statusClass: 'text-success'
@@ -7535,7 +7596,7 @@
     function sendChatAnswer(question) {
       const box = document.getElementById('chatMessagesBox');
 
-      let reply = "Nhân viên tư vấn sẽ hỗ trợ bạn ngay qua hotline hoặc Zalo 0901.888.777.";
+      let reply = "Nhân viên tư vấn sẽ hỗ trợ bạn ngay qua hotline hoặc Facebook Trạm Hạt.";
       if (question.includes('bao lâu')) {
         reply = "Sữa tươi Trạm Hạt nấu thủ công không chất bảo quản, giữ lạnh liên tục ở 2°C - 4°C và ngon nhất trong vòng 48 giờ kể từ lúc mở nắp bạn nhé!";
       } else if (question.includes('gói tuần')) {
@@ -7657,7 +7718,7 @@
             readTime: "4 phút đọc",
             date: "24 Tháng 10, 2026",
             author: "Ban Dinh Dưỡng & Thực Dưỡng Trạm Hạt",
-            img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1200&q=85",
+            img: "images/prod_real_dieu.jpg",
             summary: "Hạt điều Bù Gia Mập chứa tỷ lệ acid béo không bão hòa đơn (MUFA) vượt trội, đặc biệt là acid oleic — dưỡng chất vàng bảo vệ hệ tim mạch và ổn định đường huyết.",
             content: [
               { type: "p", text: "Nhiều người thường e ngại chất béo trong các loại hạt dinh dưỡng. Tuy nhiên, theo các nghiên cứu từ Hiệp hội Tim Mạch Hoa Kỳ (AHA), chất béo trong hạt điều hữu cơ phần lớn là acid oleic — loại acid béo không bão hòa đơn (MUFA) tương tự như trong dầu ô liu nguyên chất." },
@@ -7674,7 +7735,7 @@
             readTime: "3 phút đọc",
             date: "22 Tháng 10, 2026",
             author: "Ban Đời Sống & Sức Khỏe Trạm Hạt",
-            img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85",
+            img: "images/campaign_halloween_6vi.jpg",
             summary: "Lựa chọn khung giờ uống sữa hạt đúng cách giúp não bộ duy trì trạng thái tỉnh táo, tăng cường dẫn truyền thần kinh mà không gây quá tải cho hệ tiêu hóa.",
             content: [
               { type: "p", text: "Dân văn phòng và người làm việc trí óc thường xuyên đối mặt với hai thời điểm suy giảm năng lượng rõ rệt: 08:30 sáng khi vừa vào bàn làm việc và 15:30 chiều lúc lượng đường trong máu chạm đáy." },
@@ -7690,7 +7751,7 @@
             readTime: "5 phút đọc",
             date: "20 Tháng 10, 2026",
             author: "Ban Kỹ Thuật Chế Biến Tươi Trạm Hạt",
-            img: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=85",
+            img: "images/campaign_2010_dieu_occho.jpg",
             summary: "Nhiệt độ sinh ra trong quá trình xay ép công nghiệp là kẻ thù số một của vi chất tự nhiên. Hiểu về ranh giới 45°C để chọn đúng sữa hạt tươi nguyên bản.",
             content: [
               { type: "p", text: "Hầu hết các dòng sữa hạt đóng hộp tiệt trùng UHT trên thị trường đều trải qua xử lý nhiệt 135°C - 140°C trong vài giây. Ở mức nhiệt này, toàn bộ enzyme sống có lợi cho tiêu hóa đã hoàn toàn bị phá hủy." },
@@ -7757,12 +7818,12 @@
 
     // 18. GALLERY LIGHTBOX
     const galleryImages = [
-      "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=85",
-      "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=1200&q=85",
+      "images/prod_real_dieu.jpg",
+      "images/prod_real_occho.jpg",
+      "images/prod_real_cacao.jpg",
+      "images/prod_real_macca.jpg",
+      "images/prod_real_sen.jpg",
+      "images/prod_real_daudo.jpg",
       "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=1200&q=85",
       "https://images.unsplash.com/photo-1510771932-4e7ff5f9069e?auto=format&fit=crop&w=1200&q=85"
     ];
@@ -8442,7 +8503,7 @@
 
       let html = '';
       topProducts.forEach(p => {
-        const priceFmt = (p.priceVND || 32000).toLocaleString('vi-VN') + 'đ';
+        const priceFmt = (p.priceVND || 35000).toLocaleString('vi-VN') + 'đ';
         const kcal = p.nutrition ? (p.nutrition.kcal + ' Kcal') : '185 Kcal';
         const protein = p.nutrition ? p.nutrition.protein : '7.5g Đạm';
         const tag = (p.tags && p.tags[2]) ? p.tags[2] : 'Giàu Magie';

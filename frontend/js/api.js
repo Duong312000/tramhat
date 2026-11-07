@@ -315,8 +315,8 @@
       }
     }, 15000);
 
-    // 3.4 Bắt sự kiện khi click vào nút Chat Messenger hoặc Zalo
-    document.querySelectorAll('a[href*="m.me"], a[href*="zalo.me"]').forEach(el => {
+    // 3.4 Bắt sự kiện khi click vào nút Chat Messenger
+    document.querySelectorAll('a[href*="m.me"]').forEach(el => {
       el.addEventListener('click', () => {
         if (isAdminActive()) return;
         TramHatAPI.sendEvent('inbox_click', { metadata: { href: el.href } });
