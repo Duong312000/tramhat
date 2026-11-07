@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trạm Hạt &mdash; Bảng Điều Hành Chuyển Đổi & Vận Hành Bán Hàng</title>
+  <link rel="icon" type="image/png" href="images/logo_thumb.png">
+
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- CHUẨN FONT NHẬN DIỆN THƯƠNG HIỆU: NUNITO + BE VIETNAM PRO -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* ==========================================================================
+       BẢNG MÀU ĐỘ BÃO HÒA THẤP (LOW-SATURATION & REFINED OPERATIONS PALETTE)
+       ========================================================================== */
+    :root {
+      --bg-page: #F8F9FA;
+      --bg-card: #FFFFFF;
+      --border-color: #E2E8F0;
+      
+      --text-main: #1E293B;
+      --text-sub: #64748B;
+      --text-muted: #94A3B8;
+
+      /* Muted Low-Saturation Accents */
+      --color-slate: #4A6572;
+      --color-slate-bg: #EDF2F7;
+      
+      --color-sage: #4E7358;
+      --color-sage-bg: #EEF4F0;
+      
+      --color-terracotta: #BC6C5C;
+      --color-terracotta-bg: #FAF0EE;
+
+      --font-title: 'Nunito', -apple-system, sans-serif;
+      --font-body: 'Be Vietnam Pro', -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-body);
+    }
+
+    h1, h2, h3, h4, h5, h6, .brand-name, .stat-value {
+      font-family: var(--font-title);
+      font-weight: 800;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 13.5px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Minimal Clean Sidebar */
+    .app-sidebar {
+      width: 230px;
+      background: #FFFFFF;
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand-box {
+      padding: 20px 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .brand-name img {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .nav-group {
+      padding: 12px 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 13px;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn:hover {
+      background: var(--color-slate-bg);
+      color: var(--text-main);
+    }
+
+    .nav-btn.active {
+      background: var(--color-slate);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Main Viewport */
+    .app-main {
+      margin-left: 230px;
+      padding: 24px 32px;
+      max-width: 1340px;
+    }
+
+    /* Clean Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .server-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      background: var(--color-sage-bg);
+      color: var(--color-sage);
+      border: 1px solid rgba(78, 115, 88, 0.2);
+    }
+
+    .server-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-sage);
+    }
+
+    /* Cards */
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .app-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Stat Box (Low Saturation) */
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      height: 100%;
+    }
+
+    .stat-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 4px 0 2px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-note {
+      font-size: 11.5px;
+      color: var(--text-sub);
+    }
+
+    /* Low-Saturation Badges */
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .tag-mql { background: var(--color-slate-bg); color: var(--color-slate); }
+    .tag-sql { background: #FEF6EE; color: #B25E29; }
+    .tag-customer { background: var(--color-sage-bg); color: var(--color-sage); }
+    .tag-lost { background: #F1F5F9; color: #64748B; }
+
+    /* Tables */
+    .app-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .app-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border-color);
+      background: #FAFBFD;
+    }
+
+    .app-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    .app-table tbody tr:hover {
+      background-color: #F8FAFC;
+    }
+
+    .app-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Buttons */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: #FFFFFF;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--color-slate-bg);
+      color: var(--color-slate);
+    }
+
+    .btn-action-primary {
+      background: var(--color-slate);
+      color: #FFFFFF;
+      border-color: var(--color-slate);
+    }
+
+    .btn-action-primary:hover {
+      background: #394E58;
+      color: #FFFFFF;
+    }
+
+    .btn-action-success {
+      background: var(--color-sage);
+      color: #FFFFFF;
+      border-color: var(--color-sage);
+    }
+
+    .btn-action-success:hover {
+      background: #3D5A45;
+      color: #FFFFFF;
+    }
+
+    /* Drawer Styles */
+    .offcanvas-customer {
+      width: 480px !important;
+      border-left: 1px solid var(--border-color);
+    }
+
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px dashed #E2E8F0;
+      font-size: 12px;
+    }
+
+    .breakdown-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Fresh Batch Progress */
+    .shelf-progress-bg {
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .shelf-progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Toast Notification */
+    .live-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="app-sidebar">
+    <div>
+      <div class="brand-box">
+        <div class="brand-name">
+          <img src="images/logo_thumb.png" alt="Logo" onerror="this.src='https://placehold.co/24x24/4A6572/FFFFFF?text=TH'">
+          <span>Trạm Hạt</span>
+        </div>
+      </div>
+
+      <nav class="nav-group">
+        <div class="nav-btn active" onclick="showTab('dashboard')">
+          <i class="bi bi-funnel"></i> Tổng Quan Phễu
+        </div>
+        <div class="nav-btn" onclick="showTab('leads')">
+          <i class="bi bi-person-lines-fill"></i> Hàng Đợi Leads & CRM
+        </div>
+        <div class="nav-btn" onclick="showTab('kitchen')">
+          <i class="bi bi-clock-history"></i> Bếp & Mẻ Nấu 48h
+        </div>
+      </nav>
+    </div>
+
+    <div style="padding: 14px; border-top: 1px solid var(--border-color);">
+      <a href="index.html" target="_blank" class="btn-action w-100 justify-content-center">
+        <i class="bi bi-arrow-up-right"></i> Xem cửa hàng
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="app-main">
+
+    <!-- HEADER (CLEAN & OPERATIONAL) -->
+    <header class="app-header">
+      <div>
+        <h5 class="fw-bold mb-0" style="letter-spacing: -0.02em;">Bảng Điều Hành Chuyển Đổi & Vận Hành Bán Hàng</h5>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <div class="server-status-pill" id="live-server-indicator">
+          <div class="server-status-dot"></div>
+          <span id="server-status-text">Backend :5000 &bull; MongoDB Live</span>
+        </div>
+        <button class="btn-action" onclick="fetchLiveBackendData(true)">
+          <i class="bi bi-arrow-clockwise"></i> Cập nhật dữ liệu
+        </button>
+      </div>
+    </header>
+
+    <!-- SECTION 1: DASHBOARD & FUNNEL OVERVIEW -->
+    <div id="tab-dashboard">
+      
+      <!-- 4 KPI BOXES (COMPUTED DYNAMICALLY FROM DATABASE) -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">MQL (Tiếp thị đánh giá)</div>
+            <div class="stat-value" id="val-mql">--</div>
+            <div class="stat-note" id="note-mql">Quan tâm sâu (&gt;45s/Quiz)</div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">SQL (Bán hàng đủ điều kiện)</div>
+            <div class="stat-value" id="val-sql">--</div>
+            <div class="stat-note" style="color: var(--color-slate);" id="note-sql">CR(Lead): <strong id="val-cr-lead">--%</strong></div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Khách mới (Customer Won)</div>
+            <div class="stat-value" id="val-customer" style="color: var(--color-sage);">--</div>
+            <div class="stat-note" style="color: var(--color-sage);" id="note-sales">CR(Sales): <strong id="val-cr-sales">--%</strong></div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Kinh tế đơn vị LTV / CAC</div>
+            <div class="stat-value" style="color: var(--color-terracotta);">10,4 : 1</div>
+            <div class="stat-note">CAC: 44.444đ &bull; LTV: 462.000đ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUNNEL VISUALIZATION (DYNAMIC CHART.JS) -->
+      <div class="app-card mb-4">
+        <div class="app-card-title">
+          <span>Biểu đồ phễu chuyển đổi 5 tầng (Digital Sales Funnel)</span>
+          <span class="text-muted small" style="font-weight: normal;" id="chart-data-source">Đồng bộ từ Database</span>
+        </div>
+        <div style="height: 220px;">
+          <canvas id="liveFunnelChart"></canvas>
+        </div>
+      </div>
+
+      <!-- HOT LEADS TABLE -->
+      <div class="app-card">
+        <div class="app-card-title">
+          <span>Hàng đợi khách hàng tiềm năng cần chốt đơn (SQL Score &ge; 60)</span>
+          <button class="btn-action" onclick="showTab('leads')">Xem toàn bộ CRM &rarr;</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="app-table">
+            <thead>
+              <tr>
+                <th>Mã Lead</th>
+                <th>Khách hàng</th>
+                <th>SĐT</th>
+                <th>Khu vực</th>
+                <th>Kênh tiếp cận</th>
+                <th>Vị sữa quan tâm</th>
+                <th>Điểm AI</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="hot-leads-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: LIVE CRM PIPELINE (HÀNG ĐỢI LEADS & THAO TÁC NGHIỆP VỤ) -->
+    <div id="tab-leads" style="display: none;">
+      <div class="app-card">
+        <div class="app-card-title">
+          <div class="d-flex align-items-center gap-2">
+            <span>Toàn bộ dữ liệu khách hàng tiềm năng thu thập đa kênh</span>
+            <span class="tag-pill tag-mql" id="lead-count-badge">-- Leads</span>
+          </div>
+
+          <!-- Lead Filters -->
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn-action active-filter" onclick="filterLeads('ALL', this)">Tất cả</button>
+            <button class="btn-action" onclick="filterLeads('SQL', this)">Cần chốt gấp (SQL &ge; 60)</button>
+            <button class="btn-action" onclick="filterLeads('MQL', this)">MQL (30-59)</button>
+            <button class="btn-action" onclick="filterLeads('CUSTOMER', this)">Đã chốt đơn</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="app-table">
+            <thead>
+              <tr>
+                <th>Mã Lead</th>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Khu vực / Quận</th>
+                <th>Kênh nguồn</th>
+                <th>Nội dung hỏi / Hương vị</th>
+                <th>Điểm AI Model</th>
+                <th>Tầng phễu</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="all-leads-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: KITCHEN 48H BATCH OPERATIONS -->
+    <div id="tab-kitchen" style="display: none;">
+      
+      <!-- Kitchen Stats Summary -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Tổng mẻ nấu tươi</div>
+            <div class="stat-value" id="kitch-total-batches">4</div>
+            <div class="stat-note">Nấu mới theo ngày</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Tồn kho mát khả dụng</div>
+            <div class="stat-value" id="kitch-available-bottles" style="color: var(--color-sage);">42 chai</div>
+            <div class="stat-note">Sẵn sàng xuất giao ngay</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Nhiệt độ kho mát tiêu chuẩn</div>
+            <div class="stat-value" style="color: var(--color-slate);">3.3°C</div>
+            <div class="stat-note">Dải an toàn quy chuẩn: 2.0 &ndash; 5.0°C</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-box">
+            <div class="stat-label">Cảnh báo cận hạn (&lt; 12h)</div>
+            <div class="stat-value" id="kitch-warning-count" style="color: var(--color-terracotta);">0</div>
+            <div class="stat-note">Cần kích hoạt Flash Sale xuất kho</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-card-title">
+          <span>Danh sách mẻ nấu tươi & Tiến độ đếm lùi hạn bảo quản mát 48 giờ</span>
+          <button class="btn-action btn-action-primary" data-bs-toggle="modal" data-bs-target="#newBatchModal">
+            <i class="bi bi-plus-lg"></i> Ghi nhận mẻ nấu mới
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="app-table">
+            <thead>
+              <tr>
+                <th>Mã mẻ nấu</th>
+                <th>Dòng sản phẩm</th>
+                <th>Giờ nấu xong</th>
+                <th>Hạn dùng còn lại (Chuẩn 48h)</th>
+                <th>Đã nấu</th>
+                <th>Đã xuất</th>
+                <th>Tồn kho mát</th>
+                <th>Trạng thái kho</th>
+                <th>Thao tác xuất kho</th>
+              </tr>
+            </thead>
+            <tbody id="kitchen-batches-tbody">
+              <!-- Rendered dynamically from /api/kitchen/batches -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- DRAWER: HỒ SƠ KHÁCH HÀNG 360 & THAO TÁC NGHIỆP VỤ THỰC TẾ -->
+  <div class="offcanvas offcanvas-end offcanvas-customer" tabindex="-1" id="customerDrawer">
+    <div class="offcanvas-header border-bottom">
+      <div>
+        <h6 class="offcanvas-title fw-bold mb-0" id="drawerCustomerName">Hồ Sơ Khách Hàng 360°</h6>
+        <span class="text-sub small" id="drawerLeadId">#LEAD-0000</span>
+      </div>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <!-- Contact Info -->
+      <div class="mb-4">
+        <div class="text-sub small fw-semibold text-uppercase mb-2">Thông tin định danh</div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-sub">Số điện thoại:</span>
+          <strong id="drawerPhone">0900.000.000</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-sub">Kênh tiếp cận:</span>
+          <span class="tag-pill tag-mql" id="drawerChannel">TikTok Inbox</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-sub">Khu vực / Quận:</span>
+          <strong id="drawerDistrict">Quận 1, TP.HCM</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-sub">Nhu cầu / Sản phẩm:</span>
+          <span id="drawerProduct" class="fw-semibold">Sữa Điều Rang Mộc</span>
+        </div>
+      </div>
+
+      <!-- AI Lead Scoring Breakdown Card -->
+      <div class="p-3 border rounded mb-4" style="background: #F8FAFC;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="fw-bold" style="color: var(--color-slate);">
+            <i class="bi bi-cpu me-1"></i> AI Lead Scoring Model
+          </span>
+          <span class="stat-value mb-0" style="font-size: 20px;" id="drawerScore">85/100</span>
+        </div>
+        <div class="text-sub small mb-3" id="drawerStageDesc">Phân tầng: <strong>SQL (Sales Qualified Lead)</strong></div>
+
+        <div class="border-top pt-2">
+          <div class="text-sub small fw-semibold mb-2">Phân rã trọng số đa biến:</div>
+          <div class="breakdown-item">
+            <span>Thời gian dừng trang &ge; 45s:</span>
+            <strong id="bdTime">+10 điểm</strong>
+          </div>
+          <div class="breakdown-item">
+            <span>Hoàn thành Quiz trắc nghiệm khẩu vị:</span>
+            <strong id="bdQuiz">+25 điểm</strong>
+          </div>
+          <div class="breakdown-item">
+            <span>Định vị giao hàng nội thành TP.HCM:</span>
+            <strong id="bdGeo">+15 điểm</strong>
+          </div>
+          <div class="breakdown-item">
+            <span>Cung cấp số điện thoại liên lạc:</span>
+            <strong id="bdPhone">+15 điểm</strong>
+          </div>
+          <div class="breakdown-item">
+            <span>Ý định giao dịch (Thêm giỏ / Hỏi ship):</span>
+            <strong id="bdIntent">+15 điểm</strong>
+          </div>
+          <div class="breakdown-item">
+            <span>Suy giảm thời gian (Time-decay):</span>
+            <strong id="bdDecay" class="text-danger">-0 điểm</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Recommended Next Best Action -->
+      <div class="p-3 border rounded mb-4" style="background: var(--color-sage-bg); border-color: rgba(78, 115, 88, 0.2) !important;">
+        <div class="fw-semibold mb-1" style="color: var(--color-sage);">
+          <i class="bi bi-lightbulb me-1"></i> Kịch bản chốt đơn đề xuất (AI Next Best Action):
+        </div>
+        <p class="mb-0 small" style="color: var(--text-main);" id="drawerSuggestedAction">
+          Kích hoạt mã Freeship đơn đầu 20.000đ + Gửi link thanh toán VietQR Pro cho khách hàng.
+        </p>
+      </div>
+
+      <!-- Real Operational Action Buttons -->
+      <div class="mb-4">
+        <div class="text-sub small fw-semibold text-uppercase mb-2">Thao tác nghiệp vụ thực tế</div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-action-success justify-content-center py-2" onclick="performLeadAction('Converted_Order', 'Chốt đơn thành công')">
+            <i class="bi bi-check2-circle me-1"></i> Xác Nhận Chốt Đơn (Converted Won)
+          </button>
+          <button class="btn btn-action justify-content-center py-2" onclick="performLeadAction('Qualified', 'Đã gửi mã Freeship 20K & Menu VietQR')">
+            <i class="bi bi-ticket-perforated me-1"></i> Gửi Mã Freeship 20.000đ & VietQR
+          </button>
+          <button class="btn btn-action justify-content-center py-2 text-danger" onclick="performLeadAction('Lost', 'Khách ngoài khu vực hoặc chưa chốt')">
+            <i class="bi bi-x-circle me-1"></i> Đánh Dấu Thất Bại (Lost)
+          </button>
+        </div>
+      </div>
+
+      <!-- Audit History Log -->
+      <div>
+        <div class="text-sub small fw-semibold text-uppercase mb-2">Lịch sử tương tác & chăm sóc (Audit Log)</div>
+        <div id="drawerHistoryList" class="small">
+          <!-- Dynamically populated from lead.history -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: GHI NHẬN MẺ NẤU MỚI -->
+  <div class="modal fade" id="newBatchModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title fw-bold">Ghi Nhận Mẻ Nấu Tươi Mới (Chuẩn 48h)</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Dòng sản phẩm nấu:</label>
+            <select class="form-select form-select-sm" id="batchProdName">
+              <option value="Sữa Hạt Điều Rang Mộc">Sữa Hạt Điều Rang Mộc (29.000đ)</option>
+              <option value="Sữa Hạt Điều Sen Tuyết">Sữa Hạt Điều Sen Tuyết (35.000đ)</option>
+              <option value="Sữa Macca Yến Mạch Tươi">Sữa Macca Yến Mạch Tươi (35.000đ)</option>
+              <option value="Sữa Hạnh Nhân Cacao Đắk Lắk">Sữa Hạnh Nhân Cacao Đắk Lắk (39.000đ)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Số lượng chai đóng mẻ (chai 250ml):</label>
+            <input type="number" class="form-control form-control-sm" id="batchQuantity" value="25">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Trưởng ca nấu:</label>
+            <input type="text" class="form-control form-control-sm" id="batchStaff" value="Trần Văn Bếp (Trưởng ca)">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-action-primary" onclick="submitNewBatch()">Ghi nhận mẻ nấu vào kho</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="liveToast" class="live-toast">
+    <i class="bi bi-info-circle me-1"></i> <span id="toastMsg">Thao tác hoàn tất!</span>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const API_HOST = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:5000/api'
+      : '/api';
+    let chartObj = null;
+    let globalLeads = [];
+    let currentActiveLead = null;
+    let customerDrawerInstance = null;
+
+    // Toast Alert Helper
+    function showToast(msg) {
+      const t = document.getElementById('liveToast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2800);
+    }
+
+    // 1. TẢI DỮ LIỆU THỜI GIAN THỰC TỪ MONGODB & API
+    async function fetchLiveBackendData(showNotice = false) {
+      try {
+        // A. Lấy KPI Phễu Thời Gian Thực
+        const kpiRes = await fetch(`${API_HOST}/analytics/realtime-kpi`).then(r => r.json());
+        if (kpiRes && kpiRes.kpis) {
+          renderKPIs(kpiRes.kpis);
+        }
+
+        // B. Lấy Danh Sách Leads Đầy Đủ
+        const leadsRes = await fetch(`${API_HOST}/leads`).then(r => r.json());
+        if (Array.isArray(leadsRes)) {
+          globalLeads = leadsRes;
+          renderLeadsTable(globalLeads);
+          renderHotLeadsTable(globalLeads);
+          document.getElementById('lead-count-badge').innerText = `${leadsRes.length} Leads trong DB`;
+        }
+
+        // C. Lấy Danh Sách Mẻ Nấu 48h
+        await fetchKitchenBatches();
+
+        document.getElementById('server-status-text').innerText = 'Backend :5000 • MongoDB Live';
+        if (showNotice) showToast('Đã đồng bộ toàn bộ dữ liệu từ MongoDB!');
+      } catch (err) {
+        console.warn('Backend server chưa phản hồi, giữ dữ liệu hiện tại.', err);
+        document.getElementById('server-status-text').innerText = 'Backend Offline';
+      }
+    }
+
+    function renderKPIs(k) {
+      document.getElementById('val-mql').innerText = k.mql;
+      document.getElementById('val-sql').innerText = k.sql;
+      document.getElementById('val-customer').innerText = k.customers;
+      document.getElementById('val-cr-lead').innerText = `${k.crLead}%`;
+      document.getElementById('val-cr-sales').innerText = `${k.crSales}%`;
+
+      // Render biểu đồ 5 tầng phễu
+      const reach = (k.totalEvents || 320) * 8;
+      const visitors = k.totalEvents || 320;
+      const mql = k.mql || 6;
+      const sql = k.sql || 3;
+      const cust = k.customers || 2;
+
+      renderFunnelChart([reach, visitors, mql * 50, sql * 40, cust * 20]);
+    }
+
+    function renderFunnelChart(dataArr) {
+      const ctx = document.getElementById('liveFunnelChart');
+      if (!ctx) return;
+      if (chartObj) chartObj.destroy();
+
+      chartObj = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['1. Tiếp cận (Reach)', '2. Khách ghé Web', '3. MQL (Xem calo >45s)', '4. SQL (SĐT & Địa chỉ Q1,3)', '5. Customer (Closed-Won)'],
+          datasets: [{
+            data: dataArr,
+            backgroundColor: ['#CBD5E1', '#94A3B8', '#4A6572', '#BC6C5C', '#4E7358'],
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: '#F1F5F9' }, ticks: { font: { size: 11 }, color: '#64748B' } },
+            x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' }, color: '#1E293B' } }
+          }
+        }
+      });
+    }
+
+    // 2. RENDER BẢNG HOT LEADS
+    function renderHotLeadsTable(leads) {
+      const tbody = document.getElementById('hot-leads-tbody');
+      tbody.innerHTML = '';
+      
+      const hotList = leads.filter(l => (l.aiScore || 0) >= 60 || l.funnelStage === 'SQL');
+      if (hotList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center text-sub py-3">Không có Lead nào cần chốt gấp</td></tr>';
+        return;
+      }
+
+      hotList.slice(0, 5).forEach(l => {
+        const score = l.aiScore || 70;
+        const stageTag = l.status === 'Converted_Order' ? 'tag-customer' : 'tag-sql';
+        const stageLabel = l.status === 'Converted_Order' ? 'Đã Chốt' : 'SQL Cần Chốt';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><code>${l.leadId}</code></td>
+            <td><strong>${l.customerName}</strong></td>
+            <td><code>${l.phone || 'Chưa có'}</code></td>
+            <td>${l.district || 'TP.HCM'}</td>
+            <td><span class="tag-pill tag-mql">${l.channel}</span></td>
+            <td>${l.interestedProduct || l.inquiryContent}</td>
+            <td><strong style="color: var(--color-terracotta);">${score} / 100</strong></td>
+            <td><span class="tag-pill ${stageTag}">${stageLabel}</span></td>
+            <td>
+              <button class="btn-action" onclick="openCustomerDrawer('${l.leadId}')">
+                <i class="bi bi-eye"></i> Xem Hồ Sơ 360°
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // 3. RENDER TOÀN BỘ CRM LEADS
+    function renderLeadsTable(leads) {
+      const tbody = document.getElementById('all-leads-tbody');
+      tbody.innerHTML = '';
+
+      if (leads.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" class="text-center text-sub py-3">Chưa có dữ liệu Leads</td></tr>';
+        return;
+      }
+
+      leads.forEach(l => {
+        const score = l.aiScore || 50;
+        const stage = l.funnelStage || (score >= 60 ? 'SQL' : 'MQL');
+        const tagClass = stage === 'Customer' ? 'tag-customer' : (stage === 'SQL' ? 'tag-sql' : 'tag-mql');
+
+        tbody.innerHTML += `
+          <tr>
+            <td><code>${l.leadId}</code></td>
+            <td><strong>${l.customerName}</strong></td>
+            <td><code>${l.phone || 'Chưa có'}</code></td>
+            <td>${l.district || 'Nội thành TP.HCM'}</td>
+            <td><span class="tag-pill tag-mql">${l.channel}</span></td>
+            <td>${l.interestedProduct || l.inquiryContent}</td>
+            <td><strong>${score}</strong></td>
+            <td><span class="tag-pill ${tagClass}">${stage}</span></td>
+            <td><span class="small text-sub">${l.status}</span></td>
+            <td>
+              <button class="btn-action" onclick="openCustomerDrawer('${l.leadId}')">
+                Hồ Sơ 360°
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // 4. LỌC LEADS
+    function filterLeads(filterType, btnEl) {
+      document.querySelectorAll('.app-card-title .btn-action').forEach(b => b.classList.remove('active-filter'));
+      if (btnEl) btnEl.classList.add('active-filter');
+
+      if (filterType === 'ALL') {
+        renderLeadsTable(globalLeads);
+      } else if (filterType === 'SQL') {
+        renderLeadsTable(globalLeads.filter(l => (l.aiScore || 0) >= 60));
+      } else if (filterType === 'MQL') {
+        renderLeadsTable(globalLeads.filter(l => (l.aiScore || 0) >= 30 && (l.aiScore || 0) < 60));
+      } else if (filterType === 'CUSTOMER') {
+        renderLeadsTable(globalLeads.filter(l => l.status === 'Converted_Order'));
+      }
+    }
+
+    // 5. MỞ HỒ SƠ 360° CỦA LEAD
+    function openCustomerDrawer(leadId) {
+      const lead = globalLeads.find(l => l.leadId === leadId);
+      if (!lead) return;
+      currentActiveLead = lead;
+
+      document.getElementById('drawerLeadId').innerText = lead.leadId;
+      document.getElementById('drawerCustomerName').innerText = lead.customerName;
+      document.getElementById('drawerPhone').innerText = lead.phone || 'Chưa cung cấp';
+      document.getElementById('drawerChannel').innerText = lead.channel || 'Website';
+      document.getElementById('drawerDistrict').innerText = lead.district || lead.address || 'Quận 1, TP.HCM';
+      document.getElementById('drawerProduct').innerText = lead.interestedProduct || lead.inquiryContent;
+
+      const score = lead.aiScore || 65;
+      document.getElementById('drawerScore').innerText = `${score} / 100`;
+      document.getElementById('drawerStageDesc').innerHTML = `Phân tầng: <strong>${lead.funnelStage || 'SQL'}</strong>`;
+
+      // Breakdown
+      const bd = lead.scoreBreakdown || { timeScore: 10, quizScore: 25, geoScore: 15, intentScore: 15, decayPenalty: 0 };
+      document.getElementById('bdTime').innerText = `+${bd.timeScore || 10} điểm`;
+      document.getElementById('bdQuiz').innerText = `+${bd.quizScore || 25} điểm`;
+      document.getElementById('bdGeo').innerText = `+${bd.geoScore || 15} điểm`;
+      document.getElementById('bdPhone').innerText = `+${lead.phone ? 15 : 0} điểm`;
+      document.getElementById('bdIntent').innerText = `+${bd.intentScore || 15} điểm`;
+      document.getElementById('bdDecay').innerText = `-${bd.decayPenalty || 0} điểm`;
+
+      // Suggested Action
+      document.getElementById('drawerSuggestedAction').innerText = lead.suggestedAction || 'Kích hoạt mã Freeship 20K và liên hệ chốt combo.';
+
+      // History
+      const histDiv = document.getElementById('drawerHistoryList');
+      histDiv.innerHTML = '';
+      if (Array.isArray(lead.history) && lead.history.length > 0) {
+        lead.history.forEach(h => {
+          histDiv.innerHTML += `
+            <div class="mb-2 p-2 border rounded" style="background: #FAFAFA;">
+              <div class="d-flex justify-content-between text-sub mb-1" style="font-size: 11px;">
+                <strong>${h.action}</strong>
+                <span>${new Date(h.timestamp).toLocaleTimeString('vi-VN')} ${new Date(h.timestamp).toLocaleDateString('vi-VN')}</span>
+              </div>
+              <div>${h.note}</div>
+            </div>
+          `;
+        });
+      } else {
+        histDiv.innerHTML = '<div class="text-sub">Chưa có lịch sử thao tác.</div>';
+      }
+
+      if (!customerDrawerInstance) {
+        customerDrawerInstance = new bootstrap.Offcanvas(document.getElementById('customerDrawer'));
+      }
+      customerDrawerInstance.show();
+    }
+
+    // 6. THỰC HIỆN THAO TÁC NGHIỆP VỤ LÊN DATABASE
+    async function performLeadAction(newStatus, actionNote) {
+      if (!currentActiveLead) return;
+
+      try {
+        const res = await fetch(`${API_HOST}/leads/${encodeURIComponent(currentActiveLead.leadId)}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: newStatus,
+            notes: actionNote,
+            actionType: newStatus === 'Converted_Order' ? 'Chốt đơn (Converted Won)' : 'Chăm sóc khách',
+            operator: 'Quản Trị Viên'
+          })
+        }).then(r => r.json());
+
+        if (res.success) {
+          showToast(`Đã lưu trạng thái: ${actionNote}`);
+          await fetchLiveBackendData(false);
+          openCustomerDrawer(currentActiveLead.leadId); // Refresh drawer
+        }
+      } catch (err) {
+        showToast('Lỗi khi cập nhật trạng thái lên Database!');
+      }
+    }
+
+    // 7. QUẢN LÝ BẾP VÀ MẺ NẤU 48H TỪ DATABASE
+    async function fetchKitchenBatches() {
+      try {
+        const res = await fetch(`${API_HOST}/kitchen/batches`).then(r => r.json());
+        if (res.success && Array.isArray(res.data)) {
+          renderKitchenTable(res.data);
+        }
+      } catch (err) {
+        console.warn('Lỗi tải dữ liệu mẻ nấu', err);
+      }
+    }
+
+    function renderKitchenTable(batches) {
+      const tbody = document.getElementById('kitchen-batches-tbody');
+      tbody.innerHTML = '';
+
+      let totalAvail = 0;
+      let warnCount = 0;
+
+      batches.forEach(b => {
+        totalAvail += b.remainingStock;
+        if (b.isWarning) warnCount++;
+
+        // Hạn dùng màu sắc
+        let barColor = 'var(--color-sage)';
+        if (b.hoursLeft <= 12) barColor = 'var(--color-terracotta)';
+        else if (b.hoursLeft <= 24) barColor = '#D97706';
+
+        const percent = Math.min(100, Math.round((b.hoursLeft / 48) * 100));
+
+        tbody.innerHTML += `
+          <tr>
+            <td><code>${b.batchCode}</code></td>
+            <td><strong>${b.productName}</strong></td>
+            <td>${new Date(b.cookedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })} (${new Date(b.cookedAt).toLocaleDateString('vi-VN')})</td>
+            <td>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong>${b.hoursLeft} giờ</strong>
+                <span class="text-sub small">${percent}% hạn dùng</span>
+              </div>
+              <div class="shelf-progress-bg">
+                <div class="shelf-progress-bar" style="width: ${percent}%; background: ${barColor};"></div>
+              </div>
+            </td>
+            <td>${b.initialQuantity} chai</td>
+            <td>${b.dispatchedQuantity}</td>
+            <td><strong>${b.remainingStock} chai</strong></td>
+            <td>
+              <span class="tag-pill ${b.remainingStock > 0 ? 'tag-customer' : 'tag-lost'}">
+                ${b.remainingStock > 0 ? 'Còn hàng' : 'Đã hết'}
+              </span>
+            </td>
+            <td>
+              <button class="btn-action" style="font-size: 11px;" onclick="dispatchBottle('${b.batchCode}', 1)" ${b.remainingStock <= 0 ? 'disabled' : ''}>
+                Xuất 1 chai
+              </button>
+              <button class="btn-action" style="font-size: 11px;" onclick="dispatchBottle('${b.batchCode}', 3)" ${b.remainingStock < 3 ? 'disabled' : ''}>
+                Xuất Combo (3 chai)
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('kitch-total-batches').innerText = batches.length;
+      document.getElementById('kitch-available-bottles').innerText = `${totalAvail} chai`;
+      document.getElementById('kitch-warning-count').innerText = warnCount;
+    }
+
+    async function dispatchBottle(batchCode, qty) {
+      try {
+        const res = await fetch(`${API_HOST}/kitchen/batches/${encodeURIComponent(batchCode)}/dispatch`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quantity: qty })
+        }).then(r => r.json());
+
+        if (res.success) {
+          showToast(`Đã xuất ${qty} chai từ mẻ ${batchCode}!`);
+          await fetchKitchenBatches();
+        }
+      } catch (e) {
+        showToast('Lỗi xuất kho mẻ nấu!');
+      }
+    }
+
+    async function submitNewBatch() {
+      const prod = document.getElementById('batchProdName').value;
+      const qty = document.getElementById('batchQuantity').value;
+      const staff = document.getElementById('batchStaff').value;
+
+      try {
+        const res = await fetch(`${API_HOST}/kitchen/batches`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productName: prod,
+            initialQuantity: qty,
+            cookStaff: staff
+          })
+        }).then(r => r.json());
+
+        if (res.success) {
+          showToast(`Đã ghi nhận mẻ mới: ${prod} (${qty} chai)!`);
+          bootstrap.Modal.getInstance(document.getElementById('newBatchModal')).hide();
+          await fetchKitchenBatches();
+        }
+      } catch (err) {
+        showToast('Lỗi lưu mẻ nấu mới!');
+      }
+    }
+
+    // Chuyển Tab
+    function showTab(tabId) {
+      ['dashboard', 'leads', 'kitchen'].forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        if (el) el.style.display = (t === tabId) ? 'block' : 'none';
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tabId === 'dashboard') {
+        setTimeout(() => fetchLiveBackendData(false), 50);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchLiveBackendData(false);
+      // Auto refresh every 30s
+      setInterval(() => fetchLiveBackendData(false), 30000);
+    });
+  </script>
+</body>
+
+</html>

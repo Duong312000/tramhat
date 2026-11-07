@@ -2,6 +2,7 @@ const TrackingEvent = require('../models/TrackingEvent');
 const Lead = require('../models/Lead');
 const Order = require('../models/Order');
 const CampaignMetric = require('../models/CampaignMetric');
+const MartechAlgorithmService = require('../services/martechAlgorithms');
 
 /**
  * 1. THU THẬP SỰ KIỆN VI MÔ (MICRO-EVENT TRACKING)
@@ -93,14 +94,40 @@ exports.recordBatchEvents = async (req, res) => {
 };
 
 /**
- * 3. GHI NHẬN LEAD KHÁCH HÀNG TIỀM NĂNG (QUALIFIED LEADS)
+ * 3. GHI NHẬN LEAD KHÁCH HÀNG TIỀM NĂNG (QUALIFIED LEADS) & CHẠY MODEL CHẤM ĐIỂM
  */
 exports.createLead = async (req, res) => {
   try {
-    const { customerName, phone, email, channel, utmSource, interestedProduct, inquiryContent } = req.body;
+    const {
+      customerName,
+      phone,
+      email,
+      channel,
+      utmSource,
+      interestedProduct,
+      inquiryContent,
+      district,
+      address,
+      timeSpentSeconds,
+      completedQuiz,
+      addedToCart,
+      askedShippingFee
+    } = req.body;
     const leadId = `#LEAD-${Date.now().toString().slice(-6)}`;
 
     const hasFullData = Boolean(customerName && phone && (inquiryContent || interestedProduct));
+
+    // CHẠY MODEL CHẤM ĐIỂM LEAD TỰ ĐỘNG THỜI GIAN THỰC
+    const scoringResult = MartechAlgorithmService.calculateLeadScore(
+      { phone, district: district || address || 'Quận 1' },
+      {
+        timeSpentSeconds: Number(timeSpentSeconds) || 50,
+        completedQuiz: Boolean(completedQuiz),
+        addedToCart: Boolean(addedToCart),
+        askedShippingFee: Boolean(askedShippingFee)
+      },
+      0
+    );
 
     const newLead = new Lead({
       leadId,
@@ -111,9 +138,23 @@ exports.createLead = async (req, res) => {
       utmSource: utmSource || 'direct',
       interestedProduct,
       inquiryContent: inquiryContent || 'Khách quan tâm đặt mua sản phẩm sữa hạt',
+      district: district || 'Quận 1',
+      address: address || '',
+      timeSpentSeconds: Number(timeSpentSeconds) || 50,
+      completedQuiz: Boolean(completedQuiz),
       hasFullData,
       isQualified: true,
-      status: 'New'
+      status: scoringResult.stage === 'Customer' ? 'Converted_Order' : (scoringResult.stage === 'SQL' ? 'Qualified' : 'New'),
+      aiScore: scoringResult.score,
+      funnelStage: scoringResult.stage,
+      scoreBreakdown: scoringResult.breakdown,
+      suggestedAction: scoringResult.recommendedAction,
+      history: [{
+        action: 'Tiếp nhận Lead',
+        note: `Model AI chấm: ${scoringResult.score} điểm (${scoringResult.stage}). Khuyến nghị: ${scoringResult.recommendedAction}`,
+        timestamp: new Date(),
+        operator: 'Hệ thống Martech'
+      }]
     });
 
     const saved = await newLead.save();
@@ -125,7 +166,7 @@ exports.createLead = async (req, res) => {
       tab: 'contact',
       productId: interestedProduct,
       utm: { source: utmSource || 'direct', campaign: 'ghe_tram_co_chuyen' },
-      metadata: { leadId }
+      metadata: { leadId, aiScore: scoringResult.score, funnelStage: scoringResult.stage }
     });
 
     res.status(201).json({ success: true, data: saved });
@@ -135,24 +176,33 @@ exports.createLead = async (req, res) => {
 };
 
 /**
- * 4. PHẢN HỒI LEAD VÀ TÍNH TOÁN RESPONSE SLA
+ * 4. PHẢN HỒI LEAD VÀ CẬP NHẬT TRẠNG THÁI NGHIỆP VỤ THỰC TẾ
  */
 exports.respondToLead = async (req, res) => {
   try {
     const { leadId } = req.params;
-    const { status, notes } = req.body;
+    const { status, notes, actionType } = req.body;
 
     const lead = await Lead.findOne({ leadId });
     if (!lead) return res.status(404).json({ success: false, message: 'Không tìm thấy lead' });
 
     const now = new Date();
-    lead.firstRespondedAt = now;
-    lead.status = status || 'Contacted';
+    if (!lead.firstRespondedAt) {
+      lead.firstRespondedAt = now;
+      const diffMinutes = Math.round((now - new Date(lead.receivedAt)) / (1000 * 60));
+      lead.responseTimeMinutes = diffMinutes;
+      lead.respondedWithin4Hours = diffMinutes <= 240;
+    }
+
+    if (status) lead.status = status;
     if (notes) lead.notes = notes;
 
-    const diffMinutes = Math.round((now - new Date(lead.receivedAt)) / (1000 * 60));
-    lead.responseTimeMinutes = diffMinutes;
-    lead.respondedWithin4Hours = diffMinutes <= 240; // 4 giờ làm việc = 240 phút
+    lead.history.push({
+      action: actionType || 'Cập nhật trạng thái',
+      note: notes || `Trạng thái chuyển sang: ${status}`,
+      timestamp: now,
+      operator: req.body.operator || 'Quản trị viên'
+    });
 
     await lead.save();
     res.json({ success: true, data: lead });

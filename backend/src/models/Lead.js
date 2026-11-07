@@ -26,6 +26,32 @@ const leadSchema = new mongoose.Schema({
     enum: ['New', 'Contacted', 'Qualified', 'Converted_Order', 'Lost'],
     default: 'New'
   },
+
+  // THUẬT TOÁN MARTECH & AI SCORING (CHƯƠNG 6)
+  aiScore: { type: Number, default: 50 },
+  funnelStage: {
+    type: String,
+    enum: ['Visitor', 'MQL', 'SQL', 'Customer'],
+    default: 'MQL'
+  },
+  scoreBreakdown: {
+    timeScore: { type: Number, default: 0 },
+    quizScore: { type: Number, default: 0 },
+    geoScore: { type: Number, default: 0 },
+    intentScore: { type: Number, default: 0 },
+    decayPenalty: { type: Number, default: 0 }
+  },
+  suggestedAction: { type: String },
+  district: { type: String },
+  address: { type: String },
+  timeSpentSeconds: { type: Number, default: 0 },
+  completedQuiz: { type: Boolean, default: false },
+  history: [{
+    action: { type: String },
+    timestamp: { type: Date, default: Date.now },
+    note: { type: String },
+    operator: { type: String, default: 'Hệ thống Martech' }
+  }],
   
   // Chỉ số Response SLA (Thời gian phản hồi)
   receivedAt: { type: Date, default: Date.now },

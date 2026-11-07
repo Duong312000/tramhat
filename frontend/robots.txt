@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /images/
+Allow: /data/
+Disallow: /admin.html
+Disallow: /backend/
+
+Sitemap: https://tramhat.vn/sitemap.xml
+
