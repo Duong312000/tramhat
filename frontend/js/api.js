@@ -149,6 +149,14 @@
           body: JSON.stringify(payload),
           keepalive: true
         }).catch(() => {});
+
+        // Đồng bộ lưu trữ cục bộ đảm bảo thu thập đầy đủ dữ liệu thực tế trên Vercel
+        try {
+          const events = JSON.parse(localStorage.getItem('tramhat_client_events') || '[]');
+          events.push({ ...payload, timestamp: new Date().toISOString() });
+          if (events.length > 300) events.shift();
+          localStorage.setItem('tramhat_client_events', JSON.stringify(events));
+        } catch (e) {}
       } catch (e) {}
     },
 
