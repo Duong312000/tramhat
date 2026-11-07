@@ -12,10 +12,10 @@
     "category": "brain",
     "categoryLabel": "Vị Nguyên Bản",
     "categoryGroup": "Trí não & Văn phòng",
-    "priceVND": 32000,
-    "origin": "Bù Gia Mập • Nấu Mới 05:00",
-    "desc": "Hạt điều hữu cơ tuyển chọn loại 1 từ thủ phủ Bù Gia Mập, ngâm hoạt hóa mầm sống 8 giờ rồi nghiền mịn bằng cối đá thủy lực dưới 45°C. Vị béo bùi thanh nhẹ, không đường hóa học, êm ru đường tiêu hóa.",
-    "img": "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=700&q=80",
+    "priceVND": 35000,
+    "origin": "Bình Phước • Nấu Mới 05:00",
+    "desc": "15g hạt điều W320 Bình Phước rang mộc, nghiền cối đá mát lạnh dưới 45°C. Vị béo bùi thanh nhẹ, không đường hóa học, êm bụng tuyệt đối.",
+    "img": "images/prod_real_dieu.jpg",
     "nutrition": {
       "kcal": 185,
       "protein": "7.5g",
@@ -25,20 +25,20 @@
     "tags": [
       "185 Kcal",
       "7.5g Đạm",
-      "Giàu Magie"
+      "Bữa Sáng No Lâu"
     ]
   },
   {
     "id": "walnut",
     "num": "02",
-    "name": "Óc Chó Mè Đen Rang Mộc",
+    "name": "Sữa Óc Chó Mè Đen Rang Mộc",
     "category": "brain",
     "categoryLabel": "Tập Trung Trí Não",
     "categoryGroup": "Trí não & Văn phòng",
     "priceVND": 35000,
     "origin": "Tây Bắc • Nấu Mới 05:00",
-    "desc": "Sự kết hợp tinh túy giữa mè đen rang mộc thơm nồng và hạt óc chó béo ngậy. Hàm lượng Omega-3 và kẽm thực vật dồi dào, hỗ trợ dẫn truyền thần kinh và tăng khả năng tập trung cho người làm việc trí óc.",
-    "img": "https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=700&q=80",
+    "desc": "Mè đen rang mộc thơm nồng kết hợp cùng hạt óc chó béo ngậy và chà là tự nhiên. Dồi dào Omega-3 hỗ trợ dẫn truyền thần kinh và tăng sự tập trung.",
+    "img": "images/prod_real_occho.jpg",
     "nutrition": {
       "kcal": 190,
       "protein": "8.4g",
@@ -48,43 +48,43 @@
     "tags": [
       "190 Kcal",
       "8.4g Đạm",
-      "Omega-3"
+      "Bổ Não Tập Trung"
     ]
   },
   {
     "id": "almond",
     "num": "03",
-    "name": "Hạnh Nhân Cacao Đắk Lắk",
+    "name": "Sữa Hạnh Nhân Cacao Đắk Lắk",
     "category": "energy",
-    "categoryLabel": "Phục Hồi Thể Lực",
+    "categoryLabel": "Tỉnh Táo Xế Chiều",
     "categoryGroup": "Thể lực & Năng lượng",
     "priceVND": 35000,
     "origin": "Đắk Lắk • Nấu Mới 05:00",
-    "desc": "Bột cacao nguyên chất phơi sấy thủ công từ vùng đất đỏ bazan Đắk Lắk kết hợp cùng hạnh nhân nghiền mịn. Giàu flavonoid và đạm thực vật, giúp giải tỏa căng thẳng và hỗ trợ tái tạo cơ bắp sau tập luyện.",
-    "img": "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=700&q=80",
+    "desc": "Bột cacao nguyên chất phơi sấy thủ công và hạnh nhân nghiền mịn. Theobromine tự nhiên đánh thức sự tỉnh táo xế chiều, giảm mệt mỏi hiệu quả.",
+    "img": "images/prod_real_cacao.jpg",
     "nutrition": {
       "kcal": 170,
       "protein": "9.1g",
       "fat": "8.0g",
-      "special": "Flavonoid Chống Oxy Hóa"
+      "special": "Theobromine Tự Nhiên"
     },
     "tags": [
       "170 Kcal",
       "9.1g Đạm",
-      "Chống Oxy Hóa"
+      "Tỉnh Táo Giảm Stress"
     ]
   },
   {
     "id": "macca",
     "num": "04",
-    "name": "Macca Yến Mạch Đắk Lắk",
+    "name": "Sữa Macca Yến Mạch Tươi",
     "category": "energy",
     "categoryLabel": "Năng Lượng Bền Bỉ",
     "categoryGroup": "Thể lực & Năng lượng",
     "priceVND": 35000,
-    "origin": "Cư M'gar • Nấu Mới 05:00",
-    "desc": "Hạt macca Cư M'gar giàu acid béo palmitoleic kết hợp cùng yến mạch nguyên cám giàu beta-glucan. Cung cấp năng lượng giải phóng chậm, giúp no êm bụng suốt 4 tiếng mà không gây cảm giác nặng bụng hay đầy hơi.",
-    "img": "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=700&q=80",
+    "origin": "Tây Nguyên • Nấu Mới 05:00",
+    "desc": "Hạt macca béo bùi kết hợp cùng yến mạch nguyên cám giàu beta-glucan. Cung cấp tinh bột chậm, giúp no êm bụng suốt 4 tiếng mà nhẹ bụng.",
+    "img": "images/prod_real_macca.jpg",
     "nutrition": {
       "kcal": 210,
       "protein": "6.8g",
@@ -94,20 +94,20 @@
     "tags": [
       "210 Kcal",
       "6.8g Đạm",
-      "No Êm 4 Tiếng"
+      "Giữ Dáng Nhẹ Bụng"
     ]
   },
   {
     "id": "lotus",
     "num": "05",
-    "name": "Hạt Sen Tươi Lá Dứa Nếp",
+    "name": "Sữa Hạt Sen Tươi Lá Dứa",
     "category": "wellness",
     "categoryLabel": "Dưỡng Tâm & Ngủ Ngon",
     "categoryGroup": "Dưỡng nhan & Ngủ ngon",
-    "priceVND": 32000,
+    "priceVND": 35000,
     "origin": "Đồng Tháp • Nấu Mới 05:00",
-    "desc": "Hạt sen bách diệp Đồng Tháp ninh mềm xay nhuyễn cùng nước cốt lá dứa nếp thơm lừng thảo mộc. Hương vị thanh tao, dịu nhẹ, giúp thư giãn hệ thần kinh, an thần và hỗ trợ giấc ngủ tự nhiên sâu giấc.",
-    "img": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=700&q=80",
+    "desc": "Hạt sen bách diệp Đồng Tháp ninh mềm xay nhuyễn cùng nước cốt lá dứa nếp thơm thảo mộc. Hương vị thanh tao dịu nhẹ, dưỡng tâm và thư giãn hệ thần kinh.",
+    "img": "images/product_sen_tramhat.jpg",
     "nutrition": {
       "kcal": 160,
       "protein": "5.5g",
@@ -117,20 +117,20 @@
     "tags": [
       "160 Kcal",
       "5.5g Đạm",
-      "Thư Thái Tinh Thần"
+      "Thanh Mát Dưỡng Tâm"
     ]
   },
   {
     "id": "redbean",
     "num": "06",
-    "name": "Đậu Đỏ Kỷ Tử Dưỡng Nhan",
+    "name": "Sữa Đậu Đỏ Kỷ Tử Dưỡng Nhan",
     "category": "wellness",
     "categoryLabel": "Dưỡng Nhan Khí Huyết",
     "categoryGroup": "Dưỡng nhan & Ngủ ngon",
     "priceVND": 35000,
-    "origin": "Đồng Bằng Sông Hồng • Nấu Mới 05:00",
-    "desc": "Đậu đỏ quê giống thuần nông kết hợp kỷ tử đỏ mọng giàu anthocyanin và sắt hữu cơ. Giúp bồi bổ khí huyết, dưỡng sáng làn da từ bên trong và hỗ trợ lưu thông tuần hoàn cho phái đẹp.",
-    "img": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=700&q=80",
+    "origin": "Đồng Bằng • Nấu Mới 05:00",
+    "desc": "Đậu đỏ quê giống thuần nông kết hợp hạt óc chó và kỷ tử đỏ ngọt tự nhiên. Sắc hồng nhạt thanh nhã, bổ khí huyết và hỗ trợ lưu thông tuần hoàn.",
+    "img": "images/prod_real_daudo.jpg",
     "nutrition": {
       "kcal": 175,
       "protein": "7.2g",
@@ -140,7 +140,7 @@
     "tags": [
       "175 Kcal",
       "7.2g Đạm",
-      "Bổ Khí Huyết"
+      "Dưỡng Nhan Sáng Da"
     ]
   }
 ],
