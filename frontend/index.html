@@ -6964,7 +6964,7 @@
         alert('Đã gia hạn phiên làm việc thêm ' + extraMinutes + ' phút thành công!');
       }
 
-      function expireSession(noticeMessage = 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.') {
+      function expireSession(noticeMessage) {
         destroySession();
         if (typeof checkAdminAuth === 'function') checkAdminAuth();
         if (typeof syncUserUI === 'function') syncUserUI();
@@ -6973,11 +6973,7 @@
         if (hash === '#admin' || hash === '#profile') {
           if (typeof switchTab === 'function') switchTab('home');
         }
-
-        alert(noticeMessage);
-        if (typeof openAccountModal === 'function') {
-          openAccountModal(true);
-        }
+        // Khách hàng tiếp tục mua sắm bình thường ở chế độ khách, không làm phiền bằng popup
       }
 
       function destroySession() {
@@ -8273,16 +8269,11 @@
     // ADMIN SEPARATION & AUTHENTICATION LOGIC
     // ==========================================================================
     function checkAdminAuth() {
-      const isAdmin = sessionStorage.getItem('tramhat_admin_auth') === 'true';
+      // Customer storefront remains 100% clean and public
       const topBar = document.getElementById('adminTopBar');
       if (topBar) {
-        if (isAdmin) {
-          topBar.classList.remove('d-none');
-          topBar.classList.add('d-flex');
-        } else {
-          topBar.classList.add('d-none');
-          topBar.classList.remove('d-flex');
-        }
+        topBar.classList.add('d-none');
+        topBar.classList.remove('d-flex');
       }
     }
 
