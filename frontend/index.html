@@ -1163,26 +1163,29 @@
       justify-content: space-between;
     }
 
-    /* EDITORIAL SPLIT - Responsive, never cuts off header graphics */
+    /* EDITORIAL SPLIT - High Quality Studio Framing (No Empty Borders) */
     .editorial-split-img-box {
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--border-color);
-      background: #FAF7F2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      min-height: 340px;
-      max-height: 520px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      width: 100%;
+      height: 480px;
+      position: relative;
+      background: #FFFFFF;
     }
 
     .editorial-split-img-box img {
       width: 100%;
-      height: auto;
-      max-height: 520px;
-      object-fit: contain;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
       display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .editorial-split-img-box img:hover {
+      transform: scale(1.02);
     }
 
     /* FARM TO BOTTLE PHOTO STRIP */
@@ -1676,6 +1679,9 @@
                 <button type="button" class="btn-main-primary py-3 px-4 shadow-sm border-0" onclick="switchTab('menu')">
                   Xem Thực Đơn 6 Vị
                 </button>
+                <button type="button" class="btn-main-outline py-3 px-4" onclick="openTasteQuizModal()">
+                  <i class="bi bi-magic text-danger me-1"></i> Trắc Nghiệm Khẩu Vị 30s
+                </button>
                 <button type="button" class="btn-main-outline py-3 px-4" onclick="switchTab('about')">
                   Xem Triết Lý Nấu Mới
                 </button>
@@ -1713,8 +1719,8 @@
         </div>
 
         <div class="row g-4">
-          <!-- Card 1 -->
-          <div class="col-md-4">
+          <!-- Card 1: Sữa Điều -->
+          <div class="col-md-6 col-lg-3">
             <div class="product-card" onclick="viewProductDetail('cashew')" style="cursor: pointer;">
               <div class="product-card-img-wrap">
                 <img src="images/prod_real_dieu.jpg"
@@ -1727,8 +1733,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Điều Tự Nhiên</h3>
-                  <p class="text-muted small mb-3">Hạt điều hữu cơ xay mịn bằng cối đá thủy lực. Vị béo bùi thanh nhẹ,
-                    êm bụng tuyệt đối.</p>
+                  <p class="text-muted small mb-3">Hạt điều hữu cơ xay mịn bằng cối đá thủy lực. Vị béo bùi thanh nhẹ, êm bụng tuyệt đối.</p>
                   <div class="mb-3">
                     <span class="tag-pill-light">185 Kcal</span>
                     <span class="tag-pill-light">7.5g Đạm</span>
@@ -1746,8 +1751,8 @@
             </div>
           </div>
 
-          <!-- Card 2 -->
-          <div class="col-md-4">
+          <!-- Card 2: Sữa Óc Chó Mè Đen -->
+          <div class="col-md-6 col-lg-3">
             <div class="product-card" onclick="viewProductDetail('walnut')" style="cursor: pointer;">
               <div class="product-card-img-wrap">
                 <img src="images/prod_real_occho.jpg"
@@ -1760,8 +1765,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Óc Chó Mè Đen</h3>
-                  <p class="text-muted small mb-3">Mè đen rang mộc và óc chó béo ngậy, dồi dào Omega-3 bổ não cho dân
-                    văn phòng.</p>
+                  <p class="text-muted small mb-3">Mè đen rang mộc và óc chó béo ngậy, dồi dào Omega-3 bổ não cho dân văn phòng.</p>
                   <div class="mb-3">
                     <span class="tag-pill-light">190 Kcal</span>
                     <span class="tag-pill-light">8.4g Đạm</span>
@@ -1779,8 +1783,40 @@
             </div>
           </div>
 
-          <!-- Card 3 -->
-          <div class="col-md-4">
+          <!-- Card 3: Sữa Hạt Sen Lá Dứa (Best-seller Nổi Bật) -->
+          <div class="col-md-6 col-lg-3">
+            <div class="product-card" onclick="viewProductDetail('lotus')" style="cursor: pointer;">
+              <div class="product-card-img-wrap">
+                <img src="images/prod_real_sen.jpg"
+                  alt="Sữa Hạt Sen Lá Dứa" class="product-card-img">
+              </div>
+              <div class="product-card-body">
+                <div>
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="product-category-text">Dưỡng Nhan &amp; Ngủ Ngon</span>
+                    <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
+                  </div>
+                  <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Hạt Sen Lá Dứa</h3>
+                  <p class="text-muted small mb-3">Hạt sen bách diệp ninh mềm xay cùng nước cốt lá dứa. Thanh mát, an thần dịu nhẹ.</p>
+                  <div class="mb-3">
+                    <span class="tag-pill-light">160 Kcal</span>
+                    <span class="tag-pill-light">5.5g Đạm</span>
+                    <span class="tag-pill-light">Thư Thái</span>
+                  </div>
+                </div>
+                <div class="pt-3 border-top mt-2">
+                  <button
+                    class="btn btn-sm btn-main-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                    onclick="event.stopPropagation(); quickAddToCart('lotus')">
+                    <i class="bi bi-bag-plus"></i> <span data-i18n="btn_quick_order">Đặt Nhanh</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Sữa Hạnh Nhân Cacao -->
+          <div class="col-md-6 col-lg-3">
             <div class="product-card" onclick="viewProductDetail('almond')" style="cursor: pointer;">
               <div class="product-card-img-wrap">
                 <img src="images/prod_real_cacao.jpg"
@@ -1793,8 +1829,7 @@
                     <span class="product-price-text item-price-display" data-base="35000">35.000đ</span>
                   </div>
                   <h3 class="h5 fw-bold text-dark font-serif mb-2">Sữa Hạnh Nhân Cacao</h3>
-                  <p class="text-muted small mb-3">Bột cacao nguyên chất sấy thủ công và hạnh nhân nghiền mịn, hỗ trợ
-                    phục hồi cơ bắp.</p>
+                  <p class="text-muted small mb-3">Bột cacao nguyên chất sấy thủ công và hạnh nhân nghiền mịn, hỗ trợ phục hồi cơ bắp.</p>
                   <div class="mb-3">
                     <span class="tag-pill-light">170 Kcal</span>
                     <span class="tag-pill-light">9.1g Đạm</span>
@@ -2235,8 +2270,8 @@
         <div class="row align-items-center g-5 mb-5 pb-4 border-bottom flex-lg-row-reverse">
           <div class="col-lg-7">
             <div class="editorial-split-img-box shadow-sm">
-              <img src="images/campaign_2010_dieu_occho.jpg"
-                alt="Cối đá nghiền lạnh">
+              <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=85"
+                alt="Cối đá granit nghiền chậm dưới 45 độ C">
             </div>
           </div>
           <div class="col-lg-5">
@@ -2492,6 +2527,49 @@
                 </div>
                 <button class="btn btn-sm btn-main-primary w-100" onclick="switchTab('menu')">
                   <i class="bi bi-cup-straw me-1"></i> Xem Thực Đơn Sữa Hạt
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bộ Sưu Tập Chiến Dịch Đặc Biệt (20/10 & Coming Soon Poster) -->
+        <div class="row g-4 mb-5">
+          <div class="col-lg-6">
+            <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100" style="background: #FFFFFF;">
+              <div style="height: 440px; overflow: hidden; position: relative;">
+                <img src="images/campaign_2010_dieu_occho.jpg" alt="Chiến Dịch 20/10 Gửi Nàng Chút Yêu Thương"
+                  style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.5s ease;"
+                  onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+              </div>
+              <div class="card-body p-4">
+                <span class="product-category-text">CHIẾN DỊCH THEO MÙA &bull; QUÀ TẶNG</span>
+                <h3 class="h5 font-serif fw-bold text-dark mt-1 mb-2">Bộ Quà Tặng 20/10 &bull; Gửi Nàng Chút Yêu Thương</h3>
+                <p class="text-muted small mb-3">
+                  Trao gửi yêu thương qua từng giọt sữa hạt Điều Óc Chó tươi mới, đóng hộp hoa tươi thủ công cùng lời chúc ngọt ngào dành cho phái đẹp.
+                </p>
+                <button class="btn btn-sm btn-main-primary py-2 px-3" onclick="switchTab('menu')">
+                  Đặt Hộp Quà Tươi
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100" style="background: #FFFFFF;">
+              <div style="height: 440px; overflow: hidden; position: relative;">
+                <img src="images/poster_coming_soon.jpg" alt="Trạm Hạt Nut Milk Bar Coming Soon"
+                  style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.5s ease;"
+                  onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+              </div>
+              <div class="card-body p-4">
+                <span class="product-category-text">KHÔNG GIAN TRẢI NGHIỆM &bull; COMING SOON</span>
+                <h3 class="h5 font-serif fw-bold text-dark mt-1 mb-2">Trạm Hạt Nut Milk Bar &bull; Một Trạm Nhỏ Cho Điều Lành</h3>
+                <p class="text-muted small mb-3">
+                  Không gian trải nghiệm sữa hạt tươi rót tại vòi đầu tiên. Nơi bạn tự chọn vị sữa, tỷ lệ hạt và độ ấm tùy thích theo nhịp điệu cơ thể mỗi sáng.
+                </p>
+                <button class="btn btn-sm btn-main-outline py-2 px-3" onclick="openLiveChat()">
+                  Nhận Thông Báo Khai Trương
                 </button>
               </div>
             </div>
@@ -3980,6 +4058,12 @@
         },
         exportJSON: function() {
           return JSON.stringify(data, null, 2);
+        },
+        trackOpenCart: function() {
+          try { if (window.TramHatAPI && window.TramHatAPI.trackOpenCart) window.TramHatAPI.trackOpenCart(); } catch(e) {}
+        },
+        trackInitiateCheckout: function(total) {
+          try { if (window.TramHatAPI && window.TramHatAPI.trackInitiateCheckout) window.TramHatAPI.trackInitiateCheckout(total); } catch(e) {}
         }
       };
     })();
@@ -6694,7 +6778,12 @@
     // 13. CHAT CSKH TRỰC TUYẾN
     function toggleLiveChat() {
       const win = document.getElementById('liveChatWindow');
-      win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+      if (win) win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function openLiveChat() {
+      const win = document.getElementById('liveChatWindow');
+      if (win) win.style.display = 'flex';
     }
 
     function sendChatAnswer(question) {
