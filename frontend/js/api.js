@@ -6,7 +6,11 @@
  */
 
 (function () {
-  const API_BASE_URL = window.TRAMHAT_API_URL || 'http://localhost:5000/api';
+  const API_BASE_URL = window.TRAMHAT_API_URL || (
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? (window.location.port === '5000' ? '/api' : 'http://localhost:5000/api')
+      : '/api'
+  );
 
   // --- 1. QUẢN LÝ SESSION & UTM PARAMETERS ---
   function getOrCreateSessionId() {
@@ -161,6 +165,47 @@
     // Ghi nhận khi mở giỏ hàng
     trackOpenCart() {
       this.sendEvent('open_cart');
+    },
+
+    recordCheckoutStart() {
+      this.sendEvent('initiate_checkout');
+    },
+
+    // Gửi Quiz Khẩu Vị 30s
+    async submitQuiz(quizData) {
+      try {
+        const payload = {
+          sessionId: currentSessionId,
+          utm: currentUTM,
+          ...quizData
+        };
+        const res = await fetch(`${API_BASE_URL}/quiz/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        this.sendEvent('quiz_completed', { recommendation: data.recommendation?.name });
+        return data;
+      } catch (err) {
+        console.warn('[Quiz API Fallback]', err);
+        return {
+          success: true,
+          recommendation: { name: 'Sữa Điều Tự Nhiên', priceVND: 35000, img: 'images/prod_real_dieu.jpg' },
+          reason: 'Lựa chọn cân bằng, êm bụng tuyệt đối cho ngày làm việc.',
+          coupon: 'TRAMHAT15K'
+        };
+      }
+    },
+
+    // Lấy danh sách Mẻ sữa 48h
+    async getBatches() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/kitchen/batches`);
+        return await res.json();
+      } catch (e) {
+        return [];
+      }
     },
 
     // Ghi nhận khi bắt đầu bấm nút Đặt Hàng (Checkout)
@@ -325,4 +370,5 @@
   });
 
   window.TramHatAPI = TramHatAPI;
+  window.TramHatTracker = window.TramHatTracker || TramHatAPI;
 })();

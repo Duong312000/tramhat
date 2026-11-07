@@ -1,5 +1,12 @@
 {
-  "outputDirectory": "frontend",
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/admin", "destination": "/frontend/admin.html" },
+    { "source": "/admin.html", "destination": "/frontend/admin.html" },
+    { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/(.*)", "destination": "/frontend/$1" }
+  ],
   "cleanUrls": true,
   "trailingSlash": false
 }

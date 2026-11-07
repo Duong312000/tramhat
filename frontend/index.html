@@ -1753,6 +1753,125 @@
     </div>
     </section>
 
+    <!-- CONTEXTUAL TIME-OF-DAY BANNER (Chương 6) -->
+    <section class="py-2" style="background: #F4EFEB; border-bottom: 1px solid #E5DED7;">
+      <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2 py-1">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 11px;">
+            <i class="bi bi-clock-history me-1"></i> AI GỢI Ý THEO GIỜ
+          </span>
+          <span class="small text-dark fw-semibold" id="contextualTimeText">
+            Đang tải gợi ý hương vị phù hợp với khung giờ hiện tại...
+          </span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-dark py-1 px-3" style="font-size: 12px; border-radius: 6px;" onclick="addContextualToCart()">
+            <i class="bi bi-bag-plus me-1"></i> Thử Vị Ngay
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TASTE QUIZ 30S INTERACTIVE SECTION (Chương 6 - Lead MQL Acquisition) -->
+    <section class="py-5" style="background: linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 100%); border-bottom: 1px solid #EBE3DA;">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-5">
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small fw-bold text-uppercase">
+              <i class="bi bi-magic me-1"></i> Trắc Nghiệm 30 Giây
+            </span>
+            <h2 class="display-6 font-serif fw-bold text-dark mt-2 mb-3">Tìm Hương Vị Hợp Mood &amp; Cơ Thể</h2>
+            <p class="text-muted small mb-4">
+              Chưa biết nên chọn vị nào trong 6 loại sữa hạt tươi? Trả lời 2 câu hỏi nhanh để AI gợi ý đúng nhu cầu và nhận ngay <strong>Mã Freeship 15.000đ</strong> cho đơn đầu tiên!
+            </p>
+            <div class="d-flex align-items-center gap-3 text-muted small">
+              <span><i class="bi bi-check2-circle text-success me-1"></i> 100% Nấu Mới 05:00</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Giao Lạnh Đá Gel 2–5°C</span>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" id="quizCardBox">
+              <!-- Bước 1: Mục tiêu -->
+              <div id="quizStep1">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 1/2: MỤC TIÊU CỦA BẠN</span>
+                  <span class="badge bg-light text-dark border">Câu hỏi 1</span>
+                </div>
+                <h5 class="fw-bold font-serif mb-3 text-dark">Hôm nay bạn cần nạp năng lượng cho điều gì nhất?</h5>
+                <div class="row g-2 mb-3">
+                  <div class="col-sm-4">
+                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'diet')">
+                      <div class="fw-bold fs-6 mb-1">🏃‍♂️ Giữ Dáng Eat Clean</div>
+                      <div class="text-muted" style="font-size: 11px;">Ít calo, no lâu, đạm thực vật sạch</div>
+                    </button>
+                  </div>
+                  <div class="col-sm-4">
+                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'brain')">
+                      <div class="fw-bold fs-6 mb-1">🧠 Tập Trung Deadlines</div>
+                      <div class="text-muted" style="font-size: 11px;">Omega-3 béo bùi, tỉnh táo não bộ</div>
+                    </button>
+                  </div>
+                  <div class="col-sm-4">
+                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'relax')">
+                      <div class="fw-bold fs-6 mb-1">🌸 Thư Giãn Ngủ Ngon</div>
+                      <div class="text-muted" style="font-size: 11px;">Thanh nhiệt, an thần, giảm stress</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bước 2: Khẩu vị & Nhập SĐT -->
+              <div id="quizStep2" class="d-none">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 2/2: KHẨU VỊ &amp; NHẬN ƯU ĐÃI</span>
+                  <button class="btn btn-sm btn-link text-muted p-0 text-decoration-none" onclick="backQuizStep(1)">&larr; Quay lại</button>
+                </div>
+                <h5 class="fw-bold font-serif mb-3 text-dark">Gu hương vị ưa thích của bạn là gì?</h5>
+                <div class="d-flex gap-2 mb-3">
+                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn active" onclick="selectQuizTaste(this, 'rich')">Béo bùi tự nhiên</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'light')">Thanh mát nhẹ dịu</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'sweet')">Đậm đà Cacao hạt</button>
+                </div>
+                
+                <div class="p-3 bg-light rounded-3 mb-3 border">
+                  <label class="form-label small fw-bold text-dark mb-1">Nhập Số Điện Thoại nhận đề xuất &amp; Mã Freeship 15k:</label>
+                  <div class="row g-2">
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-control-sm" id="quizUserName" placeholder="Tên của bạn...">
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="tel" class="form-control form-control-sm" id="quizUserPhone" placeholder="Số điện thoại nhận mã...">
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn-main-primary w-100 justify-content-center py-2" onclick="submitTasteQuiz()">
+                  Xem Kết Quả &amp; Nhận Mã Freeship &rarr;
+                </button>
+              </div>
+
+              <!-- Bước 3: Kết quả -->
+              <div id="quizStep3" class="d-none text-center py-3">
+                <div class="badge bg-success-subtle text-success border border-success px-3 py-1 mb-2">🎉 ĐỀ XUẤT HOÀN HẢO CHO BẠN</div>
+                <h4 class="font-serif fw-bold text-dark mb-1" id="quizResultTitle">Sữa Macca Yến Mạch (330ml)</h4>
+                <p class="text-muted small mb-3" id="quizResultReason">Giàu chất xơ beta-glucan &amp; đạm thực vật giúp no lâu êm bụng, chuẩn Eat Clean!</p>
+                <div class="alert alert-warning py-2 small mb-3 d-inline-block">
+                  Mã quà tặng của bạn: <strong class="text-danger" id="quizCouponCode">TRAMHAT15K</strong> (Miễn phí giao lạnh 15.000đ)
+                </div>
+                <div class="d-flex justify-content-center gap-2">
+                  <button class="btn btn-main-primary py-2 px-4" id="quizAddCartBtn" onclick="addQuizRecommendationToCart()">
+                    <i class="bi bi-bag-plus me-1"></i> Thêm Vào Giỏ Hàng Ngay
+                  </button>
+                  <button class="btn btn-outline-secondary py-2 px-3" onclick="resetQuiz()">Làm Lại</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Nổi bật 2: Tuyển Chọn Bán Chạy (Best-Sellers Preview) -->
     <section class="py-5 border-top" style="background: #FFFFFF;">
       <div class="container py-3">
@@ -2987,17 +3106,17 @@
                   1. Chọn Dung Tích Chai
                 </label>
                 <div class="d-flex gap-2" id="detailSizeGroup">
-                  <button type="button" class="size-choice-btn active" onclick="selectDetailSize(this, '300ml', 0)">
-                    <span class="fw-bold d-block">300ml</span>
-                    <span class="text-muted" style="font-size: 11px;">Tiện lợi</span>
+                  <button type="button" class="size-choice-btn active" onclick="selectDetailSize(this, '330ml (Chai Chuẩn)', 0)">
+                    <span class="fw-bold d-block">330ml</span>
+                    <span class="text-muted" style="font-size: 11px;">Chai tiêu chuẩn</span>
                   </button>
-                  <button type="button" class="size-choice-btn" onclick="selectDetailSize(this, '500ml', 16000)">
-                    <span class="fw-bold d-block">500ml (+16k)</span>
-                    <span class="text-muted" style="font-size: 11px;">Chuẩn sáng</span>
+                  <button type="button" class="size-choice-btn" onclick="selectDetailSize(this, 'Combo 3 chai 330ml', 70000)">
+                    <span class="fw-bold d-block">Combo 3 chai (+70k)</span>
+                    <span class="text-muted" style="font-size: 11px;">Freeship giao lạnh</span>
                   </button>
-                  <button type="button" class="size-choice-btn" onclick="selectDetailSize(this, '1000ml', 53000)">
-                    <span class="fw-bold d-block">1000ml (+53k)</span>
-                    <span class="text-muted" style="font-size: 11px;">Gia đình</span>
+                  <button type="button" class="size-choice-btn" onclick="selectDetailSize(this, 'Gói Tuần 6 chai 330ml', 154000)">
+                    <span class="fw-bold d-block">Gói Tuần 6 chai</span>
+                    <span class="text-muted" style="font-size: 11px;">Giảm 10% (189k)</span>
                   </button>
                 </div>
               </div>
@@ -3014,8 +3133,8 @@
                     Nguyên bản không đường
                   </button>
                   <button type="button" class="sweet-choice-btn"
-                    onclick="selectDetailSweet(this, 'Ngọt thanh chà là tự nhiên')">
-                    Ngọt thanh từ chà là
+                    onclick="selectDetailSweet(this, 'Ít ngọt đường phèn')">
+                    Ít ngọt thanh mát
                   </button>
                 </div>
               </div>
@@ -3033,8 +3152,7 @@
               <!-- Cam kết chất lượng -->
               <div class="editorial-spec-line mt-4">
                 <span class="spec-label"><i class="bi bi-truck text-danger me-1"></i> Giao nhận &amp; Bảo quản:</span>
-                <span class="spec-value">Giao lạnh trước 07:30 sáng &bull; Hạn dùng 3 ngày trong ngăn mát 2-4&deg;C
-                  &bull; Đổi vỏ chai giảm 10.000đ</span>
+                <span class="spec-value">Giao lạnh đá gel 2–5°C &bull; Hạn dùng 48 giờ trong ngăn mát tủ lạnh (nấu mới 05:00 sáng) &bull; Thu hồi 5 vỏ chai tặng 1 chai</span>
               </div>
 
               <!-- Phần đánh giá & bình luận sản phẩm -->
@@ -3184,8 +3302,8 @@
                   </div>
                   <div class="col-12">
                     <label class="form-label small fw-semibold text-muted">Địa chỉ nhận sữa giao lạnh sáng sớm (Mặc định)</label>
-                    <textarea class="form-control" id="profEditAddress" rows="2" placeholder="Số nhà, tên đường, phường/xã, quận/huyện...">Phòng 402, Tòa nhà A, 123 Phố Trúc Bạch, Ba Đình, Hà Nội</textarea>
-                    <div class="text-muted small mt-1">Shipper Trạm Hạt sẽ ưu tiên giao sữa ấm/lạnh đến địa chỉ này trước 07:30 sáng.</div>
+                    <textarea class="form-control" id="profEditAddress" rows="2" placeholder="Số nhà, tên đường, phường/xã, quận/huyện...">Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Phường Bến Nghé, Quận 1, TP.HCM</textarea>
+                    <div class="text-muted small mt-1">Shipper Trạm Hạt sẽ ưu tiên giao túi đá gel giữ nhiệt đến địa chỉ này trước 08:30 sáng.</div>
                   </div>
                 </div>
                 <div class="d-flex align-items-center gap-3">
@@ -3284,1217 +3402,6 @@
       </div>
     </div>
 
-    <!-- ==========================================================================
-       TAB: GIAO DIỆN QUẢN TRỊ RIÊNG BIỆT (DEDICATED ADMIN PORTAL & ANALYTICS)
-       ========================================================================== -->
-    <div class="site-page-view d-none" id="view-admin" style="background: #F4F6F9; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="d-flex" style="min-height: 100vh;">
-      
-      <!-- ==========================================
-           THANH DASHBOARD BÊN TRÁI (LEFT SIDEBAR)
-           ========================================== -->
-      <aside id="adminSidebar" class="d-flex flex-column flex-shrink-0 text-white" style="width: 270px; background: #181F26; border-right: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 1040;">
-        
-        <!-- Logo & Header -->
-        <div class="p-3 border-bottom border-secondary border-opacity-25 d-flex align-items-center gap-3">
-          <img src="logo_glossy_tramhat.png" alt="Trạm Hạt" style="height: 36px; width: auto; filter: brightness(0) invert(1);">
-          <div>
-            <div class="fw-bold font-serif text-white fs-6" style="letter-spacing: 0.04em;">TRẠM HẠT&reg;</div>
-            <div class="text-white-50" style="font-size: 11px;">HỆ THỐNG QUẢN TRỊ</div>
-          </div>
-        </div>
-
-        <!-- Admin Profile Info -->
-        <div class="p-3 border-bottom border-secondary border-opacity-25 bg-black bg-opacity-20 d-flex align-items-center gap-3">
-          <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; font-size: 13px; flex-shrink: 0;">AD</div>
-          <div class="overflow-hidden">
-            <div class="fw-bold text-white small text-truncate">Quản Trị Viên Trạm Hạt</div>
-            <div class="text-white-50" style="font-size: 11px;"><i class="bi bi-circle-fill text-success" style="font-size: 8px;"></i> Super Admin &bull; <span id="adminSidebarSessionTime">Phiên còn: 2h 00m</span></div>
-          </div>
-        </div>
-
-        <!-- Sidebar Navigation Menu -->
-        <div class="p-2 flex-grow-1">
-          <div class="text-uppercase text-white-50 px-3 py-2 fw-semibold" style="font-size: 10px; letter-spacing: 0.08em;">Bảng Điều Khiển &amp; Công Cụ</div>
-          
-          <ul class="nav nav-pills flex-column gap-1">
-            <!-- 1. Chỉ Số Khách Hàng & Phễu Chuyển Đổi -->
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link admin-side-btn active d-flex align-items-center justify-content-between py-2 px-3 text-white" id="adminSideBtnAnalytics" onclick="switchAdminSection('analytics')">
-                <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-graph-up-arrow text-danger"></i>
-                  <span style="font-size: 13px;">Chỉ Số &amp; Phễu Chuyển Đổi</span>
-                </span>
-                <span class="badge bg-danger rounded-pill" style="font-size: 10px;">Thực Tế</span>
-              </a>
-            </li>
-
-            <!-- 2. Chỉnh Sửa Nội Dung Từng Trang -->
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link admin-side-btn d-flex align-items-center justify-content-between py-2 px-3 text-white-50" id="adminSideBtnContent" onclick="switchAdminSection('content')">
-                <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-pencil-square text-info"></i>
-                  <span style="font-size: 13px;">Chỉnh Sửa Toàn Bộ Nội Dung</span>
-                </span>
-                <span class="badge bg-secondary bg-opacity-50 text-white rounded-pill" style="font-size: 10px;">CMS</span>
-              </a>
-            </li>
-
-            <!-- 3. Quản Lý Sản Phẩm -->
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link admin-side-btn d-flex align-items-center justify-content-between py-2 px-3 text-white-50" id="adminSideBtnProducts" onclick="switchAdminSection('products')">
-                <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-box-seam text-warning"></i>
-                  <span style="font-size: 13px;">Thêm / Xóa Sản Phẩm</span>
-                </span>
-                <span class="badge bg-warning text-dark rounded-pill" id="adminSidebarProductCountBadge" style="font-size: 10px;">6 món</span>
-              </a>
-            </li>
-
-            <!-- 4. Theo Dõi Đơn Hàng -->
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link admin-side-btn d-flex align-items-center justify-content-between py-2 px-3 text-white-50" id="adminSideBtnOrders" onclick="switchAdminSection('orders')">
-                <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-cart-check text-success"></i>
-                  <span style="font-size: 13px;">Theo Dõi Đơn Hàng</span>
-                </span>
-                <span class="badge bg-success rounded-pill" id="adminSidebarOrdersBadge" style="font-size: 10px;">0 đơn</span>
-              </a>
-            </li>
-
-            <!-- 5. Cài Đặt & Chế Độ Website -->
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link admin-side-btn d-flex align-items-center justify-content-between py-2 px-3 text-white-50" id="adminSideBtnSettings" onclick="switchAdminSection('settings')">
-                <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-sliders text-secondary"></i>
-                  <span style="font-size: 13px;">Cài Đặt &amp; Xuất File JSON</span>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Left Sidebar Footer Actions -->
-        <div class="p-3 border-top border-secondary border-opacity-25 mt-auto">
-          <button class="btn btn-outline-light w-100 btn-sm mb-2 d-flex align-items-center justify-content-center gap-2 py-2" onclick="switchTab('home')">
-            <i class="bi bi-shop"></i>
-            <span>Xem Website Khách Hàng</span>
-          </button>
-          <button class="btn btn-danger w-100 btn-sm d-flex align-items-center justify-content-center gap-2 py-2" onclick="adminLogout()">
-            <i class="bi bi-box-arrow-left"></i>
-            <span>Đăng Xuất Admin</span>
-          </button>
-        </div>
-
-      </aside>
-
-      <!-- ==========================================
-           VÙNG LÀM VIỆC CHÍNH (MAIN WORKSPACE PANEL)
-           ========================================== -->
-      <div class="flex-grow-1 overflow-auto" style="min-width: 0; max-height: 100vh;">
-        
-        <!-- WORKSPACE TOP HEADER -->
-        <div class="bg-white border-bottom px-4 py-3 d-flex flex-wrap justify-content-between align-items-center gap-3 sticky-top" style="z-index: 1030;">
-          <div class="d-flex align-items-center gap-3">
-            <button class="btn btn-sm btn-outline-secondary d-md-none" onclick="toggleAdminSidebar()"><i class="bi bi-list"></i></button>
-            <div>
-              <h1 class="h5 fw-bold font-serif mb-0 text-dark" id="adminWorkspaceTitle">Chỉ Số Thu Thập Từ Khách Hàng &amp; Phễu Chuyển Đổi</h1>
-              <div class="text-muted small" id="adminWorkspaceSubtitle" style="font-size: 12px;">Đo lường thời gian lưu trú thực tế, lượt xem sản phẩm và tỷ lệ mua hàng</div>
-            </div>
-          </div>
-          <div class="d-flex align-items-center gap-2 flex-wrap">
-            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 d-flex align-items-center gap-2" style="font-size: 12px;">
-              <span class="spinner-grow spinner-grow-sm text-success" role="status" style="width: 8px; height: 8px;"></span>
-              <span>Dữ Liệu Khách Hàng Thời Gian Thực (Loại Trừ Admin)</span>
-            </span>
-            <button class="btn btn-sm btn-light border py-2 px-3" onclick="refreshAdminAnalytics()" title="Tải lại số liệu">
-              <i class="bi bi-arrow-clockwise"></i> Làm mới
-            </button>
-          </div>
-        </div>
-
-        <!-- WORKSPACE CONTENT CONTAINER -->
-        <div class="p-3 p-lg-4">
-
-          <!-- TOOL 1: CHỈ SỐ THU THẬP TỪ KHÁCH HÀNG & PHỄU CHUYỂN ĐỔI (REAL DATA) -->
-          <div id="adminSecAnalytics">
-            
-            <!-- 4 KPI SUMMARY CARDS (REAL NUMBERS) -->
-            <div class="row g-3 mb-4">
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 p-xl-4 rounded-3 border shadow-sm">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 11px;">Lượt Khách Vào Web</span>
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">Thực tế</span>
-                  </div>
-                  <div class="display-6 fw-bold font-serif text-dark mb-1" id="funnelStatTraffic">0</div>
-                  <div class="text-muted small" style="font-size: 12px;">Tổng lượt truy cập ghi nhận</div>
-                </div>
-              </div>
-
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 p-xl-4 rounded-3 border shadow-sm">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 11px;">Thời Gian TB Ở Trang</span>
-                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Đo thật</span>
-                  </div>
-                  <div class="display-6 fw-bold font-serif text-dark mb-1" id="funnelStatAvgTime">0s</div>
-                  <div class="text-muted small" style="font-size: 12px;">Thời gian tương tác thực tế</div>
-                </div>
-              </div>
-
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 p-xl-4 rounded-3 border shadow-sm">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 11px;">Tỷ Lệ Chuyển Đổi (CR)</span>
-                    <span class="badge bg-secondary-subtle text-dark border px-2 py-1">Đơn / Lượt</span>
-                  </div>
-                  <div class="display-6 fw-bold font-serif text-danger mb-1" id="funnelStatCR">0.0%</div>
-                  <div class="text-muted small" style="font-size: 12px;">Tỷ lệ đặt mua / tổng số khách</div>
-                </div>
-              </div>
-
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 p-xl-4 rounded-3 border shadow-sm">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 11px;">Doanh Thu Phễu</span>
-                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">Từ đơn hàng</span>
-                  </div>
-                  <div class="display-6 fw-bold font-serif text-dark mb-1" id="funnelStatRevenue">0đ</div>
-                  <div class="text-muted small" style="font-size: 12px;">Tổng giá trị các đơn đặt mua thật</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- PHỄU CHUYỂN ĐỔI 5 TẦNG (VISUAL FUNNEL - REAL DATA) -->
-            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
-              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom gap-2">
-                <div>
-                  <h2 class="h5 fw-bold font-serif mb-1 text-dark">Phễu Chuyển Đổi Thực Tế (E-Commerce Conversion Funnel)</h2>
-                  <p class="text-muted small mb-0">Thu thập trực tiếp từ các thao tác xem sản phẩm, thêm giỏ và đặt hàng của khách hàng</p>
-                </div>
-                <button class="btn btn-sm btn-outline-dark" onclick="exportAnalyticsJSON()">
-                  <i class="bi bi-download me-1"></i> Xuất data/analytics.json
-                </button>
-              </div>
-
-              <!-- 5 STAGES OF FUNNEL -->
-              <div class="d-flex flex-column gap-3">
-                
-                <!-- Stage 1 -->
-                <div class="p-3 rounded-3 border bg-light">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-dark rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">1</span>
-                      <strong class="text-dark">Khách Vào Website (Traffic &amp; Sessions)</strong>
-                    </div>
-                    <div class="text-end">
-                      <span class="fw-bold fs-5 font-serif text-dark" id="funnelStep1Count">0</span> <span class="text-muted small">lượt</span>
-                      <span class="badge bg-secondary ms-2">100%</span>
-                    </div>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-dark" style="width: 100%;"></div>
-                  </div>
-                </div>
-
-                <!-- Stage 2 -->
-                <div class="p-3 rounded-3 border bg-light">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">2</span>
-                      <strong class="text-dark">Xem Chi Tiết Vị Hạt (Product Views)</strong>
-                    </div>
-                    <div class="text-end">
-                      <span class="fw-bold fs-5 font-serif text-primary" id="funnelStep2Count">0</span> <span class="text-muted small">lượt</span>
-                      <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-2" id="funnelStep2Rate">0%</span>
-                    </div>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-primary" id="funnelStep2Bar" style="width: 0%;"></div>
-                  </div>
-                </div>
-
-                <!-- Stage 3 -->
-                <div class="p-3 rounded-3 border bg-light">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">3</span>
-                      <strong class="text-dark">Thêm Vào Giỏ Hàng (Add to Cart)</strong>
-                    </div>
-                    <div class="text-end">
-                      <span class="fw-bold fs-5 font-serif text-warning" id="funnelStep3Count">0</span> <span class="text-muted small">lượt</span>
-                      <span class="badge bg-warning-subtle text-warning border border-warning-subtle ms-2" id="funnelStep3Rate">0%</span>
-                    </div>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-warning" id="funnelStep3Bar" style="width: 0%;"></div>
-                  </div>
-                </div>
-
-                <!-- Stage 4 -->
-                <div class="p-3 rounded-3 border bg-light">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-info text-dark rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">4</span>
-                      <strong class="text-dark">Mở Giỏ Hàng &amp; Tiến Hành Đặt Mua (Begin Checkout)</strong>
-                    </div>
-                    <div class="text-end">
-                      <span class="fw-bold fs-5 font-serif text-info" id="funnelStep4Count">0</span> <span class="text-muted small">lượt</span>
-                      <span class="badge bg-info-subtle text-info border border-info-subtle ms-2" id="funnelStep4Rate">0%</span>
-                    </div>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-info" id="funnelStep4Bar" style="width: 0%;"></div>
-                  </div>
-                </div>
-
-                <!-- Stage 5 -->
-                <div class="p-3 rounded-3 border" style="background: rgba(197, 80, 64, 0.05); border-color: rgba(197, 80, 64, 0.2) !important;">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">5</span>
-                      <strong class="text-danger">Hoàn Tất Đơn Hàng Thành Công (Purchases)</strong>
-                    </div>
-                    <div class="text-end">
-                      <span class="fw-bold fs-5 font-serif text-danger" id="funnelStep5Count">0</span> <span class="text-muted small">đơn</span>
-                      <span class="badge bg-danger ms-2" id="funnelStep5Rate">0%</span>
-                    </div>
-                  </div>
-                  <div class="progress" style="height: 10px;">
-                    <div class="progress-bar bg-danger" id="funnelStep5Bar" style="width: 0%;"></div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-            <!-- BẢNG THEO DÕI HÀNH TRÌNH TỪNG KHÁCH HÀNG (INDIVIDUAL VISITORS & USER SESSIONS LOG) -->
-            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
-              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-3 border-bottom gap-2">
-                <div>
-                  <h3 class="h6 fw-bold font-serif text-dark mb-1">
-                    <i class="bi bi-people-fill text-primary me-1"></i> Theo Dõi Hành Trình Từng Khách Hàng (Individual Visitors Log)
-                  </h3>
-                  <div class="text-muted small" style="font-size: 11px;">
-                    Hệ thống tự động định danh từng vị khách ghé thăm: Ghi nhận nguồn chiến dịch, thiết bị, thời gian on-site và từng cú click chi tiết
-                  </div>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-primary rounded-pill px-3 py-2" id="visitorTotalCountBadge">0 khách</span>
-                </div>
-              </div>
-
-              <!-- Bộ Lọc Nhanh -->
-              <div class="d-flex flex-wrap gap-2 mb-3">
-                <button class="btn btn-sm btn-dark px-3 py-1" onclick="filterVisitorLog('all', this)" id="filterBtnAll">Tất Cả Khách</button>
-                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('cart', this)">Đã Thêm Giỏ Hàng</button>
-                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('order', this)">Đã Đặt Mua</button>
-                <button class="btn btn-sm btn-outline-dark px-3 py-1" onclick="filterVisitorLog('campaign', this)">Đến Từ Chiến Dịch (TikTok / Meta)</button>
-              </div>
-
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
-                  <thead class="table-light">
-                    <tr>
-                      <th style="min-width: 140px;">Mã Khách Hàng</th>
-                      <th style="min-width: 130px;">Thời Điểm Vào</th>
-                      <th style="min-width: 150px;">Nguồn Chiến Dịch (UTM)</th>
-                      <th style="min-width: 120px;">Thiết Bị</th>
-                      <th style="min-width: 180px;">Vị Sữa Đã Xem</th>
-                      <th style="min-width: 110px;" class="text-center">Cuộn Trang</th>
-                      <th style="min-width: 110px;" class="text-center">Thời Gian</th>
-                      <th style="min-width: 130px;" class="text-end">Hành Trình</th>
-                    </tr>
-                  </thead>
-                  <tbody id="adminVisitorsTableBody">
-                    <tr>
-                      <td colspan="8" class="text-center py-4 text-muted">Đang tải danh sách người dùng...</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- 2 BEHAVIOR TABLES: TIME ON PAGE & SCROLL DEPTH (REAL DATA) -->
-            <div class="row g-4 mb-4">
-              <!-- TIME ON PAGE PER TAB -->
-              <div class="col-lg-7">
-                <div class="bg-white p-4 rounded-3 border shadow-sm h-100">
-                  <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                    <div>
-                      <h3 class="h6 fw-bold font-serif text-dark mb-0"><i class="bi bi-stopwatch text-danger me-1"></i> Thời Gian Lưu Trú Thực Tế Theo Từng Mục (Time-on-Page)</h3>
-                      <div class="text-muted small" style="font-size: 11px;">Đo lường thời gian thực tế khách hàng lưu lại trên mỗi trang</div>
-                    </div>
-                    <span class="badge bg-light text-muted border">Tự động tính giây</span>
-                  </div>
-
-                  <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
-                      <thead class="table-light">
-                        <tr>
-                          <th>Khu Vực / Tab</th>
-                          <th class="text-center">Số Lượt Xem</th>
-                          <th class="text-center">Thời Gian Thực Tế</th>
-                          <th class="text-end">Trạng Thái</th>
-                        </tr>
-                      </thead>
-                      <tbody id="adminBehaviorTableBody">
-                        <!-- Populated by JS -->
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <!-- SCROLL DEPTH & DEVICE BREAKDOWN -->
-              <div class="col-lg-5">
-                <div class="bg-white p-4 rounded-3 border shadow-sm h-100">
-                  <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                    <h3 class="h6 fw-bold font-serif text-dark mb-0"><i class="bi bi-arrows-vertical text-primary me-1"></i> Độ Sâu Cuộn Trang Thực Tế (Scroll Depth)</h3>
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Hành vi cuộn</span>
-                  </div>
-
-                  <div class="d-flex flex-column gap-3 mb-4">
-                    <div>
-                      <div class="d-flex justify-content-between small mb-1">
-                        <span>Cuộn qua 25% trang</span>
-                        <strong class="text-dark" id="scrollDepth25Label">0 lượt</strong>
-                      </div>
-                      <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-success" id="scrollDepth25Bar" style="width: 0%;"></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="d-flex justify-content-between small mb-1">
-                        <span>Cuộn qua 50% trang</span>
-                        <strong class="text-dark" id="scrollDepth50Label">0 lượt</strong>
-                      </div>
-                      <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-primary" id="scrollDepth50Bar" style="width: 0%;"></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="d-flex justify-content-between small mb-1">
-                        <span>Cuộn qua 75% trang</span>
-                        <strong class="text-dark" id="scrollDepth75Label">0 lượt</strong>
-                      </div>
-                      <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-warning" id="scrollDepth75Bar" style="width: 0%;"></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="d-flex justify-content-between small mb-1">
-                        <span>Cuộn chạm đáy 100% trang</span>
-                        <strong class="text-dark" id="scrollDepth100Label">0 lượt</strong>
-                      </div>
-                      <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-danger" id="scrollDepth100Bar" style="width: 0%;"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="pt-3 border-top">
-                    <div class="fw-bold small text-dark mb-2">Thiết Bị Người Dùng Đang Truy Cập:</div>
-                    <div class="d-flex gap-2 text-center small">
-                      <div class="p-2 border rounded bg-light flex-grow-1">
-                        <div class="fw-bold text-dark" id="deviceMobileCount">0</div>
-                        <div class="text-muted" style="font-size: 11px;"><i class="bi bi-phone"></i> Mobile</div>
-                      </div>
-                      <div class="p-2 border rounded bg-light flex-grow-1">
-                        <div class="fw-bold text-dark" id="deviceDesktopCount">1</div>
-                        <div class="text-muted" style="font-size: 11px;"><i class="bi bi-laptop"></i> Desktop</div>
-                      </div>
-                      <div class="p-2 border rounded bg-light flex-grow-1">
-                        <div class="fw-bold text-dark" id="deviceTabletCount">0</div>
-                        <div class="text-muted" style="font-size: 11px;"><i class="bi bi-tablet"></i> Tablet</div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <!-- LIVE ACTIVITY STREAM LOG -->
-            <div class="bg-white p-4 rounded-3 border shadow-sm">
-              <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
-                <div>
-                  <h3 class="h6 fw-bold font-serif text-dark mb-0"><i class="bi bi-activity text-danger me-1"></i> Nhật Ký Tương Tác Thực Tế (Real Activity Log)</h3>
-                  <div class="text-muted small" style="font-size: 11px;">Ghi nhận từng hành động nhấp chuột, xem món và thêm giỏ của người dùng trong phiên này</div>
-                </div>
-              </div>
-
-              <div class="table-responsive" style="max-height: 280px; overflow-y: auto;">
-                <table class="table table-sm table-hover mb-0" style="font-size: 12px;">
-                  <thead class="table-light sticky-top">
-                    <tr>
-                      <th style="width: 120px;">Thời Gian</th>
-                      <th style="width: 140px;">Sự Kiện</th>
-                      <th>Chi Tiết Tương Tác</th>
-                      <th style="width: 140px;">Khu Vực</th>
-                      <th style="width: 110px;">Thiết Bị</th>
-                    </tr>
-                  </thead>
-                  <tbody id="adminLiveEventStreamBody">
-                    <!-- Populated dynamically from real user events -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- TOOL 2: CHỈNH SỬA TOÀN BỘ NỘI DUNG TỪNG TRANG (FULL CMS - SỬA HẾT - KHÔNG CÓ NÚT KHÔI PHỤC MẶC ĐỊNH) -->
-          <div id="adminSecContent" class="d-none">
-            
-            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
-              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom gap-2">
-                <div>
-                  <h2 class="h5 fw-bold font-serif mb-1 text-dark">Hệ Thống Chỉnh Sửa Toàn Bộ Nội Dung Website (Full CMS)</h2>
-                  <p class="text-muted small mb-0">Chỉnh sửa toàn bộ thông tin thương hiệu, trang chủ, thực đơn, câu chuyện, chiến dịch và footer</p>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-outline-dark btn-sm py-2 px-3" onclick="exportContentJSON()">
-                    <i class="bi bi-download me-1"></i> Xuất data/content.json
-                  </button>
-                  <button class="btn btn-danger btn-sm py-2 px-4 fw-bold" onclick="saveAdminPageContent()">
-                    <i class="bi bi-check2-circle me-1"></i> Lưu &amp; Cập Nhật Lên Website
-                  </button>
-                </div>
-              </div>
-
-              <!-- Page selector tabs covering all sections -->
-              <ul class="nav nav-pills gap-2 mb-4 p-2 bg-light rounded border overflow-auto">
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold active admin-cms-tab" id="cmsTabBtnBrand" onclick="switchCmsTab('brand')">
-                    <i class="bi bi-info-circle me-1"></i> Thương Hiệu &amp; Hotline
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnHome" onclick="switchCmsTab('home')">
-                    <i class="bi bi-house-door me-1"></i> Trang Chủ (Hero &amp; Cam Kết)
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnMenu" onclick="switchCmsTab('menu')">
-                    <i class="bi bi-cup-hot me-1"></i> Thực Đơn &amp; Cam Kết Vị
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnAbout" onclick="switchCmsTab('about')">
-                    <i class="bi bi-book me-1"></i> Về Trạm Hạt &amp; Câu Chuyện
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnGreen" onclick="switchCmsTab('green')">
-                    <i class="bi bi-recycle me-1"></i> Chiến Dịch Xanh Hoàn Chai
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnKnowledge" onclick="switchCmsTab('knowledge')">
-                    <i class="bi bi-journal-text me-1"></i> Góc Kiến Thức Dinh Dưỡng
-                  </button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link py-2 px-3 small fw-bold text-muted admin-cms-tab" id="cmsTabBtnFooter" onclick="switchCmsTab('footer')">
-                    <i class="bi bi-layout-text-window-reverse me-1"></i> Chân Trang (Footer)
-                  </button>
-                </li>
-              </ul>
-
-              <!-- CMS TAB 1: THƯƠNG HIỆU & HOTLINE -->
-              <div id="cmsPanelBrand" class="cms-panel">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Tên Thương Hiệu</label>
-                    <input type="text" class="form-control" id="cmsInputBrandName" value="Trạm Hạt®">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Slogan Thương Hiệu</label>
-                    <input type="text" class="form-control" id="cmsInputBrandSlogan" value="Nấu Mới Mỗi 05:00 Sáng • 100% Nông Sản Việt">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Tagline Định Vị</label>
-                    <input type="text" class="form-control" id="cmsInputBrandTagline" value="Thương Hiệu Sữa Hạt Tươi Thủ Công">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Số Hotline Tư Vấn &bull; Đặt Hàng</label>
-                    <input type="text" class="form-control" id="cmsInputBrandHotline" value="0901.888.777">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Email Chăm Sóc Khách Hàng</label>
-                    <input type="text" class="form-control" id="cmsInputBrandEmail" value="cskh@tramhat.vn">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Giờ Phục Vụ / Mở Cửa Xưởng</label>
-                    <input type="text" class="form-control" id="cmsInputBrandHours" value="05:00 - 21:00 mỗi ngày">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Địa Chỉ Xưởng Nấu Tươi</label>
-                    <input type="text" class="form-control" id="cmsInputBrandFactory" value="120 Huyện Bù Gia Mập, Tỉnh Bình Phước">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Danh Sách Chứng Nhận Chất Lượng</label>
-                    <input type="text" class="form-control" id="cmsInputBrandCerts" value="ISO 22000:2018, HACCP CODEX, ZERO PLASTIC, 100% VEGAN">
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 2: TRANG CHỦ -->
-              <div id="cmsPanelHome" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Huy Hiệu Đầu Trang (Top Badge)</label>
-                    <input type="text" class="form-control" id="cmsInputHeroBadge" value="SỮA HẠT TƯƠI NẤU MỚI MỖI 05:00 SÁNG">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Dòng 1</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputHeroTitle1" value="Tươi mới từng giọt sữa sớm,">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Dòng 2</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputHeroTitle2" value="gõ cửa đúng giờ thức giấc.">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Đoạn Văn Giới Thiệu (Hero Description)</label>
-                    <textarea class="form-control" rows="3" id="cmsInputHeroDesc">Mô hình sữa hạt tươi thủ công chuẩn quốc tế: Tự chọn gu vị hạt, dung tích và lịch giao hàng. Sữa được nấu tươi lúc 05:00 sáng từ 100% hạt nông sản Bù Gia Mập & Tây Nguyên, đóng chai thủy tinh tiệt trùng và giao lạnh trước 07:30. Tự do đổi vị, hoãn lịch hoặc hủy bất kỳ lúc nào chỉ bằng 1 click.</textarea>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Nút Kêu Gọi Chính (CTA Primary)</label>
-                    <input type="text" class="form-control" id="cmsInputHeroCtaPrimary" value="Khám Phá Thực Đơn →">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Nút Kêu Gọi Phụ (CTA Secondary)</label>
-                    <input type="text" class="form-control" id="cmsInputHeroCtaSecondary" value="Gói Định Kỳ (Tiết Kiệm 15%)">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label fw-bold small text-dark">Thống Kê 1: Giờ Nấu Mới</label>
-                    <input type="text" class="form-control" id="cmsInputStat1" value="05:00 Sáng">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label fw-bold small text-dark">Thống Kê 2: Nguồn Nông Sản</label>
-                    <input type="text" class="form-control" id="cmsInputStat2" value="100% Nông Sản Việt">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label fw-bold small text-dark">Thống Kê 3: Đường &amp; Phụ Gia</label>
-                    <input type="text" class="form-control" id="cmsInputStat3" value="0g Đường Hóa Học">
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 3: THỰC ĐƠN -->
-              <div id="cmsPanelMenu" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Khu Vực Thực Đơn</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputMenuTitle" value="Thực Đơn Sữa Hạt Tươi Thủ Công">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Đoạn Mô Tả Định Vị Thực Đơn</label>
-                    <textarea class="form-control" rows="3" id="cmsInputMenuDesc">Chắt lọc từ nguồn hạt nông sản Bù Gia Mập và Tây Nguyên. Nghiền cối đá granit chậm dưới 45°C, không hương liệu tổng hợp, không chất bảo quản.</textarea>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Dung Tích Mẫu Chai Phục Vụ</label>
-                    <input type="text" class="form-control" id="cmsInputMenuSizes" value="300ml • 500ml • 1000ml">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Cam Kết Nhiệt Độ Giao Hàng</label>
-                    <input type="text" class="form-control" id="cmsInputMenuTemp" value="Luôn ủ lạnh 2°C - 4°C trong thùng giữ nhiệt chuyên dụng">
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 4: VỀ TRẠM HẠT -->
-              <div id="cmsPanelAbout" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Trang Về Trạm Hạt</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputAboutTitle" value="Câu Chuyện &amp; Giá Trị Bản Địa">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Phụ Đề Giới Thiệu</label>
-                    <input type="text" class="form-control" id="cmsInputAboutSubtitle" value="Khởi nguồn từ trăn trở trước những hộp sữa hạt công nghiệp nhiều phụ gia, Trạm Hạt tìm về sự thuần khiết nguyên sơ nhất của nông sản quê nhà.">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Mục 01 • Vùng Nguyên Liệu Bù Gia Mập</label>
-                    <textarea class="form-control" rows="3" id="cmsInputAboutStory1">Trạm Hạt ra đời từ trăn trở trước những hộp sữa hạt công nghiệp nhiều phụ gia, chất ổn định và đường hóa học. Chúng tôi tìm về vùng đất đỏ bazan Bù Gia Mập — thủ phủ hạt điều trứ danh của Việt Nam — để kiến tạo dòng sữa hạt tươi nguyên bản, thơm lành và tử tế nhất cho gia đình Việt.</textarea>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Mục 02 • Nghiền Cối Đá Chậm Rãi &lt; 45°C</label>
-                    <textarea class="form-control" rows="3" id="cmsInputAboutStory2">Khác với máy xay lưỡi dao kim loại sinh nhiệt cao làm biến tính chất béo và phân hủy enzyme, Trạm Hạt sử dụng cối đá granit thủy lực nghiền chậm. Hạt được ngâm hoạt hóa mầm sống, nghiền cùng nước lọc kiềm RO pH 7.2 dưới 45°C để giữ trọn vị béo ngậy thanh tao và độ êm bụng tuyệt đối.</textarea>
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 5: CHIẾN DỊCH XANH -->
-              <div id="cmsPanelGreen" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Chương Trình Thu Hồi Chai</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputGreenTitle" value="Hành Trình Xanh &bull; Tuần Hoàn Chai Thủy Tinh">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Mô Tả Chiến Dịch</label>
-                    <textarea class="form-control" rows="2" id="cmsInputGreenDesc">Giữa guồng quay hối hả của phố thị, Trạm Hạt tạo nên một trạm dừng chân an yên: nơi bạn có thể chậm lại 5 phút, uống một ngụm sữa hạt tươi ấm nóng, hít thở sâu và lắng nghe câu chuyện về đất, về người nông dân quê hương.</textarea>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Giá Trị Ưu Đãi Hoàn Chai</label>
-                    <input type="text" class="form-control" id="cmsInputGreenDiscount" value="Giảm 10.000đ cho mỗi vỏ chai thủy tinh gửi lại">
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-bold small text-dark">Hoạt Động 1: Trạm Đổi Chai</label>
-                    <input type="text" class="form-control" id="cmsInputGreenAct1" value="Gửi lại 5 vỏ chai sạch, nhận ngay 1 gói hạt giống rau mầm xanh">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Hoạt Động 2: Thử Thách 7 Ngày Nhẹ Bụng</label>
-                    <input type="text" class="form-control" id="cmsInputGreenAct2" value="Thay thế bữa sáng dầu mỡ bằng 1 chai sữa hạt tươi 500ml liên tục 7 ngày">
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 6: GÓC KIẾN THỨC -->
-              <div id="cmsPanelKnowledge" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Tiêu Đề Góc Kiến Thức</label>
-                    <input type="text" class="form-control font-serif" id="cmsInputKnowledgeTitle" value="Cẩm Nang Dinh Dưỡng &amp; Khoa Học Sữa Hạt">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Đoạn Mô Tả Dẫn Nhập</label>
-                    <textarea class="form-control" rows="3" id="cmsInputKnowledgeDesc">Chia sẻ kiến thức khoa học về dinh dưỡng thực vật, phương pháp kích hoạt mầm sống và lối sống lành mạnh cho cả gia đình.</textarea>
-                  </div>
-                </div>
-              </div>
-
-              <!-- CMS TAB 7: FOOTER -->
-              <div id="cmsPanelFooter" class="cms-panel d-none">
-                <div class="row g-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Giới Thiệu Thương Hiệu Ở Chân Trang</label>
-                    <textarea class="form-control" rows="3" id="cmsInputFooterDesc">Thương hiệu sữa hạt tươi thủ công nấu mới mỗi 05:00 sáng. Giữ trọn năng lượng đất lành và tôn vinh nông sản Việt.</textarea>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-bold small text-dark">Dòng Bản Quyền (Copyright)</label>
-                    <input type="text" class="form-control" id="cmsInputFooterCopy" value="&copy; 2026 Trạm Hạt&reg;. All rights reserved.">
-                  </div>
-                </div>
-              </div>
-
-              <div class="alert alert-success d-none mt-3 mb-0" id="cmsSaveSuccessAlert">
-                <i class="bi bi-check-circle-fill me-2"></i> Nội dung đã được lưu thành công và cập nhật trực tiếp lên các trang của website!
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- TOOL 3: QUẢN LÝ SẢN PHẨM (THÊM, XÓA, SỬA) -->
-          <div id="adminSecProducts" class="d-none">
-            
-            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
-              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom gap-2">
-                <div>
-                  <h2 class="h5 fw-bold font-serif mb-1 text-dark">Danh Mục &amp; Quản Lý Sản Phẩm Sữa Hạt</h2>
-                  <p class="text-muted small mb-0">Thêm sản phẩm mới, chỉnh sửa giá bán, ảnh minh họa hoặc xóa sản phẩm khỏi thực đơn</p>
-                </div>
-                <button class="btn btn-danger btn-sm py-2 px-3 fw-bold" onclick="openAddProductModal()">
-                  <i class="bi bi-plus-circle me-1"></i> + Thêm Sản Phẩm Mới
-                </button>
-              </div>
-
-              <!-- Product Filter and Search Bar -->
-              <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" class="form-control bg-light border-start-0" id="adminProductSearchInput" placeholder="Tìm kiếm tên sản phẩm, mã món..." oninput="filterAdminProducts()">
-                  </div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                  <span class="text-muted small me-2">Tổng cộng: <strong class="text-dark" id="adminProductTableTotalCount">6</strong> sản phẩm</span>
-                </div>
-              </div>
-
-              <!-- PRODUCTS TABLE -->
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
-                  <thead class="table-light">
-                    <tr>
-                      <th style="width: 70px;">Ảnh</th>
-                      <th>Tên Sản Phẩm</th>
-                      <th>Danh Mục</th>
-                      <th>Giá Niêm Yết</th>
-                      <th>Nguồn Gốc</th>
-                      <th>Dinh Dưỡng</th>
-                      <th class="text-end" style="width: 140px;">Thao Tác</th>
-                    </tr>
-                  </thead>
-                  <tbody id="adminProductsTableBody">
-                    <!-- Populated dynamically from productsDB -->
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- TOOL 4: THEO DÕI ĐƠN HÀNG (REAL ORDERS ONLY - NO FAKE SAMPLES - NO TEST BUTTON) -->
-          <div id="adminSecOrders" class="d-none">
-            
-            <!-- ORDER STATS SUMMARY CARDS -->
-            <div class="row g-3 mb-4">
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 rounded-3 border shadow-sm">
-                  <span class="text-muted small">Tổng Đơn Hàng Thực Tế</span>
-                  <div class="fs-4 fw-bold font-serif text-dark" id="orderStatTotal">0</div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 rounded-3 border shadow-sm">
-                  <span class="text-muted small">Chờ Xác Nhận</span>
-                  <div class="fs-4 fw-bold font-serif text-warning" id="orderStatPending">0</div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 rounded-3 border shadow-sm">
-                  <span class="text-muted small">Đang Giao 45 Phút</span>
-                  <div class="fs-4 fw-bold font-serif text-primary" id="orderStatShipping">0</div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xl-3">
-                <div class="bg-white p-3 rounded-3 border shadow-sm">
-                  <span class="text-muted small">Hoàn Tất Thành Công</span>
-                  <div class="fs-4 fw-bold font-serif text-success" id="orderStatCompleted">0</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ORDER LIST TABLE (REAL ORDERS FROM USERS) -->
-            <div class="bg-white p-4 rounded-3 border shadow-sm">
-              <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-3 border-bottom gap-2">
-                <div>
-                  <h2 class="h5 fw-bold font-serif mb-1 text-dark">Danh Sách Đơn Hàng Thực Tế</h2>
-                  <p class="text-muted small mb-0">Tự động cập nhật trực tiếp mỗi khi khách hàng thanh toán qua giỏ hàng trên website</p>
-                </div>
-                <button class="btn btn-outline-dark btn-sm py-2 px-3" onclick="exportOrdersJSON()">
-                  <i class="bi bi-download me-1"></i> Xuất data/orders.json
-                </button>
-              </div>
-
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
-                  <thead class="table-light">
-                    <tr>
-                      <th style="width: 110px;">Mã Đơn</th>
-                      <th>Khách Hàng &amp; SĐT</th>
-                      <th>Địa Chỉ Giao Sữa</th>
-                      <th>Chi Tiết Món</th>
-                      <th>Tổng Tiền</th>
-                      <th>Trạng Thái</th>
-                      <th class="text-end" style="width: 170px;">Cập Nhật</th>
-                    </tr>
-                  </thead>
-                  <tbody id="adminOrdersTableBody">
-                    <!-- Populated dynamically with REAL orders -->
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- TOOL 5: CÀI ĐẶT & XUẤT DỮ LIỆU JSON -->
-          <div id="adminSecSettings" class="d-none">
-            
-            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
-              <h2 class="h5 fw-bold font-serif mb-1 text-dark pb-3 border-bottom">Cài Đặt Hệ Thống &amp; Xuất File JSON</h2>
-              
-              <div class="row g-4 mt-1">
-                <div class="col-md-6">
-                  <div class="p-3 border rounded-3 bg-light h-100">
-                    <strong class="text-dark d-block mb-2">Xuất Dữ Liệu Hành Vi Khách Hàng (data/analytics.json)</strong>
-                    <p class="text-muted small mb-3">Tải toàn bộ dữ liệu đo lường lượt xem, thời gian thực tế và phễu chuyển đổi.</p>
-                    <button class="btn btn-sm btn-dark" onclick="exportAnalyticsJSON()"><i class="bi bi-download me-1"></i> Tải data/analytics.json</button>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="p-3 border rounded-3 bg-light h-100">
-                    <strong class="text-dark d-block mb-2">Xuất Dữ Liệu Đơn Hàng Thực Tế (data/orders.json)</strong>
-                    <p class="text-muted small mb-3">Tải danh sách toàn bộ các đơn hàng thật do khách đặt qua website.</p>
-                    <button class="btn btn-sm btn-dark" onclick="exportOrdersJSON()"><i class="bi bi-download me-1"></i> Tải data/orders.json</button>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="p-3 border rounded-3 bg-light h-100">
-                    <strong class="text-dark d-block mb-2">Xuất Dữ Liệu Nội Dung Website (data/content.json)</strong>
-                    <p class="text-muted small mb-3">Tải file content.json chứa toàn bộ câu từ đã được cập nhật qua trang quản trị.</p>
-                    <button class="btn btn-sm btn-dark" onclick="exportContentJSON()"><i class="bi bi-download me-1"></i> Tải data/content.json</button>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="p-3 border rounded-3 bg-light h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <strong class="text-dark">Chế Độ Bảo Trì Website</strong>
-                      <div class="form-check form-switch fs-5">
-                        <input class="form-check-input" type="checkbox" id="adminMaintenanceSwitch" onchange="toggleMaintenance(this.checked)">
-                      </div>
-                    </div>
-                    <p class="text-muted small mb-0">Khi bật, khách truy cập website sẽ thấy màn hình thông báo đang bảo trì.</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-    </main>
-
-
-  <!-- ==========================================================================
-       FOOTER (80% TRẮNG, LIÊN HỆ, CERTIFICATIONS)
-       ========================================================================== -->
-  <footer class="main-footer">
-    <div class="container">
-      <div class="row g-4 pb-4 border-bottom">
-        <div class="col-lg-5">
-          <img src="logo_glossy_tramhat.png" alt="Trạm Hạt" style="height: 48px; width: auto;" class="mb-3">
-          <p class="text-muted small" style="max-width: 380px;">Thương hiệu sữa hạt tươi thủ công nấu mới mỗi 05:00
-            sáng. Giữ trọn năng lượng đất lành và tôn vinh nông sản Việt.</p>
-          <div class="small fw-semibold text-danger">ISO 22000:2018 &bull; HACCP CODEX &bull; ZERO PLASTIC</div>
-        </div>
-        <div class="col-6 col-lg-3">
-          <div class="fw-bold text-dark small text-uppercase mb-2">Liên Kết Nhanh</div>
-          <ul class="list-unstyled small text-muted">
-            <li class="mb-1"><a href="javascript:void(0)" onclick="switchTab('home')">Trang Chủ</a></li>
-            <li class="mb-1"><a href="javascript:void(0)" onclick="switchTab('menu')">Thực Đơn</a></li>
-            <li class="mb-1"><a href="javascript:void(0)" onclick="switchTab('about')">Về Trạm Hạt</a></li>
-            <li class="mb-1"><a href="javascript:void(0)" onclick="switchTab('knowledge')">Góc Kiến Thức</a></li>
-          </ul>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="fw-bold text-dark small text-uppercase mb-2">Liên Hệ &bull; Hotline</div>
-          <p class="text-muted small mb-1"><i class="bi bi-geo-alt me-1"></i> Xưởng nấu: 120 Bù Gia Mập, Bình Phước</p>
-          <p class="text-muted small mb-1"><i class="bi bi-telephone me-1"></i> Hotline: 0901.888.777 (05:00 - 21:00)
-          </p>
-          <p class="text-muted small mb-1"><i class="bi bi-envelope me-1"></i> cskh@tramhat.vn</p>
-        </div>
-      </div>
-      <div class="pt-3 d-flex justify-content-between align-items-center flex-wrap small text-muted">
-        <div>&copy; 2026 Trạm Hạt&reg;. All rights reserved.</div>
-        <div>Thương Mại Điện Tử &bull; Công Nghệ Marketing</div>
-      </div>
-    </div>
-
-    <div class="text-center pt-3 border-top mt-4">
-      <a href="admin.html" class="text-muted small text-decoration-none"
-        style="font-size: 12px;">
-        <i class="bi bi-shield-lock me-1"></i> Dành Cho Quản Trị Viên (Admin Portal)
-      </a>
-    </div>
-
-  </footer>
-
-  <!-- ==========================================================================
-       MODAL 1: TÌM KIẾM THÔNG MINH (SMART SEARCH)
-       ========================================================================== -->
-  <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow">
-        <div class="modal-header border-bottom py-3">
-          <div class="input-group">
-            <span class="input-group-text bg-white border-0"><i class="bi bi-search text-muted"></i></span>
-            <input type="text" class="form-control border-0 shadow-none fs-6" id="searchInput"
-              placeholder="Tìm sữa hạt, thành phần (óc chó, điều, sen, ngủ ngon)..."
-              oninput="handleLiveSearch(this.value)">
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-        </div>
-        <div class="modal-body p-3" id="searchResultsBox">
-          <div class="text-muted small text-center py-4">Gõ từ khóa để tìm nhanh dòng sữa hạt phù hợp với bạn...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       MODAL 2: TÀI KHOẢN KHÁCH HÀNG (ĐĂNG NHẬP / QUẢN LÝ NHANH)
-       ========================================================================== -->
-  <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow">
-        
-        <!-- Header Đăng Nhập Đơn Giản & Trang Nhã -->
-        <div class="modal-header border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
-          <h5 class="modal-title font-serif fw-bold mb-0">Đăng Nhập Tài Khoản</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-        </div>
-
-        <div class="modal-body p-4">
-          
-          <!-- FORM ĐĂNG NHẬP (LOGIN ONLY) -->
-          <div id="authLoginForm">
-            <div class="d-grid gap-2 mb-3">
-              <button class="btn btn-outline-dark btn-sm text-start py-2" onclick="mockSocialLogin('Google')">
-                <i class="bi bi-google me-2 text-danger"></i> Tiếp tục với Google
-              </button>
-              <button class="btn btn-outline-primary btn-sm text-start py-2" onclick="mockSocialLogin('Facebook')">
-                <i class="bi bi-facebook me-2"></i> Tiếp tục với Facebook
-              </button>
-            </div>
-
-            <div class="position-relative text-center my-3">
-              <hr class="text-muted opacity-25">
-              <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">hoặc bằng Email / Số điện thoại</span>
-            </div>
-
-            <form onsubmit="handleUserLoginSubmit(event)">
-              <div class="mb-3">
-                <label class="form-label small fw-semibold text-muted">Email hoặc Số điện thoại</label>
-                <input type="text" class="form-control" id="loginIdentifier" placeholder="Email hoặc Số điện thoại..." required>
-              </div>
-              <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <label class="form-label small fw-semibold text-muted">Mật khẩu</label>
-                  <a href="javascript:void(0)" class="small text-muted" onclick="alert('Vui lòng liên hệ CSKH 098.765.4321 để được hỗ trợ.')">Quên mật khẩu?</a>
-                </div>
-                <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu..." required>
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                <label class="form-check-label small text-muted" for="rememberMe">Ghi nhớ đăng nhập trên thiết bị này</label>
-              </div>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn-main-primary w-100 justify-content-center py-2">Đăng Nhập &rarr;</button>
-                <button type="button" class="btn-main-outline w-100 justify-content-center py-2" data-bs-dismiss="modal">
-                  Tiếp Tục Mua Hàng Dạng Khách
-                </button>
-              </div>
-            </form>
-
-            <div class="mt-3 pt-3 border-top text-center text-muted" style="font-size: 11.5px;">
-              Chưa có tài khoản? Bạn vẫn có thể mua sắm và nhận hàng dạng khách dễ dàng.
-            </div>
-          </div>
-
-          <!-- STATE: ĐÃ ĐĂNG NHẬP (LOGGED IN SUMMARY) -->
-          <div id="authLoggedInView" class="d-none">
-            <div class="d-flex align-items-center gap-3 pb-3 border-bottom mb-3">
-              <div class="profile-avatar-circle" id="authModalAvatar">NA</div>
-              <div>
-                <div class="fw-bold font-serif fs-5 text-dark" id="authModalName">Nguyễn An Nhiên</div>
-                <div class="text-muted small" id="authModalEmail">annhien@gmail.com</div>
-                <div class="text-success small fw-semibold mt-1"><i class="bi bi-patch-check-fill"></i> Thành viên Sống Xanh</div>
-              </div>
-            </div>
-
-            <div class="d-flex justify-content-between py-2 border-bottom mb-3">
-              <div class="text-start">
-                <div class="text-muted small">Điểm tích lũy</div>
-                <div class="fw-bold font-serif fs-5 text-dark" id="authModalPoints">120 Điểm</div>
-              </div>
-              <div class="text-end">
-                <div class="text-muted small">Vỏ chai đã trả</div>
-                <div class="fw-bold font-serif fs-5 text-success" id="authModalBottles">8 Chai</div>
-              </div>
-            </div>
-
-            <div class="d-grid gap-2">
-              <button class="btn-main-primary w-100 justify-content-center py-2" onclick="goToProfilePage()">
-                <i class="bi bi-person-gear me-1"></i> Xem Trang Cá Nhân Của Tôi &rarr;
-              </button>
-              <button class="btn-main-outline w-100 justify-content-center py-2" onclick="userLogout()">
-                <i class="bi bi-box-arrow-right me-1"></i> Đăng Xuất
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       MODAL 3: TRANG QUẢN TRỊ ADMIN DEMO (DASHBOARD, ORDER WORKFLOW, IN HÓA ĐƠN, KHO)
-       ========================================================================== -->
-  <div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content border-0 shadow">
-        <div class="modal-header bg-light border-bottom py-3">
-          <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-speedometer2 text-danger fs-5"></i>
-            <h5 class="modal-title font-serif fw-bold mb-0">Hệ Thống Quản Trị Trạm Hạt &bull; Admin Portal</h5>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-        </div>
-        <div class="modal-body p-4">
-
-          <!-- Báo cáo bán hàng tổng quan -->
-          <div class="row g-3 mb-4">
-            <div class="col-md-3">
-              <div class="p-3 border rounded bg-white">
-                <div class="text-muted small">Doanh Thu Hôm Nay</div>
-                <div class="fs-4 fw-bold text-dark font-serif" id="adminRevenue">1.840.000đ</div>
-                <div class="text-success small"><i class="bi bi-arrow-up-right"></i> +18.4% so với hôm qua</div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="p-3 border rounded bg-white">
-                <div class="text-muted small">Số Đơn Hàng Mới</div>
-                <div class="fs-4 fw-bold text-dark font-serif" id="adminOrdersCount">14 Đơn</div>
-                <div class="text-muted small">Nấu lúc 05:00 sáng</div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="p-3 border rounded bg-white">
-                <div class="text-muted small">Tồn Kho Nguyên Liệu</div>
-                <div class="fs-4 fw-bold text-dark font-serif">123 kg Hạt</div>
-                <div class="text-success small">Đủ cung ứng 8 ngày tới</div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="p-3 border rounded bg-white">
-                <div class="text-muted small">Bảo Trì Website (1-Click)</div>
-                <div class="form-check form-switch mt-2">
-                  <input class="form-check-input" type="checkbox" id="maintenanceSwitch"
-                    onchange="toggleMaintenance(this.checked)">
-                  <label class="form-check-label small fw-semibold" for="maintenanceSwitch">Bật Chế Độ Bảo Trì</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Danh sách đơn hàng & quy trình xử lý đơn -->
-          <div class="card border mb-4">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-              <span class="fw-bold">Quy Trình Xử Lý Đơn Hàng (Order Workflow)</span>
-              <span class="badge bg-light text-dark border">Quy trình: Nhận &rarr; Xác nhận &rarr; Gói hàng &rarr; Vận
-                chuyển &rarr; Thành công</span>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover align-middle mb-0 small">
-                <thead class="table-light">
-                  <tr>
-                    <th>Mã Đơn</th>
-                    <th>Khách Hàng</th>
-                    <th>Sản Phẩm</th>
-                    <th>Tổng Tiền</th>
-                    <th>Trạng Thái Vận Chuyển</th>
-                    <th class="text-end">Thao Tác</th>
-                  </tr>
-                </thead>
-                <tbody id="adminOrdersTableBody">
-                  <tr>
-                    <td class="fw-bold">#TH-9821</td>
-                    <td>Chị Lan (Q.1, TP.HCM)<br><span class="text-muted">0903.111.222</span></td>
-                    <td>Sữa Điều Tự Nhiên (500ml) x 2</td>
-                    <td class="fw-bold text-danger">96.000đ</td>
-                    <td><span class="badge bg-warning text-dark">Đang Nấu 05:00 Sáng</span></td>
-                    <td class="text-end">
-                      <button class="btn btn-sm btn-outline-dark"
-                        onclick="printInvoice('TH-9821', 'Chị Lan', 'Sữa Điều Tự Nhiên (500ml) x 2', '96.000đ')">
-                        <i class="bi bi-printer"></i> In Hóa Đơn
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="fw-bold">#TH-9820</td>
-                    <td>Anh Quân (Cầu Giấy, HN)<br><span class="text-muted">0988.333.444</span></td>
-                    <td>Óc Chó Mè Đen (300ml) x 3</td>
-                    <td class="fw-bold text-danger">105.000đ</td>
-                    <td><span class="badge bg-info text-dark">Đang Giao Lạnh 2°C</span></td>
-                    <td class="text-end">
-                      <button class="btn btn-sm btn-outline-dark"
-                        onclick="printInvoice('TH-9820', 'Anh Quân', 'Óc Chó Mè Đen (300ml) x 3', '105.000đ')">
-                        <i class="bi bi-printer"></i> In Hóa Đơn
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Quản lý kho nguyên liệu -->
-          <div class="row g-3 mb-4">
-            <div class="col-md-6">
-              <div class="border rounded p-3 bg-white">
-                <div class="fw-bold small mb-2">Quản Lý Tồn Kho Hạt Bản Địa</div>
-                <div class="d-flex justify-content-between py-1 border-bottom small">
-                  <span>Hạt điều Bù Gia Mập (Hữu cơ loại A+)</span>
-                  <span class="fw-bold text-success">45 kg (Đủ dùng)</span>
-                </div>
-                <div class="d-flex justify-content-between py-1 border-bottom small">
-                  <span>Hạt óc chó Điện Biên rang mộc</span>
-                  <span class="fw-bold text-success">28 kg (Đủ dùng)</span>
-                </div>
-                <div class="d-flex justify-content-between py-1 small">
-                  <span>Hạt sen tươi bóc vỏ Đồng Tháp</span>
-                  <span class="fw-bold text-warning">12 kg (Cần nhập thêm)</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="border rounded p-3 bg-white">
-                <div class="fw-bold small mb-2">Sao Lưu Dữ Liệu (Backup &amp; Restore)</div>
-                <p class="text-muted small mb-2">Hệ thống tự động sao lưu dữ liệu đơn hàng và khách hàng hàng ngày.</p>
-                <button class="btn btn-sm btn-outline-dark me-2"
-                  onclick="alert('Đã tải xuống file sao lưu Database_TramHat_Backup.json thành công!')">
-                  <i class="bi bi-cloud-arrow-down"></i> Tải Sao Lưu (Backup)
-                </button>
-                <button class="btn btn-sm btn-outline-primary"
-                  onclick="alert('Dữ liệu đã sẵn sàng để khôi phục trong 1 click!')">
-                  <i class="bi bi-cloud-arrow-up"></i> Khôi Phục (Restore)
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Import / Export dữ liệu Excel -->
-          <div class="border rounded p-3 bg-white">
-            <div class="fw-bold small mb-2">Import &amp; Export Dữ Liệu (Excel / CSV)</div>
-            <p class="text-muted small mb-3">Nhập hoặc xuất danh sách sản phẩm, khách hàng, đơn hàng bằng file Excel để
-              quản lý hàng loạt nhanh chóng.</p>
-            <div class="d-flex flex-wrap gap-2">
-              <button class="btn btn-sm btn-outline-dark"
-                onclick="alert('Tải xuống: SanPham_TramHat_Export.xlsx (6 sản phẩm)')">
-                <i class="bi bi-file-earmark-arrow-down"></i> Xuất Sản Phẩm (.xlsx)
-              </button>
-              <button class="btn btn-sm btn-outline-dark" onclick="alert('Tải xuống: KhachHang_TramHat_Export.xlsx')">
-                <i class="bi bi-file-earmark-arrow-down"></i> Xuất Khách Hàng (.xlsx)
-              </button>
-              <button class="btn btn-sm btn-outline-primary" onclick="triggerImportFile('products')">
-                <i class="bi bi-file-earmark-arrow-up"></i> Nhập Sản Phẩm (.xlsx)
-              </button>
-              <button class="btn btn-sm btn-outline-primary" onclick="triggerImportFile('customers')">
-                <i class="bi bi-file-earmark-arrow-up"></i> Nhập Khách Hàng (.xlsx)
-              </button>
-              <input type="file" id="importFileInput" accept=".xlsx,.csv" style="display:none"
-                onchange="handleImportFile(this)">
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ==========================================================================
        GIỎ HÀNG OFFCANVAS (CART DRAWER VỚI MÃ GIẢM GIÁ, CỔNG THANH TOÁN QR)
@@ -4508,6 +3415,20 @@
     </div>
     <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
 
+      <!-- Dynamic AOV Booster Progress Bar (Chương 6) -->
+      <div id="cartAovBanner" class="p-2 mb-3 rounded border" style="background: #FDFBF7;">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="small fw-bold text-dark" id="cartAovTitle"><i class="bi bi-gift text-danger me-1"></i> Ưu đãi Freeship 15.000đ</span>
+          <span class="badge bg-danger rounded-pill" id="cartAovBadge" style="font-size: 10px;">Thêm 2 chai</span>
+        </div>
+        <div class="progress" style="height: 6px;">
+          <div class="progress-bar bg-success" id="cartAovProgressBar" role="progressbar" style="width: 33%;"></div>
+        </div>
+        <div class="small text-muted mt-1" style="font-size: 11px;" id="cartAovDesc">
+          Mua từ 3 chai (105k) hoặc Gói Tuần để được miễn phí giao lạnh túi đá gel!
+        </div>
+      </div>
+
       <!-- Danh sách món trong giỏ -->
       <div id="cartItemsList" class="flex-grow-1 overflow-auto pe-1">
         <!-- Render bằng javascript -->
@@ -4518,7 +3439,7 @@
 
         <!-- Nhập mã giảm giá -->
         <div class="input-group input-group-sm mb-3">
-          <input type="text" class="form-control" id="couponCodeInput" placeholder="Mã giảm giá (Thử: TRAMHAT10)">
+          <input type="text" class="form-control" id="couponCodeInput" placeholder="Mã giảm giá (Thử: TRAMHAT10, FREESHIP)">
           <button class="btn btn-outline-dark" onclick="applyCouponCode()">Áp Dụng</button>
         </div>
         <div id="couponNotice" class="small text-success mb-2 d-none"></div>
@@ -4527,7 +3448,7 @@
         <div class="form-check small mb-3">
           <input class="form-check-input" type="checkbox" id="subscribeWeeklyCheck" onchange="renderCart()">
           <label class="form-check-label fw-semibold" for="subscribeWeeklyCheck">
-            Đăng ký gói tuần (Giao đều T2 - T6 mỗi 08:00 sáng &bull; Giảm 10%)
+            Đăng ký gói tuần (Giao đều T2 - T6 mỗi 08:00 sáng &bull; Giảm 10% + Freeship)
           </label>
         </div>
 
@@ -4542,7 +3463,7 @@
           <span id="cartDiscountText">-0đ</span>
         </div>
         <div class="d-flex justify-content-between small text-muted mb-2">
-          <span>Phí giao lạnh 2h:</span>
+          <span>Phí giao lạnh túi đá gel:</span>
           <span id="cartShippingText">15.000đ</span>
         </div>
         <div class="d-flex justify-content-between fw-bold fs-5 text-dark border-top pt-2 mb-3 font-serif">
@@ -4552,36 +3473,54 @@
 
         <!-- Chọn phương thức thanh toán -->
         <div class="mb-3">
-          <label class="form-label small fw-bold text-uppercase text-muted" style="font-size: 11px;">Phương Thức Thanh
-            Toán</label>
+          <label class="form-label small fw-bold text-uppercase text-muted" style="font-size: 11px;">Phương Thức Thanh Toán</label>
           <select class="form-select form-select-sm" id="paymentMethodSelect"
             onchange="handlePaymentMethodChange(this.value)">
             <option value="cod">Tiền mặt khi nhận sữa tươi (COD)</option>
             <option value="vietqr">Quét mã VietQR / MoMo (Xác nhận tức thì)</option>
-            <option value="atm">Thẻ ATM / Thẻ tín dụng Visa</option>
+            <option value="atm">Thẻ ATM / Chuyển khoản ngân hàng</option>
           </select>
         </div>
 
         <!-- Khung hiện mã QR nếu chọn VietQR -->
         <div id="qrPaymentBox" class="p-2 border rounded text-center mb-3 bg-light d-none">
-          <div class="small fw-semibold mb-1">Quét mã QR để thanh toán nhanh:</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=TRAMHAT-THANHTOAN" alt="VietQR"
+          <div class="small fw-semibold mb-1">Quét mã QR để thanh toán đơn hàng:</div>
+          <img id="cartQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=TRAMHAT-THANHTOAN" alt="VietQR"
             style="width: 120px; height: 120px;" class="border rounded">
-          <div class="small text-muted mt-1" style="font-size: 11px;">Nội dung: <span class="fw-bold">TRAMHAT đơn hàng
-              mới</span></div>
+          <div class="small text-muted mt-1" style="font-size: 11px;">Nội dung CK: <span class="fw-bold text-danger" id="cartQrContent">TRAMHAT</span></div>
         </div>
 
-        <!-- Thông tin người nhận -->
-        <div class="mb-2">
+        <!-- Thông tin người nhận & Geofencing TP.HCM -->
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-muted mb-1" style="font-size: 11px;">THÔNG TIN GIAO LẠNH TP.HCM</label>
           <input type="text" class="form-control form-control-sm mb-2" id="cartCustomerName"
             placeholder="Họ và tên của bạn...">
           <input type="tel" class="form-control form-control-sm mb-2" id="cartCustomerPhone"
-            placeholder="Số điện thoại nhận sữa...">
-          <input type="text" class="form-control form-control-sm" id="cartCustomerAddress"
-            placeholder="Địa chỉ giao hàng tận nơi...">
+            placeholder="Số điện thoại nhận sữa (10 số)...">
+          
+          <select class="form-select form-select-sm mb-2" id="cartCustomerDistrict" onchange="handleCartDistrictChange(this.value)">
+            <option value="Quận 1">Quận 1 (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Quận 3">Quận 3 (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Quận 4">Quận 4 (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Quận 7">Quận 7 (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Quận 10">Quận 10 (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Bình Thạnh">Bình Thạnh (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Phú Nhuận">Phú Nhuận (Giao lạnh hỏa tốc 45–90p)</option>
+            <option value="Tân Bình">Tân Bình (Đặt trước mẻ nấu 05:00 sáng mai)</option>
+            <option value="Gò Vấp">Gò Vấp (Giao mẻ 07:30 sáng mai)</option>
+            <option value="TP. Thủ Đức">TP. Thủ Đức (Giao mẻ 07:30 sáng mai)</option>
+            <option value="Quận khác TP.HCM">Quận khác tại TP.HCM</option>
+          </select>
+          <div id="cartGeofenceNotice" class="alert alert-success py-1 px-2 mb-2 d-flex align-items-center gap-1" style="font-size: 11px;">
+            <i class="bi bi-shield-check"></i> <span>⚡ <strong>Vùng Giao Lạnh Chuẩn:</strong> Giao hỏa tốc 45–90 phút bằng túi giữ nhiệt đá gel (2–5°C).</span>
+          </div>
+          <input type="text" class="form-control form-control-sm mb-2" id="cartCustomerAddress"
+            placeholder="Số nhà, tên đường, tên tòa nhà/phòng...">
+          <input type="text" class="form-control form-control-sm" id="cartCustomerNotes"
+            placeholder="Ghi chú shipper (VD: gửi lễ tân tòa nhà, ít ngọt...)">
         </div>
 
-        <button class="btn-main-primary w-100 justify-content-center py-2" onclick="confirmCartCheckout()">
+        <button class="btn-main-primary w-100 justify-content-center py-2 fw-bold" onclick="confirmCartCheckout()">
           Xác Nhận Đặt Giao Tươi Ngay &rarr;
         </button>
 
@@ -6379,7 +5318,7 @@
         TramHatTracker.recordAddToCart(key, p ? p.name : key);
       }
       if (!p) return;
-      addToCartItem(p.name, p.priceVND, p.img, '300ml', 'Nguyên bản không đường');
+      addToCartItem(p.name, p.priceVND, p.img, '330ml (Chai Chuẩn)', 'Nguyên bản không đường');
       openCartDrawer();
     }
 
@@ -6403,30 +5342,83 @@
     }
 
     function openCartDrawer() {
-      if (typeof TramHatTracker !== 'undefined') {
-        TramHatTracker.trackOpenCart();
-      }
+      try {
+        if (window.TramHatAPI && typeof window.TramHatAPI.trackOpenCart === 'function') {
+          window.TramHatAPI.trackOpenCart();
+        }
+      } catch (e) {}
       renderCart();
-      const bsOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartDrawer'));
-      bsOffcanvas.show();
+      const el = document.getElementById('cartDrawer');
+      if (el) {
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(el);
+        bsOffcanvas.show();
+      }
+    }
+
+    function handleCartDistrictChange(district) {
+      const notice = document.getElementById('cartGeofenceNotice');
+      if (!notice) return;
+      const d = (district || '').toLowerCase();
+      const isCentral = ['quận 1', 'quận 3', 'quận 4', 'quận 7', 'quận 10', 'bình thạnh', 'phú nhuận'].some(q => d.includes(q));
+      if (isCentral) {
+        notice.className = 'alert alert-success py-1 px-2 mb-2 d-flex align-items-center gap-1';
+        notice.innerHTML = '<i class="bi bi-shield-check"></i> <span>⚡ <strong>Vùng Giao Lạnh Chuẩn:</strong> Giao hỏa tốc 45–90 phút bằng túi giữ nhiệt đá gel (2–5°C).</span>';
+      } else {
+        notice.className = 'alert alert-info py-1 px-2 mb-2 d-flex align-items-center gap-1';
+        notice.innerHTML = '<i class="bi bi-clock-history"></i> <span>❄️ <strong>Vùng Ngoại Thành:</strong> Đặt trước mẻ nấu 05:00 sáng mai — Giao mát trước 08:30 sáng.</span>';
+      }
     }
 
     function renderCart() {
       const listEl = document.getElementById('cartItemsList');
       const countEl = document.getElementById('navCartCount');
+      if (!listEl) return;
 
-      const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-      countEl.innerText = totalQty;
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      if (countEl) countEl.innerText = totalQty;
+
+      // Update AOV Progress Bar (Chương 6)
+      const aovTitle = document.getElementById('cartAovTitle');
+      const aovBadge = document.getElementById('cartAovBadge');
+      const aovBar = document.getElementById('cartAovProgressBar');
+      const aovDesc = document.getElementById('cartAovDesc');
+
+      const isWeekly = document.getElementById('subscribeWeeklyCheck') && document.getElementById('subscribeWeeklyCheck').checked;
+
+      if (aovBar) {
+        if (totalQty === 0) {
+          if (aovBar) aovBar.style.width = '0%';
+          if (aovBadge) { aovBadge.className = 'badge bg-secondary rounded-pill'; aovBadge.innerText = 'Chưa có món'; }
+          if (aovTitle) aovTitle.innerHTML = '<i class="bi bi-gift text-danger me-1"></i> Ưu đãi Freeship 15.000đ';
+          if (aovDesc) aovDesc.innerText = 'Thêm từ 3 chai hoặc Gói Tuần để được Miễn phí giao lạnh!';
+        } else if (isWeekly || totalQty >= 3) {
+          if (aovBar) aovBar.style.width = '100%';
+          if (aovBadge) { aovBadge.className = 'badge bg-success rounded-pill'; aovBadge.innerText = 'Đã Freeship 🎉'; }
+          if (aovTitle) aovTitle.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i> Đã Kích Hoạt Miễn Phí Giao Lạnh!';
+          if (aovDesc) aovDesc.innerText = 'Đơn hàng của bạn sẽ được đóng gói túi giữ nhiệt đá gel miễn phí!';
+        } else if (totalQty === 1) {
+          if (aovBar) aovBar.style.width = '33%';
+          if (aovBadge) { aovBadge.className = 'badge bg-danger rounded-pill'; aovBadge.innerText = 'Thêm 2 chai'; }
+          if (aovTitle) aovTitle.innerHTML = '<i class="bi bi-gift text-danger me-1"></i> Thêm 2 chai nữa để Freeship 15.000đ!';
+          if (aovDesc) aovDesc.innerText = 'Gợi ý: Mua combo 3 chai thưởng thức cùng đồng nghiệp để tiết kiệm 15k ship!';
+        } else if (totalQty === 2) {
+          if (aovBar) aovBar.style.width = '66%';
+          if (aovBadge) { aovBadge.className = 'badge bg-warning text-dark rounded-pill'; aovBadge.innerText = 'Chỉ thiếu 1 chai'; }
+          if (aovTitle) aovTitle.innerHTML = '<i class="bi bi-gift text-warning me-1"></i> Chỉ cần thêm 01 chai nữa để Freeship!';
+          if (aovDesc) aovDesc.innerText = 'Chọn thêm 1 vị bạn yêu thích để được miễn phí giao lạnh ngay!';
+        }
+      }
 
       if (cart.length === 0) {
         listEl.innerHTML = `
           <div class="text-center py-5 text-muted">
             <i class="bi bi-bag" style="font-size: 36px;"></i>
             <div class="mt-2 small">Giỏ hàng của bạn đang trống</div>
-            <a href="#menu" class="btn btn-sm btn-main-outline mt-3" data-bs-dismiss="offcanvas">Khám Phá Menu</a>
+            <a href="#menu" class="btn btn-sm btn-main-outline mt-3" data-bs-dismiss="offcanvas">Khám Phá Menu 6 Vị</a>
           </div>
         `;
         document.getElementById('cartSubtotalText').innerText = formatPrice(0);
+        document.getElementById('cartShippingText').innerText = formatPrice(0);
         document.getElementById('cartTotalText').innerText = formatPrice(0);
         return;
       }
@@ -6435,20 +5427,22 @@
       let html = '';
 
       cart.forEach((item, idx) => {
-        const itemTotal = item.priceVND * item.qty;
+        const p = item.priceVND || 35000;
+        const q = item.qty || 1;
+        const itemTotal = p * q;
         subtotal += itemTotal;
 
         html += `
           <div class="cart-drawer-item">
-            <img src="${item.img}" alt="${item.name}">
+            <img src="${item.img || 'images/prod_real_dieu.jpg'}" alt="${item.name}">
             <div class="flex-grow-1">
               <div class="fw-bold small text-dark">${item.name}</div>
-              <div class="text-muted" style="font-size: 11px;">${item.size} &bull; ${item.sweet}</div>
-              <div class="fw-semibold text-danger small mt-1">${formatPrice(item.priceVND)}</div>
+              <div class="text-muted" style="font-size: 11px;">${item.size || '330ml'} &bull; ${item.sweet || 'Ít ngọt'}</div>
+              <div class="fw-semibold text-danger small mt-1">${formatPrice(p)}</div>
             </div>
             <div class="d-flex align-items-center gap-1">
               <button class="cart-qty-btn" onclick="updateCartQty(${idx}, -1)">&minus;</button>
-              <span class="small px-1 fw-bold">${item.qty}</span>
+              <span class="small px-1 fw-bold">${q}</span>
               <button class="cart-qty-btn" onclick="updateCartQty(${idx}, 1)">&plus;</button>
             </div>
           </div>
@@ -6457,20 +5451,21 @@
 
       listEl.innerHTML = html;
 
-      // Tính toán mã coupon & gói tuần
+      // Tính phí ship & chiết khấu
       let shipping = 15000;
-      let discountAmount = 0;
+      if (totalQty >= 3 || isWeekly || currentCouponDiscount >= 15000) {
+        shipping = 0; // FREESHIP
+      }
 
-      // Gói tuần T2-T6 giảm 10%
-      const isWeekly = document.getElementById('subscribeWeeklyCheck') && document.getElementById('subscribeWeeklyCheck').checked;
+      let discountAmount = 0;
       if (isWeekly) {
         discountAmount += Math.round(subtotal * 0.1);
       }
 
       if (currentCouponDiscount > 0) {
-        if (currentCouponDiscount < 1) { // ví dụ 0.10 (10%)
+        if (currentCouponDiscount < 1) {
           discountAmount += Math.round(subtotal * currentCouponDiscount);
-        } else {
+        } else if (currentCouponDiscount !== 15000) {
           discountAmount += currentCouponDiscount;
         }
       }
@@ -6485,187 +5480,219 @@
       const total = Math.max(0, subtotal - discountAmount + shipping);
 
       document.getElementById('cartSubtotalText').innerText = formatPrice(subtotal);
-      document.getElementById('cartShippingText').innerText = formatPrice(shipping);
+      document.getElementById('cartShippingText').innerText = shipping === 0 ? 'MIỄN PHÍ (0đ)' : formatPrice(shipping);
       document.getElementById('cartTotalText').innerText = formatPrice(total);
+
+      // Cập nhật QR code nếu đang chọn VietQR
+      const qrImg = document.getElementById('cartQrImage');
+      const qrContent = document.getElementById('cartQrContent');
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=2|99|0901888777|TR%E1%BA%A0M%20H%E1%BA%A0T||0|0|${total}|TRAMHAT`;
+      }
+      if (qrContent) {
+        qrContent.innerText = `TRAMHAT ${formatPrice(total)}`;
+      }
     }
 
-    // 7. MÃ GIẢM GIÁ (COUPON / VOUCHER)
+    // MÃ GIẢM GIÁ
     function applyCouponCode() {
-      const code = document.getElementById('couponCodeInput').value.trim().toUpperCase();
+      const code = (document.getElementById('couponCodeInput')?.value || '').trim().toUpperCase();
       const noticeEl = document.getElementById('couponNotice');
 
       if (code === 'TRAMHAT10') {
         currentCouponDiscount = 0.10;
         noticeEl.innerText = "Áp dụng thành công mã TRAMHAT10: Giảm 10% tổng đơn!";
         noticeEl.classList.remove('d-none');
-      } else if (code === 'FREESHIP') {
+      } else if (code === 'FREESHIP' || code === 'TRAMHAT15K') {
         currentCouponDiscount = 15000;
-        noticeEl.innerText = "Áp dụng thành công mã FREESHIP: Miễn phí giao hàng 15.000đ!";
+        noticeEl.innerText = "Áp dụng thành công mã Freeship giao lạnh 15.000đ!";
         noticeEl.classList.remove('d-none');
       } else {
-        alert("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10 hoặc FREESHIP");
-        noticeEl.classList.add('d-none');
+        alert("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10, FREESHIP hoặc TRAMHAT15K");
+        if (noticeEl) noticeEl.classList.add('d-none');
         currentCouponDiscount = 0;
       }
       renderCart();
     }
 
-    // 8. CỔNG THANH TOÁN (COD, VIETQR, ATM)
+    // CHỌN CỔNG THANH TOÁN
     function handlePaymentMethodChange(val) {
       const qrBox = document.getElementById('qrPaymentBox');
-      if (val === 'vietqr') {
-        qrBox.classList.remove('d-none');
-      } else {
-        qrBox.classList.add('d-none');
+      if (qrBox) {
+        if (val === 'vietqr') {
+          qrBox.classList.remove('d-none');
+        } else {
+          qrBox.classList.add('d-none');
+        }
       }
     }
 
-    function confirmCartCheckout() {
-      const name = (document.getElementById('checkoutCustomerName')?.value || '').trim();
-      const phone = (document.getElementById('checkoutCustomerPhone')?.value || '').trim();
-      const address = (document.getElementById('checkoutCustomerAddress')?.value || '').trim();
-      const notes = (document.getElementById('checkoutOrderNotes')?.value || '').trim();
+    // XÁC NHẬN ĐẶT HÀNG THỰC TẾ (CHỐT ĐƠN & TẠO LEAD/CUSTOMER)
+    async function confirmCartCheckout() {
+      if (!cart || cart.length === 0) {
+        alert("Giỏ hàng của bạn đang trống! Vui lòng chọn ít nhất 1 chai sữa hạt.");
+        return;
+      }
+
+      const name = (document.getElementById('cartCustomerName')?.value || '').trim();
+      const phone = (document.getElementById('cartCustomerPhone')?.value || '').trim();
+      const district = (document.getElementById('cartCustomerDistrict')?.value || 'Quận 1').trim();
+      const address = (document.getElementById('cartCustomerAddress')?.value || '').trim();
+      const notes = (document.getElementById('cartCustomerNotes')?.value || '').trim();
+      const paymentMethod = document.getElementById('paymentMethodSelect')?.value || 'cod';
+      const isWeekly = !!(document.getElementById('subscribeWeeklyCheck') && document.getElementById('subscribeWeeklyCheck').checked);
 
       if (!name) {
         alert("Vui lòng nhập họ và tên của bạn để Trạm Hạt giao sữa.");
+        document.getElementById('cartCustomerName')?.focus();
         return;
       }
-      if (!phone || phone.length < 9) {
-        alert("Vui lòng nhập số điện thoại hợp lệ để shipper xác nhận đơn giao tươi.");
-        return;
-      }
-      if (!address) {
-        alert("Vui lòng nhập địa chỉ nhận hàng.");
+      
+      const phoneClean = phone.replace(/[^0-9]/g, '');
+      if (phoneClean.length < 9 || phoneClean.length > 11) {
+        alert("Vui lòng nhập số điện thoại hợp lệ (10 chữ số) để shipper xác nhận giờ giao tươi.");
+        document.getElementById('cartCustomerPhone')?.focus();
         return;
       }
 
+      if (!address) {
+        alert("Vui lòng nhập địa chỉ cụ thể (số nhà, tên đường, tòa nhà) để giao sữa.");
+        document.getElementById('cartCustomerAddress')?.focus();
+        return;
+      }
+
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      const subtotal = cart.reduce((sum, item) => sum + ((item.priceVND || 35000) * (item.qty || 1)), 0);
+      
+      let shipping = 15000;
+      if (totalQty >= 3 || isWeekly || currentCouponDiscount >= 15000) {
+        shipping = 0;
+      }
+
+      let discountAmount = 0;
+      if (isWeekly) discountAmount += Math.round(subtotal * 0.1);
+      if (currentCouponDiscount > 0 && currentCouponDiscount < 1) {
+        discountAmount += Math.round(subtotal * currentCouponDiscount);
+      }
+
+      const finalTotalVND = Math.max(0, subtotal - discountAmount + shipping);
       const orderId = 'TH-' + Math.floor(100000 + Math.random() * 900000);
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      const discount = Math.round(subtotal * (currentCouponDiscount / 100));
-      const total = subtotal - discount;
+
+      const itemsSummary = cart.map(i => `${i.name} (330ml, ${i.sweet || 'Ít ngọt'}) x ${i.qty || 1}`).join(', ');
 
       const orderData = {
+        orderId: orderId,
         id: orderId,
         customerName: name,
-        phone: phone,
-        address: address,
+        name: name,
+        phone: phoneClean,
+        district: district,
+        address: `${address}, ${district}, TP.HCM`,
         notes: notes,
-        items: cart.map(i => ({ id: i.key, name: i.name, qty: i.quantity, price: i.price, size: i.size })),
-        totalVND: total,
-        status: 'pending',
+        items: cart.map(i => ({
+          name: i.name,
+          priceVND: i.priceVND || 35000,
+          qty: i.qty || 1,
+          size: i.size || '330ml',
+          sweet: i.sweet || 'Ít ngọt'
+        })),
+        itemsSummary: itemsSummary,
+        subtotalVND: subtotal,
+        discountVND: discountAmount,
+        shippingVND: shipping,
+        totalVND: finalTotalVND,
+        paymentMethod: paymentMethod,
+        isWeekly: isWeekly,
+        status: 'Chờ Xác Nhận',
         channel: 'Website Trạm Hạt',
         createdAt: new Date().toISOString()
       };
 
-      // Real Martech Lead Scoring
-      let leadScore = 40;
-      if (total >= 100000) leadScore += 30;
-      else if (total >= 50000) leadScore += 20;
-      if (cart.length >= 2) leadScore += 15;
-      if (phone.length >= 10) leadScore += 15;
-
+      // Tự động nâng cấp Lead thành Customer (100 điểm)
       const leadData = {
+        leadId: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
         id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+        customerName: name,
         name: name,
-        phone: phone,
-        address: address,
-        notes: notes,
-        channel: 'Website',
-        productInterest: cart.map(i => i.name).join(', '),
-        score: leadScore,
-        stage: leadScore >= 70 ? 'Hot' : 'Warm',
+        phone: phoneClean,
+        district: district,
+        channel: 'Website Checkout',
+        interestedProduct: itemsSummary,
+        productInterest: itemsSummary,
+        aiScore: 100,
+        score: 100,
+        funnelStage: 'Customer',
+        stage: 'Customer',
+        status: 'Converted_Order',
         orderId: orderId,
-        orderTotal: total,
+        orderTotal: finalTotalVND,
+        history: [
+          { time: new Date().toLocaleTimeString('vi-VN'), action: `Chốt đơn #${orderId} (${formatPrice(finalTotalVND)})` }
+        ],
         createdAt: new Date().toISOString()
       };
 
-      // Save to localStorage so admin.html immediately sees the real lead and order
+      // 1. Lưu đơn & lead vào localStorage đồng bộ
       try {
-        let existingLeads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
-        existingLeads.unshift(leadData);
-        localStorage.setItem('tramhat_crm_leads', JSON.stringify(existingLeads));
-
         let existingOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
         existingOrders.unshift(orderData);
         localStorage.setItem('tramhat_orders_list', JSON.stringify(existingOrders));
+
+        let existingLeads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
+        const existingIdx = existingLeads.findIndex(l => l.phone === phoneClean);
+        if (existingIdx >= 0) {
+          existingLeads[existingIdx].aiScore = 100;
+          existingLeads[existingIdx].score = 100;
+          existingLeads[existingIdx].funnelStage = 'Customer';
+          existingLeads[existingIdx].stage = 'Customer';
+          existingLeads[existingIdx].status = 'Converted_Order';
+          existingLeads[existingIdx].orderId = orderId;
+        } else {
+          existingLeads.unshift(leadData);
+        }
+        localStorage.setItem('tramhat_crm_leads', JSON.stringify(existingLeads));
       } catch(e) {}
 
-      // Send to Backend API if active
+      // 2. Gửi API lên Serverless Backend
       if (window.TramHatAPI) {
-        window.TramHatAPI.createOrder(orderData);
-        window.TramHatAPI.submitLead(leadData);
+        try {
+          window.TramHatAPI.createOrder(orderData);
+          window.TramHatAPI.submitLead(leadData);
+        } catch (e) {}
       }
 
-      // Close modal & clear cart
-      const modalEl = document.getElementById('checkoutModal');
-      if (modalEl) {
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
-      }
-      cart = [];
-      updateCartUI();
-
-      alert(`ĐẶT HÀNG THÀNH CÔNG!\n\n- Mã đơn hàng: #${orderId}\n- Khách hàng: ${name} (${phone})\n- Địa chỉ: ${address}\n- Tổng thanh toán: ${total.toLocaleString('vi-VN')}đ\n\nNhân viên xưởng nấu Trạm Hạt sẽ liên hệ xác nhận giờ giao tươi lạnh lúc 08:30 sáng mai!`);
-      return;
-    }
-    function _unused_old_confirmCartCheckout() {
-      if (cart.length === 0) {
-        alert("Giỏ hàng của bạn đang trống!");
-        return;
-      }
-      const name = document.getElementById('cartCustomerName').value.trim();
-      const phone = document.getElementById('cartCustomerPhone').value.trim();
-      const address = document.getElementById('cartCustomerAddress').value.trim();
-
-      if (!name || !phone || !address) {
-        alert("Vui lòng điền đủ: Họ tên, Số điện thoại và Địa chỉ giao hàng!");
-        return;
+      // 3. Đóng offcanvas giỏ hàng
+      const offcanvasEl = document.getElementById('cartDrawer');
+      if (offcanvasEl) {
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (bsOffcanvas) bsOffcanvas.hide();
       }
 
-      const orderId = "TH-" + Math.floor(1000 + Math.random() * 9000);
-      const totalText = document.getElementById('cartTotalText').innerText;
-      const rawTotal = cart.reduce((s, i) => s + i.priceVND * i.qty, 0) - currentCouponDiscount;
-      const finalTotalVND = Math.max(0, rawTotal);
-      const earnedPoints = Math.floor(finalTotalVND / 1000);
-      const itemNames = cart.map(i => `${i.name} (${i.size}) x ${i.qty}`).join(', ');
-
-      const pmInput = document.querySelector('input[name="paymentMethod"]:checked');
-      const paymentMethod = pmInput ? (pmInput.value === 'vietqr' ? 'Chuyển Khoản VietQR' : 'Thanh Toán COD') : 'COD';
-      const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' - ' + new Date().toLocaleDateString('vi-VN');
-
-      // Create Real Order Object
-      const newOrder = {
-        id: '#' + orderId,
-        customer: name,
-        phone: phone,
-        address: address,
-        items: itemNames,
-        total: totalText,
-        totalVND: finalTotalVND,
-        payment: paymentMethod,
-        time: timeStr,
-        status: 'Chờ Xác Nhận'
-      };
-
-      // Add to real orders list
-      adminOrdersList.unshift(newOrder);
-      saveRealOrders();
-
-      // Record real purchase in tracker
-      if (typeof TramHatTracker !== 'undefined') {
-        TramHatTracker.recordPurchase(finalTotalVND, orderId);
-      }
-
-      alert(`ĐẶT HÀNG THÀNH CÔNG!\n\n- Mã đơn hàng: #${orderId}\n- Khách hàng: ${name} (${phone})\n- Địa chỉ: ${address}\n- Tổng thanh toán: ${totalText}\n- Điểm thưởng tích lũy: +${earnedPoints} điểm\n\nNhân viên xưởng nấu Trạm Hạt sẽ liên hệ xác nhận giờ giao tươi lạnh lúc 08:30 sáng mai!`);
-
-      // Clear cart
+      // 4. Xóa giỏ hàng & render lại
       cart = [];
       currentCouponDiscount = 0;
-      document.getElementById('couponCodeInput').value = '';
-      document.getElementById('couponNotice').classList.add('d-none');
+      if (document.getElementById('couponCodeInput')) document.getElementById('couponCodeInput').value = '';
+      if (document.getElementById('couponNotice')) document.getElementById('couponNotice').classList.add('d-none');
       renderCart();
-      const bsOffcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('cartDrawer'));
-      if (bsOffcanvas) bsOffcanvas.hide();
+
+      // 5. Cập nhật lịch sử đơn hàng trên trang cá nhân nếu đang xem
+      renderProfileOrders();
+
+      // 6. Hiển thị thông báo đặt hàng thành công chi tiết
+      const payText = paymentMethod === 'vietqr' ? 'Quét mã VietQR chuyển khoản' : 'Thanh toán tiền mặt khi nhận hàng (COD)';
+      const shipNotice = district.includes('Quận 1') || district.includes('Bình Thạnh') || district.includes('Quận 3') || district.includes('Quận 7')
+        ? '⚡ Shipper đang chuẩn bị túi giữ nhiệt đá gel giao hỏa tốc 45–90 phút!'
+        : '❄️ Đơn hàng của bạn sẽ được nấu mới lúc 05:00 sáng mai và giao trước 08:30 sáng!';
+
+      alert(`🎉 ĐẶT HÀNG THÀNH CÔNG!\n\n` +
+        `• Mã đơn hàng: #${orderId}\n` +
+        `• Khách hàng: ${name} (${phoneClean})\n` +
+        `• Địa chỉ: ${address}, ${district}, TP.HCM\n` +
+        `• Sản phẩm: ${itemsSummary}\n` +
+        `• Tổng thanh toán: ${formatPrice(finalTotalVND)}\n` +
+        `• Hình thức: ${payText}\n\n` +
+        `${shipNotice}\n\nTrạm Hạt trân trọng cảm ơn bạn!`
+      );
     }
 
     
@@ -7431,52 +6458,49 @@
       const container = document.getElementById('profileOrdersListContainer');
       if (!container) return;
 
-      const sampleOrders = [
-        {
-          id: 'TH-20261024-88',
-          date: '24/10/2026 - Giao 07:15 sáng',
-          items: '1x Sữa Điều Tự Nhiên (500ml), 1x Óc Chó Mè Đen (300ml)',
-          total: '83.000đ',
-          status: 'Đang Nấu 05:00 Sáng',
-          statusClass: 'text-warning'
-        },
-        {
-          id: 'TH-20261021-42',
-          date: '21/10/2026 - Giao 07:25 sáng',
-          items: '2x Sữa Hạnh Nhân Cacao (500ml)',
-          total: '102.000đ',
-          status: 'Đã Giao Lạnh Thành Công',
-          statusClass: 'text-success'
-        },
-        {
-          id: 'TH-20261018-19',
-          date: '18/10/2026 - Giao 07:30 sáng',
-          items: '1x Hạt Sen Tươi Đồng Tháp (1000ml)',
-          total: '85.000đ',
-          status: 'Đã Giao Lạnh Thành Công',
-          statusClass: 'text-success'
-        }
-      ];
+      let realOrders = [];
+      try {
+        realOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
+      } catch (e) {}
+
+      if (realOrders.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-5 border rounded-3 bg-light">
+            <i class="bi bi-receipt text-muted" style="font-size: 36px;"></i>
+            <h6 class="fw-bold mt-2">Bạn Chưa Có Đơn Hàng Nào</h6>
+            <p class="text-muted small mb-3">Hãy đặt thử 1 chai sữa hạt tươi nấu lúc 05:00 sáng hôm nay nhé!</p>
+            <button class="btn btn-sm btn-main-primary" onclick="switchTab('menu')">Khám Phá Menu 6 Vị &rarr;</button>
+          </div>
+        `;
+        return;
+      }
 
       let htmlStr = '';
-      sampleOrders.forEach(ord => {
+      realOrders.forEach(ord => {
+        const orderId = ord.orderId || ord.id || 'TH-000000';
+        const dateStr = ord.createdAt ? new Date(ord.createdAt).toLocaleString('vi-VN') : 'Hôm nay';
+        const items = ord.itemsSummary || (Array.isArray(ord.items) ? ord.items.map(i => `${i.name} x ${i.qty}`).join(', ') : 'Sữa hạt tươi 330ml');
+        const total = formatPrice(ord.totalVND || 35000);
+        const status = ord.status || 'Chờ Xác Nhận';
+        const statusClass = status === 'Hoàn tất' || status === 'Đã Giao Lạnh Thành Công' ? 'text-success' : 'text-warning';
+
         htmlStr += `
           <div class="profile-order-card">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 pb-2 border-bottom">
               <div>
-                <span class="fw-bold font-serif text-dark">${ord.id}</span>
-                <span class="text-muted small ms-2">• ${ord.date}</span>
+                <span class="fw-bold font-serif text-dark">#${orderId}</span>
+                <span class="text-muted small ms-2">• ${dateStr}</span>
               </div>
-              <span class="small fw-bold ${ord.statusClass}"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> ${ord.status}</span>
+              <span class="small fw-bold ${statusClass}"><i class="bi bi-circle-fill" style="font-size: 8px;"></i> ${status}</span>
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center">
               <div>
-                <div class="small text-dark fw-medium">${ord.items}</div>
-                <div class="text-muted small">Chai thủy tinh tiệt trùng • Giao lạnh thùng xốp 2-4°C</div>
+                <div class="small text-dark fw-medium">${items}</div>
+                <div class="text-muted small">${ord.address || 'Giao lạnh TP.HCM'} • Đóng túi đá gel 2–5°C</div>
               </div>
               <div class="text-end mt-2 mt-md-0">
-                <div class="fw-bold text-danger font-serif fs-5">${ord.total}</div>
-                <button class="btn btn-sm btn-main-outline py-1 px-3 mt-1" onclick="switchTab('menu')">Đặt Lại</button>
+                <div class="fw-bold text-danger font-serif fs-5">${total}</div>
+                <button class="btn btn-sm btn-main-outline py-1 px-3 mt-1" onclick="switchTab('menu')">Đặt Thêm</button>
               </div>
             </div>
           </div>
@@ -7484,6 +6508,177 @@
       });
 
       container.innerHTML = htmlStr;
+    }
+
+    // Tra cứu đơn hàng bằng Số Điện Thoại
+    function lookupGuestOrders() {
+      const phoneInput = document.getElementById('guestLookupPhone');
+      const resContainer = document.getElementById('guestLookupResult');
+      if (!phoneInput || !resContainer) return;
+
+      const phone = phoneInput.value.replace(/[^0-9]/g, '');
+      if (phone.length < 9) {
+        alert('Vui lòng nhập số điện thoại hợp lệ (10 số) để tra cứu đơn hàng.');
+        phoneInput.focus();
+        return;
+      }
+
+      let allOrders = [];
+      try {
+        allOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
+      } catch (e) {}
+
+      const matched = allOrders.filter(o => (o.phone || '').includes(phone));
+      if (matched.length === 0) {
+        resContainer.innerHTML = `
+          <div class="alert alert-warning small mt-2">
+            Không tìm thấy đơn hàng nào gắn với số điện thoại <strong>${phone}</strong>. Vui lòng kiểm tra lại số hoặc đặt hàng mới!
+          </div>
+        `;
+        return;
+      }
+
+      let html = `<div class="mt-3"><h6 class="small fw-bold text-dark">Tìm thấy ${matched.length} đơn hàng:</h6>`;
+      matched.forEach(o => {
+        html += `
+          <div class="p-2 border rounded bg-white small mb-2">
+            <div class="d-flex justify-content-between fw-bold">
+              <span>#${o.orderId || o.id}</span>
+              <span class="text-danger">${formatPrice(o.totalVND || 0)}</span>
+            </div>
+            <div class="text-muted" style="font-size: 11px;">${o.itemsSummary || 'Sữa hạt tươi 330ml'}</div>
+            <div class="d-flex justify-content-between align-items-center mt-1">
+              <span class="badge bg-warning text-dark">${o.status || 'Chờ Xác Nhận'}</span>
+              <span class="text-muted" style="font-size: 10px;">${new Date(o.createdAt).toLocaleDateString('vi-VN')}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      resContainer.innerHTML = html;
+    }
+
+    // ==========================================================================
+    // 15. CONTEXTUAL RECOMMENDER & TASTE QUIZ 30S (MARTECH CHƯƠNG 6)
+    // ==========================================================================
+    let currentContextualProduct = { id: 'cashew', name: 'Sữa Điều Tự Nhiên', priceVND: 35000, img: 'images/prod_real_dieu.jpg' };
+    let quizState = { goal: 'diet', taste: 'rich', recommendation: null };
+
+    function initContextualBanner() {
+      const bannerText = document.getElementById('contextualTimeText');
+      if (!bannerText) return;
+
+      const hour = new Date().getHours();
+      let text = '';
+      if (hour >= 5 && hour <= 10) {
+        currentContextualProduct = { id: 'cashew', name: 'Sữa Điều Tự Nhiên', priceVND: 35000, img: 'images/prod_real_dieu.jpg' };
+        text = `Buổi sáng (${hour}:00): Khởi động năng lượng ngày mới êm bụng cùng <strong>Sữa Điều Tự Nhiên</strong> hoặc <strong>Sữa Macca Yến Mạch</strong>!`;
+      } else if (hour >= 11 && hour <= 16) {
+        currentContextualProduct = { id: 'cacao', name: 'Sữa Hạnh Nhân Cacao', priceVND: 35000, img: 'images/prod_real_cacao.jpg' };
+        text = `Xế chiều (${hour}:00): Xua tan uể oải giờ deadlines, tăng cường Endorphin với <strong>Sữa Hạnh Nhân Cacao Đắk Lắk</strong>!`;
+      } else {
+        currentContextualProduct = { id: 'lotus', name: 'Sữa Hạt Sen Lá Dứa', priceVND: 35000, img: 'images/prod_real_sen.jpg' };
+        text = `Buổi tối (${hour}:00): Thư giãn xoa dịu thần kinh, hỗ trợ giấc ngủ sâu lành với <strong>Sữa Hạt Sen Lá Dứa</strong>!`;
+      }
+      bannerText.innerHTML = text;
+    }
+
+    function addContextualToCart() {
+      addToCartItem(currentContextualProduct.name, currentContextualProduct.priceVND, currentContextualProduct.img, '330ml (Chai Chuẩn)', 'Ít ngọt thanh mát');
+      openCartDrawer();
+    }
+
+    function selectQuizOption(field, val) {
+      quizState[field] = val;
+      document.getElementById('quizStep1')?.classList.add('d-none');
+      document.getElementById('quizStep2')?.classList.remove('d-none');
+    }
+
+    function backQuizStep(step) {
+      if (step === 1) {
+        document.getElementById('quizStep1')?.classList.remove('d-none');
+        document.getElementById('quizStep2')?.classList.add('d-none');
+      }
+    }
+
+    function selectQuizTaste(btn, val) {
+      document.querySelectorAll('.quiz-taste-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      quizState.taste = val;
+    }
+
+    async function submitTasteQuiz() {
+      const name = (document.getElementById('quizUserName')?.value || 'Khách Làm Quiz').trim();
+      const phone = (document.getElementById('quizUserPhone')?.value || '').trim();
+
+      if (phone && phone.replace(/[^0-9]/g, '').length < 9) {
+        alert('Vui lòng nhập số điện thoại hợp lệ để nhận mã Freeship.');
+        return;
+      }
+
+      // Recommender mapping
+      let rec = { name: 'Sữa Macca Yến Mạch', priceVND: 35000, img: 'images/prod_real_macca.jpg', reason: 'Giàu đạm thực vật & beta-glucan giúp no lâu, chuẩn dáng Eat Clean!' };
+      if (quizState.goal === 'brain' || quizState.taste === 'rich') {
+        rec = { name: 'Sữa Óc Chó Mè Đen', priceVND: 35000, img: 'images/prod_real_occho.jpg', reason: 'Dồi dào Omega-3 và chất béo tốt giúp trí não tập trung xử lý deadlines vượt trội!' };
+      } else if (quizState.goal === 'relax') {
+        rec = { name: 'Sữa Hạt Sen Lá Dứa', priceVND: 35000, img: 'images/prod_real_sen.jpg', reason: 'Hạt sen tươi Đồng Tháp giúp thư giãn thần kinh, an thần và ngủ sâu giấc!' };
+      } else if (quizState.taste === 'sweet') {
+        rec = { name: 'Sữa Hạnh Nhân Cacao', priceVND: 35000, img: 'images/prod_real_cacao.jpg', reason: 'Cacao nguyên chất kích thích giải phóng Endorphin chống căng thẳng hiệu quả!' };
+      }
+
+      quizState.recommendation = rec;
+
+      // Call API or create lead locally
+      if (phone) {
+        const lead = {
+          leadId: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+          id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+          customerName: name,
+          name: name,
+          phone: phone,
+          district: 'TP.HCM',
+          channel: 'Quiz Khẩu Vị 30s',
+          interestedProduct: rec.name,
+          productInterest: rec.name,
+          aiScore: 65, // +25 from quiz completion
+          score: 65,
+          funnelStage: 'MQL',
+          stage: 'MQL',
+          status: 'Needs_Call',
+          history: [{ time: new Date().toLocaleTimeString('vi-VN'), action: `Làm Quiz: ${rec.name}` }],
+          createdAt: new Date().toISOString()
+        };
+        try {
+          let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
+          leads.unshift(lead);
+          localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
+          if (window.TramHatAPI) window.TramHatAPI.submitLead(lead);
+        } catch(e) {}
+      }
+
+      // Show result
+      document.getElementById('quizStep2')?.classList.add('d-none');
+      const step3 = document.getElementById('quizStep3');
+      if (step3) {
+        step3.classList.remove('d-none');
+        document.getElementById('quizResultTitle').innerText = `${rec.name} (330ml)`;
+        document.getElementById('quizResultReason').innerText = rec.reason;
+      }
+    }
+
+    function addQuizRecommendationToCart() {
+      if (quizState.recommendation) {
+        addToCartItem(quizState.recommendation.name, quizState.recommendation.priceVND, quizState.recommendation.img, '330ml (Chai Chuẩn)', 'Ít ngọt thanh mát');
+        // Auto apply TRAMHAT15K coupon
+        currentCouponDiscount = 15000;
+        openCartDrawer();
+      }
+    }
+
+    function resetQuiz() {
+      document.getElementById('quizStep3')?.classList.add('d-none');
+      document.getElementById('quizStep2')?.classList.add('d-none');
+      document.getElementById('quizStep1')?.classList.remove('d-none');
     }
 
     // Khi mới load trang:
@@ -7501,10 +6696,10 @@
         history.replaceState(null, null, ' ');
       }
 
-      // 2. Đồng bộ UI tài khoản
-      syncUserUI();
+      // 2. Kích hoạt banner gợi ý theo giờ
+      initContextualBanner();
 
-      // 3. Khách hàng duyệt web tự nhiên, không làm phiền bằng popup đăng nhập bắt buộc
+      // 3. Đồng bộ UI tài khoản
       syncUserUI();
     });
 
@@ -7587,14 +6782,55 @@
 
     function sendChatAnswer(question) {
       const box = document.getElementById('chatMessagesBox');
+      const qLower = question.toLowerCase();
 
-      let reply = "Nhân viên tư vấn sẽ hỗ trợ bạn ngay qua hotline hoặc Facebook Trạm Hạt.";
-      if (question.includes('bao lâu')) {
-        reply = "Sữa tươi Trạm Hạt nấu thủ công không chất bảo quản, giữ lạnh liên tục ở 2°C - 4°C và ngon nhất trong vòng 48 giờ kể từ lúc mở nắp bạn nhé!";
-      } else if (question.includes('gói tuần')) {
-        reply = "Gói tuần giao đều đặn từ Thứ 2 đến Thứ 6 vào lúc 08:00 sáng tại văn phòng của bạn. Bạn được giảm ngay 10% và miễn phí đổi vỏ chai xanh!";
-      } else if (question.includes('vỏ chai')) {
-        reply = "Mỗi 5 vỏ chai thủy tinh gửi lại shipper khi nhận đơn mới, bạn sẽ được tặng ngay 1 gói hạt giống rau mầm xanh để trang trí bàn làm việc!";
+      let reply = "Cảm ơn bạn! Để được tư vấn chi tiết nhất và nhận mã Freeship 15k đơn đầu, bạn có thể để lại Số Điện Thoại ở khung chat này nhé!";
+
+      // Phone number detection (Lead Capture)
+      const phoneMatch = question.match(/(0[3|5|7|8|9][0-9]{8})/);
+      if (phoneMatch) {
+        const phone = phoneMatch[0];
+        reply = `Dạ Trạm Hạt đã nhận số điện thoại <strong>${phone}</strong> của bạn! Đội ngũ bếp và tư vấn sẽ liên hệ gửi thực đơn dinh dưỡng và mã Freeship 15.000đ cho bạn ngay nhé.`;
+        
+        // Auto capture lead
+        const lead = {
+          leadId: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+          id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+          customerName: 'Khách Tư Vấn Chat',
+          name: 'Khách Tư Vấn Chat',
+          phone: phone,
+          district: 'TP.HCM',
+          channel: 'Live Chatbot',
+          interestedProduct: 'Tư vấn vị sữa & đặt mẻ tươi',
+          productInterest: 'Tư vấn vị sữa & đặt mẻ tươi',
+          aiScore: 60,
+          score: 60,
+          funnelStage: 'MQL',
+          stage: 'MQL',
+          status: 'Needs_Call',
+          history: [{ time: new Date().toLocaleTimeString('vi-VN'), action: `Để lại SĐT ${phone} qua live chat` }],
+          createdAt: new Date().toISOString()
+        };
+        try {
+          let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
+          leads.unshift(lead);
+          localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
+          if (window.TramHatAPI) window.TramHatAPI.submitLead(lead);
+        } catch(e) {}
+      } else if (qLower.includes('bao lâu') || qLower.includes('hạn dùng') || qLower.includes('bảo quản')) {
+        reply = "Sữa tươi Trạm Hạt nấu thủ công nguyên chất không chất bảo quản, trữ lạnh ở 2°C - 5°C và ngon nhất trong 48 giờ kể từ lúc xuất xưởng!";
+      } else if (qLower.includes('gói tuần') || qLower.includes('định kỳ')) {
+        reply = "Gói tuần giao đều đặn từ Thứ 2 đến Thứ 6 vào lúc 08:00 sáng tại văn phòng. Bạn được giảm 10% (chỉ 189.000đ/6 chai) và hoàn toàn MIỄN PHÍ giao hàng!";
+      } else if (qLower.includes('vỏ chai') || qLower.includes('thu hồi')) {
+        reply = "Chính sách Trạm Xanh: Cứ mỗi 5 vỏ chai thủy tinh gửi lại shipper khi nhận mẻ mới, bạn sẽ được tặng ngay 01 chai sữa hạt tươi tùy chọn!";
+      } else if (qLower.includes('giảm cân') || qLower.includes('eat clean') || qLower.includes('calo')) {
+        reply = "Nếu bạn đang Eat Clean giữ dáng, Trạm Hạt đề xuất <strong>Sữa Macca Yến Mạch</strong> (175 kcal, giàu chất xơ beta-glucan) và <strong>Sữa Hạt Sen Lá Dứa</strong> (160 kcal, thanh mát ít calo)!";
+      } else if (qLower.includes('trí não') || qLower.includes('deadline') || qLower.includes('tập trung')) {
+        reply = "Để nạp năng lượng tập trung chạy deadlines, bạn nên chọn <strong>Sữa Óc Chó Mè Đen</strong> (dồi dào Omega-3) hoặc <strong>Sữa Điều Tự Nhiên</strong> êm bụng!";
+      } else if (qLower.includes('ngủ ngon') || qLower.includes('mất ngủ') || qLower.includes('thư giãn')) {
+        reply = "Để xoa dịu áp lực và ngủ ngon sâu giấc, <strong>Sữa Hạt Sen Lá Dứa Đồng Tháp</strong> và <strong>Sữa Đậu Đỏ Kỷ Tử</strong> là lựa chọn số 1 ạ!";
+      } else if (qLower.includes('ship') || qLower.includes('giao hàng') || qLower.includes('quận')) {
+        reply = "Trạm Hạt giao lạnh bằng túi giữ nhiệt đá gel hỏa tốc 45–90 phút tại Q.1, Q.3, Q.4, Q.7, Q.10, Bình Thạnh, Phú Nhuận. Đơn từ 3 chai được FREESHIP 100%!";
       }
 
       box.innerHTML += `
@@ -7661,31 +6897,7 @@
             Cảm ơn bạn đã đồng hành cùng nông sản đất lành!<br>
             Vui lòng giữ lạnh và thưởng thức trong 48h.
           </div>
-        
-  <!-- MODAL CHI TIET HANH TRINH TUNG KHACH HANG (VISITOR JOURNEY MODAL) -->
-  <div class="modal fade" id="visitorDetailModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content border-0 shadow">
-        <div class="modal-header bg-dark text-white py-3">
-          <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2" id="visitorModalTitle">
-            <i class="bi bi-person-badge"></i> Chi Tiết Hành Trình Khách Hàng
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-4">
-          <div id="visitorModalInfo"></div>
-          <h6 class="fw-bold font-serif text-dark mb-2 border-bottom pb-2">
-            <i class="bi bi-clock-history me-1 text-primary"></i> Dòng Thời Gian Thao Tác (Click Timeline):
-          </h6>
-          <div id="visitorModalTimeline" style="max-height: 350px; overflow-y: auto;"></div>
-        </div>
-        <div class="modal-footer bg-light py-2">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+        </body>
         </html>
       `);
       printWindow.document.close();
