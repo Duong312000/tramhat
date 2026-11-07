@@ -367,6 +367,56 @@
 
 <body>
 
+  <!-- ADMIN AUTHENTICATION GATE (LOGIN SCREEN) -->
+  <div id="adminLoginView" class="min-vh-100 d-flex align-items-center justify-content-center p-3" style="background-color: #F4F6F8; display: none;">
+    <div class="card border-0 shadow-sm" style="max-width: 420px; width: 100%; border-radius: 14px; overflow: hidden;">
+      <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+          <img src="images/logo_thumb.png" alt="Trạm Hạt" style="width: 56px; height: 56px; border-radius: 12px; object-fit: contain;" onerror="this.src='https://placehold.co/56x56/4A6572/FFFFFF?text=TH'">
+          <h4 class="fw-bold font-serif text-dark mt-3 mb-1">Trạm Hạt • Vận Hành</h4>
+          <p class="text-muted small mb-0">Cổng Quản Trị & Điều Hành Bán Hàng Bảo Mật</p>
+        </div>
+
+        <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-secondary">Email Quản Trị Viên</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+              <input type="text" class="form-control border-start-0 ps-0" id="adminEmail" placeholder="admin@tramhat.vn" value="admin@tramhat.vn" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <label class="form-label small fw-semibold text-secondary">Mật Khẩu</label>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-key"></i></span>
+              <input type="password" class="form-control border-start-0 ps-0" id="adminPassword" placeholder="Nhập mật khẩu..." required autofocus>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="adminRemember" checked>
+            <label class="form-check-label small text-muted" for="adminRemember">Ghi nhớ phiên làm việc trên máy này</label>
+          </div>
+
+          <button type="submit" class="btn btn-dark w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2" style="background-color: #1E293B; border-radius: 8px;">
+            <span>Đăng Nhập Quản Trị</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3 border-top">
+          <a href="index.html" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i> Quay lại Cửa Hàng
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- LEFT SIDEBAR -->
   <aside class="app-sidebar">
     <div>
@@ -391,9 +441,12 @@
     </div>
 
     <div style="padding: 14px; border-top: 1px solid var(--border-color);">
-      <a href="index.html" target="_blank" class="btn-action w-100 justify-content-center">
+      <a href="index.html" target="_blank" class="btn-action w-100 justify-content-center mb-2">
         <i class="bi bi-arrow-up-right"></i> Xem cửa hàng
       </a>
+      <button onclick="adminLogout()" class="btn-action w-100 justify-content-center text-danger border-danger-subtle">
+        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+      </button>
     </div>
   </aside>
 
@@ -412,7 +465,14 @@
           <span id="server-status-text">Backend :5000 &bull; MongoDB Live</span>
         </div>
         <button class="btn-action" onclick="fetchLiveBackendData(true)">
-          <i class="bi bi-arrow-clockwise"></i> Cập nhật dữ liệu
+          <i class="bi bi-arrow-clockwise"></i> Cập nhật
+        </button>
+        <div class="d-none d-md-inline-flex align-items-center gap-1 px-3 py-1 bg-white rounded-pill border" style="font-size: 12px;">
+          <i class="bi bi-person-badge-fill text-success"></i>
+          <span class="text-dark fw-semibold">Quản Trị Viên</span>
+        </div>
+        <button class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 d-inline-flex align-items-center gap-1" style="font-size: 12px;" onclick="adminLogout()">
+          <i class="bi bi-box-arrow-right"></i> Đăng Xuất
         </button>
       </div>
     </header>
@@ -766,6 +826,60 @@
     let globalLeads = [];
     let currentActiveLead = null;
     let customerDrawerInstance = null;
+
+    // ==========================================================================
+    // AUTHENTICATION & SESSION MANAGEMENT
+    // ==========================================================================
+    function checkAuthStatus() {
+      const isAuth = sessionStorage.getItem('tramhat_admin_auth') === 'true' || localStorage.getItem('tramhat_admin_auth') === 'true';
+      const loginView = document.getElementById('adminLoginView');
+      const sidebar = document.querySelector('.app-sidebar');
+      const main = document.querySelector('.app-main');
+
+      if (isAuth) {
+        if (loginView) loginView.style.setProperty('display', 'none', 'important');
+        if (sidebar) sidebar.style.display = 'block';
+        if (main) main.style.display = 'block';
+        fetchLiveBackendData(false);
+      } else {
+        if (loginView) loginView.style.setProperty('display', 'flex', 'important');
+        if (sidebar) sidebar.style.display = 'none';
+        if (main) main.style.display = 'none';
+      }
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      const pwd = document.getElementById('adminPassword').value.trim();
+      const remember = document.getElementById('adminRemember').checked;
+
+      // Allow admin credentials
+      if ((email === 'admin@tramhat.vn' || email === 'admin') && (pwd === 'admin' || pwd === 'admin123' || pwd === '123456')) {
+        sessionStorage.setItem('tramhat_admin_auth', 'true');
+        if (remember) {
+          localStorage.setItem('tramhat_admin_auth', 'true');
+        }
+        checkAuthStatus();
+        showToast('Đăng nhập thành công! Chào mừng Quản trị viên.');
+      } else {
+        alert('Email hoặc mật khẩu không chính xác! Vui lòng thử lại.');
+      }
+    }
+
+    function adminLogout() {
+      if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi Bảng Quản Trị?')) {
+        sessionStorage.removeItem('tramhat_admin_auth');
+        localStorage.removeItem('tramhat_admin_auth');
+        checkAuthStatus();
+      }
+    }
+
+    // Run auth check on load
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthStatus();
+    });
+
 
     // Toast Alert Helper
     function showToast(msg) {
