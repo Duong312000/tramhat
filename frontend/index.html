@@ -1749,125 +1749,6 @@
     </div>
     </section>
 
-    <!-- CONTEXTUAL TIME-OF-DAY BANNER (Chương 6) -->
-    <section class="py-2" style="background: #F4EFEB; border-bottom: 1px solid #E5DED7;">
-      <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2 py-1">
-        <div class="d-flex align-items-center gap-2">
-          <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 11px;">
-            <i class="bi bi-clock-history me-1"></i> AI GỢI Ý THEO GIỜ
-          </span>
-          <span class="small text-dark fw-semibold" id="contextualTimeText">
-            Đang tải gợi ý hương vị phù hợp với khung giờ hiện tại...
-          </span>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-sm btn-dark py-1 px-3" style="font-size: 12px; border-radius: 6px;" onclick="addContextualToCart()">
-            <i class="bi bi-bag-plus me-1"></i> Thử Vị Ngay
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TASTE QUIZ 30S INTERACTIVE SECTION (Chương 6 - Lead MQL Acquisition) -->
-    <section class="py-5" style="background: linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 100%); border-bottom: 1px solid #EBE3DA;">
-      <div class="container">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-5">
-            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small fw-bold text-uppercase">
-              <i class="bi bi-magic me-1"></i> Trắc Nghiệm 30 Giây
-            </span>
-            <h2 class="display-6 font-serif fw-bold text-dark mt-2 mb-3">Tìm Hương Vị Hợp Mood &amp; Cơ Thể</h2>
-            <p class="text-muted small mb-4">
-              Chưa biết nên chọn vị nào trong 6 loại sữa hạt tươi? Trả lời 2 câu hỏi nhanh để AI gợi ý đúng nhu cầu và nhận ngay <strong>Mã Freeship 15.000đ</strong> cho đơn đầu tiên!
-            </p>
-            <div class="d-flex align-items-center gap-3 text-muted small">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> 100% Nấu Mới 05:00</span>
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Giao Lạnh Đá Gel 2–5°C</span>
-            </div>
-          </div>
-          <div class="col-lg-7">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" id="quizCardBox">
-              <!-- Bước 1: Mục tiêu -->
-              <div id="quizStep1">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 1/2: MỤC TIÊU CỦA BẠN</span>
-                  <span class="badge bg-light text-dark border">Câu hỏi 1</span>
-                </div>
-                <h5 class="fw-bold font-serif mb-3 text-dark">Hôm nay bạn cần nạp năng lượng cho điều gì nhất?</h5>
-                <div class="row g-2 mb-3">
-                  <div class="col-sm-4">
-                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'diet')">
-                      <div class="fw-bold fs-6 mb-1">🏃‍♂️ Giữ Dáng Eat Clean</div>
-                      <div class="text-muted" style="font-size: 11px;">Ít calo, no lâu, đạm thực vật sạch</div>
-                    </button>
-                  </div>
-                  <div class="col-sm-4">
-                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'brain')">
-                      <div class="fw-bold fs-6 mb-1">🧠 Tập Trung Deadlines</div>
-                      <div class="text-muted" style="font-size: 11px;">Omega-3 béo bùi, tỉnh táo não bộ</div>
-                    </button>
-                  </div>
-                  <div class="col-sm-4">
-                    <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'relax')">
-                      <div class="fw-bold fs-6 mb-1">🌸 Thư Giãn Ngủ Ngon</div>
-                      <div class="text-muted" style="font-size: 11px;">Thanh nhiệt, an thần, giảm stress</div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bước 2: Khẩu vị & Nhập SĐT -->
-              <div id="quizStep2" class="d-none">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 2/2: KHẨU VỊ &amp; NHẬN ƯU ĐÃI</span>
-                  <button class="btn btn-sm btn-link text-muted p-0 text-decoration-none" onclick="backQuizStep(1)">&larr; Quay lại</button>
-                </div>
-                <h5 class="fw-bold font-serif mb-3 text-dark">Gu hương vị ưa thích của bạn là gì?</h5>
-                <div class="d-flex gap-2 mb-3">
-                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn active" onclick="selectQuizTaste(this, 'rich')">Béo bùi tự nhiên</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'light')">Thanh mát nhẹ dịu</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'sweet')">Đậm đà Cacao hạt</button>
-                </div>
-                
-                <div class="p-3 bg-light rounded-3 mb-3 border">
-                  <label class="form-label small fw-bold text-dark mb-1">Nhập Số Điện Thoại nhận đề xuất &amp; Mã Freeship 15k:</label>
-                  <div class="row g-2">
-                    <div class="col-sm-6">
-                      <input type="text" class="form-control form-control-sm" id="quizUserName" placeholder="Tên của bạn...">
-                    </div>
-                    <div class="col-sm-6">
-                      <input type="tel" class="form-control form-control-sm" id="quizUserPhone" placeholder="Số điện thoại nhận mã...">
-                    </div>
-                  </div>
-                </div>
-
-                <button type="button" class="btn-main-primary w-100 justify-content-center py-2" onclick="submitTasteQuiz()">
-                  Xem Kết Quả &amp; Nhận Mã Freeship &rarr;
-                </button>
-              </div>
-
-              <!-- Bước 3: Kết quả -->
-              <div id="quizStep3" class="d-none text-center py-3">
-                <div class="badge bg-success-subtle text-success border border-success px-3 py-1 mb-2">🎉 ĐỀ XUẤT HOÀN HẢO CHO BẠN</div>
-                <h4 class="font-serif fw-bold text-dark mb-1" id="quizResultTitle">Sữa Macca Yến Mạch (330ml)</h4>
-                <p class="text-muted small mb-3" id="quizResultReason">Giàu chất xơ beta-glucan &amp; đạm thực vật giúp no lâu êm bụng, chuẩn Eat Clean!</p>
-                <div class="alert alert-warning py-2 small mb-3 d-inline-block">
-                  Mã quà tặng của bạn: <strong class="text-danger" id="quizCouponCode">TRAMHAT15K</strong> (Miễn phí giao lạnh 15.000đ)
-                </div>
-                <div class="d-flex justify-content-center gap-2">
-                  <button class="btn btn-main-primary py-2 px-4" id="quizAddCartBtn" onclick="addQuizRecommendationToCart()">
-                    <i class="bi bi-bag-plus me-1"></i> Thêm Vào Giỏ Hàng Ngay
-                  </button>
-                  <button class="btn btn-outline-secondary py-2 px-3" onclick="resetQuiz()">Làm Lại</button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Nổi bật 2: Tuyển Chọn Bán Chạy (Best-Sellers Preview) -->
     <section class="py-5 border-top" style="background: #FFFFFF;">
       <div class="container py-3">
@@ -2113,7 +1994,12 @@
               <span class="filter-pill-count">2</span>
             </button>
           </div>
-          <div class="text-muted small fw-bold font-serif d-none d-md-block" id="visibleCountText">6 SẢN PHẨM TƯƠI</div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 d-inline-flex align-items-center gap-1" onclick="openTasteQuizModal()" style="font-size: 12px; font-weight: 600;">
+              <i class="bi bi-magic text-danger"></i> Trắc Nghiệm Khẩu Vị 30s
+            </button>
+            <div class="text-muted small fw-bold font-serif d-none d-md-block" id="visibleCountText">6 SẢN PHẨM TƯƠI</div>
+          </div>
         </div>
 
         <!-- Lưới sản phẩm 6 món (65% Hình ảnh lớn, sắc nét, cao cấp) -->
@@ -6745,7 +6631,20 @@
         addToCartItem(quizState.recommendation.name, quizState.recommendation.priceVND, quizState.recommendation.img, '330ml (Chai Chuẩn)', 'Ít ngọt thanh mát');
         // Auto apply TRAMHAT15K coupon
         currentCouponDiscount = 15000;
+        const modalEl = document.getElementById('tasteQuizModal');
+        if (modalEl) {
+          const m = bootstrap.Modal.getInstance(modalEl);
+          if (m) m.hide();
+        }
         openCartDrawer();
+      }
+    }
+
+    function openTasteQuizModal() {
+      const modalEl = document.getElementById('tasteQuizModal');
+      if (modalEl) {
+        const m = bootstrap.Modal.getOrCreateInstance(modalEl);
+        m.show();
       }
     }
 
@@ -7849,6 +7748,98 @@
         </div>
         <div class="modal-footer bg-light py-2">
           <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- MODAL TRẮC NGHIỆM KHẨU VỊ 30S (TASTE QUIZ - LEAD MQL ACQUISITION) -->
+  <div class="modal fade" id="tasteQuizModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header border-bottom py-3 px-4 bg-light">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-danger rounded-pill px-2 py-1" style="font-size: 11px;">
+              <i class="bi bi-magic me-1"></i> Trắc Nghiệm 30 Giây
+            </span>
+            <h5 class="modal-title font-serif fw-bold mb-0 text-dark">Tìm Hương Vị Hợp Mood &amp; Cơ Thể</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+        <div class="modal-body p-4 bg-white" id="quizCardBox">
+          <!-- Bước 1: Mục tiêu -->
+          <div id="quizStep1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 1/2: MỤC TIÊU CỦA BẠN</span>
+              <span class="badge bg-light text-dark border">Câu hỏi 1</span>
+            </div>
+            <h5 class="fw-bold font-serif mb-3 text-dark">Hôm nay bạn cần nạp năng lượng cho điều gì nhất?</h5>
+            <div class="row g-3 mb-3">
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'diet')">
+                  <div class="fw-bold fs-6 mb-1">🏃‍♂️ Giữ Dáng Eat Clean</div>
+                  <div class="text-muted" style="font-size: 11.5px;">Ít calo, no lâu, đạm thực vật sạch</div>
+                </button>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'brain')">
+                  <div class="fw-bold fs-6 mb-1">🧠 Tập Trung Deadlines</div>
+                  <div class="text-muted" style="font-size: 11.5px;">Omega-3 béo bùi, tỉnh táo não bộ</div>
+                </button>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-outline-dark w-100 py-3 text-start h-100 rounded-3 quiz-opt-btn" onclick="selectQuizOption('goal', 'relax')">
+                  <div class="fw-bold fs-6 mb-1">🌸 Thư Giãn Ngủ Ngon</div>
+                  <div class="text-muted" style="font-size: 11.5px;">Thanh nhiệt, an thần, giảm stress</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bước 2: Khẩu vị & Nhập SĐT -->
+          <div id="quizStep2" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-uppercase fw-bold text-muted" style="font-size: 11px;">BƯỚC 2/2: KHẨU VỊ &amp; NHẬN ƯU ĐÃI</span>
+              <button class="btn btn-sm btn-link text-muted p-0 text-decoration-none" onclick="backQuizStep(1)">&larr; Quay lại</button>
+            </div>
+            <h5 class="fw-bold font-serif mb-3 text-dark">Gu hương vị ưa thích của bạn là gì?</h5>
+            <div class="d-flex gap-2 mb-3">
+              <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn active" onclick="selectQuizTaste(this, 'rich')">Béo bùi tự nhiên</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'light')">Thanh mát nhẹ dịu</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1 py-2 quiz-taste-btn" onclick="selectQuizTaste(this, 'sweet')">Đậm đà Cacao hạt</button>
+            </div>
+            
+            <div class="p-3 bg-light rounded-3 mb-3 border">
+              <label class="form-label small fw-bold text-dark mb-1">Nhập Số Điện Thoại nhận đề xuất &amp; Mã Freeship 15k:</label>
+              <div class="row g-2">
+                <div class="col-sm-6">
+                  <input type="text" class="form-control form-control-sm" id="quizUserName" placeholder="Tên của bạn...">
+                </div>
+                <div class="col-sm-6">
+                  <input type="tel" class="form-control form-control-sm" id="quizUserPhone" placeholder="Số điện thoại nhận mã...">
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn-main-primary w-100 justify-content-center py-2" onclick="submitTasteQuiz()">
+              Xem Kết Quả &amp; Nhận Mã Freeship &rarr;
+            </button>
+          </div>
+
+          <!-- Bước 3: Kết quả -->
+          <div id="quizStep3" class="d-none text-center py-3">
+            <div class="badge bg-success-subtle text-success border border-success px-3 py-1 mb-2">🎉 ĐỀ XUẤT HOÀN HẢO CHO BẠN</div>
+            <h4 class="font-serif fw-bold text-dark mb-1" id="quizResultTitle">Sữa Macca Yến Mạch (330ml)</h4>
+            <p class="text-muted small mb-3" id="quizResultReason">Giàu chất xơ beta-glucan &amp; đạm thực vật giúp no lâu êm bụng, chuẩn Eat Clean.</p>
+            <div class="alert alert-warning py-2 small mb-3 d-inline-block">
+              Mã quà tặng của bạn: <strong class="text-danger" id="quizCouponCode">TRAMHAT15K</strong> (Miễn phí giao lạnh 15.000đ)
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-main-primary py-2 px-4" id="quizAddCartBtn" onclick="addQuizRecommendationToCart()">
+                <i class="bi bi-bag-plus me-1"></i> Thêm Vào Giỏ Hàng Ngay
+              </button>
+              <button class="btn btn-outline-secondary py-2 px-3" onclick="resetQuiz()">Làm Lại</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
