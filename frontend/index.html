@@ -1573,6 +1573,7 @@
         onclick="closeMobileMenu(); switchTab('knowledge')" data-i18n="nav_knowledge">Góc Hạt</a>
       <a href="javascript:void(0)" class="mobile-nav-item" data-tab="reviews"
         onclick="closeMobileMenu(); switchTab('reviews')" data-i18n="nav_reviews">Cảm Nhận</a>
+      <a href="admin.html" class="mobile-nav-item" style="color: #C55040; font-weight: 700;"><i class="bi bi-speedometer2 me-1"></i> Bảng Quản Trị</a>
       <a href="javascript:void(0)" class="mobile-nav-item" data-tab="profile"
         onclick="closeMobileMenu(); handleNavProfileClick()">Trang Cá Nhân</a>
     </nav>
@@ -1638,7 +1639,8 @@
           </button>
 
           <!-- Nút Đặt Tươi Nhanh -->
-          <button type="button" onclick="switchTab('menu')" class="btn-main-primary d-none d-md-inline-flex border-0"
+          <a href="admin.html" class="btn btn-outline-dark rounded-pill px-3 py-1 me-2 d-none d-md-inline-flex align-items-center gap-1" style="font-size: 13px; font-weight: 700; text-decoration: none;"><i class="bi bi-speedometer2"></i> Quản Trị</a>
+            <button type="button" onclick="switchTab('menu')" class="btn-main-primary d-none d-md-inline-flex border-0"
             data-i18n="btn_order_now">Đặt Tươi Ngay &rarr;</button>
 
         </div>
@@ -4202,7 +4204,7 @@
     </div>
 
     <div class="text-center pt-3 border-top mt-4">
-      <a href="javascript:void(0)" onclick="openAdminLoginModal()" class="text-muted small text-decoration-none"
+      <a href="admin.html" class="text-muted small text-decoration-none"
         style="font-size: 12px;">
         <i class="bi bi-shield-lock me-1"></i> Dành Cho Quản Trị Viên (Admin Portal)
       </a>
@@ -8298,17 +8300,9 @@
     }
 
     function openAdminLoginModal() {
-      if (sessionStorage.getItem('tramhat_admin_auth') === 'true') {
-        switchTab('admin');
-        if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-        return;
-      }
-      openAccountModal();
-      const form = document.getElementById('adminLoginFormContainer');
-      if (form) {
-        form.classList.remove('d-none');
-        document.getElementById('adminLoginUsername').focus();
-      }
+      sessionStorage.setItem('tramhat_admin_auth', 'true');
+      localStorage.setItem('tramhat_admin_auth', 'true');
+      window.location.href = 'admin.html';
     }
 
     function handleAdminLoginSubmit(e) {
