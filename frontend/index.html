@@ -388,23 +388,30 @@
     }
 
     .product-card-img-wrap {
-      height: 250px;
-      background: var(--bg-subtle);
+      height: 270px;
+      background: #FCEFE7;
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
     }
 
     .product-card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
       display: block;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      filter: drop-shadow(0 6px 14px rgba(44, 24, 16, 0.07));
     }
 
     .product-card:hover .product-card-img {
-      transform: scale(1.03);
+      transform: scale(1.04) translateY(-3px);
     }
 
 
@@ -1033,16 +1040,21 @@
     }
 
     .menu-hero-img-box {
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border-color);
-      height: 180px;
+      height: 200px;
+      background: #FAF7F2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .menu-hero-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 25%;
       transition: transform 0.4s ease;
     }
 
@@ -1151,18 +1163,26 @@
       justify-content: space-between;
     }
 
-    /* EDITORIAL SPLIT */
+    /* EDITORIAL SPLIT - Responsive, never cuts off header graphics */
     .editorial-split-img-box {
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      height: 380px;
       border: 1px solid var(--border-color);
+      background: #FAF7F2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      min-height: 340px;
+      max-height: 520px;
     }
 
     .editorial-split-img-box img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      display: block;
     }
 
     /* FARM TO BOTTLE PHOTO STRIP */
@@ -1197,6 +1217,7 @@
     /* PRODUCT CARD IMAGE HEIGHT 65% */
     .product-card-img-wrap {
       height: 270px;
+      background: #FCEFE7;
     }
 
 
@@ -1698,8 +1719,8 @@
                   <!-- Slide 1: Rót sữa tươi mới -->
                   <div class="hero-scroll-slide">
                     <img
-                      src="images/prod_real_dieu.jpg"
-                      alt="Rót tươi mỗi 05:00 sáng" class="hero-slide-img">
+                      src="images/campaign_halloween_6vi.jpg"
+                      alt="Rót tươi mỗi 05:00 sáng - Ghé Trạm Có Chuyện" class="hero-slide-img">
 
                   </div>
 
@@ -2090,8 +2111,8 @@
             </div>
             <div class="col-lg-5 d-none d-lg-block">
               <div class="menu-hero-img-box shadow-sm">
-                <img src="images/prod_real_dieu.jpg"
-                  alt="Sữa hạt tươi thủ công Trạm Hạt" class="menu-hero-img">
+                <img src="images/menu_official_6vi.jpg"
+                  alt="Thực đơn 6 vị sữa hạt tươi thủ công Trạm Hạt" class="menu-hero-img">
               </div>
             </div>
           </div>
@@ -2441,7 +2462,7 @@
               <div class="visual-story-card shadow-sm">
                 <div class="visual-story-card-img-wrap">
                   <img
-                    src="images/prod_real_cacao.jpg"
+                    src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=85"
                     alt="Tươi thật mỗi sớm">
                 </div>
                 <div class="visual-story-card-body">
@@ -2460,7 +2481,7 @@
               <div class="visual-story-card shadow-sm">
                 <div class="visual-story-card-img-wrap">
                   <img
-                    src="images/prod_real_daudo.jpg"
+                    src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=85"
                     alt="Lành thật từ quả chà là">
                 </div>
                 <div class="visual-story-card-body">
@@ -2704,7 +2725,7 @@
           <div class="col-md-4">
             <div class="visual-story-card shadow-sm" onclick="viewArticleDetail('cashew')" style="cursor: pointer;">
               <div class="visual-story-card-img-wrap">
-                <img src="images/prod_real_dieu.jpg"
+                <img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=800&q=85"
                   alt="Hạt điều Bình Phước">
               </div>
               <div class="visual-story-card-body">
@@ -3038,9 +3059,9 @@
 
             <!-- Cột trái: Ảnh lớn sắc nét -->
             <div class="col-lg-6">
-              <div class="detail-img-box sticky-top" style="top: 90px; border-radius: 6px;">
+              <div class="detail-img-box sticky-top" style="top: 90px; border-radius: 12px; background: #FCEFE7; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 460px;">
                 <img src="" id="detailImg" alt="Chi tiết sản phẩm"
-                  style="width: 100%; height: 500px; object-fit: cover; display: block;">
+                  style="width: 100%; height: auto; max-height: 480px; object-fit: contain; display: block; filter: drop-shadow(0 8px 20px rgba(44, 24, 16, 0.08));">
               </div>
             </div>
 
@@ -3711,6 +3732,28 @@
       const hash = window.location.hash.replace('#', '') || 'home';
       switchTab(hash);
     });
+
+    // ==========================================================================
+    // LOGIC FIX ẢNH TOÀN DIỆN & BẢO VỆ HIỂN THỊ (UNIVERSAL IMAGE PROTECTION)
+    // ==========================================================================
+    window.addEventListener('error', function (e) {
+      if (e.target && e.target.tagName === 'IMG') {
+        const img = e.target;
+        if (!img.dataset.hasFailed) {
+          img.dataset.hasFailed = 'true';
+          // Tự động chuyển về ảnh nhận diện thương hiệu chính hãng tương ứng
+          if (img.classList.contains('product-card-img') || img.id === 'detailImg') {
+            img.src = 'images/prod_real_dieu.jpg';
+          } else if (img.classList.contains('hero-slide-img')) {
+            img.src = 'images/campaign_halloween_6vi.jpg';
+          } else if (img.classList.contains('brand-logo-img')) {
+            img.src = 'images/logo_glossy_tramhat.png';
+          } else {
+            img.src = 'images/prod_real_dieu.jpg';
+          }
+        }
+      }
+    }, true);
 
     // Check initial hash on page load
     window.addEventListener('DOMContentLoaded', function () {
