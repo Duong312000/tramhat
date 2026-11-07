@@ -1637,7 +1637,7 @@
           <!-- Nút Đặt Tươi Nhanh -->
           
             <button type="button" onclick="switchTab('menu')" class="btn-main-primary d-none d-md-inline-flex border-0"
-            data-i18n="btn_order_now">Đặt Tươi Ngay &rarr;</button>
+            data-i18n="btn_order_now">Đặt Sữa Giao Sáng</button>
 
         </div>
 
@@ -1665,89 +1665,38 @@
           <div class="row align-items-center g-5">
             <!-- Text Content (40%) -->
             <div class="col-lg-5 order-2 order-lg-1">
-              <h1 class="display-5 font-serif fw-bold text-dark mb-3" style="line-height: 1.25;">
-                Tươi mới từng giọt sữa sớm,<br>gõ cửa đúng giờ thức giấc.
+              <span class="text-uppercase text-muted fw-bold" style="font-size: 11px; letter-spacing: 0.12em;">SỮA HẠT TƯƠI THỦ CÔNG</span>
+              <h1 class="display-5 font-serif fw-bold text-dark mt-2 mb-3" style="line-height: 1.25;">
+                Sữa Hạt Tươi Nấu Mới 05:00 Sáng Tại TP.HCM
               </h1>
               <p class="text-muted mb-4" style="font-size: 15.5px; line-height: 1.7;">
-                Trạm Hạt là thương hiệu sữa hạt tươi thủ công chuẩn quốc tế đầu tiên tại Việt Nam: 100% hạt điều hữu cơ
-                Bù Gia Mập và nông sản Tây Nguyên, ngâm hoạt hóa mầm sống, nghiền cối đá mát lạnh dưới 45&deg;C. Không
-                đường tinh luyện, không chất bảo quản, đóng chai thủy tinh tiệt trùng giao lạnh tận nơi trước 07:30
-                sáng.
+                100% hạt điều Bù Gia Mập và nông sản Tây Nguyên tuyển chọn, ngâm hoạt hóa mầm sống và nghiền chậm bằng cối đá granit dưới 45°C. Không chất bảo quản, đóng chai tiệt trùng và giao lạnh túi đá gel trong 2 giờ nội thành TP.HCM. Đồng giá 35.000đ/chai 330ml.
               </p>
               <div class="d-flex flex-wrap align-items-center gap-3 mb-4 pb-2">
                 <button type="button" class="btn-main-primary py-3 px-4 shadow-sm border-0" onclick="switchTab('menu')">
-                  Khám Phá Thực Đơn &rarr;
+                  Xem Thực Đơn 6 Vị
                 </button>
                 <button type="button" class="btn-main-outline py-3 px-4" onclick="switchTab('about')">
-                  Tìm Hiểu Về Trạm Hạt &rarr;
+                  Xem Triết Lý Nấu Mới
                 </button>
               </div>
             </div>
 
-            <!-- Visual Hero (60% Visual Imagery - Horizontal Scroll Gallery) -->
+            <!-- Visual Hero (Editorial Single Frame - Anti-Slop, No Carousels) -->
             <div class="col-lg-7 order-1 order-lg-2">
-              <div class="position-relative hero-gallery-container rounded-4 overflow-hidden shadow-lg border">
-
-                <!-- Horizontal Scroll Strip -->
-                <div class="hero-scroll-track" id="heroScrollTrack">
-
-                  <!-- Slide 1: Rót sữa tươi mới -->
-                  <div class="hero-scroll-slide">
-                    <img
-                      src="images/campaign_halloween_6vi.jpg"
-                      alt="Rót tươi mỗi 05:00 sáng - Ghé Trạm Có Chuyện" class="hero-slide-img">
-
-                  </div>
-
-                  <!-- Slide 2: Hạt nông sản tuyển chọn -->
-                  <div class="hero-scroll-slide">
-                    <img
-                      src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1200&q=85"
-                      alt="Hạt nông sản thuần Việt" class="hero-slide-img">
-
-                  </div>
-
-                  <!-- Slide 3: Cối đá granit nghiền lạnh -->
-                  <div class="hero-scroll-slide">
-                    <img
-                      src="images/campaign_2010_dieu_occho.jpg"
-                      alt="Cối đá granit nghiền chậm" class="hero-slide-img">
-
-                  </div>
-
-                  <!-- Slide 4: Chai thủy tinh giao sáng sớm -->
-                  <div class="hero-scroll-slide">
-                    <img
-                      src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85"
-                      alt="Giao lạnh trước 07:30" class="hero-slide-img">
-
-                  </div>
-
-                </div>
-
-                <!-- Hero brand watermark / overlay card removed -->
-
-              <!-- Navigation Arrow Controls -->
-              <button class="hero-slider-nav hero-nav-prev" onclick="scrollHeroTrack(-1)" title="Ảnh trước">
-                <i class="bi bi-chevron-left"></i>
-              </button>
-              <button class="hero-slider-nav hero-nav-next" onclick="scrollHeroTrack(1)" title="Ảnh tiếp theo">
-                <i class="bi bi-chevron-right"></i>
-              </button>
-
-              <!-- Dot indicators -->
-              <div class="hero-slider-dots" id="heroSliderDots">
-                <span class="hero-dot active" onclick="goHeroSlide(0)"></span>
-                <span class="hero-dot" onclick="goHeroSlide(1)"></span>
-                <span class="hero-dot" onclick="goHeroSlide(2)"></span>
-                <span class="hero-dot" onclick="goHeroSlide(3)"></span>
+              <div class="position-relative rounded-4 overflow-hidden shadow-lg border" style="height: 480px;">
+                <img
+                  src="images/campaign_halloween_6vi.jpg"
+                  alt="Trọn bộ 6 vị sữa hạt tươi Trạm Hạt nấu mới mỗi sáng"
+                  style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);"
+                  onmouseover="this.style.transform='scale(1.02)'"
+                  onmouseout="this.style.transform='scale(1)'"
+                  onerror="this.onerror=null; this.src='images/prod_real_dieu.jpg';">
               </div>
-
             </div>
           </div>
         </div>
-    </div>
-    </section>
+      </section>
 
     <!-- Nổi bật 2: Tuyển Chọn Bán Chạy (Best-Sellers Preview) -->
     <section class="py-5 border-top" style="background: #FFFFFF;">
@@ -1759,7 +1708,7 @@
             <h2 class="display-6 font-serif fw-bold text-dark mt-1 mb-0">Hương Vị Được Yêu Thích Nhất</h2>
           </div>
           <button type="button" class="btn-main-outline d-none d-md-inline-flex" onclick="switchTab('menu')">
-            Xem Toàn Bộ 6 Vị &rarr;
+            Xem Toàn Bộ 6 Vị
           </button>
         </div>
 
@@ -1866,7 +1815,7 @@
 
         <div class="text-center mt-4 pt-2">
           <button type="button" class="btn-main-primary py-3 px-5 shadow-sm" onclick="switchTab('menu')">
-            <i class="bi bi-grid me-1"></i> Khám Phá Toàn Bộ Thực Đơn (6 Vị Sữa Hạt Tươi) &rarr;
+            <i class="bi bi-grid me-2"></i> Xem Thực Đơn 6 Vị Sữa Hạt Tươi
           </button>
         </div>
       </div>
@@ -1889,36 +1838,35 @@
             </p>
             <div class="d-flex align-items-center gap-3">
               <button type="button" class="btn-main-primary py-2 px-4" onclick="switchTab('about')">
-                Tìm Hiểu Câu Chuyện &rarr;
+                Xem Câu Chuyện Nông Sản
               </button>
               <button type="button" class="btn-main-outline py-2 px-3" onclick="switchTab('knowledge')">Đọc Góc
                 Hạt</button>
             </div>
           </div>
           <div class="col-lg-6">
-            <div class="row g-4">
-              <div class="col-6">
-                <div class="py-2">
-                  <div class="fw-bold font-serif display-6 text-dark mb-1" id="heroStat1Num">05:00</div>
-                  <div class="text-muted small" id="heroStat1Label">Nấu mới mỗi sớm</div>
+            <div class="card border-0 p-4 rounded-4 shadow-sm" style="background: #FFFFFF;">
+              <h6 class="font-serif fw-bold text-dark mb-3">Tiêu Chuẩn Chế Biến Mẻ Tươi</h6>
+              <div class="d-flex flex-column gap-3 text-muted" style="font-size: 14.5px;">
+                <div class="d-flex align-items-center justify-content-between pb-2 border-bottom">
+                  <span>Thời gian nấu mẻ sớm</span>
+                  <strong class="text-dark font-serif" id="heroStat1Num">05:00</strong>
+                  <span class="d-none" id="heroStat1Label">Nấu mới mỗi sớm</span>
                 </div>
-              </div>
-              <div class="col-6">
-                <div class="py-2">
-                  <div class="fw-bold font-serif display-6 text-dark mb-1" id="heroStat2Num">&lt; 45&deg;C</div>
-                  <div class="text-muted small" id="heroStat2Label">Nghiền cối đá mát</div>
+                <div class="d-flex align-items-center justify-content-between pb-2 border-bottom">
+                  <span>Nhiệt độ cối đá granit</span>
+                  <strong class="text-dark font-serif" id="heroStat2Num">&lt; 45°C</strong>
+                  <span class="d-none" id="heroStat2Label">Nghiền cối đá mát</span>
                 </div>
-              </div>
-              <div class="col-6">
-                <div class="py-2">
-                  <div class="fw-bold font-serif display-6 mb-1" style="color: var(--brand-primary);" id="heroStat3Num">100%</div>
-                  <div class="text-muted small" id="heroStat3Label">Nông sản thuần Việt</div>
+                <div class="d-flex align-items-center justify-content-between pb-2 border-bottom">
+                  <span>Nguồn gốc hạt tuyển chọn</span>
+                  <strong class="text-dark font-serif" id="heroStat3Num">100%</strong>
+                  <span class="d-none" id="heroStat3Label">Nông sản thuần Việt</span>
                 </div>
-              </div>
-              <div class="col-6">
-                <div class="py-2">
-                  <div class="fw-bold font-serif display-6 mb-1" style="color: var(--brand-primary);" id="heroStat4Num">0g</div>
-                  <div class="text-muted small" id="heroStat4Label">Đường hóa học</div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <span>Chất bảo quản và đường tinh luyện</span>
+                  <strong class="text-dark font-serif" id="heroStat4Num">0g</strong>
+                  <span class="d-none" id="heroStat4Label">Đường hóa học</span>
                 </div>
               </div>
             </div>
@@ -2273,7 +2221,7 @@
             </h2>
             <p class="text-muted" style="line-height: 1.7; font-size: 15px;">
               Trạm Hạt ra đời từ trăn trở trước những hộp sữa hạt công nghiệp nhiều phụ gia, chất ổn định và đường hóa
-              học. Chúng tôi tìm về vùng đất đỏ bazan Bù Gia Mập — thủ phủ hạt điều trứ danh của Việt Nam — để kiến tạo
+              học. Chúng tôi tìm về vùng đất đỏ bazan Bù Gia Mập, thủ phủ hạt điều trứ danh của Việt Nam, để kiến tạo
               dòng sữa hạt tươi nguyên bản, thơm lành và tử tế nhất cho gia đình Việt.
             </p>
             <div class="editorial-spec-line">
@@ -2452,11 +2400,8 @@
           <p class="text-muted small mb-4" style="max-width: 500px; margin: 0 auto;">Thưởng thức sữa hạt tươi nấu lúc
             05:00 sáng mỗi ngày, không chất bảo quản, êm ru đường ruột.</p>
           <div class="d-flex justify-content-center gap-3">
-            <button type="button" class="btn-main-primary py-3 px-4 shadow-sm" onclick="switchTab('menu')">
-              Khám Phá Thực Đơn Sữa Hạt &rarr;
-            </button>
-            <button type="button" class="btn-main-outline py-3 px-4" onclick="switchTab('menu')">
-              Xem Thực Đơn
+            <button type="button" class="btn-main-primary py-3 px-5 shadow-sm" onclick="switchTab('menu')">
+              Xem Thực Đơn 6 Vị Sữa Hạt
             </button>
           </div>
         </div>
@@ -2488,7 +2433,7 @@
           <div class="col-lg-5">
             <span class="text-uppercase text-muted fw-bold" style="font-size: 11px; letter-spacing: 0.15em;">CHIẾN DỊCH VĂN HÓA TRẠM HẠT</span>
             <h2 class="display-6 font-serif fw-bold text-dark mt-2 mb-3">
-              "Ghé Trạm Có Chuyện" &mdash; Chậm Lại 5 Phút Sáng Nay
+              "Ghé Trạm Có Chuyện" &bull; Chậm Lại 5 Phút Sáng Nay
             </h2>
             <p class="text-muted" style="line-height: 1.7; font-size: 15px;">
               Giữa guồng quay hối hả của phố thị, Trạm Hạt tạo nên một trạm dừng chân an yên: nơi bạn có thể chậm lại 5
@@ -2497,7 +2442,7 @@
             </p>
             <div class="d-flex align-items-center gap-3 pt-2">
               <button type="button" class="btn-main-primary py-2 px-4" onclick="switchTab('menu')">
-                Khám Phá Thực Đơn &rarr;
+                Xem Thực Đơn 6 Vị
               </button>
               <button type="button" class="btn-main-outline py-2 px-3" onclick="openLiveChat()">
                 Gửi Tâm Sự Với Trạm
@@ -2524,7 +2469,7 @@
                   </p>
                 </div>
                 <button class="btn btn-sm btn-main-outline w-100" onclick="switchTab('menu')">
-                  <i class="bi bi-bag-check me-1"></i> Đặt Sữa Tươi Đổi Vỏ Chai &rarr;
+                  <i class="bi bi-bag-check me-1"></i> Đặt Sữa Đổi Vỏ Chai
                 </button>
               </div>
             </div>
@@ -2546,7 +2491,7 @@
                   </p>
                 </div>
                 <button class="btn btn-sm btn-main-primary w-100" onclick="switchTab('menu')">
-                  <i class="bi bi-cup-straw me-1"></i> Khám Phá Thực Đơn Sữa Hạt &rarr;
+                  <i class="bi bi-cup-straw me-1"></i> Xem Thực Đơn Sữa Hạt
                 </button>
               </div>
             </div>
@@ -2598,7 +2543,7 @@
                     cholesterol tự nhiên cho cơ thể.</p>
                 </div>
                 <div class="pt-2 border-top">
-                  <span class="small fw-bold text-danger">Đọc chi tiết &rarr;</span>
+                  <span class="small fw-bold text-danger">Đọc Chi Tiết</span>
                 </div>
               </div>
             </div>
@@ -2622,7 +2567,7 @@
                     mỏi mà không cần nạp đường hóa học.</p>
                 </div>
                 <div class="pt-2 border-top">
-                  <span class="small fw-bold text-danger">Đọc chi tiết &rarr;</span>
+                  <span class="small fw-bold text-danger">Đọc Chi Tiết</span>
                 </div>
               </div>
             </div>
@@ -2644,7 +2589,7 @@
                     dưỡng không bị biến tính do nhiệt ma sát.</p>
                 </div>
                 <div class="pt-2 border-top">
-                  <span class="small fw-bold text-danger">Đọc chi tiết &rarr;</span>
+                  <span class="small fw-bold text-danger">Đọc Chi Tiết</span>
                 </div>
               </div>
             </div>
@@ -2716,10 +2661,10 @@
             <!-- Call to Action & Back Link -->
             <div class="d-flex flex-wrap justify-content-between align-items-center pt-4 mt-5 border-top gap-3">
               <button class="btn btn-main-outline" onclick="switchTab('knowledge')">
-                &larr; Xem các bài viết khác trong Góc Hạt
+                Quay lại Góc Hạt
               </button>
               <button class="btn-main-primary" onclick="switchTab('menu')">
-                Khám Phá Thực Đơn Sữa Hạt &rarr;
+                Xem Thực Đơn 6 Vị Sữa Hạt
               </button>
             </div>
 
@@ -3027,7 +2972,7 @@
                   <i class="bi bi-bag-plus"></i> Thêm Vào Giỏ Hàng
                 </button>
                 <button class="btn-main-primary flex-grow-1 py-3" onclick="buyNowFromDetail()">
-                  Mua Ngay &rarr;
+                  Đặt Giao Ngay
                 </button>
               </div>
 
@@ -3089,8 +3034,7 @@
         <div class="mt-5 pt-4 border-top">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="h5 fw-bold font-serif mb-0">Sản Phẩm Cùng Gu Khuyên Dùng</h4>
-            <a href="javascript:void(0)" class="small text-muted" onclick="closeProductDetail()">Xem toàn bộ thực đơn
-              &rarr;</a>
+            <a href="javascript:void(0)" class="small text-muted" onclick="closeProductDetail()">Xem toàn bộ thực đơn</a>
           </div>
           <div class="row g-3" id="relatedProductsGrid"></div>
         </div>
@@ -3190,7 +3134,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                   <button type="submit" class="btn-main-primary py-2 px-4 border-0">Lưu Thay Đổi</button>
-                  <span class="text-success small d-none" id="profSaveSuccessMsg"><i class="bi bi-check-circle-fill me-1"></i> Đã lưu cập nhật thành công!</span>
+                  <span class="text-success small d-none" id="profSaveSuccessMsg"><i class="bi bi-check-circle-fill me-1"></i> Đã lưu cập nhật thành công.</span>
                 </div>
               </form>
             </div>
@@ -3232,7 +3176,7 @@
         <div id="profSectionOrders" class="d-none">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="h5 font-serif fw-bold text-dark mb-0">Các Đơn Sữa Hạt Tươi Đã Đặt</h3>
-            <button class="btn-main-primary py-1 px-3" style="font-size: 13px;" onclick="switchTab('menu')">Đặt Thêm Sữa Mới &rarr;</button>
+            <button class="btn-main-primary py-1 px-3" style="font-size: 13px;" onclick="switchTab('menu')">Đặt Thêm Sữa Mới</button>
           </div>
           <div id="profileOrdersListContainer">
             <!-- Dynamically populated or rendered -->
@@ -3327,7 +3271,7 @@
           <h6 class="fw-bold font-serif text-dark mb-3">Cổng Quản Trị & Vận Hành</h6>
           <p class="text-muted small mb-2">Dành cho giảng viên và hội đồng kiểm tra dữ liệu Martech, Leads CRM & Doanh thu theo thời gian thực:</p>
           <a href="admin.html" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2">
-            <i class="bi bi-speedometer2"></i> Mở Bảng Quản Trị Trạm Hạt &rarr;
+            <i class="bi bi-speedometer2"></i> Bảng Quản Trị Trạm Hạt
           </a>
           <div class="text-muted mt-2" style="font-size: 11px;">
             Hệ thống tự động đồng bộ CRM &bull; Đơn hàng 48h
@@ -3363,7 +3307,7 @@
           <div class="progress-bar bg-success" id="cartAovProgressBar" role="progressbar" style="width: 33%;"></div>
         </div>
         <div class="small text-muted mt-1" style="font-size: 11px;" id="cartAovDesc">
-          Mua từ 3 chai (105k) hoặc Gói Tuần để được miễn phí giao lạnh túi đá gel!
+          Mua từ 3 chai (105k) hoặc Gói Tuần để được miễn phí giao lạnh túi đá gel.
         </div>
       </div>
 
@@ -3459,7 +3403,7 @@
         </div>
 
         <button class="btn-main-primary w-100 justify-content-center py-2 fw-bold" onclick="confirmCartCheckout()">
-          Xác Nhận Đặt Giao Tươi Ngay &rarr;
+          Xác Nhận Đặt Hàng
         </button>
 
       </div>
@@ -3484,7 +3428,7 @@
     </div>
     <div class="livechat-body" id="chatMessagesBox">
       <div class="chat-bubble-agent">
-        <strong>Trạm Hạt xin chào!</strong><br>
+        <strong>Trạm Hạt xin chào.</strong><br>
         Chúng tôi nấu mới mỗi 05:00 sáng. Bạn cần tư vấn về vị sữa hạt hay thời gian giao lạnh?
       </div>
       <div class="d-flex flex-column gap-1 mt-2">
@@ -5101,12 +5045,12 @@
         nav_knowledge: "Góc Hạt",
         nav_reviews: "Cảm Nhận",
         nav_admin: "Quản Trị",
-        btn_order_now: "Đặt Tươi Ngay &rarr;",
+        btn_order_now: "Đặt Sữa Giao Sáng",
         hero_kicker: "SỮA HẠT TƯƠI THỦ CÔNG • NẤU MỚI MỖI 05:00 SÁNG",
         hero_h1_1: "Chuyện của đất,",
         hero_h1_2: "tươi mới từng hạt.",
         hero_desc: "Trạm Hạt là điểm dừng chân dinh dưỡng thực vật lành sạch giữa nhịp sống đô thị. Chúng tôi nấu sữa hạt tươi mỗi sáng từ nông sản thuần khiết của đất đỏ bazan Việt Nam, nói không với chất bảo quản và đường tinh luyện.",
-        hero_btn_menu: "Khám Phá Menu 6 Dòng Sữa &rarr;",
+        hero_btn_menu: "Xem Thực Đơn 6 Vị",
         hero_btn_campaign: "Chiến Dịch 'Ghé Trạm Có Chuyện'",
         stat_1: "Nấu mới mỗi sớm",
         stat_2: "Nông sản thuần Việt",
@@ -5128,12 +5072,12 @@
         nav_knowledge: "Nutrition Notes",
         nav_reviews: "Reviews",
         nav_admin: "Admin",
-        btn_order_now: "Order Fresh &rarr;",
+        btn_order_now: "Order Fresh",
         hero_kicker: "FRESH ARTISANAL NUT MILK • BREWED AT 05:00 AM",
         hero_h1_1: "Born from the earth,",
         hero_h1_2: "fresh in every sip.",
         hero_desc: "Tram Hat is a wholesome plant nutrition haven in the heart of urban life. Handcrafted fresh every dawn from native Vietnamese volcanic soil nuts, 100% free from preservatives and refined sugar.",
-        hero_btn_menu: "Explore 6 Fresh Varieties &rarr;",
+        hero_btn_menu: "View Menu",
         hero_btn_campaign: "Join Our Brand Story",
         stat_1: "Fresh Brew at Dawn",
         stat_2: "100% Native Crops",
@@ -5794,7 +5738,7 @@
               <div class="fw-bold small text-dark">${p.name}</div>
               <div class="text-muted" style="font-size: 11px;">${p.category} &bull; ${formatPrice(p.priceVND)}</div>
             </div>
-            <span class="btn btn-sm btn-outline-dark py-1 px-2" style="font-size: 11px;">Xem &rarr;</span>
+            <span class="btn btn-sm btn-outline-dark py-1 px-2" style="font-size: 11px;">Xem</span>
           </div>
         `;
       });
@@ -6428,8 +6372,8 @@
           <div class="text-center py-5 border rounded-3 bg-light">
             <i class="bi bi-receipt text-muted" style="font-size: 36px;"></i>
             <h6 class="fw-bold mt-2">Bạn Chưa Có Đơn Hàng Nào</h6>
-            <p class="text-muted small mb-3">Hãy đặt thử 1 chai sữa hạt tươi nấu lúc 05:00 sáng hôm nay nhé!</p>
-            <button class="btn btn-sm btn-main-primary" onclick="switchTab('menu')">Khám Phá Menu 6 Vị &rarr;</button>
+            <p class="text-muted small mb-3">Hãy đặt thử 1 chai sữa hạt tươi nấu lúc 05:00 sáng hôm nay nhé.</p>
+            <button class="btn btn-sm btn-main-primary" onclick="switchTab('menu')">Xem Thực Đơn 6 Vị</button>
           </div>
         `;
         return;
@@ -7821,7 +7765,7 @@
             </div>
 
             <button type="button" class="btn-main-primary w-100 justify-content-center py-2" onclick="submitTasteQuiz()">
-              Xem Kết Quả &amp; Nhận Mã Freeship &rarr;
+              Xem Kết Quả &amp; Nhận Mã Freeship
             </button>
           </div>
 
