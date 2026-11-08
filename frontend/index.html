@@ -3164,11 +3164,11 @@
                 style="width: 80px; height: 80px; font-size: 32px;">NA</div>
               <div>
                 <div class="d-flex align-items-center gap-2">
-                  <h1 class="display-6 font-serif fw-bold text-dark mb-0" id="profilePageName">Nguyễn An Nhiên</h1>
+                  <h1 class="display-6 font-serif fw-bold text-dark mb-0" id="profilePageName">Khách Vãng Lai</h1>
                   <span class="text-success small fw-semibold" title="Đã xác thực"><i
                       class="bi bi-patch-check-fill fs-5"></i></span>
                 </div>
-                <div class="text-muted small mt-1" id="profilePageContact">annhien@gmail.com - 0901.888.777</div>
+                <div class="text-muted small mt-1" id="profilePageContact">Vui lòng đăng nhập để xem thông tin</div>
                 <div class="text-muted small mt-1">Hạng thành viên: <strong class="text-dark">Eco Citizen (Sống
                     Xanh)</strong> - Tham gia từ Tháng 10/2026</div>
               </div>
@@ -3213,6 +3213,16 @@
 
         <!-- PROFILE SUB-TAB 1: THÔNG TIN TÀI KHOẢN -->
         <div id="profSectionInfo">
+
+              <!-- BANNER NHẮC ĐĂNG NHẬP DÀNH CHO KHÁCH VÃNG LAI -->
+              <div id="profGuestBanner" class="alert alert-light border border-warning-subtle shadow-sm mb-4 d-flex align-items-center justify-content-between p-3 rounded-3">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-info-circle-fill text-warning fs-5"></i>
+                  <span class="small text-dark">Bạn chưa đăng nhập. Vui lòng đăng nhập bằng số điện thoại để đồng bộ đơn hàng và tích lũy điểm Hạt Xanh.</span>
+                </div>
+                <button type="button" class="btn btn-sm btn-dark px-3 py-1" onclick="openAccountModal(true)">Đăng Nhập Ngay</button>
+              </div>
+  
           <div class="row g-4">
             <div class="col-lg-7">
               <h3 class="h5 font-serif fw-bold text-dark mb-3">Chỉnh Sửa Thông Tin Cá Nhân</h3>
@@ -3220,21 +3230,21 @@
                 <div class="row g-3 mb-3">
                   <div class="col-12">
                     <label class="form-label small fw-semibold text-muted">Họ và tên</label>
-                    <input type="text" class="form-control" id="profEditName" value="Nguyễn An Nhiên" required>
+                    <input type="text" class="form-control" id="profEditName" value="" placeholder="Nhập họ và tên..." required>
                   </div>
                   <div class="col-sm-6">
                     <label class="form-label small fw-semibold text-muted">Số điện thoại</label>
-                    <input type="tel" class="form-control" id="profEditPhone" value="0901888777" required>
+                    <input type="tel" class="form-control" id="profEditPhone" value="" placeholder="Nhập số điện thoại..." required>
                   </div>
                   <div class="col-sm-6">
                     <label class="form-label small fw-semibold text-muted">Email</label>
-                    <input type="email" class="form-control" id="profEditEmail" value="annhien@gmail.com" required>
+                    <input type="email" class="form-control" id="profEditEmail" value="" placeholder="Nhập email..." required>
                   </div>
                   <div class="col-12">
                     <label class="form-label small fw-semibold text-muted">Địa chỉ nhận sữa giao lạnh sáng sớm (Mặc
                       định)</label>
                     <textarea class="form-control" id="profEditAddress" rows="2"
-                      placeholder="Số nhà, tên đường, phường/xã, quận/huyện...">Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Phường Bến Nghé, Quận 1, TP.HCM</textarea>
+                      placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." placeholder="Nhập địa chỉ nhận sữa (số nhà, tên đường, phường, quận)..."></textarea>
                     <div class="text-muted small mt-1">Shipper Trạm Hạt sẽ ưu tiên giao túi đá gel giữ nhiệt đến địa chỉ
                       này trước 08:30 sáng.</div>
                   </div>
@@ -3672,25 +3682,7 @@
                 </button>
               </form>
 
-              <!-- GỢI Ý ĐĂNG NHẬP NHANH CÁC SĐT KHÁCH HÀNG THỰC TẾ CHIẾN DỊCH -->
-              <div class="mt-4 pt-3 border-top">
-                <div class="small fw-semibold text-muted mb-2"><i class="bi bi-person-check me-1"></i> Số điện thoại khách hàng chiến dịch:</div>
-                <div class="d-flex flex-wrap gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0903124855')">
-                    0903124855 (Bích Trâm)
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0918732109')">
-                    0918732109 (Hoàng Nam)
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0977234981')">
-                    0977234981 (Minh Quân)
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0901888777')">
-                    0901888777 (An Nhiên)
-                  </button>
-                </div>
               </div>
-            </div>
 
             <!-- VIEW KHI ĐÃ ĐĂNG NHẬP -->
             <div id="authLoggedInView" class="d-none text-center py-3">
@@ -3718,6 +3710,33 @@
     <!-- JAVASCRIPT ĐIỀU HÀNH TOÀN BỘ CHỨC NĂNG E-COMMERCE -->
     <script>
       // ==========================================================================
+      
+      // HỆ THỐNG THÔNG BÁO NỔI CHUYÊN NGHIỆP (THAY THẾ HOÀN TOÀN ALERT/PROMPT NGUYÊN THỦY)
+      function showFloatingToast(message, type = 'info') {
+        let container = document.getElementById('tramhatFloatingToastContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'tramhatFloatingToastContainer';
+          container.style.cssText = 'position:fixed; top:24px; right:24px; z-index:99999; display:flex; flex-direction:column; gap:10px; pointer-events:none;';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        const bg = type === 'success' ? '#2E7D32' : type === 'warning' ? '#E65100' : '#1F2937';
+        const icon = type === 'success' ? 'check-circle-fill' : type === 'warning' ? 'exclamation-triangle-fill' : 'info-circle-fill';
+        toast.style.cssText = 'background:' + bg + '; color:#fff; padding:12px 20px; border-radius:10px; font-size:13.5px; box-shadow:0 8px 24px rgba(0,0,0,0.18); display:flex; align-items:center; gap:10px; pointer-events:auto; transform:translateY(-10px); opacity:0; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);';
+        toast.innerHTML = '<i class="bi bi-' + icon + '"></i> <span>' + message + '</span>';
+        container.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.style.transform = 'translateY(0)';
+          toast.style.opacity = '1';
+        });
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-10px)';
+          setTimeout(() => toast.remove(), 350);
+        }, 3200);
+      }
+  
       // MULTI-PAGE SPA TAB ROUTER (1 TAB = 1 TRANG RIÊNG BIỆT)
       // ==========================================================================
       function switchTab(tabId) {
@@ -3880,6 +3899,8 @@
                 eventType: eventType,
                 tab: currentTab,
                 visitorCode: currentVisitorCode,
+                sessionId: (typeof TramHatSession !== 'undefined' && TramHatSession.getSessionId()) || ('sess_' + currentVisitorCode),
+                userId: (typeof getCurrentUser === 'function' && getCurrentUser() && getCurrentUser().id) || currentVisitorCode,
                 device: getDeviceType(),
                 utmSource: getUtmSource(),
                 clientTime: new Date().toISOString(),
@@ -6356,11 +6377,7 @@
         }, 150);
       }
 
-      function quickFillPhone(phone) {
-        const input = document.getElementById('loginPhoneNumber');
-        if (input) input.value = phone;
-        executePhoneLogin(phone);
-      }
+      
 
       function handlePhoneLoginSubmit(e) {
         e.preventDefault();
@@ -6373,7 +6390,9 @@
       async function executePhoneLogin(rawPhone) {
         const clean = (rawPhone || '').trim().replace(/[^0-9]/g, '');
         if (!clean || clean.length < 9) {
-          alert('Vui lòng nhập số điện thoại hợp lệ (10 chữ số)!');
+          showFloatingToast('Vui lòng nhập số điện thoại hợp lệ (10 chữ số)!', 'warning');
+          const input = document.getElementById('loginPhoneNumber');
+          if (input) input.focus();
           return;
         }
 
@@ -6396,14 +6415,15 @@
           TramHatSession.createSession(adminUser, isRemember);
           saveCurrentUser(adminUser);
           closeAccountModal();
+          showFloatingToast('Đăng nhập Quản trị viên thành công!', 'success');
           setTimeout(() => {
             switchTab('admin');
             if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-          }, 150);
+          }, 200);
           return;
         }
 
-        // 2. Tìm kiếm trong danh sách khách hàng chiến dịch
+        // 2. Tìm kiếm trong danh sách khách hàng hoặc tạo tài khoản mới ngay lập tức
         const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
         const matched = dataUsers.find(u => u.phone === clean);
 
@@ -6412,10 +6432,8 @@
         if (matched) {
           userObj = { ...matched, isLoggedIn: true };
         } else {
-          // Khách hàng mới: hỏi tên thân mật
-          let custName = prompt('Chào mừng bạn đến với Trạm Hạt!\nVui lòng nhập Họ & Tên của bạn để nhận 50 Hạt Xanh tích lũy:');
-          if (!custName || !custName.trim()) custName = 'Khách Hàng (' + clean.slice(-4) + ')';
-          else custName = custName.trim();
+          // Khách hàng mới: tạo tên thành viên tự nhiên, không làm phiền bằng prompt popup
+          const custName = 'Thành viên ' + clean.slice(-4);
 
           // Đồng bộ với API Backend MongoDB Atlas
           try {
@@ -6455,12 +6473,13 @@
           TramHatSession.createSession(userObj, isRemember);
         }
         saveCurrentUser(userObj);
+        syncUserUI();
         closeAccountModal();
 
-        alert('🎉 Đăng nhập thành công!\nChào mừng ' + (userObj.name || 'bạn') + ' (SĐT: ' + clean + ') đến với Trạm Hạt.');
+        showFloatingToast('Đăng nhập thành công! Chào mừng ' + (userObj.name || clean), 'success');
         setTimeout(() => {
           switchTab('profile');
-        }, 150);
+        }, 200);
       }
 
       function adminLogout() {
@@ -6485,7 +6504,7 @@
         syncUserUI();
         closeAccountModal();
         switchTab('home');
-        alert('Đã đăng xuất tài khoản thành công!');
+        showFloatingToast('Đã đăng xuất tài khoản.', 'info');
       }
 
       function goToProfilePage() {
@@ -6536,6 +6555,11 @@
         const statOrders = document.getElementById('profileStatOrders');
 
         if (profAvatar) profAvatar.innerText = initials;
+        const guestBanner = document.getElementById('profGuestBanner');
+        if (guestBanner) {
+          if (isLoggedIn) guestBanner.classList.add('d-none');
+          else guestBanner.classList.remove('d-none');
+        }
         if (profName) profName.innerText = isLoggedIn ? (user.name || 'Khách Hàng') : 'Khách Vãng Lai';
         if (profContact) profContact.innerText = isLoggedIn ? ((user.email ? user.email + ' • ' : '') + (user.phone || '')) : 'Vui lòng đăng nhập để xem thông tin';
         if (statPoints) statPoints.innerText = isLoggedIn ? (user.points || 0) : 0;

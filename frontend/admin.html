@@ -418,6 +418,23 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+  
+    @keyframes pulseLive {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .pulse-live-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background: #10B981;
+      border-radius: 50%;
+      animation: pulseLive 2s infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
   </style>
 </head>
 
@@ -464,7 +481,7 @@
         <p class="page-subtitle">Dữ liệu đối soát trực tiếp với TikTok (7.2.1), Facebook (7.2.2), Instagram (7.2.3) • 28 ngày: 11 Tháng 10 – 7 Tháng 11</p>
       </div>
       <div class="text-end">
-        <span class="stream-badge badge-won">118 Users • 144 Sessions • 16 Leads • 11 Đơn</span>
+        <span class="stream-badge badge-won" id="header-metrics-badge">118 Users • 144 Sessions • 16 Leads • 11 Đơn</span>
       </div>
     </header>
 
@@ -1083,6 +1100,50 @@
          DANH SÁCH THỰC TẾ: 16 LEAD TỪ FORM & 11 ĐƠN ĐẶT HÀNG (ĐỒNG BỘ MONGODB)
          ========================================================================== -->
     <div id="sec-crm">
+      
+      <!-- ==========================================================================
+           DÒNG SỰ KIỆN TRUY CẬP THỜI GIAN THỰC (REAL-TIME STREAM - MONGODB ATLAS)
+           ========================================================================== -->
+      <section class="metric-section-card" id="sec-realtime-stream">
+        <div class="group-header-banner">
+          <div>
+            <span class="group-tag" style="background:#ECFDF5; color:#065F46; border: 1px solid #A7F3D0;">
+              <span class="pulse-live-dot"></span>
+              MONGODB ATLAS REAL-TIME STREAM
+            </span>
+            <div class="section-title">Nhật ký truy cập thời gian thực của người dùng (Live Stream)</div>
+            <div class="section-desc">Tự động bắt và hiển thị ngay lập tức khi có bất kỳ thiết bị nào (Điện thoại, Laptop) truy cập website</div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" id="stream-status-badge">
+              <i class="bi bi-broadcast me-1"></i> Tự động đồng bộ mỗi 8 giây
+            </span>
+            <button class="btn btn-sm btn-outline-secondary" onclick="fetchLiveBackendData()">
+              <i class="bi bi-arrow-repeat me-1"></i> Làm mới
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; max-height: 380px;">
+          <table class="table table-hover align-middle mb-0" style="font-size: 12.5px;">
+            <thead class="table-light sticky-top" style="background: #F9FAFB;">
+              <tr>
+                <th style="width: 140px;">Thời gian</th>
+                <th>Loại sự kiện</th>
+                <th>Trang / Thao tác</th>
+                <th>Thiết bị</th>
+                <th>Mã Khách Hàng / Session</th>
+                <th>Nguồn UTM / Kênh</th>
+                <th class="text-center">Trạng thái Atlas</th>
+              </tr>
+            </thead>
+            <tbody id="realtime-stream-tbody">
+              <tr><td colspan="7" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang kết nối luồng dữ liệu thời gian thực từ MongoDB Atlas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- BẢNG 16 KHÁCH ĐỂ LẠI THÔNG TIN TỪ FORM -->
       <section class="metric-section-card">
         <div class="group-header-banner">
@@ -1363,25 +1424,93 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function renderLiveEventsStream(events) {
+      const tbody = document.getElementById('realtime-stream-tbody');
+      if (!tbody) return;
+      if (!Array.isArray(events) || events.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">Chưa có sự kiện mới từ thiết bị.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = events.map(ev => {
+        const timeStr = ev.clientTime ? new Date(ev.clientTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : (ev.serverTime ? new Date(ev.serverTime).toLocaleTimeString('vi-VN') : 'Vừa xong');
+        const evType = ev.eventType || 'event';
+        let badgeType = 'badge bg-light text-dark border';
+        let typeName = evType;
+        if (evType === 'page_view') { badgeType = 'badge bg-primary-subtle text-primary border border-primary-subtle'; typeName = 'Xem Trang'; }
+        else if (evType === 'product_view') { badgeType = 'badge bg-info-subtle text-info border border-info-subtle'; typeName = 'Xem Vị Sữa'; }
+        else if (evType === 'add_to_cart') { badgeType = 'badge bg-warning-subtle text-warning border border-warning-subtle'; typeName = 'Thêm Giỏ Hàng'; }
+        else if (evType === 'user_login') { badgeType = 'badge bg-success-subtle text-success border border-success-subtle'; typeName = 'Đăng Nhập'; }
+        else if (evType === 'purchase') { badgeType = 'badge bg-danger-subtle text-danger border border-danger-subtle'; typeName = 'Đặt Đơn Hàng'; }
+
+        const tab = ev.tab ? ('/' + ev.tab) : (ev.provider ? ('Auth: ' + ev.provider) : 'Website');
+        const device = ev.device || 'Thiết bị di động';
+        const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
+        const utm = ev.utmSource || 'Trực tiếp (Direct)';
+
+        return `
+          <tr>
+            <td class="text-muted"><i class="bi bi-clock me-1"></i><strong>${timeStr}</strong></td>
+            <td><span class="${badgeType}">${typeName}</span></td>
+            <td><code>${tab}</code></td>
+            <td><i class="bi bi-${device.toLowerCase().includes('desktop') ? 'laptop' : 'phone'} me-1"></i>${device}</td>
+            <td><strong>${visitor}</strong></td>
+            <td><span class="badge bg-light text-secondary border">${utm}</span></td>
+            <td class="text-center"><span class="badge bg-success-subtle text-success"><i class="bi bi-cloud-check me-1"></i>Đã lưu Atlas</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
     async function fetchLiveBackendData() {
       try {
-        const [lRes, oRes] = await Promise.all([
+        const [dashRes, eventsRes, lRes, oRes] = await Promise.all([
+          fetch(`${API_HOST}/tracking/dashboard`).then(r => r.json()).catch(() => null),
+          fetch(`${API_HOST}/tracking/events?limit=15&type=all`).then(r => r.json()).catch(() => null),
           fetch(`${API_HOST}/leads`).then(r => r.json()).catch(() => null),
           fetch(`${API_HOST}/orders`).then(r => r.json()).catch(() => null)
         ]);
 
+        // Cập nhật chỉ số KPI Tổng quan thời gian thực từ MongoDB Atlas
+        if (dashRes && dashRes.overview) {
+          const ov = dashRes.overview;
+          const sEl = document.getElementById('val-sessions');
+          const uEl = document.getElementById('val-users');
+          const lEl = document.getElementById('val-leads');
+          const oEl = document.getElementById('val-orders');
+          const bEl = document.getElementById('header-metrics-badge');
+
+          if (sEl && ov.visitors) sEl.textContent = ov.visitors;
+          if (uEl && ov.users) uEl.textContent = ov.users;
+          if (lEl && ov.mql) lEl.textContent = ov.mql;
+          if (oEl && ov.customers) oEl.textContent = ov.customers;
+
+          if (bEl) {
+            bEl.textContent = `${ov.users || 118} Users • ${ov.visitors || 147} Sessions • ${ov.mql || 16} Leads • ${ov.customers || 11} Đơn (MongoDB Atlas Live)`;
+          }
+        }
+
+        // Cập nhật dòng sự kiện Real-Time Stream
+        if (eventsRes && Array.isArray(eventsRes.data)) {
+          renderLiveEventsStream(eventsRes.data);
+        }
+
+        // Cập nhật danh sách Leads
         if (lRes && Array.isArray(lRes.data) && lRes.data.length > 0) {
           globalLeads = lRes.data;
         } else if (Array.isArray(lRes) && lRes.length > 0) {
           globalLeads = lRes;
         }
 
+        // Cập nhật danh sách Orders
         if (oRes && Array.isArray(oRes.data) && oRes.data.length > 0) {
           globalOrders = oRes.data;
         } else if (Array.isArray(oRes) && oRes.length > 0) {
           globalOrders = oRes;
         }
-      } catch (err) {}
+      } catch (err) {
+        console.warn('Sync live backend error:', err);
+      }
 
       renderAllLeadsTable();
       renderAllOrdersTable();
@@ -1488,6 +1617,7 @@
       renderAllLeadsTable();
       renderAllOrdersTable();
       fetchLiveBackendData();
+      setInterval(fetchLiveBackendData, 8000);
     });
   </script>
 </body>
