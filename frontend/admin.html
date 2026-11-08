@@ -276,7 +276,7 @@
     .ranked-bar-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .ranked-bar-item {
@@ -289,36 +289,40 @@
       display: flex;
       justify-content: space-between;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
+      color: var(--text-body);
+    }
+
+    .ranked-bar-header span:last-child {
+      font-weight: 700;
       color: var(--text-title);
     }
 
     .ranked-bar-track {
       height: 6px;
-      background: #E5E7EB;
+      background: #F3F4F6;
       border-radius: 3px;
       overflow: hidden;
     }
 
     .ranked-bar-fill {
       height: 100%;
-      background: var(--accent-blue);
+      background: #111827;
       border-radius: 3px;
       transition: width 0.4s ease;
     }
 
-    /* PHỄU CHUYỂN ĐỔI TỪNG BƯỚC */
+    /* PHỄU CHUYỂN ĐỔI TỐI GIẢN (KHÔNG KHUNG HỘP • ĐỒNG NHẤT 1 MÀU) */
     .funnel-step-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 16px;
     }
 
     .funnel-step-item {
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 10px 14px;
-      background: #FFFFFF;
+      padding: 0;
+      background: transparent;
+      border: none;
     }
 
     .funnel-step-top {
@@ -330,8 +334,8 @@
 
     .funnel-step-title {
       font-size: 13px;
-      font-weight: 700;
-      color: var(--text-title);
+      font-weight: 500;
+      color: var(--text-body);
     }
 
     .funnel-step-numbers {
@@ -342,9 +346,8 @@
 
     .funnel-dropoff-alert {
       font-size: 11px;
-      color: var(--accent-red);
-      font-weight: 600;
-      margin-top: 3px;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
     /* DANH SÁCH DÒNG SỰ KIỆN & KHÁCH HÀNG */
@@ -680,75 +683,69 @@
         </div>
 
         <div class="funnel-step-list">
-          <!-- 1 -->
           <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">1. Vào web</span>
               <span class="funnel-step-numbers" id="funnel-num-1">1.280 (100%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
+              <div class="ranked-bar-fill" style="width: 100%;"></div>
             </div>
           </div>
 
-          <!-- 2 -->
           <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">2. Xem thực đơn</span>
               <span class="funnel-step-numbers" id="funnel-num-2">846 (66,1%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
+              <div class="ranked-bar-fill" style="width: 66.1%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-33,9%</div>
           </div>
 
-          <!-- 3 -->
           <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">3. Xem chi tiết vị sữa</span>
               <span class="funnel-step-numbers" id="funnel-num-3">512 (40,0%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
+              <div class="ranked-bar-fill" style="width: 40%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-39,5%</div>
           </div>
 
-          <!-- 4 -->
-          <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
+          <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
               <span class="funnel-step-numbers" id="funnel-num-4">162 (12,7%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
+              <div class="ranked-bar-fill" style="width: 12.7%;"></div>
             </div>
-            <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">-68,4%</div>
+            <div class="funnel-dropoff-alert">-68,4%</div>
           </div>
 
-          <!-- 5 -->
           <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">5. Gửi form thông tin</span>
               <span class="funnel-step-numbers" id="funnel-num-5">78 (6,1%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
+              <div class="ranked-bar-fill" style="width: 6.1%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-51,9%</div>
           </div>
 
-          <!-- 6 -->
-          <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
+          <div class="funnel-step-item">
             <div class="funnel-step-top">
-              <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
-              <span class="funnel-step-numbers" style="color: var(--accent-green);" id="funnel-num-6">54 đơn (4,2%)</span>
+              <span class="funnel-step-title">6. Đặt hàng thành công</span>
+              <span class="funnel-step-numbers" id="funnel-num-6">54 đơn (4,2%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
+              <div class="ranked-bar-fill" style="width: 4.2%;"></div>
             </div>
-            <div style="font-size: 11.5px; color: var(--accent-green); font-weight: 700; margin-top: 4px;" id="funnel-revenue-label">
+            <div class="funnel-dropoff-alert" id="funnel-revenue-label">
               Tỷ lệ chuyển đổi: 4,2% • Doanh thu: 1.890.000đ
             </div>
           </div>
@@ -875,7 +872,7 @@
               <span class="funnel-step-numbers">1.280 (100%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
+              <div class="ranked-bar-fill" style="width: 100%;"></div>
             </div>
           </div>
 
@@ -885,7 +882,7 @@
               <span class="funnel-step-numbers">846 (66,1%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
+              <div class="ranked-bar-fill" style="width: 66.1%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-33,9%</div>
           </div>
@@ -896,20 +893,20 @@
               <span class="funnel-step-numbers">512 (40,0%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
+              <div class="ranked-bar-fill" style="width: 40%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-39,5%</div>
           </div>
 
-          <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
+          <div class="funnel-step-item">
             <div class="funnel-step-top">
               <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
               <span class="funnel-step-numbers">162 (12,7%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
+              <div class="ranked-bar-fill" style="width: 12.7%;"></div>
             </div>
-            <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">-68,4%</div>
+            <div class="funnel-dropoff-alert">-68,4%</div>
           </div>
 
           <div class="funnel-step-item">
@@ -918,18 +915,18 @@
               <span class="funnel-step-numbers">78 (6,1%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
+              <div class="ranked-bar-fill" style="width: 6.1%;"></div>
             </div>
             <div class="funnel-dropoff-alert">-51,9%</div>
           </div>
 
-          <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
+          <div class="funnel-step-item">
             <div class="funnel-step-top">
-              <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
-              <span class="funnel-step-numbers" style="color: var(--accent-green);">54 đơn (4,2%)</span>
+              <span class="funnel-step-title">6. Đặt hàng thành công</span>
+              <span class="funnel-step-numbers">54 đơn (4,2%)</span>
             </div>
             <div class="ranked-bar-track">
-              <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
+              <div class="ranked-bar-fill" style="width: 4.2%;"></div>
             </div>
           </div>
         </div>
