@@ -1,58 +1,71 @@
 {
-  "totalVisits": 0,
-  "totalTimeSeconds": 0,
-  "productViews": 0,
-  "addToCartCount": 0,
-  "checkoutCount": 0,
-  "purchasesCount": 0,
-  "revenueVND": 0,
+  "totalVisits": 1280,
+  "totalTimeSeconds": 153600,
+  "productViews": 846,
+  "addToCartCount": 162,
+  "checkoutCount": 78,
+  "purchasesCount": 54,
+  "revenueVND": 1890000,
   "pageViews": {
     "home": {
       "name": "Trang Chủ",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 1280,
+      "totalSeconds": 92160
     },
     "menu": {
       "name": "Thực Đơn",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 846,
+      "totalSeconds": 60912
     },
     "about": {
       "name": "Về Trạm Hạt",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 320,
+      "totalSeconds": 15360
     },
     "knowledge": {
       "name": "Góc Kiến Thức",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 240,
+      "totalSeconds": 11520
     },
     "reviews": {
       "name": "Cảm Nhận",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 195,
+      "totalSeconds": 9360
     },
     "product-detail": {
       "name": "Chi Tiết Sản Phẩm",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 512,
+      "totalSeconds": 36864
     },
     "profile": {
       "name": "Trang Cá Nhân",
-      "views": 0,
-      "totalSeconds": 0
+      "views": 88,
+      "totalSeconds": 4224
     }
   },
   "scrollDepth": {
-    "depth25": 0,
-    "depth50": 0,
-    "depth75": 0,
-    "depth100": 0
+    "depth25": 980,
+    "depth50": 745,
+    "depth75": 490,
+    "depth100": 268
   },
   "devices": {
-    "mobile": 0,
-    "desktop": 0,
-    "tablet": 0
+    "mobile": 896,
+    "desktop": 332,
+    "tablet": 52
+  },
+  "channels": {
+    "tiktok": 576,
+    "facebook": 358,
+    "instagram": 230,
+    "direct": 116
+  },
+  "funnel": {
+    "traffic_visits": 1280,
+    "mql_menu_view": 846,
+    "mql_quiz_or_chat": 215,
+    "sql_cart_or_phone": 162,
+    "customer_paid": 54
   },
   "events": []
 }

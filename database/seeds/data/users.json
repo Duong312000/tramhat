@@ -7,7 +7,7 @@
     "password": "123",
     "role": "customer",
     "tier": "Eco Citizen (Sống Xanh)",
-    "address": "Phòng 402, Tòa nhà A, 123 Phố Trúc Bạch, Ba Đình, Hà Nội",
+    "address": "Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Bến Nghé, Quận 1, TP.HCM",
     "points": 120,
     "bottlesReturned": 8,
     "ordersCount": 3
@@ -33,7 +33,7 @@
     "password": "123",
     "role": "customer",
     "tier": "Thành Viên Mới",
-    "address": "12 ngõ 89 Hoàng Hoa Thám, Ba Đình, Hà Nội",
+    "address": "45/2 Nguyễn Thị Minh Khai, Phường Bến Nghé, Quận 1, TP.HCM",
     "points": 50,
     "bottlesReturned": 2,
     "ordersCount": 1
