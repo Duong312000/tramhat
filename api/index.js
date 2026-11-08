@@ -359,7 +359,7 @@ app.get('/api/leads', (req, res) => {
   res.json(memoryLeads);
 });
 
-app.post('/api/leads', (req, res) => {
+app.post('/api/leads', async (req, res) => {
   const b = req.body || {};
   const leadId = b.leadId || b.id || 'LEAD-' + Math.floor(10000 + Math.random() * 90000);
   const customerName = b.customerName || b.name || 'Khách Vãng Lai';
@@ -432,7 +432,7 @@ app.get('/api/orders', (req, res) => {
   res.json(memoryOrders);
 });
 
-app.post('/api/orders', (req, res) => {
+app.post('/api/orders', async (req, res) => {
   const b = req.body || {};
   const orderId = b.orderId || b.id || 'TH-' + Math.floor(100000 + Math.random() * 900000);
   const customerName = b.customerName || b.name || 'Khách Hàng';
