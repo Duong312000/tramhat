@@ -78,3 +78,43 @@ exports.updateProfile = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+exports.googleAuth = async (req, res) => {
+  try {
+    const { name, email, avatar, googleId } = req.body || {};
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Thiếu email Google' });
+    }
+
+    let existing = await User.findOne({ email });
+    if (existing) {
+      existing.name = name || existing.name;
+      existing.avatar = avatar || existing.avatar;
+      await existing.save();
+      const resUser = existing.toObject();
+      delete resUser.password;
+      return res.json({ success: true, user: resUser });
+    }
+
+    const id = 'USR-GG-' + (googleId ? googleId.slice(-6) : Date.now().toString().slice(-6));
+    const newUser = new User({
+      id,
+      name: name || 'Người Dùng Google',
+      email,
+      avatar: avatar || '',
+      role: 'customer',
+      source: 'google_oauth',
+      channelGroup: 'Organic Search / Google OAuth',
+      tier: 'Eco Citizen (Thành viên Google)',
+      points: 50,
+      bottlesReturned: 0,
+      ordersCount: 0
+    });
+    const saved = await newUser.save();
+    const resUser = saved.toObject();
+    delete resUser.password;
+    res.status(201).json({ success: true, user: resUser });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

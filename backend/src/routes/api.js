@@ -29,6 +29,7 @@ router.put('/orders/:id/status', ordersController.updateOrderStatus);
 // --- USERS ---
 router.get('/users', usersController.getAllUsers);
 router.post('/users/login', usersController.login);
+router.post('/users/google-auth', usersController.googleAuth);
 router.post('/users/validate-session', usersController.validateSession);
 router.post('/users/register', usersController.register);
 router.put('/users/:id', usersController.updateProfile);

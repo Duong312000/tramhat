@@ -1557,6 +1557,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
   </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
@@ -3700,8 +3701,9 @@
               </div>
 
               <div class="d-grid gap-2">
-                <button class="btn btn-outline-dark btn-sm py-2" onclick="mockSocialLogin('Google')">
-                  <i class="bi bi-google me-2 text-danger"></i> Tiếp tục với Google
+                <div id="googleBtnContainer" class="d-flex justify-content-center mb-2"></div>
+                <button type="button" class="btn btn-outline-dark btn-sm py-2 w-100" id="btnCustomGoogleLogin" onclick="triggerGoogleOAuthLogin()">
+                  <i class="bi bi-google me-2 text-danger"></i> Tiếp tục với Google (Xác thực thật)
                 </button>
               </div>
             </div>
@@ -6669,6 +6671,151 @@
         switchTab('home');
       }
 
+      
+      // ==========================================================================
+      // REAL GOOGLE IDENTITY SERVICES (GIS) / OAUTH 2.0 INTEGRATION
+      // ==========================================================================
+      window.GOOGLE_CLIENT_ID = localStorage.getItem('tramhat_google_client_id') || '';
+
+      function initGoogleOAuth() {
+        if (!window.GOOGLE_CLIENT_ID) return;
+        if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+          setTimeout(initGoogleOAuth, 500);
+          return;
+        }
+
+        try {
+          google.accounts.id.initialize({
+            client_id: window.GOOGLE_CLIENT_ID,
+            callback: handleGoogleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true
+          });
+
+          const container = document.getElementById('googleBtnContainer');
+          const customBtn = document.getElementById('btnCustomGoogleLogin');
+          if (container) {
+            container.innerHTML = '';
+            google.accounts.id.renderButton(container, {
+              theme: 'outline',
+              size: 'large',
+              width: 360,
+              text: 'continue_with',
+              shape: 'rectangular',
+              logo_alignment: 'left',
+              locale: 'vi'
+            });
+            if (customBtn) customBtn.classList.add('d-none');
+          }
+        } catch (e) {
+          console.warn('Google OAuth init warning:', e);
+        }
+      }
+
+      function triggerGoogleOAuthLogin() {
+        if (!window.GOOGLE_CLIENT_ID) {
+          const inputId = prompt(
+            "CẤU HÌNH ĐĂNG NHẬP GOOGLE OAUTH THẬT:\n\n" +
+            "Vui lòng dán Google Client ID của bạn (dạng: xxxxxx.apps.googleusercontent.com)\n" +
+            "đã đăng ký từ Google Cloud Console:\n\n" +
+            "(Nếu chưa có, hãy đóng thông báo này để xem hướng dẫn 3 bước tạo miễn phí)."
+          );
+          if (inputId && inputId.trim()) {
+            window.GOOGLE_CLIENT_ID = inputId.trim();
+            localStorage.setItem('tramhat_google_client_id', window.GOOGLE_CLIENT_ID);
+            alert("Đã lưu Google Client ID! Cửa sổ đăng nhập Google đang khởi chạy...");
+            initGoogleOAuth();
+            setTimeout(() => {
+              if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+                google.accounts.id.prompt();
+              }
+            }, 400);
+          }
+          return;
+        }
+
+        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+          google.accounts.id.prompt();
+        }
+      }
+
+      async function handleGoogleCredentialResponse(response) {
+        if (!response || !response.credential) return;
+
+        try {
+          // 1. Giải mã JWT Token thật do Google cấp
+          const jwt = response.credential;
+          const base64Url = jwt.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          const googleProfile = JSON.parse(jsonPayload);
+
+          // 2. Trích xuất thông tin người dùng thật từ Google
+          const realName = googleProfile.name || googleProfile.given_name || 'Khách Hàng Google';
+          const realEmail = googleProfile.email;
+          const realAvatar = googleProfile.picture || '';
+          const googleSub = googleProfile.sub;
+
+          // 3. Gửi về Backend để đồng bộ trực tiếp vào MongoDB Atlas (Bộ sưu tập users & trackingevents)
+          let persistentUser = null;
+          try {
+            const apiRes = await fetch('/api/users/google-auth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: realName,
+                email: realEmail,
+                avatar: realAvatar,
+                googleId: googleSub
+              })
+            });
+            const apiData = await apiRes.json();
+            if (apiData && apiData.success && apiData.user) {
+              persistentUser = apiData.user;
+            }
+          } catch (apiErr) {
+            console.warn('API sync warning:', apiErr);
+          }
+
+          const userObj = persistentUser || {
+            id: 'USR-GG-' + googleSub.slice(-6),
+            name: realName,
+            email: realEmail,
+            avatar: realAvatar,
+            phone: '',
+            role: 'customer',
+            tier: 'Eco Citizen (Thành viên Google)',
+            points: 50,
+            bottlesReturned: 0,
+            ordersCount: 0,
+            isLoggedIn: true
+          };
+
+          userObj.isLoggedIn = true;
+
+          // 4. Lưu phiên và cập nhật giao diện
+          if (typeof TramHatSession !== 'undefined') {
+            TramHatSession.createSession(userObj, true);
+          }
+          saveCurrentUser(userObj);
+          closeAccountModal();
+
+          alert('🎉 Đăng nhập Google thành công!\nChào mừng ' + realName + ' (' + realEmail + ') đến với Trạm Hạt.');
+          setTimeout(() => {
+            switchTab('profile');
+          }, 150);
+        } catch (err) {
+          console.error('Lỗi xử lý xác thực Google:', err);
+          alert('Không thể xác thực tài khoản Google. Chi tiết: ' + err.message);
+        }
+      }
+
+      window.addEventListener('load', () => {
+        setTimeout(initGoogleOAuth, 800);
+      });
+
       function mockSocialLogin(provider) {
         const user = {
           id: 'USR-CUST-100',
@@ -6744,7 +6891,20 @@
         const statBottles = document.getElementById('profileStatBottles');
         const statOrders = document.getElementById('profileStatOrders');
 
-        if (profAvatar) profAvatar.innerText = initials;
+        if (profAvatar) {
+          if (user && user.avatar) {
+            profAvatar.innerHTML = '<img src="' + user.avatar + '" alt="' + (user.name || '') + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+          } else {
+            profAvatar.innerText = initials;
+          }
+        }
+        if (modalAvatar) {
+          if (user && user.avatar) {
+            modalAvatar.innerHTML = '<img src="' + user.avatar + '" alt="' + (user.name || '') + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
+          } else {
+            modalAvatar.innerText = initials;
+          }
+        }
         if (profName) profName.innerText = (user && user.name) ? user.name : 'Khách Hàng';
         if (profContact) profContact.innerText = ((user && user.email) || 'Chưa cập nhật email') + ' • ' + ((user && user.phone) || 'Chưa cập nhật SĐT');
         if (statPoints) statPoints.innerText = (user && user.points) || 0;

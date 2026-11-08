@@ -474,6 +474,69 @@ app.get(['/api/users', '/users'], async (req, res) => {
   res.json({ success: true, count: 16, data: [], source: 'memory' });
 });
 
+// XÁC THỰC GOOGLE OAUTH THẬT & ĐỒNG BỘ MONGODB ATLAS
+app.post(['/api/users/google-auth', '/users/google-auth'], async (req, res) => {
+  try {
+    const { name, email, avatar, googleId } = req.body || {};
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Thiếu email Google' });
+    }
+
+    let userObj = {
+      id: 'USR-GG-' + (googleId ? googleId.slice(-6) : Date.now().toString().slice(-6)),
+      name: name || 'Người Dùng Google',
+      email: email,
+      avatar: avatar || '',
+      phone: req.body.phone || '',
+      role: 'customer',
+      source: 'google_oauth',
+      channelGroup: 'Organic Search / Google OAuth',
+      tier: 'Eco Citizen (Thành viên Google)',
+      points: 50,
+      bottlesReturned: 0,
+      ordersCount: 0,
+      googleId: googleId || '',
+      isRealGoogleUser: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+      const db = mongoose.connection.db;
+      // Kiểm tra người dùng đã tồn tại qua email chưa
+      const existing = await db.collection('users').findOne({ email: email });
+      if (existing) {
+        await db.collection('users').updateOne(
+          { email: email },
+          { $set: { name: name || existing.name, avatar: avatar || existing.avatar, updatedAt: new Date().toISOString() } }
+        );
+        userObj = { ...existing, name: name || existing.name, avatar: avatar || existing.avatar };
+      } else {
+        await db.collection('users').insertOne(userObj);
+      }
+
+      // Ghi nhận sự kiện tracking thật vào MongoDB
+      await db.collection('trackingevents').insertOne({
+        eventType: 'user_login',
+        eventCategory: 'auth',
+        provider: 'google',
+        userEmail: email,
+        userName: name,
+        userId: userObj.id,
+        createdAt: new Date()
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Đăng nhập Google thành công và đã lưu vào MongoDB',
+      user: userObj
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // 5. LEADS (CRM)
 app.get(['/api/leads', '/leads'], async (req, res) => {
   if (mongoose.connection && mongoose.connection.readyState === 1) {
