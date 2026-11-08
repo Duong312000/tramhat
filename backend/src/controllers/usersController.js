@@ -99,7 +99,7 @@ exports.phoneAuth = async (req, res) => {
       id,
       name: name || ('Khách Hàng ' + phone.slice(-4)),
       phone,
-      email: phone + '@khachhang.tramhat.vn',
+      email: req.body.email || undefined,
       address: address || 'TP.HCM',
       district: district || 'TP.HCM',
       role: 'customer',

@@ -3177,35 +3177,35 @@
           <div class="row align-items-center g-4">
             <div class="col-md-7 d-flex align-items-center gap-3">
               <div class="profile-avatar-circle" id="profilePageAvatar"
-                style="width: 80px; height: 80px; font-size: 32px;">NA</div>
+                style="width: 80px; height: 80px; font-size: 32px;">TH</div>
               <div>
                 <div class="d-flex align-items-center gap-2">
-                  <h1 class="display-6 font-serif fw-bold text-dark mb-0" id="profilePageName">Khách Vãng Lai</h1>
+                  <h1 class="display-6 font-serif fw-bold text-dark mb-0" id="profilePageName">Khách Hàng</h1>
                   <span class="text-success small fw-semibold" title="Đã xác thực"><i
                       class="bi bi-patch-check-fill fs-5"></i></span>
                 </div>
-                <div class="text-muted small mt-1" id="profilePageContact">Vui lòng đăng nhập để xem thông tin</div>
+                <div class="text-muted small mt-1" id="profilePageContact">--</div>
                 <div class="text-muted small mt-1">Hạng thành viên: <strong class="text-dark">Eco Citizen (Sống
-                    Xanh)</strong> - Tham gia từ Tháng 10/2026</div>
+                    Xanh)</strong></div>
               </div>
             </div>
             <div class="col-md-5">
               <div class="row text-center text-md-end g-3">
                 <div class="col-4">
                   <div class="profile-stat-box">
-                    <div class="fw-bold font-serif display-6 text-dark" id="profileStatPoints">120</div>
+                    <div class="fw-bold font-serif display-6 text-dark" id="profileStatPoints">0</div>
                     <div class="text-muted small">Điểm Thưởng</div>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="profile-stat-box">
-                    <div class="fw-bold font-serif display-6 text-success" id="profileStatBottles">8</div>
+                    <div class="fw-bold font-serif display-6 text-success" id="profileStatBottles">0</div>
                     <div class="text-muted small">Chai Đã Trả</div>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="profile-stat-box">
-                    <div class="fw-bold font-serif display-6 text-dark" id="profileStatOrders">3</div>
+                    <div class="fw-bold font-serif display-6 text-dark" id="profileStatOrders">0</div>
                     <div class="text-muted small">Đơn Hàng</div>
                   </div>
                 </div>
@@ -3230,7 +3230,7 @@
         <!-- PROFILE SUB-TAB 1: THÔNG TIN TÀI KHOẢN -->
         <div id="profSectionInfo">
 
-  
+
           <div class="row g-4">
             <div class="col-lg-7">
               <h3 class="h5 font-serif fw-bold text-dark mb-3">Chỉnh Sửa Thông Tin Cá Nhân</h3>
@@ -3245,14 +3245,13 @@
                     <input type="tel" class="form-control" id="profEditPhone" value="" placeholder="Nhập số điện thoại..." required>
                   </div>
                   <div class="col-sm-6">
-                    <label class="form-label small fw-semibold text-muted">Email</label>
-                    <input type="email" class="form-control" id="profEditEmail" value="" placeholder="Nhập email..." required>
+                    <label class="form-label small fw-semibold text-muted">Email (Tùy chọn)</label>
+                    <input type="email" class="form-control" id="profEditEmail" value="" placeholder="Nhập email...">
                   </div>
                   <div class="col-12">
-                    <label class="form-label small fw-semibold text-muted">Địa chỉ nhận sữa giao lạnh sáng sớm (Mặc
-                      định)</label>
+                    <label class="form-label small fw-semibold text-muted">Địa chỉ nhận sữa giao lạnh sáng sớm (Mặc định)</label>
                     <textarea class="form-control" id="profEditAddress" rows="2"
-                      placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." placeholder="Nhập địa chỉ nhận sữa (số nhà, tên đường, phường, quận)..."></textarea>
+                      placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."></textarea>
                     <div class="text-muted small mt-1">Shipper Trạm Hạt sẽ ưu tiên giao túi đá gel giữ nhiệt đến địa chỉ
                       này trước 08:30 sáng.</div>
                   </div>
@@ -3280,14 +3279,14 @@
                 </ul>
               </div>
 
-              <!-- ĐỔI MẬT KHẨU -->
-              <div class="border rounded-3 p-3 mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
+              <!-- XÁC THỰC BẢO MẬT -->
+              <div class="border rounded-3 p-3 mb-3 bg-light">
+                <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    <div class="fw-semibold small">Mật khẩu tài khoản</div>
-                    <div class="text-muted small">Bảo mật thông tin thanh toán & địa chỉ</div>
+                    <div class="fw-semibold small text-dark"><i class="bi bi-shield-check text-success me-1"></i> Bảo Mật Tài Khoản</div>
+                    <div class="text-muted small" style="font-size: 12px;">Xác thực tiện lợi bằng số điện thoại - Không cần mật khẩu</div>
                   </div>
-                  <button class="btn btn-sm btn-outline-dark" onclick="showFloatingToast('Đã gửi mã xác nhận đổi mật khẩu qua SMS!', 'success')">Đổi Mật Khẩu</button>
+                  <span class="badge bg-success-subtle text-success border border-success-subtle small fw-normal">Đã Bảo Vệ</span>
                 </div>
               </div>
 
@@ -3699,7 +3698,7 @@
                 <div class="avatar-circle mx-auto mb-2" id="authModalAvatar"
                   style="width: 64px; height: 64px; font-size: 24px;">TH</div>
                 <h5 class="fw-bold mb-1" id="authModalUserName">Khách Hàng</h5>
-                <p class="text-muted small mb-0" id="authModalUserEmail">0903124855</p>
+                <p class="text-muted small mb-0" id="authModalUserEmail"></p>
                 <div class="badge bg-success-subtle text-success border border-success-subtle mt-2" style="font-size: 11px;">Thành viên Eco Citizen</div>
               </div>
               <div class="d-grid gap-2">
@@ -6716,7 +6715,7 @@
               id: 'USR-TEL-' + clean.slice(-6),
               name: custName,
               phone: clean,
-              email: clean + '@khachhang.tramhat.vn',
+              email: '',
               address: 'TP.HCM',
               role: 'customer',
               tier: 'Eco Citizen (Thành viên Mới)',
@@ -6902,51 +6901,23 @@
         try {
           const localOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
           if (Array.isArray(localOrders) && localOrders.length > 0) {
-            orders.push(...localOrders);
+            if (user && user.isLoggedIn && user.phone) {
+              const myOrders = localOrders.filter(o => o.phone === user.phone);
+              orders.push(...myOrders);
+            } else {
+              orders.push(...localOrders);
+            }
           }
         } catch (e) { }
 
         // 2. Tra cứu đối chiếu đơn hàng trong cơ sở dữ liệu chiến dịch (window.TRAMHAT_DATA.orders)
         const dbOrders = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.orders) ? window.TRAMHAT_DATA.orders : [];
-        if (user && user.isLoggedIn) {
+        if (user && user.isLoggedIn && user.phone) {
           const matchedDb = dbOrders.filter(o => 
-            (user.phone && o.phone === user.phone) || 
-            (user.name && o.customerName && o.customerName.trim().toLowerCase() === user.name.trim().toLowerCase())
+            o.phone === user.phone && 
+            !orders.some(existing => (existing.orderId === o.orderId || existing.id === o.id))
           );
           orders.push(...matchedDb);
-        }
-
-        // 3. Nếu là hồ sơ mặc định "Nguyễn An Nhiên" và chưa có đơn phát sinh, nạp 3 đơn hàng thực tế của chị
-        if (orders.length === 0 && (!user || !user.isLoggedIn || user.name === 'Nguyễn An Nhiên')) {
-          orders = [
-            {
-              orderId: 'TH-2610-88',
-              createdAt: '2026-11-03T07:15:00.000Z',
-              itemsSummary: '2x Sữa Điều Tự Nhiên (250ml), 1x Sữa Hạt Sen Lá Dứa (250ml)',
-              totalVND: 105000,
-              status: 'Đã Giao Lạnh Thành Công',
-              payment: 'Chuyển khoản VietQR',
-              address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Q.1'
-            },
-            {
-              orderId: 'TH-2610-52',
-              createdAt: '2026-10-25T07:20:00.000Z',
-              itemsSummary: '2x Sữa Macca Yến Mạch (250ml)',
-              totalVND: 70000,
-              status: 'Đã Giao Lạnh Thành Công',
-              payment: 'Chuyển khoản VietQR',
-              address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Q.1'
-            },
-            {
-              orderId: 'TH-2610-19',
-              createdAt: '2026-10-16T07:30:00.000Z',
-              itemsSummary: '2x Sữa Óc Chó Mè Đen (250ml)',
-              totalVND: 70000,
-              status: 'Đã Giao Lạnh Thành Công',
-              payment: 'COD - Nhận hàng trả tiền',
-              address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Q.1'
-            }
-          ];
         }
 
         if (orders.length === 0) {
