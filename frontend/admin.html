@@ -463,17 +463,6 @@
       color: var(--text-title);
     }
 
-    .natural-insight-box {
-      background: #F9FAFB;
-      border-left: 3px solid var(--accent-blue);
-      padding: 10px 14px;
-      font-size: 12.5px;
-      color: var(--text-body);
-      border-radius: 0 6px 6px 0;
-      margin-top: 14px;
-      line-height: 1.5;
-    }
-
     .toast-pill {
       position: fixed;
       bottom: 24px;
@@ -624,10 +613,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="natural-insight-box">
-              TikTok là kênh kéo người về web nhiều nhất (chiếm gần một nửa tổng lưu lượng), trong khi Facebook có tỷ lệ ra đơn cao nhất.
-            </div>
           </section>
         </div>
 
@@ -691,98 +676,80 @@
       <section class="metric-section-card mb-4">
         <div class="section-header">
           <div class="section-title">Phễu chuyển đổi từng bước</div>
-          <div class="text-muted" style="font-size: 12px;">Điểm rơi rụng và tỷ lệ chuyển đổi</div>
+          <div class="text-muted" style="font-size: 12px;">Tỷ lệ giữ chân và chuyển đổi</div>
         </div>
 
-        <div class="row g-3">
-          <div class="col-lg-7">
-            <div class="funnel-step-list">
-              <!-- 1 -->
-              <div class="funnel-step-item">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title">1. Vào web</span>
-                  <span class="funnel-step-numbers" id="funnel-num-1">1.280 (100%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
-                </div>
-              </div>
-
-              <!-- 2 -->
-              <div class="funnel-step-item">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title">2. Xem thực đơn</span>
-                  <span class="funnel-step-numbers" id="funnel-num-2">846 (66,1%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
-                </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 33,9% ở Trang chủ</div>
-              </div>
-
-              <!-- 3 -->
-              <div class="funnel-step-item">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title">3. Xem chi tiết vị sữa</span>
-                  <span class="funnel-step-numbers" id="funnel-num-3">512 (40,0%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
-                </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 39,5% ở Thực đơn</div>
-              </div>
-
-              <!-- 4 (ĐIỂM RƠI RỤNG CAO NHẤT) -->
-              <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
-                  <span class="funnel-step-numbers" id="funnel-num-4">162 (12,7%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
-                </div>
-                <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">
-                  Điểm rơi rụng lớn nhất: 68,4% (khách còn phân vân phí ship)
-                </div>
-              </div>
-
-              <!-- 5 -->
-              <div class="funnel-step-item">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title">5. Gửi form thông tin (Lead)</span>
-                  <span class="funnel-step-numbers" id="funnel-num-5">78 (6,1%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
-                </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 51,9% trước khi hoàn tất form</div>
-              </div>
-
-              <!-- 6 -->
-              <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
-                <div class="funnel-step-top">
-                  <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
-                  <span class="funnel-step-numbers" style="color: var(--accent-green);" id="funnel-num-6">54 đơn (4,2%)</span>
-                </div>
-                <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
-                </div>
-                <div style="font-size: 11px; color: var(--accent-green); font-weight: 700; margin-top: 3px;" id="funnel-revenue-label">
-                  Tỷ lệ chuyển đổi tổng thể: 4,2% • Doanh thu: 1.890.000đ
-                </div>
-              </div>
+        <div class="funnel-step-list">
+          <!-- 1 -->
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">1. Vào web</span>
+              <span class="funnel-step-numbers" id="funnel-num-1">1.280 (100%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
             </div>
           </div>
 
-          <div class="col-lg-5">
-            <div class="p-3 border rounded bg-light h-100">
-              <div class="fw-bold mb-2">Đúc kết nhận xét bài làm:</div>
-              <ul class="text-muted small ps-3 mb-0" style="line-height: 1.6;">
-                <li class="mb-2"><strong>Kênh dẫn người xem:</strong> TikTok dẫn đầu với 49,5% lưu lượng nhờ video ngắn, Facebook mang lại tỷ lệ ra đơn cao nhất (5,3%).</li>
-                <li class="mb-2"><strong>Thời gian đọc:</strong> Khách ở lại trung bình 2m14s chứng minh sự quan tâm lớn đến vị sữa và thành phần dinh dưỡng.</li>
-                <li class="mb-2"><strong>Nút thắt chuyển đổi:</strong> Rơi rụng nhiều nhất (68,4%) ở bước từ Xem chi tiết vào Đặt hàng.</li>
-                <li><strong>Giải pháp khắc phục:</strong> Thêm chính sách Freeship đơn từ 2 chai trước 07:30 sáng để kích thích khách bấm mua ngay.</li>
-              </ul>
+          <!-- 2 -->
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">2. Xem thực đơn</span>
+              <span class="funnel-step-numbers" id="funnel-num-2">846 (66,1%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-33,9%</div>
+          </div>
+
+          <!-- 3 -->
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">3. Xem chi tiết vị sữa</span>
+              <span class="funnel-step-numbers" id="funnel-num-3">512 (40,0%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-39,5%</div>
+          </div>
+
+          <!-- 4 -->
+          <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
+              <span class="funnel-step-numbers" id="funnel-num-4">162 (12,7%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
+            </div>
+            <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">-68,4%</div>
+          </div>
+
+          <!-- 5 -->
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">5. Gửi form thông tin</span>
+              <span class="funnel-step-numbers" id="funnel-num-5">78 (6,1%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-51,9%</div>
+          </div>
+
+          <!-- 6 -->
+          <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
+              <span class="funnel-step-numbers" style="color: var(--accent-green);" id="funnel-num-6">54 đơn (4,2%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
+            </div>
+            <div style="font-size: 11.5px; color: var(--accent-green); font-weight: 700; margin-top: 4px;" id="funnel-revenue-label">
+              Tỷ lệ chuyển đổi: 4,2% • Doanh thu: 1.890.000đ
             </div>
           </div>
         </div>
@@ -876,65 +843,95 @@
     <div id="tab-funnel" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Chi tiết phễu chuyển đổi</div>
+          <div class="section-title">Phễu chuyển đổi</div>
+          <div class="text-muted" style="font-size: 12px;">Đo lường 6 bước từ xem đến mua</div>
         </div>
 
-        <div class="table-responsive">
-          <table class="table table-hover align-middle" style="font-size: 13px;">
-            <thead class="table-light">
-              <tr>
-                <th>Tầng Phễu</th>
-                <th>Số Lượng</th>
-                <th>Giữ Chân</th>
-                <th>Rơi Rụng</th>
-                <th>Đánh Giá</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>1. Vào Web</strong></td>
-                <td>1.280</td>
-                <td>100%</td>
-                <td>0%</td>
-                <td>Khách đến từ TikTok & Facebook</td>
-              </tr>
-              <tr>
-                <td><strong>2. Xem Thực Đơn</strong></td>
-                <td>846</td>
-                <td>66,1%</td>
-                <td><span class="text-danger fw-bold">-33,9%</span></td>
-                <td>Khám phá 6 vị sữa hạt tươi</td>
-              </tr>
-              <tr>
-                <td><strong>3. Xem Chi Tiết Vị Sữa</strong></td>
-                <td>512</td>
-                <td>40,0%</td>
-                <td><span class="text-danger fw-bold">-39,5%</span></td>
-                <td>Đọc bảng thành phần và calo</td>
-              </tr>
-              <tr class="table-danger">
-                <td><strong>4. Bấm Vào Đặt Hàng</strong></td>
-                <td>162</td>
-                <td>12,7%</td>
-                <td><span class="text-danger fw-bold">-68,4%</span></td>
-                <td>Điểm rơi rụng cao nhất (phân vân phí ship)</td>
-              </tr>
-              <tr>
-                <td><strong>5. Gửi Form (Lead)</strong></td>
-                <td>78</td>
-                <td>6,1%</td>
-                <td><span class="text-danger fw-bold">-51,9%</span></td>
-                <td>Để lại SĐT tư vấn</td>
-              </tr>
-              <tr class="table-success">
-                <td><strong>6. Đặt Hàng Thành Công</strong></td>
-                <td><strong>54</strong></td>
-                <td><strong>4,2%</strong></td>
-                <td>--</td>
-                <td><strong>Đơn hàng thực tế hoàn tất</strong></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Tỷ lệ chuyển đổi</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-green);">4,2%</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Doanh thu</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-blue);">1.890.000đ</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Đơn hoàn tất</div>
+              <div class="fs-2 fw-bold">54 đơn</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="funnel-step-list">
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">1. Vào web</span>
+              <span class="funnel-step-numbers">1.280 (100%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
+            </div>
+          </div>
+
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">2. Xem thực đơn</span>
+              <span class="funnel-step-numbers">846 (66,1%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-33,9%</div>
+          </div>
+
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">3. Xem chi tiết vị sữa</span>
+              <span class="funnel-step-numbers">512 (40,0%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-39,5%</div>
+          </div>
+
+          <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
+              <span class="funnel-step-numbers">162 (12,7%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
+            </div>
+            <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">-68,4%</div>
+          </div>
+
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">5. Gửi form thông tin</span>
+              <span class="funnel-step-numbers">78 (6,1%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
+            </div>
+            <div class="funnel-dropoff-alert">-51,9%</div>
+          </div>
+
+          <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
+              <span class="funnel-step-numbers" style="color: var(--accent-green);">54 đơn (4,2%)</span>
+            </div>
+            <div class="ranked-bar-track">
+              <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -961,42 +958,41 @@
     <div id="tab-technical" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Chỉ số kỹ thuật & Thiết bị</div>
+          <div class="section-title">Thiết bị & Kỹ thuật</div>
+          <div class="text-muted" style="font-size: 12px;">Dữ liệu thiết bị và tốc độ tải</div>
         </div>
 
         <div class="row g-3">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Điện thoại di động (Mobile)</div>
+              <div class="text-muted small mb-1">Điện thoại</div>
               <div class="fs-2 fw-bold" style="color: var(--accent-blue);" id="tech-mobile-ratio">74,1%</div>
-              <div class="text-muted small">896 phiên</div>
+              <div class="text-muted small">896 lượt</div>
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Máy tính (Desktop)</div>
+              <div class="text-muted small mb-1">Máy tính</div>
               <div class="fs-2 fw-bold" id="tech-desktop-ratio">25,9%</div>
-              <div class="text-muted small">332 phiên</div>
+              <div class="text-muted small">332 lượt</div>
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Tốc độ tải trang</div>
+              <div class="text-muted small mb-1">Tốc độ tải</div>
               <div class="fs-2 fw-bold" style="color: var(--accent-green);">1,2s</div>
-              <div class="text-muted small">Đạt chuẩn Core Web Vitals</div>
+              <div class="text-muted small">Nhanh</div>
             </div>
           </div>
-        </div>
 
-        <div class="p-3 border rounded bg-light mt-3">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong>Số trang bị lỗi hoặc không vào được (404/500):</strong>
-              <div class="text-muted small">Kiểm tra hạ tầng máy chủ & kết nối dữ liệu</div>
+          <div class="col-md-3">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Trang lỗi</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-green);">0</div>
+              <div class="text-muted small">Ổn định</div>
             </div>
-            <div class="badge bg-success px-3 py-2 fs-6">0 trang lỗi (Uptime 99.98%)</div>
           </div>
         </div>
       </section>
@@ -1239,7 +1235,7 @@
       if (f6) f6.innerText = `${ordersCount} đơn (${((ordersCount / totalVisitsCount) * 100).toFixed(1)}%)`;
 
       const revLbl = document.getElementById('funnel-revenue-label');
-      if (revLbl) revLbl.innerText = `Tỷ lệ chuyển đổi tổng thể: ${((ordersCount / totalVisitsCount) * 100).toFixed(1)}% • Doanh thu: ${revenueVND.toLocaleString('vi-VN')}đ`;
+      if (revLbl) revLbl.innerText = `Tỷ lệ chuyển đổi: ${((ordersCount / totalVisitsCount) * 100).toFixed(1)}% • Doanh thu: ${revenueVND.toLocaleString('vi-VN')}đ`;
 
       renderCustomerStreamFeed();
       renderOrdersFeed();
