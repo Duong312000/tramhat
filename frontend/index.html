@@ -3863,45 +3863,14 @@
           'reviews',
           'product-detail',
           'article-detail',
-          'profile',
-          'admin'
+          'profile'
         ];
 
         if (!validTabs.includes(tabId)) {
           tabId = 'home';
         }
 
-        // Control visibility of public header and footer when in dedicated admin portal
-        const publicHeader = document.querySelector('header.sticky-top') || document.querySelector('header');
-        const publicFooter = document.querySelector('footer.main-footer');
-        const mobileNav = document.querySelector('.mobile-bottom-nav');
-        const adminStickyBar = document.getElementById('adminTopBar');
-
-        if (tabId === 'admin') {
-          if (publicHeader) publicHeader.classList.add('d-none');
-          if (publicFooter) publicFooter.classList.add('d-none');
-          if (mobileNav) mobileNav.classList.add('d-none');
-          if (adminStickyBar) adminStickyBar.classList.add('d-none');
-          setTimeout(() => {
-            switchAdminSection('analytics');
-            renderAdminProductsTable();
-            renderAdminOrdersTable();
-            loadAdminContentForm();
-          }, 50);
-          if (typeof startAdminRealtimePolling === 'function') {
-            startAdminRealtimePolling();
-          }
-        } else {
-          if (publicHeader) publicHeader.classList.remove('d-none');
-          if (publicFooter) publicFooter.classList.remove('d-none');
-          if (mobileNav) mobileNav.classList.remove('d-none');
-          checkAdminAuth();
-          if (typeof stopAdminRealtimePolling === 'function') {
-            stopAdminRealtimePolling();
-          }
-        }
-
-        if (typeof TramHatTracker !== "undefined" && tabId !== "admin") {
+        if (typeof TramHatTracker !== "undefined") {
           TramHatTracker.recordPageView(tabId);
         }
 
@@ -4016,14 +3985,8 @@
         let currentTab = 'home';
         let lastSecondTick = Date.now();
 
-        // Kiểm tra trạng thái Quản Trị Viên (Admin) để không thu thập data khi đang làm việc trong trang quản trị
+        // Website storefront dành 100% cho khách hàng
         function isAdminActive() {
-          try {
-            if (window.location.hash === '#admin') return true;
-            const vAdmin = document.getElementById('view-admin');
-            if (vAdmin && !vAdmin.classList.contains('d-none')) return true;
-            if (window.currentUser && window.currentUser.role === 'admin' && window.location.hash === '#admin') return true;
-          } catch (e) { }
           return false;
         }
         window.isTramHatAdminActive = isAdminActive;
@@ -4100,12 +4063,6 @@
           // Giới hạn 100 khách gần nhất
           if (list.length > 100) list.pop();
           saveVisitorSessions(list);
-
-          // Cập nhật ngay giao diện Admin nếu đang mở
-          const adminBody = document.getElementById('adminVisitorsTableBody');
-          if (adminBody && !document.getElementById('view-admin').classList.contains('d-none')) {
-            renderAdminVisitorsTable();
-          }
         }
 
         // Khởi tạo từ localStorage hoặc từ baseline analytics thực tế
@@ -4181,12 +4138,6 @@
             v.steps.unshift({ time: t, action: `${action}: ${detail}` });
             if (v.steps.length > 30) v.steps.pop();
           });
-
-          // Cập nhật bảng live stream nếu đang xem admin
-          const streamBody = document.getElementById('adminLiveEventStreamBody');
-          if (streamBody) {
-            renderAdminEventLog();
-          }
         }
 
         // Real-time ticking timer (tính giây thực tế)
@@ -4210,15 +4161,6 @@
             updateCurrentVisitor(v => {
               v.seconds = (v.seconds || 0) + elapsed;
             });
-
-            // Live update stats on dashboard if view is visible
-            const avgEl = document.getElementById('funnelStatAvgTime');
-            if (avgEl && !document.getElementById('view-admin').classList.contains('d-none')) {
-              const avgSec = Math.round(data.totalTimeSeconds / Math.max(1, data.totalVisits));
-              const mins = Math.floor(avgSec / 60);
-              const secs = avgSec % 60;
-              avgEl.innerText = mins > 0 ? (mins + 'm ' + secs + 's') : (secs + 's');
-            }
           }
         }, 1000);
 
@@ -4324,7 +4266,6 @@
             localStorage.removeItem(STORAGE_KEY);
             localStorage.removeItem(VISITORS_KEY);
             localStorage.removeItem('tramhat_real_orders');
-            adminOrdersList = [];
           },
           exportJSON: function () {
             return JSON.stringify(data, null, 2);
@@ -4383,980 +4324,7 @@
         };
       })();
 
-      // ==========================================================================
-      // DEDICATED FULL ADMIN DASHBOARD CONTROLLER (SIDEBAR, CMS, PRODUCTS, ORDERS, REAL ANALYTICS)
-      // ==========================================================================
-
-      // Real Orders List (Loaded from localStorage or data/orders.json)
-      let adminOrdersList = (function () {
-        try {
-          const stored = localStorage.getItem('tramhat_real_orders');
-          if (stored) return JSON.parse(stored);
-        } catch (e) { }
-        if (window.TRAMHAT_DATA && window.TRAMHAT_DATA.orders) {
-          return JSON.parse(JSON.stringify(window.TRAMHAT_DATA.orders));
-        }
-        return [];
-      })();
-
-      function saveRealOrders() {
-        try {
-          localStorage.setItem('tramhat_real_orders', JSON.stringify(adminOrdersList));
-        } catch (e) { }
-      }
-
-      // --- CƠ CHẾ DỮ LIỆU THỜI GIAN THỰC (REAL-TIME LIVE POLLING & STORAGE SYNC) ---
-      let adminRealtimePollingInterval = null;
-
-      function startAdminRealtimePolling() {
-        if (adminRealtimePollingInterval) return;
-        adminRealtimePollingInterval = setInterval(() => {
-          const vAdmin = document.getElementById('view-admin');
-          const secAnalytics = document.getElementById('adminSecAnalytics');
-          if (vAdmin && !vAdmin.classList.contains('d-none') && secAnalytics && !secAnalytics.classList.contains('d-none')) {
-            refreshAdminAnalytics();
-          }
-        }, 2500);
-      }
-
-      function stopAdminRealtimePolling() {
-        if (adminRealtimePollingInterval) {
-          clearInterval(adminRealtimePollingInterval);
-          adminRealtimePollingInterval = null;
-        }
-      }
-
-      // Lắng nghe sự kiện storage để đồng bộ thời gian thực đa tab / đa thiết bị
-      window.addEventListener('storage', function (e) {
-        if (e.key === 'tramhat_real_analytics' || e.key === 'tramhat_visitor_sessions' || e.key === 'tramhat_real_orders' || e.key === 'tramhat_custom_orders') {
-          const vAdmin = document.getElementById('view-admin');
-          if (vAdmin && !vAdmin.classList.contains('d-none')) {
-            if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-            if (typeof renderAdminVisitorsTable === 'function') renderAdminVisitorsTable();
-            if (typeof renderAdminOrdersTable === 'function') renderAdminOrdersTable();
-          }
-        }
-      });
-
-      function switchAdminSection(sec) {
-        const sections = ['analytics', 'content', 'products', 'orders', 'settings'];
-        sections.forEach(s => {
-          const btn = document.getElementById('adminSideBtn' + s.charAt(0).toUpperCase() + s.slice(1));
-          const panel = document.getElementById('adminSec' + s.charAt(0).toUpperCase() + s.slice(1));
-          if (btn) {
-            if (s === sec) {
-              btn.classList.add('active', 'text-white');
-              btn.classList.remove('text-white-50');
-            } else {
-              btn.classList.remove('active', 'text-white');
-              btn.classList.add('text-white-50');
-            }
-          }
-          if (panel) {
-            panel.classList.toggle('d-none', s !== sec);
-          }
-        });
-
-        // Update Top Header Title
-        const titleEl = document.getElementById('adminWorkspaceTitle');
-        const subEl = document.getElementById('adminWorkspaceSubtitle');
-        if (sec === 'analytics') {
-          if (titleEl) titleEl.innerText = 'Báo Cáo Phễu Chuyển Đổi & Hiệu Suất Bán Hàng';
-          if (subEl) subEl.innerText = 'Đo lường thời gian lưu trú, lượt xem sản phẩm và tỷ lệ mua hàng thực tế';
-          refreshAdminAnalytics();
-        } else if (sec === 'content') {
-          if (titleEl) titleEl.innerText = 'Chỉnh Sửa Toàn Bộ Nội Dung Website (Full CMS)';
-          if (subEl) subEl.innerText = 'Chỉnh sửa toàn bộ thông tin thương hiệu, trang chủ, thực đơn, câu chuyện, chiến dịch và footer';
-          loadAdminContentForm();
-        } else if (sec === 'products') {
-          if (titleEl) titleEl.innerText = 'Quản Lý Sản Phẩm Sữa Hạt (Thêm / Sửa / Xóa)';
-          if (subEl) subEl.innerText = 'Quản lý giá niêm yết, thông tin dinh dưỡng và cập nhật trực tiếp ra thực đơn';
-          renderAdminProductsTable();
-        } else if (sec === 'orders') {
-          if (titleEl) titleEl.innerText = 'Theo Dõi & Xử Lý Đơn Hàng Thực Tế';
-          if (subEl) subEl.innerText = 'Tự động cập nhật mỗi khi khách hàng đặt hàng qua giỏ hàng trên website';
-          renderAdminOrdersTable();
-        } else if (sec === 'settings') {
-          if (titleEl) titleEl.innerText = 'Cài Đặt Hệ Thống & Xuất File JSON';
-          if (subEl) subEl.innerText = 'Xuất file data/analytics.json, data/orders.json và data/content.json';
-        }
-      }
-
-      // --- REAL ANALYTICS CONTROLLER ---
-      function refreshAdminAnalytics() {
-        const d = TramHatTracker.getData();
-
-        // 1. KPI Cards (REAL DATA)
-        const statTraffic = document.getElementById('funnelStatTraffic');
-        const statAvgTime = document.getElementById('funnelStatAvgTime');
-        const statCR = document.getElementById('funnelStatCR');
-        const statRevenue = document.getElementById('funnelStatRevenue');
-
-        if (statTraffic) statTraffic.innerText = d.totalVisits.toLocaleString('vi-VN');
-
-        const avgSec = Math.round(d.totalTimeSeconds / Math.max(1, d.totalVisits));
-        const mins = Math.floor(avgSec / 60);
-        const secs = avgSec % 60;
-        if (statAvgTime) statAvgTime.innerText = mins > 0 ? (mins + 'm ' + secs + 's') : (secs + 's');
-
-        const cr = d.totalVisits > 0 ? ((d.purchasesCount / d.totalVisits) * 100).toFixed(1) + '%' : '0.0%';
-        if (statCR) statCR.innerText = cr;
-        if (statRevenue) statRevenue.innerText = (d.revenueVND || 0).toLocaleString('vi-VN') + 'đ';
-
-        // 2. 5-Stage Funnel (REAL NUMBERS)
-        const s1 = d.totalVisits;
-        const s2 = d.productViews;
-        const s3 = d.addToCartCount;
-        const s4 = d.checkoutCount;
-        const s5 = d.purchasesCount;
-
-        const p2 = s1 > 0 ? Math.min(100, Math.round((s2 / s1) * 100)) : 0;
-        const p3 = s1 > 0 ? Math.min(100, Math.round((s3 / s1) * 100)) : 0;
-        const p4 = s1 > 0 ? Math.min(100, Math.round((s4 / s1) * 100)) : 0;
-        const p5 = s1 > 0 ? Math.min(100, Math.round((s5 / s1) * 100)) : 0;
-
-        const elS1 = document.getElementById('funnelStep1Count');
-        const elS2 = document.getElementById('funnelStep2Count');
-        const elS3 = document.getElementById('funnelStep3Count');
-        const elS4 = document.getElementById('funnelStep4Count');
-        const elS5 = document.getElementById('funnelStep5Count');
-
-        if (elS1) elS1.innerText = s1.toLocaleString('vi-VN');
-        if (elS2) elS2.innerText = s2.toLocaleString('vi-VN');
-        if (elS3) elS3.innerText = s3.toLocaleString('vi-VN');
-        if (elS4) elS4.innerText = s4.toLocaleString('vi-VN');
-        if (elS5) elS5.innerText = s5.toLocaleString('vi-VN');
-
-        const elR2 = document.getElementById('funnelStep2Rate');
-        const elR3 = document.getElementById('funnelStep3Rate');
-        const elR4 = document.getElementById('funnelStep4Rate');
-        const elR5 = document.getElementById('funnelStep5Rate');
-
-        if (elR2) elR2.innerText = p2 + '%';
-        if (elR3) elR3.innerText = p3 + '%';
-        if (elR4) elR4.innerText = p4 + '%';
-        if (elR5) elR5.innerText = p5 + '%';
-
-        const b2 = document.getElementById('funnelStep2Bar');
-        const b3 = document.getElementById('funnelStep3Bar');
-        const b4 = document.getElementById('funnelStep4Bar');
-        const b5 = document.getElementById('funnelStep5Bar');
-
-        if (b2) b2.style.width = p2 + '%';
-        if (b3) b3.style.width = p3 + '%';
-        if (b4) b4.style.width = p4 + '%';
-        if (b5) b5.style.width = p5 + '%';
-
-        // 3. Real Time-on-page Table
-        renderRealTimeOnPageTable(d);
-
-        // 4. Real Scroll Depth
-        renderRealScrollDepth(d);
-
-        // 5. Real Event Stream Log
-        renderAdminEventLog();
-
-        // 6. Real Individual Visitors Log (Theo Dõi Từng Khách Hàng)
-        renderAdminVisitorsTable();
-      }
-
-      // --- RESET DATA TO ZERO (KHỞI TẠO ĐO THẬT TỪ 0) ---
-      function resetAllAnalyticsToZero() {
-        if (confirm('Xác nhận đặt toàn bộ chỉ số phân tích, phễu chuyển đổi và danh sách khách hàng về 0 để bắt đầu đo thật 100%?')) {
-          TramHatTracker.resetAll();
-          refreshAdminAnalytics();
-          renderAdminVisitorsTable();
-          renderAdminOrdersTable();
-          alert('Đã thiết lập lại chỉ số phân tích và phễu chuyển đổi thành công.');
-        }
-      }
-
-      // --- RENDER VISITOR SESSIONS TABLE (THEO DÕI TỪNG NGƯỜI DÙNG) ---
-      let currentVisitorFilter = 'all';
-
-      function filterVisitorLog(type, btn) {
-        currentVisitorFilter = type;
-        document.querySelectorAll('#adminSecAnalytics .btn-sm').forEach(b => {
-          if (b.innerText.includes('Khách') || b.innerText.includes('Giỏ Hàng') || b.innerText.includes('Đặt Mua') || b.innerText.includes('Chiến Dịch')) {
-            b.classList.remove('btn-dark');
-            b.classList.add('btn-outline-dark');
-          }
-        });
-        if (btn) {
-          btn.classList.remove('btn-outline-dark');
-          btn.classList.add('btn-dark');
-        }
-        renderAdminVisitorsTable(type);
-      }
-
-      function renderAdminVisitorsTable(filter = currentVisitorFilter) {
-        const tbody = document.getElementById('adminVisitorsTableBody');
-        const badgeCount = document.getElementById('visitorTotalCountBadge');
-        if (!tbody) return;
-
-        let visitors = TramHatTracker.getVisitors();
-        // TUYỆT ĐỐI LOẠI BỎ ADMIN KHỎI DANH SÁCH KHÁCH HÀNG
-        if (typeof isTramHatAdminActive === 'function' && isTramHatAdminActive()) {
-          const adminVisCode = sessionStorage.getItem('tramhat_visitor_code');
-          if (adminVisCode) {
-            visitors = visitors.filter(item => item.id !== adminVisCode);
-          }
-        }
-        if (badgeCount) badgeCount.innerText = visitors.length + ' khách';
-
-        if (filter === 'cart') {
-          visitors = visitors.filter(v => v.hasCart);
-        } else if (filter === 'order') {
-          visitors = visitors.filter(v => v.hasOrdered);
-        } else if (filter === 'campaign') {
-          visitors = visitors.filter(v => v.source && !v.source.includes('Trực Tiếp'));
-        }
-
-        if (visitors.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted"><i class="bi bi-person-x fs-4 d-block mb-1"></i>Chưa có lượt khách nào thỏa mãn bộ lọc. Hãy mở một tab khác duyệt web để thấy dữ liệu nhảy số ngay lập tức!</td></tr>';
-          return;
-        }
-
-        let html = '';
-        visitors.forEach(v => {
-          let statusBadge = '<span class="badge bg-secondary-subtle text-secondary border">Đang xem</span>';
-          if (v.status && v.status.includes('Đặt Hàng')) {
-            statusBadge = '<span class="badge bg-success text-white"><i class="bi bi-bag-check me-1"></i>Đã Đặt Mua</span>';
-          } else if (v.status && v.status.includes('Giỏ Hàng')) {
-            statusBadge = '<span class="badge bg-warning text-dark"><i class="bi bi-cart me-1"></i>Đã Thêm Giỏ</span>';
-          }
-
-          const flavorsStr = v.flavors && v.flavors.length > 0
-            ? v.flavors.map(f => `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 11px;">${f}</span>`).join('')
-            : '<span class="text-muted small">Chưa bấm xem vị cụ thể</span>';
-
-          const mins = Math.floor((v.seconds || 0) / 60);
-          const secs = (v.seconds || 0) % 60;
-          const timeSpent = mins > 0 ? (mins + 'm ' + secs + 's') : (secs + 's');
-
-          html += `
-          <tr>
-            <td>
-              <div class="fw-bold font-serif text-dark">${v.id}</div>
-              <div class="mt-1">${statusBadge}</div>
-            </td>
-            <td>
-              <div class="text-dark small">${v.time}</div>
-              <div class="text-muted" style="font-size: 11px;">${v.date}</div>
-            </td>
-            <td>
-              <span class="badge bg-info-subtle text-dark border px-2 py-1">${v.source || 'Trực Tiếp'}</span>
-            </td>
-            <td>
-              <span class="small text-muted"><i class="bi bi-${(v.device || '').toLowerCase() === 'mobile' ? 'phone' : 'laptop'} me-1"></i>${v.device || 'Desktop'}</span>
-            </td>
-            <td>${flavorsStr}</td>
-            <td class="text-center font-serif fw-bold text-primary">${v.maxScroll || 0}%</td>
-            <td class="text-center font-serif text-danger fw-bold">${timeSpent}</td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="openVisitorDetailModal('${v.id}')">
-                <i class="bi bi-eye"></i> Xem Lịch Sử
-              </button>
-            </td>
-          </tr>
-        `;
-        });
-
-        tbody.innerHTML = html;
-      }
-
-      function openVisitorDetailModal(visitorId) {
-        const visitors = TramHatTracker.getVisitors();
-        const v = visitors.find(item => item.id === visitorId);
-        if (!v) return;
-
-        const titleEl = document.getElementById('visitorModalTitle');
-        const infoEl = document.getElementById('visitorModalInfo');
-        const timelineEl = document.getElementById('visitorModalTimeline');
-        if (titleEl) titleEl.innerText = `Chi Tiết Hành Trình: ${v.id}`;
-
-        if (infoEl) {
-          infoEl.innerHTML = `
-          <div class="row g-2 p-2 bg-light rounded border mb-3 small">
-            <div class="col-6 col-md-3"><strong>Nguồn vào:</strong> <span class="text-primary">${v.source}</span></div>
-            <div class="col-6 col-md-3"><strong>Thiết bị:</strong> ${v.device}</div>
-            <div class="col-6 col-md-3"><strong>Thời gian lưu lại:</strong> <span class="text-danger fw-bold">${Math.round(v.seconds || 0)} giây</span></div>
-            <div class="col-6 col-md-3"><strong>Cuộn sâu nhất:</strong> <span class="text-success fw-bold">${v.maxScroll || 0}%</span></div>
-          </div>
-        `;
-        }
-
-        if (timelineEl) {
-          const steps = v.steps || [];
-          if (steps.length === 0) {
-            timelineEl.innerHTML = '<div class="text-muted text-center py-3">Chưa có thao tác chi tiết.</div>';
-          } else {
-            let tHtml = '<ul class="list-group list-group-flush small">';
-            steps.forEach((st, idx) => {
-              tHtml += `
-              <li class="list-group-item d-flex justify-content-between align-items-center py-2">
-                <span><span class="badge bg-secondary me-2">#${steps.length - idx}</span> ${st.action}</span>
-                <span class="text-muted" style="font-size: 11px;">${st.time}</span>
-              </li>
-            `;
-            });
-            tHtml += '</ul>';
-            timelineEl.innerHTML = tHtml;
-          }
-        }
-
-        const modalEl = document.getElementById('visitorDetailModal');
-        if (modalEl) {
-          const modal = new bootstrap.Modal(modalEl);
-          modal.show();
-        }
-      }
-
-      function renderRealTimeOnPageTable(d) {
-        const tbody = document.getElementById('adminBehaviorTableBody');
-        if (!tbody) return;
-
-        let html = '';
-        const pages = d.pageViews || {};
-        const keys = Object.keys(pages);
-
-        keys.forEach(k => {
-          const item = pages[k];
-          const sec = item.totalSeconds || 0;
-          const m = Math.floor(sec / 60);
-          const s = sec % 60;
-          const timeFormatted = m > 0 ? (m + 'm ' + s + 's') : (s + 's');
-
-          let badge = '<span class="badge bg-secondary-subtle text-dark border">Chưa xem</span>';
-          if (sec > 60) {
-            badge = '<span class="badge bg-success-subtle text-success border border-success-subtle">Gắn kết cao</span>';
-          } else if (sec > 15) {
-            badge = '<span class="badge bg-primary-subtle text-primary border border-primary-subtle">Bình thường</span>';
-          } else if (item.views > 0) {
-            badge = '<span class="badge bg-warning-subtle text-warning border border-warning-subtle">Lướt qua</span>';
-          }
-
-          html += `
-          <tr>
-            <td><strong class="text-dark">${item.name || k}</strong> <code class="small text-muted">(${k})</code></td>
-            <td class="text-center font-serif fw-bold">${item.views || 0}</td>
-            <td class="text-center font-serif text-danger fw-bold">${timeFormatted}</td>
-            <td class="text-end">${badge}</td>
-          </tr>
-        `;
-        });
-
-        tbody.innerHTML = html;
-      }
-
-      function renderRealScrollDepth(d) {
-        const s = d.scrollDepth || {};
-        const total = Math.max(1, d.totalVisits);
-
-        const d25 = s.depth25 || 0;
-        const d50 = s.depth50 || 0;
-        const d75 = s.depth75 || 0;
-        const d100 = s.depth100 || 0;
-
-        const p25 = Math.min(100, Math.round((d25 / total) * 100));
-        const p50 = Math.min(100, Math.round((d50 / total) * 100));
-        const p75 = Math.min(100, Math.round((d75 / total) * 100));
-        const p100 = Math.min(100, Math.round((d100 / total) * 100));
-
-        const l25 = document.getElementById('scrollDepth25Label');
-        const l50 = document.getElementById('scrollDepth50Label');
-        const l75 = document.getElementById('scrollDepth75Label');
-        const l100 = document.getElementById('scrollDepth100Label');
-
-        if (l25) l25.innerText = d25 + ' lượt (' + p25 + '%)';
-        if (l50) l50.innerText = d50 + ' lượt (' + p50 + '%)';
-        if (l75) l75.innerText = d75 + ' lượt (' + p75 + '%)';
-        if (l100) l100.innerText = d100 + ' lượt (' + p100 + '%)';
-
-        const b25 = document.getElementById('scrollDepth25Bar');
-        const b50 = document.getElementById('scrollDepth50Bar');
-        const b75 = document.getElementById('scrollDepth75Bar');
-        const b100 = document.getElementById('scrollDepth100Bar');
-
-        if (b25) b25.style.width = p25 + '%';
-        if (b50) b50.style.width = p50 + '%';
-        if (b75) b75.style.width = p75 + '%';
-        if (b100) b100.style.width = p100 + '%';
-
-        // Devices
-        const dev = d.devices || {};
-        const devM = document.getElementById('deviceMobileCount');
-        const devD = document.getElementById('deviceDesktopCount');
-        const devT = document.getElementById('deviceTabletCount');
-        if (devM) devM.innerText = dev.mobile || 0;
-        if (devD) devD.innerText = dev.desktop || 1;
-        if (devT) devT.innerText = dev.tablet || 0;
-      }
-
-      function renderAdminEventLog() {
-        const tbody = document.getElementById('adminLiveEventStreamBody');
-        if (!tbody) return;
-
-        const d = TramHatTracker.getData();
-        const events = d.events || [];
-
-        if (events.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Chưa có sự kiện nào. Hãy thử lướt xem các mục và sản phẩm trên trang!</td></tr>';
-          return;
-        }
-
-        let html = '';
-        events.slice(0, 30).forEach(ev => {
-          let badge = '<span class="badge bg-light text-dark border">' + ev.action + '</span>';
-          if (ev.action.includes('Đặt Hàng')) badge = '<span class="badge bg-danger text-white">Mua Hàng</span>';
-          if (ev.action.includes('Giỏ Hàng')) badge = '<span class="badge bg-warning text-dark">Giỏ Hàng</span>';
-          if (ev.action.includes('Sản Phẩm')) badge = '<span class="badge bg-primary text-white">Sản Phẩm</span>';
-          if (ev.action.includes('Xem Trang')) badge = '<span class="badge bg-info text-dark">Xem Trang</span>';
-
-          html += `
-          <tr>
-            <td class="text-muted">${ev.time}</td>
-            <td>${badge}</td>
-            <td class="fw-medium text-dark">${ev.detail}</td>
-            <td><code class="text-danger">${ev.tab || 'home'}</code></td>
-            <td class="text-muted">${ev.device || 'Desktop'}</td>
-          </tr>
-        `;
-        });
-
-        tbody.innerHTML = html;
-      }
-
-      // --- FULL CMS CONTENT CONTROLLER (COVERS EVERYTHING - NO RESET BUTTON) ---
-      function switchCmsTab(tabKey) {
-        const tabs = ['brand', 'home', 'menu', 'about', 'green', 'knowledge', 'footer'];
-        tabs.forEach(t => {
-          const btn = document.getElementById('cmsTabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
-          const panel = document.getElementById('cmsPanel' + t.charAt(0).toUpperCase() + t.slice(1));
-          if (btn) {
-            if (t === tabKey) {
-              btn.classList.add('active');
-              btn.classList.remove('text-muted');
-            } else {
-              btn.classList.remove('active');
-              btn.classList.add('text-muted');
-            }
-          }
-          if (panel) {
-            panel.classList.toggle('d-none', t !== tabKey);
-          }
-        });
-      }
-
-      function loadAdminContentForm() {
-        // First check localStorage, then window.TRAMHAT_DATA.content
-        let c = null;
-        try {
-          const stored = localStorage.getItem('tramhat_custom_content');
-          if (stored) c = JSON.parse(stored);
-        } catch (e) { }
-
-        if (!c && window.TRAMHAT_DATA && window.TRAMHAT_DATA.content) {
-          c = window.TRAMHAT_DATA.content;
-        }
-
-        if (!c) return;
-
-        // Brand
-        if (c.brand) {
-          if (c.brand.name && document.getElementById('cmsInputBrandName')) document.getElementById('cmsInputBrandName').value = c.brand.name;
-          if (c.brand.slogan && document.getElementById('cmsInputBrandSlogan')) document.getElementById('cmsInputBrandSlogan').value = c.brand.slogan;
-          if (c.brand.tagline && document.getElementById('cmsInputBrandTagline')) document.getElementById('cmsInputBrandTagline').value = c.brand.tagline;
-          if (c.brand.hotline && document.getElementById('cmsInputBrandHotline')) document.getElementById('cmsInputBrandHotline').value = c.brand.hotline;
-          if (c.brand.email && document.getElementById('cmsInputBrandEmail')) document.getElementById('cmsInputBrandEmail').value = c.brand.email;
-          if (c.brand.factory && document.getElementById('cmsInputBrandFactory')) document.getElementById('cmsInputBrandFactory').value = c.brand.factory;
-          if (c.brand.hours && document.getElementById('cmsInputBrandHours')) document.getElementById('cmsInputBrandHours').value = c.brand.hours;
-          if (c.brand.certifications && document.getElementById('cmsInputBrandCerts')) {
-            document.getElementById('cmsInputBrandCerts').value = Array.isArray(c.brand.certifications) ? c.brand.certifications.join(', ') : c.brand.certifications;
-          }
-        }
-
-        // Hero
-        if (c.hero) {
-          if (c.hero.badge && document.getElementById('cmsInputHeroBadge')) document.getElementById('cmsInputHeroBadge').value = c.hero.badge;
-          if (c.hero.titleLine1 && document.getElementById('cmsInputHeroTitle1')) document.getElementById('cmsInputHeroTitle1').value = c.hero.titleLine1;
-          if (c.hero.titleLine2 && document.getElementById('cmsInputHeroTitle2')) document.getElementById('cmsInputHeroTitle2').value = c.hero.titleLine2;
-          if (c.hero.desc && document.getElementById('cmsInputHeroDesc')) document.getElementById('cmsInputHeroDesc').value = c.hero.desc;
-          if (c.hero.ctaPrimary && document.getElementById('cmsInputHeroCtaPrimary')) document.getElementById('cmsInputHeroCtaPrimary').value = c.hero.ctaPrimary;
-          if (c.hero.ctaSecondary && document.getElementById('cmsInputHeroCtaSecondary')) document.getElementById('cmsInputHeroCtaSecondary').value = c.hero.ctaSecondary;
-          if (c.hero.stats && Array.isArray(c.hero.stats)) {
-            if (c.hero.stats[0] && document.getElementById('cmsInputStat1')) document.getElementById('cmsInputStat1').value = c.hero.stats[0].value + ' ' + c.hero.stats[0].label;
-            if (c.hero.stats[1] && document.getElementById('cmsInputStat2')) document.getElementById('cmsInputStat2').value = c.hero.stats[1].value + ' ' + c.hero.stats[1].label;
-            if (c.hero.stats[2] && document.getElementById('cmsInputStat3')) document.getElementById('cmsInputStat3').value = c.hero.stats[2].value + ' ' + c.hero.stats[2].label;
-          }
-        }
-
-        // Menu
-        if (c.menu) {
-          if (c.menu.title && document.getElementById('cmsInputMenuTitle')) document.getElementById('cmsInputMenuTitle').value = c.menu.title;
-          if (c.menu.subtitle && document.getElementById('cmsInputMenuDesc')) document.getElementById('cmsInputMenuDesc').value = c.menu.subtitle;
-          if (c.menu.sizes && document.getElementById('cmsInputMenuSizes')) document.getElementById('cmsInputMenuSizes').value = c.menu.sizes;
-          if (c.menu.temperature && document.getElementById('cmsInputMenuTemp')) document.getElementById('cmsInputMenuTemp').value = c.menu.temperature;
-        }
-
-        // About
-        if (c.about) {
-          if (c.about.title && document.getElementById('cmsInputAboutTitle')) document.getElementById('cmsInputAboutTitle').value = c.about.title;
-          if (c.about.subtitle && document.getElementById('cmsInputAboutSubtitle')) document.getElementById('cmsInputAboutSubtitle').value = c.about.subtitle;
-          if (c.about.story1 && c.about.story1.desc && document.getElementById('cmsInputAboutStory1')) document.getElementById('cmsInputAboutStory1').value = c.about.story1.desc;
-          if (c.about.story2 && c.about.story2.desc && document.getElementById('cmsInputAboutStory2')) document.getElementById('cmsInputAboutStory2').value = c.about.story2.desc;
-        }
-
-        // Campaign
-        if (c.campaign) {
-          if (c.campaign.title && document.getElementById('cmsInputGreenTitle')) document.getElementById('cmsInputGreenTitle').value = c.campaign.title;
-          if (c.campaign.desc && document.getElementById('cmsInputGreenDesc')) document.getElementById('cmsInputGreenDesc').value = c.campaign.desc;
-          if (c.campaign.discount && document.getElementById('cmsInputGreenDiscount')) document.getElementById('cmsInputGreenDiscount').value = c.campaign.discount;
-          if (c.campaign.activity1 && c.campaign.activity1.desc && document.getElementById('cmsInputGreenAct1')) document.getElementById('cmsInputGreenAct1').value = c.campaign.activity1.desc;
-          if (c.campaign.activity2 && c.campaign.activity2.desc && document.getElementById('cmsInputGreenAct2')) document.getElementById('cmsInputGreenAct2').value = c.campaign.activity2.desc;
-        }
-
-        // Knowledge
-        if (c.knowledge) {
-          if (c.knowledge.title && document.getElementById('cmsInputKnowledgeTitle')) document.getElementById('cmsInputKnowledgeTitle').value = c.knowledge.title;
-          if (c.knowledge.subtitle && document.getElementById('cmsInputKnowledgeDesc')) document.getElementById('cmsInputKnowledgeDesc').value = c.knowledge.subtitle;
-        }
-
-        // Footer
-        if (c.footer) {
-          if (c.footer.desc && document.getElementById('cmsInputFooterDesc')) document.getElementById('cmsInputFooterDesc').value = c.footer.desc;
-          if (c.footer.copyright && document.getElementById('cmsInputFooterCopy')) document.getElementById('cmsInputFooterCopy').value = c.footer.copyright;
-        }
-      }
-
-      function saveAdminPageContent() {
-        const current = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.content) ? JSON.parse(JSON.stringify(window.TRAMHAT_DATA.content)) : {};
-
-        // 1. Brand
-        current.brand = current.brand || {};
-        if (document.getElementById('cmsInputBrandName')) current.brand.name = document.getElementById('cmsInputBrandName').value.trim();
-        if (document.getElementById('cmsInputBrandSlogan')) current.brand.slogan = document.getElementById('cmsInputBrandSlogan').value.trim();
-        if (document.getElementById('cmsInputBrandTagline')) current.brand.tagline = document.getElementById('cmsInputBrandTagline').value.trim();
-        if (document.getElementById('cmsInputBrandHotline')) current.brand.hotline = document.getElementById('cmsInputBrandHotline').value.trim();
-        if (document.getElementById('cmsInputBrandEmail')) current.brand.email = document.getElementById('cmsInputBrandEmail').value.trim();
-        if (document.getElementById('cmsInputBrandFactory')) current.brand.factory = document.getElementById('cmsInputBrandFactory').value.trim();
-        if (document.getElementById('cmsInputBrandHours')) current.brand.hours = document.getElementById('cmsInputBrandHours').value.trim();
-        if (document.getElementById('cmsInputBrandCerts')) {
-          current.brand.certifications = document.getElementById('cmsInputBrandCerts').value.split(',').map(s => s.trim());
-        }
-
-        // 2. Hero
-        current.hero = current.hero || {};
-        if (document.getElementById('cmsInputHeroBadge')) current.hero.badge = document.getElementById('cmsInputHeroBadge').value.trim();
-        if (document.getElementById('cmsInputHeroTitle1')) current.hero.titleLine1 = document.getElementById('cmsInputHeroTitle1').value.trim();
-        if (document.getElementById('cmsInputHeroTitle2')) current.hero.titleLine2 = document.getElementById('cmsInputHeroTitle2').value.trim();
-        if (document.getElementById('cmsInputHeroDesc')) current.hero.desc = document.getElementById('cmsInputHeroDesc').value.trim();
-        if (document.getElementById('cmsInputHeroCtaPrimary')) current.hero.ctaPrimary = document.getElementById('cmsInputHeroCtaPrimary').value.trim();
-        if (document.getElementById('cmsInputHeroCtaSecondary')) current.hero.ctaSecondary = document.getElementById('cmsInputHeroCtaSecondary').value.trim();
-
-        // 3. Menu
-        current.menu = current.menu || {};
-        if (document.getElementById('cmsInputMenuTitle')) current.menu.title = document.getElementById('cmsInputMenuTitle').value.trim();
-        if (document.getElementById('cmsInputMenuDesc')) current.menu.subtitle = document.getElementById('cmsInputMenuDesc').value.trim();
-        if (document.getElementById('cmsInputMenuSizes')) current.menu.sizes = document.getElementById('cmsInputMenuSizes').value.trim();
-        if (document.getElementById('cmsInputMenuTemp')) current.menu.temperature = document.getElementById('cmsInputMenuTemp').value.trim();
-
-        // 4. About
-        current.about = current.about || {};
-        if (document.getElementById('cmsInputAboutTitle')) current.about.title = document.getElementById('cmsInputAboutTitle').value.trim();
-        if (document.getElementById('cmsInputAboutSubtitle')) current.about.subtitle = document.getElementById('cmsInputAboutSubtitle').value.trim();
-        current.about.story1 = current.about.story1 || {};
-        if (document.getElementById('cmsInputAboutStory1')) current.about.story1.desc = document.getElementById('cmsInputAboutStory1').value.trim();
-        current.about.story2 = current.about.story2 || {};
-        if (document.getElementById('cmsInputAboutStory2')) current.about.story2.desc = document.getElementById('cmsInputAboutStory2').value.trim();
-
-        // 5. Campaign
-        current.campaign = current.campaign || {};
-        if (document.getElementById('cmsInputGreenTitle')) current.campaign.title = document.getElementById('cmsInputGreenTitle').value.trim();
-        if (document.getElementById('cmsInputGreenDesc')) current.campaign.desc = document.getElementById('cmsInputGreenDesc').value.trim();
-        if (document.getElementById('cmsInputGreenDiscount')) current.campaign.discount = document.getElementById('cmsInputGreenDiscount').value.trim();
-        current.campaign.activity1 = current.campaign.activity1 || {};
-        if (document.getElementById('cmsInputGreenAct1')) current.campaign.activity1.desc = document.getElementById('cmsInputGreenAct1').value.trim();
-        current.campaign.activity2 = current.campaign.activity2 || {};
-        if (document.getElementById('cmsInputGreenAct2')) current.campaign.activity2.desc = document.getElementById('cmsInputGreenAct2').value.trim();
-
-        // 6. Knowledge
-        current.knowledge = current.knowledge || {};
-        if (document.getElementById('cmsInputKnowledgeTitle')) current.knowledge.title = document.getElementById('cmsInputKnowledgeTitle').value.trim();
-        if (document.getElementById('cmsInputKnowledgeDesc')) current.knowledge.subtitle = document.getElementById('cmsInputKnowledgeDesc').value.trim();
-
-        // 7. Footer
-        current.footer = current.footer || {};
-        if (document.getElementById('cmsInputFooterDesc')) current.footer.desc = document.getElementById('cmsInputFooterDesc').value.trim();
-        if (document.getElementById('cmsInputFooterCopy')) current.footer.copyright = document.getElementById('cmsInputFooterCopy').value.trim();
-
-        // Save to window.TRAMHAT_DATA & localStorage
-        if (window.TRAMHAT_DATA) window.TRAMHAT_DATA.content = current;
-        try {
-          localStorage.setItem('tramhat_custom_content', JSON.stringify(current));
-        } catch (e) { }
-
-        // Apply directly to DOM
-        applyCustomContentToDOM(current);
-
-        const alertEl = document.getElementById('cmsSaveSuccessAlert');
-        if (alertEl) {
-          alertEl.classList.remove('d-none');
-          setTimeout(() => alertEl.classList.add('d-none'), 4000);
-        }
-        alert('Đã lưu toàn bộ nội dung thành công và cập nhật trực tiếp lên website!');
-      }
-
-      function applyCustomContentToDOM(c) {
-        if (!c) return;
-
-        // Brand & Hotline
-        if (c.brand) {
-          if (c.brand.hotline) {
-            document.querySelectorAll('.hotline-text, .hotline-display').forEach(el => el.innerText = c.brand.hotline);
-          }
-          if (c.brand.factory) {
-            document.querySelectorAll('.factory-address').forEach(el => el.innerText = c.brand.factory);
-          }
-        }
-
-        // Hero
-        if (c.hero) {
-          if (c.hero.badge) {
-            document.querySelectorAll('.hero-badge').forEach(el => el.innerText = c.hero.badge);
-          }
-          if (c.hero.titleLine1 || c.hero.titleLine2) {
-            const titleEl = document.querySelector('.hero-title');
-            if (titleEl) {
-              titleEl.innerHTML = `${c.hero.titleLine1 || ''} <span class="d-block text-danger">${c.hero.titleLine2 || ''}</span>`;
-            }
-          }
-          if (c.hero.desc) {
-            document.querySelectorAll('.hero-desc').forEach(el => el.innerText = c.hero.desc);
-          }
-        }
-      }
-
-      // --- REAL ORDERS MANAGEMENT (NO FAKE SAMPLES) ---
-      function renderAdminOrdersTable() {
-        const tbody = document.getElementById('adminOrdersTableBody');
-        const sideBadge = document.getElementById('adminSidebarOrdersBadge');
-        if (!tbody) return;
-
-        const total = adminOrdersList.length;
-        const pendingCount = adminOrdersList.filter(o => o.status === 'Chờ Xác Nhận').length;
-        const shippingCount = adminOrdersList.filter(o => o.status && o.status.includes('Đang Giao')).length;
-        const completedCount = adminOrdersList.filter(o => o.status === 'Hoàn Tất').length;
-
-        if (sideBadge) sideBadge.innerText = total + ' đơn';
-        const statTotal = document.getElementById('orderStatTotal');
-        const statPending = document.getElementById('orderStatPending');
-        const statShipping = document.getElementById('orderStatShipping');
-        const statCompleted = document.getElementById('orderStatCompleted');
-
-        if (statTotal) statTotal.innerText = total;
-        if (statPending) statPending.innerText = pendingCount;
-        if (statShipping) statShipping.innerText = shippingCount;
-        if (statCompleted) statCompleted.innerText = completedCount;
-
-        if (total === 0) {
-          tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="text-center py-5 text-muted">
-              <i class="bi bi-inbox fs-2 d-block text-secondary mb-2"></i>
-              <strong class="text-dark">Chưa có đơn hàng nào phát sinh</strong>
-              <div class="small mt-1 text-muted">Khi khách hàng đặt mua qua giỏ hàng trên website, đơn hàng thực tế sẽ lập tức hiển thị tại đây theo thời gian thực.</div>
-            </td>
-          </tr>
-        `;
-          return;
-        }
-
-        let htmlStr = '';
-        adminOrdersList.forEach((ord) => {
-          let badgeClass = 'bg-warning text-dark';
-          if (ord.status && ord.status.includes('Đang Giao')) badgeClass = 'bg-primary';
-          if (ord.status === 'Hoàn Tất') badgeClass = 'bg-success';
-          if (ord.status === 'Đã Hủy') badgeClass = 'bg-danger';
-
-          htmlStr += `
-          <tr>
-            <td><strong class="font-serif text-dark">${ord.id}</strong><br><span class="text-muted" style="font-size: 11px;">${ord.time}</span></td>
-            <td><strong>${ord.customer}</strong><br><span class="text-muted small">${ord.phone}</span></td>
-            <td><span class="small text-muted">${ord.address}</span></td>
-            <td><span class="small fw-medium text-dark">${ord.items}</span></td>
-            <td><strong class="text-danger font-serif">${ord.total}</strong><br><span class="text-muted" style="font-size: 11px;">${ord.payment}</span></td>
-            <td><span class="badge ${badgeClass}">${ord.status}</span></td>
-            <td class="text-end">
-              <div class="dropdown d-inline-block">
-                <button class="btn btn-sm btn-outline-dark dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown">
-                  Đổi Trạng Thái
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                  <li><a class="dropdown-item small" href="javascript:void(0)" onclick="updateOrderStatus('${ord.id}', 'Chờ Xác Nhận')"><i class="bi bi-clock text-warning me-2"></i> Chờ Xác Nhận</a></li>
-                  <li><a class="dropdown-item small" href="javascript:void(0)" onclick="updateOrderStatus('${ord.id}', 'Đang Giao 45 Phút')"><i class="bi bi-truck text-primary me-2"></i> Đang Giao 45 Phút</a></li>
-                  <li><a class="dropdown-item small" href="javascript:void(0)" onclick="updateOrderStatus('${ord.id}', 'Hoàn Tất')"><i class="bi bi-check2-circle text-success me-2"></i> Đã Hoàn Tất</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item small text-danger" href="javascript:void(0)" onclick="updateOrderStatus('${ord.id}', 'Đã Hủy')"><i class="bi bi-x-circle me-2"></i> Hủy Đơn</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-        `;
-        });
-        tbody.innerHTML = htmlStr;
-      }
-
-      function updateOrderStatus(id, newStatus) {
-        const ord = adminOrdersList.find(o => o.id === id);
-        if (ord) {
-          ord.status = newStatus;
-          saveRealOrders();
-          renderAdminOrdersTable();
-        }
-      }
-
-      // --- PRODUCTS MANAGEMENT (ADD, EDIT, DELETE) ---
-      function renderAdminProductsTable(filterText = '') {
-        const tbody = document.getElementById('adminProductsTableBody');
-        const countBadge = document.getElementById('adminProductTableTotalCount');
-        const sideBadge = document.getElementById('adminSidebarProductCountBadge');
-        if (!tbody) return;
-
-        const keys = Object.keys(productsDB);
-        if (countBadge) countBadge.innerText = keys.length;
-        if (sideBadge) sideBadge.innerText = keys.length + ' món';
-
-        let htmlStr = '';
-        keys.forEach(k => {
-          const p = productsDB[k];
-          if (filterText && !p.name.toLowerCase().includes(filterText.toLowerCase()) && !k.toLowerCase().includes(filterText.toLowerCase())) {
-            return;
-          }
-
-          const priceFormatted = (p.priceVND || 35000).toLocaleString('vi-VN') + 'đ';
-          const kcal = p.nutrition ? (p.nutrition.kcal + ' Kcal') : '180 Kcal';
-          const protein = p.nutrition ? p.nutrition.protein : '7g Đạm';
-
-          htmlStr += `
-          <tr>
-            <td>
-              <img src="${p.img}" alt="${p.name}" class="rounded border" style="width: 48px; height: 48px; object-fit: cover;">
-            </td>
-            <td>
-              <div class="fw-bold text-dark font-serif">${p.name}</div>
-              <div class="text-muted small" style="font-size: 11px;">Mã: <code>${k}</code></div>
-            </td>
-            <td>
-              <span class="badge bg-light text-dark border">${p.category || 'Vị Nguyên Bản'}</span>
-            </td>
-            <td>
-              <strong class="text-danger font-serif">${priceFormatted}</strong>
-            </td>
-            <td>
-              <span class="small text-muted">${p.origin || 'Bù Gia Mập'}</span>
-            </td>
-            <td>
-              <span class="badge bg-secondary-subtle text-dark border" style="font-size: 11px;">${kcal} - ${protein}</span>
-            </td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-primary py-1 px-2 me-1" onclick="editAdminProduct('${k}')" title="Sửa thông tin">
-                <i class="bi bi-pencil"></i> Sửa
-              </button>
-              <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="deleteAdminProduct('${k}')" title="Xóa khỏi thực đơn">
-                <i class="bi bi-trash"></i> Xóa
-              </button>
-            </td>
-          </tr>
-        `;
-        });
-
-        if (!htmlStr) {
-          htmlStr = '<tr><td colspan="7" class="text-center py-4 text-muted">Không tìm thấy sản phẩm nào khớp với tìm kiếm!</td></tr>';
-        }
-
-        tbody.innerHTML = htmlStr;
-      }
-
-      function filterAdminProducts() {
-        const input = document.getElementById('adminProductSearchInput');
-        const val = input ? input.value.trim() : '';
-        renderAdminProductsTable(val);
-      }
-
-      function openAddProductModal() {
-        const modalEl = document.getElementById('adminProductModal');
-        const titleEl = document.getElementById('adminProductModalTitle');
-        const form = document.getElementById('adminProductForm');
-        if (form) form.reset();
-        document.getElementById('prodEditKey').value = '';
-        document.getElementById('prodKeyInput').readOnly = false;
-        if (titleEl) titleEl.innerText = '+ Thêm Sản Phẩm Mới';
-        if (modalEl) {
-          const m = bootstrap.Modal.getOrCreateInstance(modalEl);
-          m.show();
-        }
-      }
-
-      function editAdminProduct(key) {
-        const p = productsDB[key];
-        if (!p) return;
-
-        document.getElementById('prodEditKey').value = key;
-        document.getElementById('prodKeyInput').value = key;
-        document.getElementById('prodKeyInput').readOnly = true;
-        document.getElementById('prodNameInput').value = p.name;
-        document.getElementById('prodCategoryInput').value = p.category || 'VỊ NGUYÊN BẢN';
-        document.getElementById('prodPriceInput').value = p.priceVND || 35000;
-        document.getElementById('prodOriginInput').value = p.origin ? p.origin.replace(/-/g, '•') : 'Bù Gia Mập • Nấu Mới 05:00';
-        document.getElementById('prodImgInput').value = p.img;
-        document.getElementById('prodDescInput').value = p.desc || '';
-        document.getElementById('prodKcalInput').value = p.nutrition ? p.nutrition.kcal : '180';
-        document.getElementById('prodProteinInput').value = p.nutrition ? p.nutrition.protein : '7g';
-        document.getElementById('prodFatInput').value = p.nutrition ? p.nutrition.fat : '8g';
-
-        const titleEl = document.getElementById('adminProductModalTitle');
-        if (titleEl) titleEl.innerText = 'Chỉnh Sửa Sản Phẩm: ' + p.name;
-
-        const modalEl = document.getElementById('adminProductModal');
-        if (modalEl) {
-          const m = bootstrap.Modal.getOrCreateInstance(modalEl);
-          m.show();
-        }
-      }
-
-      function handleAdminProductSave(e) {
-        e.preventDefault();
-        const editKey = document.getElementById('prodEditKey').value.trim();
-        let key = editKey || document.getElementById('prodKeyInput').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
-        if (!key) key = 'prod_' + Date.now();
-
-        const name = document.getElementById('prodNameInput').value.trim();
-        const category = document.getElementById('prodCategoryInput').value;
-        const priceVND = parseInt(document.getElementById('prodPriceInput').value) || 35000;
-        const origin = document.getElementById('prodOriginInput').value.trim();
-        const img = document.getElementById('prodImgInput').value.trim();
-        const desc = document.getElementById('prodDescInput').value.trim();
-        const kcal = document.getElementById('prodKcalInput').value.trim() || '180';
-        const protein = document.getElementById('prodProteinInput').value.trim() || '7.5g';
-        const fat = document.getElementById('prodFatInput').value.trim() || '8.5g';
-
-        productsDB[key] = {
-          id: productsDB[key] ? productsDB[key].id : String(Object.keys(productsDB).length + 1).padStart(2, '0'),
-          name: name,
-          category: category,
-          origin: origin,
-          priceVND: priceVND,
-          img: img,
-          desc: desc,
-          nutrition: { kcal: kcal, protein: protein, fat: fat }
-        };
-
-        // Close modal
-        const modalEl = document.getElementById('adminProductModal');
-        if (modalEl) {
-          const m = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal.getOrCreateInstance(modalEl);
-          m.hide();
-        }
-
-        renderAdminProductsTable();
-        syncCatalogToCustomerMenu();
-        alert('Đã lưu thành công sản phẩm: "' + name + '" vào hệ thống!');
-      }
-
-      function deleteAdminProduct(key) {
-        const p = productsDB[key];
-        if (!p) return;
-
-        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm "' + p.name + '" khỏi thực đơn không?')) {
-          delete productsDB[key];
-          renderAdminProductsTable();
-          syncCatalogToCustomerMenu();
-          alert('Đã xóa sản phẩm khỏi hệ thống thành công!');
-        }
-      }
-
-      function syncCatalogToCustomerMenu() {
-        const grid = document.getElementById('productsGrid');
-        if (!grid) return;
-
-        let htmlStr = '';
-        Object.keys(productsDB).forEach(k => {
-          const p = productsDB[k];
-          const priceFmt = (p.priceVND || 35000).toLocaleString('vi-VN') + 'đ';
-          htmlStr += `
-          <div class="col-md-6 col-lg-4 product-col-item">
-            <div class="product-card shadow-sm" onclick="viewProductDetail('${k}')" style="cursor: pointer;">
-              <div class="product-card-img-wrap">
-                <button class="product-card-compare-btn" onclick="event.stopPropagation(); toggleCompare('${k}')" title="So sánh sản phẩm">
-                  <i class="bi bi-bar-chart-line"></i>
-                </button>
-                <img src="${p.img}" alt="${p.name}" class="product-card-img">
-              </div>
-              <div class="product-card-body">
-                <div>
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="product-category-text">${p.category || 'Vị Nguyên Bản'}</span>
-                    <span class="product-price-text item-price-display" data-base="${p.priceVND}">${priceFmt}</span>
-                  </div>
-                  <h3 class="h5 fw-bold text-dark font-serif mb-2">${p.name}</h3>
-                  <div class="product-card-origin"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${p.origin || 'Bù Gia Mập • Nấu Mới 05:00'}</div>
-                  <p class="product-desc-text line-clamp-2">${p.desc}</p>
-                </div>
-                <div class="product-card-footer">
-                  <button class="btn btn-primary-custom w-100 py-2" onclick="event.stopPropagation(); quickAddToCart('${k}')">
-                    <i class="bi bi-cart-plus me-1"></i> Chọn Thêm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-        });
-        grid.innerHTML = htmlStr;
-      }
-
-      // --- JSON EXPORT UTILITIES ---
-      function exportAnalyticsJSON() {
-        const dataStr = TramHatTracker.exportJSON();
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'analytics.json';
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-
-      function exportOrdersJSON() {
-        const dataStr = JSON.stringify(adminOrdersList, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'orders.json';
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-
-      function exportContentJSON() {
-        const content = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.content) ? window.TRAMHAT_DATA.content : {};
-        const dataStr = JSON.stringify(content, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'content.json';
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-
-      function toggleAdminSidebar() {
-        const sb = document.getElementById('adminSidebar');
-        if (sb) {
-          sb.classList.toggle('d-none');
-        }
-      }
+      // Quản trị viên sử dụng trang riêng tại: admin.html
 
 
       // 1. DỮ LIỆU SẢN PHẨM TOÀN BỘ (6 MÓN)
@@ -6040,10 +5008,6 @@
         if (typeof TramHatTracker !== 'undefined') {
           TramHatTracker.recordPurchase(finalTotalVND, orderId);
         }
-        if (typeof adminOrdersList !== 'undefined') {
-          adminOrdersList.unshift(orderData);
-          if (typeof saveRealOrders === 'function') saveRealOrders();
-        }
 
         // 2. Gửi API lên Serverless Backend
         if (window.TramHatAPI) {
@@ -6436,16 +5400,15 @@
           session.lastActiveAt = Date.now();
           saveSession(session);
           updateSessionCountdownUI();
-          alert('Đã gia hạn phiên làm việc thêm ' + extraMinutes + ' phút thành công!');
+          showFloatingToast('Đã gia hạn phiên làm việc thêm ' + extraMinutes + ' phút thành công!', 'success');
         }
 
         function expireSession(noticeMessage) {
           destroySession();
-          if (typeof checkAdminAuth === 'function') checkAdminAuth();
           if (typeof syncUserUI === 'function') syncUserUI();
 
           const hash = window.location.hash;
-          if (hash === '#admin' || hash === '#profile') {
+          if (hash === '#profile') {
             if (typeof switchTab === 'function') switchTab('home');
           }
           // Khách hàng tiếp tục mua sắm bình thường ở chế độ khách, không làm phiền bằng popup
@@ -6518,14 +5481,12 @@
           if (e.key === SESSION_KEY) {
             if (!e.newValue) {
               destroySession();
-              if (typeof checkAdminAuth === 'function') checkAdminAuth();
               if (typeof syncUserUI === 'function') syncUserUI();
-              if (window.location.hash === '#admin' || window.location.hash === '#profile') {
+              if (window.location.hash === '#profile') {
                 if (typeof switchTab === 'function') switchTab('home');
               }
             } else {
               if (typeof syncUserUI === 'function') syncUserUI();
-              if (typeof checkAdminAuth === 'function') checkAdminAuth();
             }
           }
         });
@@ -6587,11 +5548,7 @@
       function handleNavProfileClick() {
         const user = getCurrentUser();
         if (user && user.isLoggedIn) {
-          if (user.role === 'admin' || sessionStorage.getItem('tramhat_admin_auth') === 'true') {
-            switchTab('admin');
-          } else {
-            switchTab('profile');
-          }
+          switchTab('profile');
         } else {
           openAccountModal(true);
         }
@@ -6657,32 +5614,7 @@
 
         const isRemember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
 
-        // 1. Quản trị viên
-        if (clean === '0909999999' || rawPhone.toLowerCase() === 'admin') {
-          const adminUser = {
-            id: 'admin',
-            name: 'Quản Trị Viên Trạm Hạt',
-            email: 'admin@tramhat.vn',
-            phone: '0909999999',
-            role: 'admin',
-            tier: 'Quản Trị Hệ Thống',
-            points: 999,
-            bottlesReturned: 50,
-            ordersCount: 0,
-            isLoggedIn: true
-          };
-          TramHatSession.createSession(adminUser, isRemember);
-          saveCurrentUser(adminUser);
-          closeAccountModal();
-          showFloatingToast('Đăng nhập Quản trị viên thành công!', 'success');
-          setTimeout(() => {
-            switchTab('admin');
-            if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-          }, 200);
-          return;
-        }
-
-        // 2. Tìm kiếm trong danh sách khách hàng hoặc tạo tài khoản mới ngay lập tức
+        // 1. Tìm kiếm trong danh sách khách hàng hoặc tạo tài khoản mới ngay lập tức
         const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
         const matched = dataUsers.find(u => u.phone === clean);
 
@@ -6739,15 +5671,6 @@
         setTimeout(() => {
           switchTab('profile');
         }, 200);
-      }
-
-      function adminLogout() {
-        if (typeof TramHatSession !== 'undefined') {
-          TramHatSession.destroySession();
-        }
-        checkAdminAuth();
-        syncUserUI();
-        switchTab('home');
       }
 
       function userLogout() {
@@ -6988,7 +5911,7 @@
 
         const phone = phoneInput.value.replace(/[^0-9]/g, '');
         if (phone.length < 9) {
-          alert('Vui lòng nhập số điện thoại hợp lệ (10 số) để tra cứu đơn hàng.');
+          showFloatingToast('Vui lòng nhập số điện thoại hợp lệ (10 số) để tra cứu đơn hàng.', 'warning');
           phoneInput.focus();
           return;
         }
@@ -7082,7 +6005,7 @@
         const phone = (document.getElementById('quizUserPhone')?.value || '').trim();
 
         if (phone && phone.replace(/[^0-9]/g, '').length < 9) {
-          alert('Vui lòng nhập số điện thoại hợp lệ để nhận mã Freeship.');
+          showFloatingToast('Vui lòng nhập số điện thoại hợp lệ để nhận mã Freeship.', 'warning');
           return;
         }
 
@@ -7213,7 +6136,7 @@
         const stars = document.getElementById('newReviewStars')?.value || '5';
         const text = (document.getElementById('newReviewComment')?.value || '').trim();
         if (!text) {
-          alert("Vui lòng nhập nhận xét của bạn!");
+          showFloatingToast("Vui lòng nhập nhận xét của bạn!", "warning");
           return;
         }
         const user = getCurrentUser();
@@ -7240,7 +6163,7 @@
             author: userName
           });
         }
-        alert("Cảm ơn bạn đã gửi đánh giá trải nghiệm sản phẩm cho Trạm Hạt!");
+        showFloatingToast("Cảm ơn bạn đã gửi đánh giá trải nghiệm sản phẩm cho Trạm Hạt!", "success");
       }
 
       // 13. CHAT CSKH TRỰC TUYẾN
@@ -7478,7 +6401,7 @@
       function handleNewsletterSubmit(e) {
         e.preventDefault();
         const email = document.getElementById('newsletterEmail').value;
-        alert(`ĐĂNG KÝ THÀNH CÔNG!\n\nTrạm Hạt đã gửi mã ưu đãi 15% (VOUCHER15) và cẩm nang thực dưỡng vào hòm thư: ${email}. Hãy kiểm tra email nhé!`);
+        showFloatingToast(`Đăng ký thành công! Mã ưu đãi VOUCHER15 đã gửi đến ${email}.`, 'success');
         e.target.reset();
       }
 
@@ -7558,7 +6481,7 @@
           compareList.splice(idx, 1);
         } else {
           if (compareList.length >= 3) {
-            alert('Chỉ có thể so sánh tối đa 3 sản phẩm cùng lúc.');
+            showFloatingToast('Chỉ có thể so sánh tối đa 3 sản phẩm cùng lúc.', 'warning');
             return;
           }
           compareList.push(key);
@@ -7601,7 +6524,10 @@
         bar.querySelector('.compare-slots-area').innerHTML = slotsHTML;
       }
       function openCompareModal() {
-        if (compareList.length < 2) { alert('Hãy chọn ít nhất 2 sản phẩm để so sánh.'); return; }
+        if (compareList.length < 2) {
+          showFloatingToast('Hãy chọn ít nhất 2 sản phẩm để so sánh.', 'warning');
+          return;
+        }
         let html = '<div class="table-responsive"><table class="table table-bordered small text-center align-middle"><thead class="table-light"><tr><th>Thuộc tính</th>';
         compareList.forEach(key => { html += `<th>${productsDB[key].name}</th>`; });
         html += '</tr></thead><tbody>';
@@ -7623,20 +6549,6 @@
         document.getElementById('compareModalBody').innerHTML = html;
         const modal = new bootstrap.Modal(document.getElementById('compareModal'));
         modal.show();
-      }
-
-      // 21. IMPORT FILE (ADMIN)
-      function triggerImportFile(type) {
-        const input = document.getElementById('importFileInput');
-        input.setAttribute('data-import-type', type);
-        input.click();
-      }
-      function handleImportFile(input) {
-        const file = input.files[0];
-        if (!file) return;
-        const type = input.getAttribute('data-import-type');
-        alert(`Đã nhận file "${file.name}" để cập nhật danh mục ${type === 'products' ? 'sản phẩm' : 'khách hàng'}.`);
-        input.value = '';
       }
 
       // Subscriptions module removed
@@ -7895,7 +6807,7 @@
         const stars = currentSelectedStarRating;
 
         if (!name || !comment) {
-          alert("Vui lòng nhập họ tên và nội dung cảm nhận!");
+          showFloatingToast("Vui lòng nhập họ tên và nội dung cảm nhận!", "warning");
           return;
         }
 
@@ -7944,7 +6856,7 @@
           picker.querySelectorAll('.pick-star').forEach(s => s.classList.add('selected'));
         }
 
-        alert("Cảm ơn " + name + "! Cảm nhận của bạn đã được ghi nhận và hiển thị ngay tại Trạm Hạt.");
+        showFloatingToast("Cảm ơn " + name + "! Cảm nhận của bạn đã được ghi nhận và hiển thị ngay tại Trạm Hạt.", "success");
       }
 
       function voteHelpful(btn) {
@@ -7956,77 +6868,6 @@
           btn.disabled = true;
         }
       }
-
-    </script>
-    <script>
-
-      // ==========================================================================
-      // ADMIN SEPARATION & AUTHENTICATION LOGIC
-      // ==========================================================================
-      function checkAdminAuth() {
-        // Customer storefront remains 100% clean and public
-        const topBar = document.getElementById('adminTopBar');
-        if (topBar) {
-          topBar.classList.add('d-none');
-          topBar.classList.remove('d-flex');
-        }
-      }
-
-      function toggleAdminLoginForm() {
-        const form = document.getElementById('adminLoginFormContainer');
-        if (form) {
-          form.classList.toggle('d-none');
-        }
-      }
-
-      function openAdminLoginModal() {
-        window.location.href = 'admin.html';
-      }
-
-      function handleAdminLoginSubmit(e) {
-        e.preventDefault();
-        const u = document.getElementById('adminLoginUsername').value.trim();
-        const p = document.getElementById('adminLoginPassword').value.trim();
-
-        // Accept admin credentials (flexible for convenience)
-        if ((u === 'admin' || u === 'admin@tramhat.vn') && (p === 'admin' || p === 'admin123' || p === '123456')) {
-          const adminUser = {
-            id: 'admin',
-            name: 'Quản Trị Viên Trạm Hạt',
-            email: 'admin@tramhat.vn',
-            phone: '0909999999',
-            role: 'admin',
-            tier: 'Quản Trị Hệ Thống',
-            points: 999,
-            bottlesReturned: 50,
-            ordersCount: 0,
-            isLoggedIn: true
-          };
-          TramHatSession.createSession(adminUser, true);
-          checkAdminAuth();
-
-          // Close account modal
-          const accModal = bootstrap.Modal.getInstance(document.getElementById('accountModal'));
-          if (accModal) accModal.hide();
-
-          // Chuyển sang giao diện quản trị riêng biệt (Dedicated Admin Portal)
-          switchTab('admin');
-          if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
-          alert("Đăng nhập quyền Quản Trị Viên thành công! Phiên làm việc đã khởi tạo an toàn.");
-        } else {
-          alert("Thông tin tài khoản hoặc mật khẩu Quản Trị Viên không chính xác. Vui lòng kiểm tra lại!");
-        }
-      }
-
-      function adminLogout() {
-        if (typeof TramHatSession !== 'undefined') {
-          TramHatSession.destroySession();
-        }
-        checkAdminAuth();
-        syncUserUI();
-        switchTab('home');
-      }
-
 
       // ==========================================================================
       // TOÀN BỘ CON SỐ & DỮ LIỆU ĐỀU ĐỌC TRỰC TIẾP TỪ JSON (JSON-DRIVEN ARCHITECTURE)
@@ -8146,23 +6987,9 @@
 
           // Render Best-Sellers Trang Chủ từ JSON
           renderBestSellersFromJSON(data.products.slice(0, 3));
-
-          // Render Bảng Quản Lý Sản Phẩm Trong Admin từ JSON
-          renderAdminProductsTable();
         }
 
-        // 3. ĐỌC TOÀN BỘ CHỈ SỐ ĐO LƯỜNG TỪ KHÁCH HÀNG TỪ data/analytics.json
-        if (data.analytics) {
-          refreshAdminAnalytics();
-        }
-
-        // 4. ĐỌC TOÀN BỘ ĐƠN HÀNG TỪ data/orders.json
-        if (data.orders && Array.isArray(data.orders)) {
-          adminOrdersList = data.orders;
-          renderAdminOrdersTable();
-        }
-
-        // 5. ĐỌC ĐÁNH GIÁ CỘNG ĐỒNG TỪ data/reviews.json
+        // 3. ĐỌC ĐÁNH GIÁ CỘNG ĐỒNG TỪ data/reviews.json
         if (data.reviews && typeof renderCommunityReviews === 'function') {
           renderCommunityReviews();
         }
@@ -8225,7 +7052,6 @@
             TramHatSession.destroySession();
           }
         }
-        checkAdminAuth();
         initStarRatingPicker();
         renderCart();
         fetchAndApplyJSONData();
@@ -8239,29 +7065,6 @@
 
     </script>
 
-    <!-- MODAL CHI TIET HANH TRINH TUNG KHACH HANG (VISITOR JOURNEY MODAL) -->
-    <div class="modal fade" id="visitorDetailModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
-          <div class="modal-header bg-dark text-white py-3">
-            <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2" id="visitorModalTitle">
-              <i class="bi bi-person-badge"></i> Chi Tiết Hành Trình Khách Hàng
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body p-4">
-            <div id="visitorModalInfo"></div>
-            <h6 class="fw-bold font-serif text-dark mb-2 border-bottom pb-2">
-              <i class="bi bi-clock-history me-1 text-primary"></i> Dòng Thời Gian Thao Tác (Click Timeline):
-            </h6>
-            <div id="visitorModalTimeline" style="max-height: 350px; overflow-y: auto;"></div>
-          </div>
-          <div class="modal-footer bg-light py-2">
-            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Đóng</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- MODAL TRẮC NGHIỆM KHẨU VỊ 30S (TASTE QUIZ - LEAD MQL ACQUISITION) -->
     <div class="modal fade" id="tasteQuizModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
