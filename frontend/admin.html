@@ -1337,8 +1337,13 @@
     }
 
     function renderMainChart(metricKey) {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js not ready yet');
+        return;
+      }
       const ctx = document.getElementById('mainTrendChart');
       if (!ctx) return;
+      metricKey = metricKey || currentSelectedMetric || 'sessions';
 
       if (mainChartInstance) {
         mainChartInstance.destroy();
@@ -1578,7 +1583,7 @@
           if (u > 118) {
             campaignDailySeries.users[campaignDailySeries.users.length - 1] = 4 + (u - 118);
           }
-          renderMainChart(currentMetric);
+          renderMainChart(currentSelectedMetric);
         }
 
         // 2. CẬP NHẬT DANH SÁCH LEADS THỰC TẾ
@@ -1606,12 +1611,11 @@
           renderLiveEventsStream(eventsRes.data);
         }
 
-        // Tắt thanh tiến trình tải trang toàn cục
-        const loader = document.getElementById('adminGlobalLoader');
-        if (loader) loader.style.display = 'none';
-
       } catch (err) {
         console.warn('Sync live backend error:', err);
+      } finally {
+        const loader = document.getElementById('adminGlobalLoader');
+        if (loader) loader.style.display = 'none';
       }
     }
 
