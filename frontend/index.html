@@ -4241,6 +4241,51 @@
           },
           trackInitiateCheckout: function (total) {
             try { if (window.TramHatAPI && window.TramHatAPI.trackInitiateCheckout) window.TramHatAPI.trackInitiateCheckout(total); } catch (e) { }
+          },
+          recordProductView: function (productId, productName) {
+            if (isAdminActive()) return;
+            data.productViews++;
+            logEvent('Xem Chi Tiết Món', `Khách xem sản phẩm ${productName || productId}`);
+            persist();
+            dispatchMongoEvent('product_view', { productId: productId, productName: productName });
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
+                window.TramHatAPI.sendEvent('view_item', { metadata: { productId: productId, productName: productName } });
+              }
+            } catch (e) { }
+          },
+          recordAddToCart: function (productId, productName) {
+            if (isAdminActive()) return;
+            data.addToCartCount++;
+            logEvent('Thêm Giỏ Hàng', `Khách thêm sản phẩm ${productName || productId}`);
+            persist();
+            dispatchMongoEvent('add_to_cart', { productId: productId, productName: productName });
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
+                window.TramHatAPI.sendEvent('add_to_cart', { metadata: { productId: productId, productName: productName } });
+              }
+            } catch (e) { }
+          },
+          recordPurchase: function (totalVND, orderId) {
+            if (isAdminActive()) return;
+            data.purchasesCount++;
+            data.revenueVND += (totalVND || 0);
+            logEvent('Chốt Đơn Hàng', `Khách hoàn tất đơn hàng #${orderId} (${(totalVND || 0).toLocaleString('vi-VN')}đ)`);
+            persist();
+            dispatchMongoEvent('purchase', { orderId: orderId, totalVND: totalVND });
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
+                window.TramHatAPI.sendEvent('purchase', { metadata: { totalVND: totalVND, orderId: orderId } });
+              }
+            } catch (e) { }
+          },
+          recordEvent: function (eventType, metadata) {
+            if (isAdminActive()) return;
+            logEvent(eventType, typeof metadata === 'object' ? JSON.stringify(metadata) : String(metadata));
+            dispatchMongoEvent(eventType, metadata || {});
+          },
+          init: function () {
+            // Đã sẵn sàng thu thập dữ liệu
           }
         };
       })();
@@ -5222,7 +5267,7 @@
 
 
       // 1. DỮ LIỆU SẢN PHẨM TOÀN BỘ (6 MÓN)
-      const productsDB = {
+      let productsDB = {
         cashew: {
           id: "01",
           name: "Sữa Điều Tự Nhiên",
@@ -5399,13 +5444,19 @@
 
       // 5. CHI TIẾT SẢN PHẨM (PRODUCT DETAIL VIEW)
       function viewProductDetail(key) {
+        if (!key) key = 'cashew';
         const p = productsDB[key];
-        if (typeof TramHatTracker !== "undefined") {
-          TramHatTracker.recordProductView(key, p ? p.name : key);
+        if (!p) {
+          console.warn('[viewProductDetail] Không tìm thấy sản phẩm:', key);
+          return;
         }
-        if (!p) return;
+
+        if (typeof TramHatTracker !== "undefined" && typeof TramHatTracker.recordProductView === "function") {
+          TramHatTracker.recordProductView(key, p.name);
+        }
+
         currentSelectedDetailKey = key;
-        detailSelectedSize = '300ml';
+        detailSelectedSize = '330ml (Chai Chuẩn)';
         detailSelectedExtra = 0;
         detailSelectedSweet = 'Nguyên bản không đường';
 
@@ -5418,17 +5469,30 @@
         });
 
         // Fill data
-        document.getElementById('detailImg').src = p.img;
-        document.getElementById('detailCategory').innerText = p.category;
-        document.getElementById('detailOriginTag').innerHTML = p.origin;
-        document.getElementById('detailTitle').innerText = p.name;
+        const imgEl = document.getElementById('detailImg');
+        if (imgEl) imgEl.src = p.img || 'images/prod_real_dieu.jpg';
+        const catEl = document.getElementById('detailCategory');
+        if (catEl) catEl.innerText = p.category || 'VỊ NGUYÊN BẢN';
+        const origEl = document.getElementById('detailOriginTag');
+        if (origEl) origEl.innerHTML = p.origin || 'Bù Gia Mập • Nấu Mới 05:00';
+        const titleEl = document.getElementById('detailTitle');
+        if (titleEl) titleEl.innerText = p.name || '';
         const bc = document.getElementById('detailBreadcrumbName');
-        if (bc) bc.innerText = p.name;
-        document.getElementById('detailPrice').innerText = formatPrice(p.priceVND);
-        document.getElementById('detailDesc').innerText = p.desc;
-        document.getElementById('detailKcal').innerText = p.nutrition.kcal;
-        document.getElementById('detailProtein').innerText = p.nutrition.protein;
-        document.getElementById('detailFat').innerText = p.nutrition.fat;
+        if (bc) bc.innerText = p.name || '';
+        const priceEl = document.getElementById('detailPrice');
+        if (priceEl) priceEl.innerText = formatPrice(p.priceVND || 35000);
+        const descEl = document.getElementById('detailDesc');
+        if (descEl) descEl.innerText = p.desc || '';
+
+        // Dinh dưỡng Kcal, Đạm, Béo
+        const k = document.getElementById('detailKcal');
+        const pr = document.getElementById('detailProtein');
+        const f = document.getElementById('detailFat');
+        if (p.nutrition) {
+          if (k) k.innerText = p.nutrition.kcal || '185';
+          if (pr) pr.innerText = p.nutrition.protein || '7.5g';
+          if (f) f.innerText = p.nutrition.fat || '9.2g';
+        }
 
         // Switch View: Hide all page views, Show Product Detail View
         document.querySelectorAll('.site-page-view').forEach(v => v.classList.add('d-none'));
