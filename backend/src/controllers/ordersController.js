@@ -2,7 +2,12 @@ const Order = require('../models/Order');
 
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const filter = {};
+    if (req.query.phone) {
+      const cleanPhone = req.query.phone.replace(/[^0-9]/g, '');
+      filter.phone = new RegExp(cleanPhone, 'i');
+    }
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
     res.json(orders);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

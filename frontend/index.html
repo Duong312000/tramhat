@@ -5903,8 +5903,8 @@
         showFloatingToast('Đã ghi nhận yêu cầu thu hồi vỏ chai! Shipper sáng mai sẽ mang túi thu gom đến địa chỉ của bạn.', 'success');
       }
 
-      // Tra cứu đơn hàng bằng Số Điện Thoại
-      function lookupGuestOrders() {
+      // Tra cứu đơn hàng bằng Số Điện Thoại (Đồng bộ đa thiết bị: LocalStorage + Backend Atlas)
+      async function lookupGuestOrders() {
         const phoneInput = document.getElementById('guestLookupPhone');
         const resContainer = document.getElementById('guestLookupResult');
         if (!phoneInput || !resContainer) return;
@@ -5916,33 +5916,80 @@
           return;
         }
 
-        let allOrders = [];
+        resContainer.innerHTML = `
+          <div class="text-center py-3 text-muted small">
+            <span class="spinner-border spinner-border-sm me-2 text-success"></span>
+            Đang tìm kiếm đơn hàng của bạn trên hệ thống Trạm Hạt...
+          </div>
+        `;
+
+        let orders = [];
+
+        // 1. Tìm trong localStorage
         try {
-          allOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
+          const localOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
+          if (Array.isArray(localOrders)) {
+            const myLocal = localOrders.filter(o => (o.phone || '').replace(/[^0-9]/g, '') === phone);
+            orders.push(...myLocal);
+          }
         } catch (e) { }
 
-        const matched = allOrders.filter(o => (o.phone || '').includes(phone));
-        if (matched.length === 0) {
+        // 2. Tra cứu từ API Backend MongoDB Atlas
+        try {
+          const res = await fetch(`/api/orders?phone=${phone}`);
+          if (res.ok) {
+            const data = await res.json();
+            const apiOrders = Array.isArray(data) ? data : (data && Array.isArray(data.data) ? data.data : []);
+            apiOrders.forEach(ao => {
+              const aoId = ao.orderId || ao.id;
+              if (!orders.some(o => (o.orderId || o.id) === aoId)) {
+                orders.push(ao);
+              }
+            });
+          }
+        } catch (e) { }
+
+        // 3. Tra cứu từ dữ liệu tĩnh nếu có
+        const dbOrders = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.orders) ? window.TRAMHAT_DATA.orders : [];
+        dbOrders.forEach(dbo => {
+          if ((dbo.phone || '').replace(/[^0-9]/g, '') === phone) {
+            const dboId = dbo.orderId || dbo.id;
+            if (!orders.some(o => (o.orderId || o.id) === dboId)) {
+              orders.push(dbo);
+            }
+          }
+        });
+
+        if (orders.length === 0) {
           resContainer.innerHTML = `
-          <div class="alert alert-warning small mt-2">
-            Không tìm thấy đơn hàng nào gắn với số điện thoại <strong>${phone}</strong>. Vui lòng kiểm tra lại số hoặc đặt hàng mới!
+          <div class="alert alert-warning small mt-2 mb-0 rounded-3">
+            <i class="bi bi-info-circle me-1"></i> Chưa tìm thấy đơn hàng nào gắn với số điện thoại <strong>${phone}</strong>. Vui lòng kiểm tra lại số hoặc đặt thử đơn mới!
           </div>
         `;
           return;
         }
 
-        let html = `<div class="mt-3"><h6 class="small fw-bold text-dark">Tìm thấy ${matched.length} đơn hàng:</h6>`;
-        matched.forEach(o => {
+        let html = `<div class="mt-3"><div class="small fw-bold text-dark mb-2"><i class="bi bi-box-seam me-1 text-success"></i> Tìm thấy ${orders.length} đơn hàng của bạn:</div>`;
+        orders.forEach(o => {
+          const ordId = o.orderId || o.id || 'TH-000000';
+          const totalStr = typeof o.totalVND === 'number' ? formatPrice(o.totalVND) : (o.total || '70.000đ');
+          const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('vi-VN') : 'Gần đây';
+          const itemsStr = o.itemsSummary || (Array.isArray(o.items) ? o.items.map(i => `${i.name} x ${i.qty || 1}`).join(', ') : 'Sữa hạt tươi');
+          const status = o.status || 'Chờ Xác Nhận';
+          const isDone = status.toLowerCase().includes('hoàn') || status.toLowerCase().includes('giao');
+          const badgeClass = isDone ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-warning-subtle text-warning border border-warning-subtle';
+
           html += `
-          <div class="p-2 border rounded bg-white small mb-2">
-            <div class="d-flex justify-content-between fw-bold">
-              <span>#${o.orderId || o.id}</span>
-              <span class="text-danger">${formatPrice(o.totalVND || 0)}</span>
+          <div class="p-3 border rounded-3 bg-white small mb-2 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center fw-bold border-bottom pb-2 mb-2">
+              <span class="text-dark font-monospace">#${ordId}</span>
+              <span class="text-success">${totalStr}</span>
             </div>
-            <div class="text-muted" style="font-size: 11px;">${o.itemsSummary || 'Sữa hạt tươi 330ml'}</div>
-            <div class="d-flex justify-content-between align-items-center mt-1">
-              <span class="badge bg-warning text-dark">${o.status || 'Chờ Xác Nhận'}</span>
-              <span class="text-muted" style="font-size: 10px;">${new Date(o.createdAt).toLocaleDateString('vi-VN')}</span>
+            <div class="text-dark fw-semibold mb-1" style="font-size: 12.5px;">${itemsStr}</div>
+            <div class="text-muted small mb-2">${o.address || 'Giao túi giữ nhiệt đá gel trước 08:30 sáng'}</div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge ${badgeClass} small fw-normal py-1 px-2">${status}</span>
+              <span class="text-muted" style="font-size: 11px;"><i class="bi bi-clock me-1"></i>${dateStr}</span>
             </div>
           </div>
         `;
@@ -6062,14 +6109,23 @@
       function addQuizRecommendationToCart() {
         if (quizState.recommendation) {
           addToCartItem(quizState.recommendation.name, quizState.recommendation.priceVND, quizState.recommendation.img, '330ml (Chai Chuẩn)', 'Ít ngọt thanh mát');
-          // Auto apply TRAMHAT15K coupon
+          // Tự động áp dụng mã Freeship TRAMHAT15K
           currentCouponDiscount = 15000;
+          const couponInput = document.getElementById('couponCodeInput');
+          if (couponInput) couponInput.value = 'TRAMHAT15K';
+          const noticeEl = document.getElementById('couponNotice');
+          if (noticeEl) {
+            noticeEl.innerText = "Áp dụng thành công mã Freeship giao lạnh 15.000đ từ Quiz!";
+            noticeEl.classList.remove('d-none');
+          }
           const modalEl = document.getElementById('tasteQuizModal');
           if (modalEl) {
-            const m = bootstrap.Modal.getInstance(modalEl);
+            const m = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal.getOrCreateInstance(modalEl);
             if (m) m.hide();
           }
+          renderCart();
           openCartDrawer();
+          showFloatingToast(`Đã thêm ${quizState.recommendation.name} & kích hoạt mã Freeship!`, 'success');
         }
       }
 

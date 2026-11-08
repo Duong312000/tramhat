@@ -715,15 +715,18 @@ app.put('/api/leads/:leadId/status', async (req, res) => {
 
 // 6. ORDERS
 app.get('/api/orders', async (req, res) => {
+  const queryPhone = req.query.phone ? req.query.phone.replace(/[^0-9]/g, '') : null;
+  const filter = queryPhone ? { phone: new RegExp(queryPhone, 'i') } : {};
   if (mongoose.connection && mongoose.connection.readyState === 1) {
     try {
-      const dbOrders = await mongoose.connection.db.collection('orders').find({}).sort({ createdAt: -1 }).toArray();
+      const dbOrders = await mongoose.connection.db.collection('orders').find(filter).sort({ createdAt: -1 }).toArray();
       if (dbOrders && dbOrders.length > 0) {
         return res.json({ success: true, data: dbOrders, source: 'mongodb_atlas' });
       }
     } catch (e) { }
   }
-  res.json({ success: true, data: memoryOrders, source: 'memory' });
+  const filteredMemory = queryPhone ? memoryOrders.filter(o => (o.phone || '').replace(/[^0-9]/g, '').includes(queryPhone)) : memoryOrders;
+  res.json({ success: true, data: filteredMemory, source: 'memory' });
 });
 
 app.post('/api/orders', async (req, res) => {
