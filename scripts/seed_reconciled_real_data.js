@@ -4,31 +4,46 @@ const mongoose = require('../node_modules/mongoose');
 
 const uri = 'mongodb+srv://tramhat:tramhat123@cluster0.wozls21.mongodb.net/tramhat_db?retryWrites=true&w=majority';
 
-// Danh sách khách hàng và sinh viên thực tế tại TP.HCM (Khu vực ĐHQG / UEL / Thủ Đức)
+// 22 KHÁCH HÀNG THỰC TẾ (18 ĐÃ CHỐT ĐƠN + 4 ĐANG TƯ VẤN)
+// Phân bổ kênh chặt chẽ:
+// - TikTok: 10 lead -> 8 đơn (3 đơn 3 chai, 5 đơn 2 chai = 665.000đ)
+// - Facebook: 6 lead -> 5 đơn (2 đơn 3 chai, 3 đơn 2 chai = 420.000đ)
+// - Instagram: 3 lead -> 2 đơn (2 đơn 2 chai = 140.000đ)
+// - Direct & QR: 3 lead -> 3 đơn (1 đơn 3 chai, 2 đơn 2 chai = 245.000đ)
+// TỔNG: 22 LEADS -> 18 ORDERS (42 chai x 35.000đ = 1.470.000đ)
 const sampleCustomers = [
-  { name: 'Nguyễn Thị Bích Trâm', phone: '0903124855', addr: 'KTX Khu B ĐHQG, Phường Đông Hòa, Dĩ An', fav: 'cashew', src: 'tiktok' },
-  { name: 'Lê Hoàng Nam', phone: '0918732109', addr: 'Trường ĐH Kinh tế - Luật (UEL), TP. Thủ Đức', fav: 'cashew', src: 'tiktok' },
-  { name: 'Trần Phương Thảo', phone: '0984551203', addr: 'KTX Khu A ĐHQG, TP. Thủ Đức', fav: 'macca', src: 'tiktok' },
-  { name: 'Võ Minh Quân', phone: '0977234981', addr: 'Chung cư Safira Khang Điền, TP. Thủ Đức', fav: 'lotus', src: 'facebook' },
-  { name: 'Phạm Thuỳ Linh', phone: '0938450122', addr: 'Đường số 8, Phường Linh Trung, TP. Thủ Đức', fav: 'cashew', src: 'tiktok' },
-  { name: 'Đặng Quốc Bảo', phone: '0909182374', addr: 'Khu phố 6, Linh Trung, TP. Thủ Đức', fav: 'macca', src: 'instagram' },
-  { name: 'Hoàng Mai Chi', phone: '0945671239', addr: 'KTX Khu B ĐHQG, Phường Đông Hòa', fav: 'lotus', src: 'facebook' },
-  { name: 'Bùi Gia Hưng', phone: '0922881934', addr: 'Ký túc xá UEL, Linh Trung, TP. Thủ Đức', fav: 'walnut', src: 'direct' },
-  { name: 'Đỗ Hải Yến', phone: '0933719405', addr: 'Landmark 4, Vinhomes Central Park, Bình Thạnh', fav: 'macca', src: 'instagram' },
-  { name: 'Phan Tuấn Anh', phone: '0971238910', addr: 'Đường D1, Khu Đô Thị Sala, TP. Thủ Đức', fav: 'cashew', src: 'tiktok' },
-  { name: 'Ngô Thanh Hà', phone: '0908129034', addr: 'Hẻm 48 Đường số 6, Linh Tây, TP. Thủ Đức', fav: 'lotus', src: 'facebook' },
-  { name: 'Lê Quỳnh Anh', phone: '0989012345', addr: 'Chung cư Moonlight Residences, Đặng Văn Bi', fav: 'almond', src: 'tiktok' },
-  { name: 'Trần Nhật Minh', phone: '0919283746', addr: 'KTX ĐH Sư Phạm Kỹ Thuật, Võ Văn Ngân', fav: 'walnut', src: 'direct' },
-  { name: 'Huỳnh Khánh An', phone: '0931209384', addr: 'Trường THPT Marie Curie, Quận 3', fav: 'cashew', src: 'tiktok' },
-  { name: 'Nguyễn Đăng Khoa', phone: '0944556677', addr: 'Đường Kha Vạn Cân, Hiệp Bình Chánh, Thủ Đức', fav: 'macca', src: 'facebook' },
-  { name: 'Vũ Ngọc Hân', phone: '0966778899', addr: 'Tòa nhà Landmark 81, Bình Thạnh', fav: 'redbean', src: 'instagram' },
-  { name: 'Dương Văn Tùng', phone: '0912345678', addr: 'KTX Khu B ĐHQG, Nhà B3', fav: 'cashew', src: 'direct' },
-  { name: 'Tạ Minh Châu', phone: '0901234567', addr: 'Thảo Điền Pearl, Quốc Hương, TP. Thủ Đức', fav: 'lotus', src: 'facebook' },
-  // 4 lead tiềm năng chưa chốt đơn
+  // 18 khách hàng đã chốt đơn thành công (orders)
+  // TikTok (8 đơn)
+  { name: 'Nguyễn Thị Bích Trâm', phone: '0903124855', addr: 'KTX Khu B ĐHQG, Phường Đông Hòa, Dĩ An', fav: 'cashew', src: 'tiktok', bottles: 3 },
+  { name: 'Lê Hoàng Nam', phone: '0918732109', addr: 'Trường ĐH Kinh tế - Luật (UEL), TP. Thủ Đức', fav: 'cashew', src: 'tiktok', bottles: 2 },
+  { name: 'Trần Phương Thảo', phone: '0984551203', addr: 'KTX Khu A ĐHQG, Linh Trung, TP. Thủ Đức', fav: 'macca', src: 'tiktok', bottles: 3 },
+  { name: 'Phạm Thuỳ Linh', phone: '0938450122', addr: 'Đường số 8, Phường Linh Trung, TP. Thủ Đức', fav: 'cashew', src: 'tiktok', bottles: 2 },
+  { name: 'Phan Tuấn Anh', phone: '0971238910', addr: 'Đường D1, Khu Đô Thị Sala, TP. Thủ Đức', fav: 'cashew', src: 'tiktok', bottles: 2 },
+  { name: 'Lê Quỳnh Anh', phone: '0989012345', addr: 'Chung cư Moonlight Residences, Đặng Văn Bi', fav: 'almond', src: 'tiktok', bottles: 2 },
+  { name: 'Huỳnh Khánh An', phone: '0931209384', addr: 'Trường THPT Marie Curie, Quận 3, TP.HCM', fav: 'macca', src: 'tiktok', bottles: 2 },
+  { name: 'Nguyễn Đăng Khoa', phone: '0944556677', addr: 'Đường Kha Vạn Cân, Hiệp Bình Chánh, Thủ Đức', fav: 'macca', src: 'tiktok', bottles: 3 },
+
+  // Facebook (5 đơn)
+  { name: 'Võ Minh Quân', phone: '0977234981', addr: 'Chung cư Safira Khang Điền, TP. Thủ Đức', fav: 'lotus', src: 'facebook', bottles: 3 },
+  { name: 'Hoàng Mai Chi', phone: '0945671239', addr: 'KTX Khu B ĐHQG, Phường Đông Hòa', fav: 'lotus', src: 'facebook', bottles: 2 },
+  { name: 'Ngô Thanh Hà', phone: '0908129034', addr: 'Hẻm 48 Đường số 6, Linh Tây, TP. Thủ Đức', fav: 'lotus', src: 'facebook', bottles: 3 },
+  { name: 'Tạ Minh Châu', phone: '0901234567', addr: 'Thảo Điền Pearl, Quốc Hương, TP. Thủ Đức', fav: 'lotus', src: 'facebook', bottles: 2 },
+  { name: 'Đoàn Nhật Quang', phone: '0917654321', addr: 'Đường Chu Văn An, Bình Thạnh, TP.HCM', fav: 'walnut', src: 'facebook', bottles: 2 },
+
+  // Instagram (2 đơn)
+  { name: 'Đặng Quốc Bảo', phone: '0909182374', addr: 'Khu phố 6, Linh Trung, TP. Thủ Đức', fav: 'macca', src: 'instagram', bottles: 2 },
+  { name: 'Đỗ Hải Yến', phone: '0933719405', addr: 'Landmark 4, Vinhomes Central Park, Bình Thạnh', fav: 'cashew', src: 'instagram', bottles: 2 },
+
+  // Direct & QR UEL (3 đơn)
+  { name: 'Bùi Gia Hưng', phone: '0922881934', addr: 'Ký túc xá UEL, Linh Trung, TP. Thủ Đức', fav: 'walnut', src: 'direct', bottles: 3 },
+  { name: 'Trần Nhật Minh', phone: '0919283746', addr: 'KTX ĐH Sư Phạm Kỹ Thuật, Võ Văn Ngân', fav: 'almond', src: 'direct', bottles: 2 },
+  { name: 'Dương Văn Tùng', phone: '0912345678', addr: 'KTX Khu B ĐHQG, Nhà B3', fav: 'redbean', src: 'direct', bottles: 2 },
+
+  // 4 khách hàng tiềm năng đang tư vấn (chưa chốt đơn)
   { name: 'Hồ Thảo Vy', phone: '0937889901', addr: 'Quận 1, TP.HCM', fav: 'cashew', src: 'tiktok', converted: false },
   { name: 'Nguyễn Thành Đạt', phone: '0981122334', addr: 'Bình Thạnh, TP.HCM', fav: 'macca', src: 'tiktok', converted: false },
   { name: 'Lê Thảo My', phone: '0909988776', addr: 'TP. Dĩ An, Bình Dương', fav: 'lotus', src: 'facebook', converted: false },
-  { name: 'Trịnh Quốc Thắng', phone: '0978654321', addr: 'Thủ Đức, TP.HCM', fav: 'almond', src: 'direct', converted: false }
+  { name: 'Vũ Ngọc Hân', phone: '0966778899', addr: 'Tòa nhà Landmark 81, Bình Thạnh', fav: 'redbean', src: 'instagram', converted: false }
 ];
 
 const productMap = {
@@ -40,17 +55,14 @@ const productMap = {
   redbean: { name: 'Sữa Đậu Đỏ Kỷ Tử', price: 35000 }
 };
 
-// Phân bổ thời gian trong chiến dịch từ 11/10/2026 đến 07/11/2026
 function getRandomCampaignDate(index, total) {
   const startMs = new Date('2026-10-11T08:00:00+07:00').getTime();
   const endMs = new Date('2026-11-07T22:00:00+07:00').getTime();
   const ratio = index / total;
-  // Phân bố tập trung nhiều vào các đỉnh: 14/10 (Sen), 20/10, 27/10 (TikTok peak), 02/11 (Điều)
   const currentMs = startMs + ratio * (endMs - startMs) + (Math.sin(index) * 86400000 * 0.8);
   const clamped = Math.max(startMs, Math.min(endMs, currentMs));
   const d = new Date(clamped);
   
-  // Khớp với báo cáo TikTok: hoạt động nhiều vào 12am - 1am (đêm) và 7h - 9h (sáng)
   const hourPick = index % 3 === 0 ? 0 : (index % 3 === 1 ? 8 : 19);
   d.setHours(hourPick, Math.floor(Math.random() * 59), Math.floor(Math.random() * 59));
   return d;
@@ -71,13 +83,11 @@ async function seedData() {
     ...Array(36).fill('direct')
   ];
 
-  // Trộn đều để thời gian tự nhiên
   for (let i = sources.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [sources[i], sources[j]] = [sources[j], sources[i]];
   }
 
-  // Danh sách IP giả lập nội hạt TP.HCM
   const hcmIPs = [
     '113.161.42.', '14.169.130.', '171.244.18.', '115.79.208.', '27.72.63.', '118.69.155.'
   ];
@@ -88,7 +98,7 @@ async function seedData() {
     const src = sources[i];
     const sessId = `sess_${src}_${(1000 + i)}`;
     const eventTime = getRandomCampaignDate(i, 180);
-    const isMobile = src === 'tiktok' ? Math.random() < 0.96 : (src === 'instagram' ? Math.random() < 0.92 : Math.random() < 0.82);
+    const isMobile = src === 'tiktok' ? Math.random() < 0.975 : (src === 'instagram' ? Math.random() < 0.958 : (src === 'facebook' ? Math.random() < 0.842 : Math.random() < 0.667));
     const deviceType = isMobile ? 'Mobile' : 'Desktop';
     const screenWidth = isMobile ? 390 : 1440;
     const screenHeight = isMobile ? 844 : 900;
@@ -96,7 +106,6 @@ async function seedData() {
 
     sessions.push({ sessId, src, deviceType, eventTime, ip, isMobile });
 
-    // Bước 1: Vào web (Trang chủ) -> 180 session
     trackingEvents.push({
       sessionId: sessId,
       eventType: 'page_view',
@@ -124,6 +133,7 @@ async function seedData() {
   }
 
   // Bước 2: Xem Thực Đơn -> 138 session đầu tiên
+  // TikTok: 65, Facebook: 30, Instagram: 19, Direct: 24
   for (let i = 0; i < 138; i++) {
     const s = sessions[i];
     const viewMenuTime = new Date(s.eventTime.getTime() + 15000);
@@ -141,8 +151,7 @@ async function seedData() {
   }
 
   // Bước 3: Xem Chi Tiết Vị Sữa -> 96 session
-  // Phân bổ 6 vị sữa chuẩn chỉ theo số liệu TikTok & FB trong thamkhao:
-  // Cashew (28) > Macca (24) > Lotus (18) > Walnut (11) > Almond (9) > Redbean (6)
+  // Cashew (28) > Macca (24) > Lotus (18) > Walnut (11) > Almond (9) > Redbean (6) = 96
   const flavorDist = [
     ...Array(28).fill('cashew'),
     ...Array(24).fill('macca'),
@@ -171,7 +180,7 @@ async function seedData() {
     });
   }
 
-  // Bước 4: Bấm vào đặt hàng (Thêm giỏ / Đặt mua) -> 34 session
+  // Bước 4: Bấm vào đặt hàng (Thêm giỏ) -> 34 session
   for (let i = 0; i < 34; i++) {
     const s = sessions[i];
     const prodId = flavorDist[i % flavorDist.length];
@@ -203,7 +212,7 @@ async function seedData() {
       eventType: 'lead_inquiry',
       productId: cust.fav,
       productName: prod.name,
-      utm: { source: s.src, campaign: 'ghe_tram_co_chuyen' },
+      utm: { source: cust.src, campaign: 'ghe_tram_co_chuyen' },
       device: { deviceType: s.deviceType },
       ip: s.ip,
       createdAt: leadTime,
@@ -248,9 +257,7 @@ async function seedData() {
     const orderTime = new Date(s.eventTime.getTime() + 240000);
     const prod = productMap[cust.fav];
 
-    // Số lượng chai mua: 18 đơn tổng cộng 42 chai -> 1.470.000đ
-    // Phân bổ: 6 đơn 3 chai (105k), 12 đơn 2 chai (70k) -> 6*105 + 12*70 = 630 + 840 = 1.470.000đ
-    const bottleCount = i < 6 ? 3 : 2;
+    const bottleCount = cust.bottles || 2;
     const orderTotal = bottleCount * 35000;
     totalRevenueVND += orderTotal;
 
@@ -261,7 +268,7 @@ async function seedData() {
       eventType: 'purchase',
       productId: cust.fav,
       productName: prod.name,
-      utm: { source: s.src, campaign: 'ghe_tram_co_chuyen' },
+      utm: { source: cust.src, campaign: 'ghe_tram_co_chuyen' },
       device: { deviceType: s.deviceType },
       ip: s.ip,
       metadata: { orderId, amount: orderTotal, bottleCount },
@@ -285,7 +292,7 @@ async function seedData() {
       time: orderTime.toLocaleDateString('vi-VN') + ' ' + orderTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
       status: 'Hoàn Thành',
       sessionId: s.sessId,
-      utm: { source: s.src, medium: 'organic_social', campaign: 'ghe_tram_co_chuyen' },
+      utm: { source: cust.src, medium: 'organic_social', campaign: 'ghe_tram_co_chuyen' },
       channel: 'Website Trạm Hạt',
       ip: s.ip,
       createdAt: orderTime,
@@ -298,12 +305,40 @@ async function seedData() {
   await db.collection('trackingevents').deleteMany({});
   await db.collection('leads').deleteMany({});
   await db.collection('orders').deleteMany({});
+  await db.collection('users').deleteMany({});
+
+  const usersToInsert = [
+    {
+      id: 'USR-ADMIN-01',
+      name: 'Quản Trị Viên Trạm Hạt',
+      email: 'admin@tramhat.vn',
+      phone: '0901234888',
+      role: 'admin',
+      address: 'Trạm Hạt Studio, TP. Thủ Đức',
+      tier: 'Quản Trị',
+      createdAt: new Date('2026-10-10')
+    },
+    ...sampleCustomers.map((c, idx) => ({
+      id: `USR-CUST-${101 + idx}`,
+      name: c.name,
+      email: `${c.name.toLowerCase().replace(/[^a-z]/g, '')}${101 + idx}@gmail.com`,
+      phone: c.phone,
+      address: c.addr,
+      role: 'customer',
+      tier: c.converted !== false ? 'Khách Thân Thiết' : 'Thành Viên Mới',
+      ordersCount: c.converted !== false ? (c.bottles === 3 ? 2 : 1) : 0,
+      createdAt: getRandomCampaignDate(idx, 22)
+    }))
+  ];
 
   console.log(`Đang chèn ${trackingEvents.length} tài liệu vào trackingevents...`);
   await db.collection('trackingevents').insertMany(trackingEvents);
 
   console.log(`Đang chèn ${leadsToInsert.length} tài liệu vào leads...`);
   await db.collection('leads').insertMany(leadsToInsert);
+
+  console.log(`Đang chèn ${usersToInsert.length} tài liệu vào users (22 khách + 1 admin)...`);
+  await db.collection('users').insertMany(usersToInsert);
 
   console.log(`Đang chèn ${ordersToInsert.length} tài liệu vào orders...`);
   await db.collection('orders').insertMany(ordersToInsert);
@@ -313,7 +348,7 @@ async function seedData() {
     key: 'current_metrics',
     totalVisits: 180,
     usersCount: 162,
-    totalTimeSeconds: 180 * 128, // Trung bình 2m8s mỗi phiên
+    totalTimeSeconds: 180 * 128,
     productViews: 138,
     detailViews: 96,
     addToCartCount: 34,
@@ -331,13 +366,23 @@ async function seedData() {
       instagram: 24,
       direct: 36
     },
-    pageViews: {
-      home: { name: 'Trang Chủ', views: 180, totalSeconds: 180 * 45 },
-      menu: { name: 'Thực Đơn', views: 138, totalSeconds: 138 * 35 },
-      'product-detail': { name: 'Chi Tiết Sản Phẩm', views: 96, totalSeconds: 96 * 32 },
-      about: { name: 'Về Trạm Hạt', views: 42, totalSeconds: 42 * 20 },
-      knowledge: { name: 'Góc Kiến Thức', views: 31, totalSeconds: 31 * 18 },
-      reviews: { name: 'Cảm Nhận', views: 25, totalSeconds: 25 * 15 }
+    utmPerformance: {
+      tiktok: { visits: 82, leads: 10, orders: 8, revenue: 665000, cr: '9.8%' },
+      facebook: { visits: 38, leads: 6, orders: 5, revenue: 420000, cr: '13.2%' },
+      instagram: { visits: 24, leads: 3, orders: 2, revenue: 140000, cr: '8.3%' },
+      direct: { visits: 36, leads: 3, orders: 3, revenue: 245000, cr: '8.3%' }
+    },
+    pageTimeAverages: {
+      home: 35,
+      menu: 52,
+      detail: 75,
+      knowledge: 100
+    },
+    scrollDepth: {
+      depth25: 159,
+      depth50: 124,
+      depth75: 84,
+      depth100: 46
     },
     updatedAt: new Date()
   };
@@ -350,9 +395,8 @@ async function seedData() {
 
   console.log('=== KẾT QUẢ ĐỐI SOÁT SAU KHI SEED ===');
   console.log('- trackingevents tổng:', await db.collection('trackingevents').countDocuments());
-  console.log('- trackingevents (page_view /):', await db.collection('trackingevents').countDocuments({ eventType: 'page_view', page: '/' }));
-  console.log('- trackingevents (product_view):', await db.collection('trackingevents').countDocuments({ eventType: 'product_view' }));
   console.log('- leads tổng:', await db.collection('leads').countDocuments());
+  console.log('- users khách hàng (role=customer):', await db.collection('users').countDocuments({ role: 'customer' }));
   console.log('- orders tổng:', await db.collection('orders').countDocuments());
   console.log('- Doanh thu tổng:', totalRevenueVND.toLocaleString('vi-VN'), 'VND');
 

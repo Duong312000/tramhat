@@ -1,71 +1,102 @@
 {
-  "totalVisits": 1280,
-  "totalTimeSeconds": 153600,
-  "productViews": 846,
-  "addToCartCount": 162,
-  "checkoutCount": 78,
-  "purchasesCount": 54,
-  "revenueVND": 1890000,
+  "_id": "6af047d373f1e913b889b684",
+  "key": "current_metrics",
+  "totalVisits": 180,
+  "totalTimeSeconds": 23040,
+  "productViews": 138,
+  "addToCartCount": 34,
+  "checkoutCount": 22,
+  "purchasesCount": 18,
+  "revenueVND": 1470000,
   "pageViews": {
     "home": {
       "name": "Trang Chủ",
-      "views": 1280,
-      "totalSeconds": 92160
+      "views": 180,
+      "totalSeconds": 8100
     },
     "menu": {
       "name": "Thực Đơn",
-      "views": 846,
-      "totalSeconds": 60912
-    },
-    "about": {
-      "name": "Về Trạm Hạt",
-      "views": 320,
-      "totalSeconds": 15360
-    },
-    "knowledge": {
-      "name": "Góc Kiến Thức",
-      "views": 240,
-      "totalSeconds": 11520
-    },
-    "reviews": {
-      "name": "Cảm Nhận",
-      "views": 195,
-      "totalSeconds": 9360
+      "views": 138,
+      "totalSeconds": 4830
     },
     "product-detail": {
       "name": "Chi Tiết Sản Phẩm",
-      "views": 512,
-      "totalSeconds": 36864
+      "views": 96,
+      "totalSeconds": 3072
     },
-    "profile": {
-      "name": "Trang Cá Nhân",
-      "views": 88,
-      "totalSeconds": 4224
+    "about": {
+      "name": "Về Trạm Hạt",
+      "views": 42,
+      "totalSeconds": 840
+    },
+    "knowledge": {
+      "name": "Góc Kiến Thức",
+      "views": 31,
+      "totalSeconds": 558
+    },
+    "reviews": {
+      "name": "Cảm Nhận",
+      "views": 25,
+      "totalSeconds": 375
     }
   },
   "scrollDepth": {
-    "depth25": 980,
-    "depth50": 745,
-    "depth75": 490,
-    "depth100": 268
+    "depth25": 159,
+    "depth50": 124,
+    "depth75": 84,
+    "depth100": 46
   },
   "devices": {
-    "mobile": 896,
-    "desktop": 332,
-    "tablet": 52
+    "mobile": 159,
+    "desktop": 21,
+    "tablet": 0
   },
-  "channels": {
-    "tiktok": 576,
-    "facebook": 358,
-    "instagram": 230,
-    "direct": 116
+  "events": [],
+  "createdAt": "2026-11-08T09:58:43.827Z",
+  "updatedAt": "2026-11-08T16:37:33.793Z",
+  "__v": 0,
+  "detailViews": 96,
+  "usersCount": 162,
+  "utmSources": {
+    "tiktok": 82,
+    "facebook": 38,
+    "instagram": 24,
+    "direct": 36
   },
-  "funnel": {
-    "traffic_visits": 1280,
-    "mql_menu_view": 846,
-    "mql_quiz_or_chat": 215,
-    "sql_cart_or_phone": 162,
-    "customer_paid": 54
+  "pageTimeAverages": {
+    "home": 35,
+    "menu": 52,
+    "detail": 75,
+    "knowledge": 100
   },
-  "events": []
+  "utmPerformance": {
+    "tiktok": {
+      "visits": 82,
+      "leads": 10,
+      "orders": 8,
+      "revenue": 665000,
+      "cr": "9.8%"
+    },
+    "facebook": {
+      "visits": 38,
+      "leads": 6,
+      "orders": 5,
+      "revenue": 420000,
+      "cr": "13.2%"
+    },
+    "instagram": {
+      "visits": 24,
+      "leads": 3,
+      "orders": 2,
+      "revenue": 140000,
+      "cr": "8.3%"
+    },
+    "direct": {
+      "visits": 36,
+      "leads": 3,
+      "orders": 3,
+      "revenue": 245000,
+      "cr": "8.3%"
+    }
+  }
 }

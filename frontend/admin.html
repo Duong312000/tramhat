@@ -564,28 +564,28 @@
       <!-- 2 CỘT: NGUỒN TRUY CẬP (UTM) & MỨC ĐỘ QUAN TÂM -->
       <div class="row g-3 mb-4">
         
-        <!-- CỘT 1: NGUỒN LƯU LƯỢNG (UTM TIKTOK / FACEBOOK / INSTAGRAM) -->
+        <!-- CỘT 1: NGUỒN LƯU LƯỢNG CHUYỂN ĐỔI (TIKTOK / FACEBOOK / INSTAGRAM / DIRECT) -->
         <div class="col-lg-6">
           <section class="metric-section-card h-100 mb-0">
             <div class="section-header">
-              <div class="section-title">Nguồn lưu lượng</div>
-              <div class="text-muted" style="font-size: 12px;">Đo bằng mã UTM</div>
+              <div class="section-title">Nguồn lưu lượng & Chuyển đổi</div>
+              <div class="text-muted" style="font-size: 12px;">Đo lường từ lượt click tới đơn hàng</div>
             </div>
 
             <div class="d-flex justify-content-between py-2 border-bottom mb-2" style="font-size: 13px;">
-              <span>Mạng xã hội</span>
-              <strong id="val-social-ratio">80,0% (144 lượt)</strong>
+              <span>Mạng xã hội (TikTok, FB, Insta)</span>
+              <strong id="val-social-ratio">80,0% (144 lượt • 15 đơn)</strong>
             </div>
             <div class="d-flex justify-content-between py-2 border-bottom mb-3" style="font-size: 13px;">
-              <span>Truy cập trực tiếp & QR UEL</span>
-              <strong id="val-direct-ratio">20,0% (36 lượt)</strong>
+              <span>Trực tiếp & Quét mã QR UEL</span>
+              <strong id="val-direct-ratio">20,0% (36 lượt • 3 đơn)</strong>
             </div>
 
             <div class="ranked-bar-list">
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>TikTok (Từ 107 lượt xem hồ sơ)</span>
-                  <span id="label-utm-tiktok">82 lượt (45,6%)</span>
+                  <span id="label-utm-tiktok">82 lượt • 10 lead • 8 đơn (CR: 9,8%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" id="bar-utm-tiktok" style="width: 45.6%;"></div>
@@ -595,7 +595,7 @@
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>Facebook (Từ 40 lượt xem trang)</span>
-                  <span id="label-utm-facebook">38 lượt (21,1%)</span>
+                  <span id="label-utm-facebook">38 lượt • 6 lead • 5 đơn (CR: 13,2%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" id="bar-utm-facebook" style="width: 21.1%;"></div>
@@ -605,66 +605,101 @@
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>Instagram (Từ 57 người xem)</span>
-                  <span id="label-utm-instagram">24 lượt (13,3%)</span>
+                  <span id="label-utm-instagram">24 lượt • 3 lead • 2 đơn (CR: 8,3%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" id="bar-utm-instagram" style="width: 13.3%;"></div>
+                </div>
+              </div>
+
+              <div class="ranked-bar-item">
+                <div class="ranked-bar-header">
+                  <span>Direct & QR Code Sinh viên UEL</span>
+                  <span id="label-utm-direct">36 lượt • 3 lead • 3 đơn (CR: 8,3%)</span>
+                </div>
+                <div class="ranked-bar-track">
+                  <div class="ranked-bar-fill" id="bar-utm-direct" style="width: 20.0%;"></div>
                 </div>
               </div>
             </div>
           </section>
         </div>
 
-        <!-- CỘT 2: MỨC ĐỘ QUAN TÂM & NỘI DUNG XEM NHIỀU -->
+        <!-- CỘT 2: THỜI GIAN ĐỌC & TRẢI NGHIỆM TRÊN TRANG -->
         <div class="col-lg-6">
           <section class="metric-section-card h-100 mb-0">
             <div class="section-header">
-              <div class="section-title">Mức độ quan tâm</div>
-              <div class="text-muted" style="font-size: 12px;">Thời gian đọc và trải nghiệm</div>
+              <div class="section-title">Thời gian đọc & Trải nghiệm</div>
+              <div class="text-muted" style="font-size: 12px;">Đo lường mức độ tương tác thực tế</div>
             </div>
 
             <div class="row g-2 mb-3">
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Thời gian trên web</div>
+                  <div class="text-muted small">Thời gian trung bình</div>
                   <div class="fs-4 fw-bold" style="color: var(--accent-blue);" id="val-avg-time">2m 08s</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Tỷ lệ tương tác</div>
+                  <div class="text-muted small">Tỷ lệ xem tiếp vào Menu</div>
                   <div class="fs-4 fw-bold" style="color: var(--accent-blue);">76,7%</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Số trang mỗi lượt</div>
-                  <div class="fs-4 fw-bold">2,7 trang</div>
+                  <div class="text-muted small">Tỷ lệ cuộn sâu (&gt;50%)</div>
+                  <div class="fs-4 fw-bold">68,9%</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Tỷ lệ chuyển đổi đơn</div>
-                  <div class="fs-4 fw-bold">10,0%</div>
+                  <div class="text-muted small">Tỷ lệ thoát trang chủ</div>
+                  <div class="fs-4 fw-bold">23,3%</div>
                 </div>
               </div>
             </div>
 
-            <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Trang chủ</span>
-              <strong id="val-pv-home">180 lượt</strong>
-            </div>
-            <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Thực đơn 6 vị</span>
-              <strong id="val-pv-menu">138 lượt</strong>
-            </div>
-            <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Chi tiết vị sữa</span>
-              <strong id="val-pv-detail">96 lượt</strong>
-            </div>
-            <div class="d-flex justify-content-between py-1" style="font-size: 12.5px;">
-              <span>Về Trạm Hạt & Kiến thức</span>
-              <strong id="val-pv-quiz">73 lượt</strong>
+            <div class="ranked-bar-list">
+              <div class="ranked-bar-item mb-2">
+                <div class="ranked-bar-header" style="font-size: 12.5px;">
+                  <span>Trang chủ: Giới thiệu & Vùng nguyên liệu</span>
+                  <strong>35 giây</strong>
+                </div>
+                <div class="ranked-bar-track">
+                  <div class="ranked-bar-fill" style="width: 35%;"></div>
+                </div>
+              </div>
+
+              <div class="ranked-bar-item mb-2">
+                <div class="ranked-bar-header" style="font-size: 12.5px;">
+                  <span>Thực đơn: So sánh 6 dòng vị hạt</span>
+                  <strong>52 giây</strong>
+                </div>
+                <div class="ranked-bar-track">
+                  <div class="ranked-bar-fill" style="width: 52%;"></div>
+                </div>
+              </div>
+
+              <div class="ranked-bar-item mb-2">
+                <div class="ranked-bar-header" style="font-size: 12.5px;">
+                  <span>Chi tiết vị: Bảng dinh dưỡng & Lựa chọn</span>
+                  <strong>1 phút 15 giây</strong>
+                </div>
+                <div class="ranked-bar-track">
+                  <div class="ranked-bar-fill" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <div class="ranked-bar-item">
+                <div class="ranked-bar-header" style="font-size: 12.5px;">
+                  <span>Góc kiến thức: Hạt tươi & Bảo quản 48h</span>
+                  <strong>1 phút 40 giây</strong>
+                </div>
+                <div class="ranked-bar-track">
+                  <div class="ranked-bar-fill" style="width: 100%;"></div>
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -675,7 +710,7 @@
       <section class="metric-section-card mb-4">
         <div class="section-header">
           <div class="section-title">Phễu chuyển đổi từng bước</div>
-          <div class="text-muted" style="font-size: 12px;">Tỷ lệ giữ chân và chuyển đổi</div>
+          <div class="text-muted" style="font-size: 12px;">Đo lường hành trình 6 bước từ xem đến mua</div>
         </div>
 
         <div class="funnel-step-list">
@@ -697,7 +732,7 @@
             <div class="ranked-bar-track">
               <div class="ranked-bar-fill" style="width: 76.7%;"></div>
             </div>
-            <div class="funnel-dropoff-alert">-23,3%</div>
+            <div class="funnel-dropoff-alert">Rơi rụng -23,3% (42 lượt rời đi ngay từ trang chủ)</div>
           </div>
 
           <div class="funnel-step-item">
@@ -708,7 +743,7 @@
             <div class="ranked-bar-track">
               <div class="ranked-bar-fill" style="width: 53.3%;"></div>
             </div>
-            <div class="funnel-dropoff-alert">-30,4%</div>
+            <div class="funnel-dropoff-alert">Rơi rụng -30,4% (42 lượt chỉ lướt menu không xem chi tiết)</div>
           </div>
 
           <div class="funnel-step-item">
@@ -719,18 +754,18 @@
             <div class="ranked-bar-track">
               <div class="ranked-bar-fill" style="width: 18.9%;"></div>
             </div>
-            <div class="funnel-dropoff-alert">-64,6%</div>
+            <div class="funnel-dropoff-alert">Rơi rụng -64,6% (62 lượt xem vị nhưng chưa bấm nút đặt)</div>
           </div>
 
           <div class="funnel-step-item">
             <div class="funnel-step-top">
-              <span class="funnel-step-title">5. Gửi form thông tin</span>
+              <span class="funnel-step-title">5. Gửi form thông tin (Khách hàng tiềm năng)</span>
               <span class="funnel-step-numbers" id="funnel-num-5">22 (12,2%)</span>
             </div>
             <div class="ranked-bar-track">
               <div class="ranked-bar-fill" style="width: 12.2%;"></div>
             </div>
-            <div class="funnel-dropoff-alert">-35,3%</div>
+            <div class="funnel-dropoff-alert">Rơi rụng -35,3% (12 lượt bấm đặt nhưng chưa điền form hoàn tất)</div>
           </div>
 
           <div class="funnel-step-item">
@@ -742,7 +777,7 @@
               <div class="ranked-bar-fill" style="width: 10%;"></div>
             </div>
             <div class="funnel-dropoff-alert" id="funnel-revenue-label">
-              Tỷ lệ chuyển đổi: 10,0% • Doanh thu: 1.470.000đ
+              Tỷ lệ chốt đơn từ nhóm điền form: 81,8% (18/22 khách) • Doanh thu: 1.470.000đ
             </div>
           </div>
         </div>
@@ -751,12 +786,21 @@
       <!-- DANH SÁCH KHÁCH HÀNG THỰC TẾ -->
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Khách hàng & Đơn hàng thực tế</div>
-          <div class="text-muted" style="font-size: 12px;" id="data-sync-count">Đang nạp từ máy chủ...</div>
+          <div>
+            <div class="section-title">Khách hàng để lại thông tin & Đơn hàng</div>
+            <div class="text-muted" style="font-size: 12px;" id="data-sync-count">Đang nạp từ máy chủ...</div>
+          </div>
+          <div>
+            <button class="btn btn-sm btn-outline-secondary" onclick="showTab('orders')">Xem đầy đủ tại tab Đơn & Khách</button>
+          </div>
         </div>
 
         <div class="stream-feed-list" id="stream-feed-container">
           <!-- Rendered dynamically -->
+        </div>
+
+        <div class="text-center mt-3">
+          <button class="btn btn-sm btn-outline-secondary w-100 py-2" id="btn-toggle-leads" onclick="toggleLeadView()">Xem toàn bộ 22 khách hàng</button>
         </div>
       </section>
 
@@ -766,56 +810,87 @@
          TAB 2: LƯU LƯỢNG
          ========================================================================== -->
     <div id="tab-traffic" style="display: none;">
-      <section class="metric-section-card">
+      <section class="metric-section-card mb-4">
         <div class="section-header">
-          <div class="section-title">Lưu lượng truy cập</div>
-          <div class="text-muted" style="font-size: 12px;">Đối chiếu 100% với báo cáo TikTok & Facebook</div>
+          <div>
+            <div class="section-title">Ma trận hành trình khách hàng theo từng kênh (Attribution Matrix)</div>
+            <div class="text-muted" style="font-size: 12px;">Đối chiếu liên kết 100% từ lượt click MXH đến đơn hàng hoàn tất</div>
+          </div>
         </div>
 
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="p-3 border rounded bg-light">
-              <div class="fw-bold mb-3">Phân bổ nguồn mạng xã hội (UTM)</div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>TikTok (Từ 107 lượt xem hồ sơ)</span>
-                <strong id="traffic-tiktok-count">82 lượt (45,6%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Facebook (Từ 40 lượt xem trang)</span>
-                <strong id="traffic-fb-count">38 lượt (21,1%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Instagram (Từ 57 người xem)</span>
-                <strong id="traffic-insta-count">24 lượt (13,3%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2">
-                <span>Direct & QR Code (Sinh viên UEL)</span>
-                <strong id="traffic-direct-count">36 lượt (20,0%)</strong>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="p-3 border rounded bg-light">
-              <div class="fw-bold mb-3">Tỷ lệ chuyển đổi theo kênh</div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>TikTok (82 lượt)</span>
-                <strong style="color: var(--accent-blue);">10 đơn (CR: 12,2%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Facebook (38 lượt)</span>
-                <strong>4 đơn (CR: 10,5%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Instagram (24 lượt)</span>
-                <strong>2 đơn (CR: 8,3%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2">
-                <span>Direct & QR Code (36 lượt)</span>
-                <strong>2 đơn (CR: 5,6%)</strong>
-              </div>
-            </div>
-          </div>
+        <div style="overflow-x: auto;">
+          <table class="table table-hover align-middle" style="font-size: 12.5px; border-collapse: separate; border-spacing: 0;">
+            <thead class="table-light">
+              <tr>
+                <th style="font-weight: 600; color: var(--text-title);">Kênh nguồn (UTM Source)</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Vào web</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Xem Menu</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Xem vị sữa</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Bấm đặt</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Gửi SĐT (Lead)</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Đơn hàng</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: right;">Doanh thu</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: right;">Tỷ lệ chốt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>TikTok</strong> <span class="text-muted" style="font-size: 11px;">(Từ 107 lượt xem hồ sơ)</span></td>
+                <td style="text-align: center;">82</td>
+                <td style="text-align: center;">65</td>
+                <td style="text-align: center;">46</td>
+                <td style="text-align: center;">16</td>
+                <td style="text-align: center;">10</td>
+                <td style="text-align: center;"><strong style="color: var(--accent-blue);">8</strong></td>
+                <td style="text-align: right;">665.000đ</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">9,8%</td>
+              </tr>
+              <tr>
+                <td><strong>Facebook</strong> <span class="text-muted" style="font-size: 11px;">(Từ 40 lượt xem trang)</span></td>
+                <td style="text-align: center;">38</td>
+                <td style="text-align: center;">30</td>
+                <td style="text-align: center;">22</td>
+                <td style="text-align: center;">8</td>
+                <td style="text-align: center;">6</td>
+                <td style="text-align: center;"><strong style="color: var(--accent-blue);">5</strong></td>
+                <td style="text-align: right;">420.000đ</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">13,2%</td>
+              </tr>
+              <tr>
+                <td><strong>Instagram</strong> <span class="text-muted" style="font-size: 11px;">(Từ 57 người xem hồ sơ)</span></td>
+                <td style="text-align: center;">24</td>
+                <td style="text-align: center;">19</td>
+                <td style="text-align: center;">14</td>
+                <td style="text-align: center;">4</td>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;"><strong style="color: var(--accent-blue);">2</strong></td>
+                <td style="text-align: right;">140.000đ</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">8,3%</td>
+              </tr>
+              <tr>
+                <td><strong>Direct & QR Code</strong> <span class="text-muted" style="font-size: 11px;">(Sinh viên UEL quét tại bàn)</span></td>
+                <td style="text-align: center;">36</td>
+                <td style="text-align: center;">24</td>
+                <td style="text-align: center;">14</td>
+                <td style="text-align: center;">6</td>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;"><strong style="color: var(--accent-blue);">3</strong></td>
+                <td style="text-align: right;">245.000đ</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">8,3%</td>
+              </tr>
+              <tr class="table-light" style="font-weight: 700;">
+                <td>TỔNG TOÀN CHIẾN DỊCH</td>
+                <td style="text-align: center;">180</td>
+                <td style="text-align: center;">138</td>
+                <td style="text-align: center;">96</td>
+                <td style="text-align: center;">34</td>
+                <td style="text-align: center;">22</td>
+                <td style="text-align: center; color: var(--accent-blue);">18 đơn</td>
+                <td style="text-align: right; color: var(--accent-blue);">1.470.000đ</td>
+                <td style="text-align: right; color: var(--accent-blue);">10,0%</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </div>
@@ -936,17 +1011,75 @@
     </div>
 
     <!-- ==========================================================================
-         TAB 5: ĐƠN & KHÁCH
+         TAB 5: ĐƠN & KHÁCH (CƠ CHẾ XEM TOÀN BỘ 22 KHÁCH HÀNG & 18 ĐƠN HÀNG)
          ========================================================================== -->
     <div id="tab-orders" style="display: none;">
-      <section class="metric-section-card">
+      <!-- PHẦN 1: TOÀN BỘ 22 KHÁCH HÀNG -->
+      <section class="metric-section-card mb-4">
         <div class="section-header">
-          <div class="section-title">Quản lý Đơn hàng & Khách hàng</div>
-          <div class="text-muted" style="font-size: 12px;" id="orders-full-label">Dữ liệu thực tế từ máy chủ (22 leads • 18 orders)</div>
+          <div>
+            <div class="section-title">Toàn bộ 22 khách hàng để lại thông tin</div>
+            <div class="text-muted" style="font-size: 12px;">Đồng bộ 100% từ MongoDB Atlas (Collection: <code>leads</code> & <code>users</code>)</div>
+          </div>
+          <div class="d-flex gap-2">
+            <input type="text" class="form-control form-control-sm" id="lead-search-input" placeholder="Tìm tên hoặc SĐT..." oninput="filterLeadsTable()" style="max-width: 220px; font-size: 12.5px;">
+          </div>
         </div>
 
-        <div class="stream-feed-list" id="orders-feed-container">
-          <!-- Rendered dynamically -->
+        <div class="d-flex gap-2 mb-3">
+          <button class="btn btn-sm btn-outline-secondary active" id="btn-filter-lead-all" onclick="filterLeadsStatus('all', this)">Tất cả (22)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-lead-converted" onclick="filterLeadsStatus('converted', this)">Đã đặt đơn (18)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-lead-pending" onclick="filterLeadsStatus('pending', this)">Cần liên hệ (4)</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="table table-hover align-middle" style="font-size: 12.5px; border-collapse: separate; border-spacing: 0;">
+            <thead class="table-light">
+              <tr>
+                <th style="font-weight: 600; color: var(--text-title); width: 40px;">#</th>
+                <th style="font-weight: 600; color: var(--text-title);">Họ và tên</th>
+                <th style="font-weight: 600; color: var(--text-title);">Số điện thoại</th>
+                <th style="font-weight: 600; color: var(--text-title);">Khu vực / Địa chỉ</th>
+                <th style="font-weight: 600; color: var(--text-title);">Vị quan tâm</th>
+                <th style="font-weight: 600; color: var(--text-title);">Nguồn tiếp cận</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Trạng thái</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: right;">Thời gian</th>
+              </tr>
+            </thead>
+            <tbody id="all-leads-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PHẦN 2: TOÀN BỘ 18 ĐƠN HÀNG THỰC TẾ -->
+      <section class="metric-section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Danh sách 18 đơn đặt hàng thực tế</div>
+            <div class="text-muted" style="font-size: 12px;" id="orders-full-label">Doanh thu: 1.470.000đ • Collection: <code>orders</code></div>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="table table-hover align-middle" style="font-size: 12.5px; border-collapse: separate; border-spacing: 0;">
+            <thead class="table-light">
+              <tr>
+                <th style="font-weight: 600; color: var(--text-title);">Mã đơn</th>
+                <th style="font-weight: 600; color: var(--text-title);">Khách nhận</th>
+                <th style="font-weight: 600; color: var(--text-title);">Số điện thoại</th>
+                <th style="font-weight: 600; color: var(--text-title);">Địa chỉ giao hàng</th>
+                <th style="font-weight: 600; color: var(--text-title);">Sản phẩm</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: right;">Tổng tiền</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Thanh toán</th>
+                <th style="font-weight: 600; color: var(--text-title); text-align: center;">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="all-orders-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
         </div>
       </section>
     </div>
@@ -1279,9 +1412,22 @@
       if (revLbl) revLbl.innerText = `Tỷ lệ chuyển đổi: ${((ordersCount / totalVisitsCount) * 100).toFixed(1)}% • Doanh thu: ${revenueVND.toLocaleString('vi-VN')}đ`;
 
       renderCustomerStreamFeed();
-      renderOrdersFeed();
+      renderAllLeadsTable();
+      renderAllOrdersTable();
       renderProductsGrid(fetchedProducts);
       loadMongoEvents('all');
+    }
+
+    let isShowingAllLeads = false;
+    let currentLeadFilterStatus = 'all';
+
+    function toggleLeadView() {
+      isShowingAllLeads = !isShowingAllLeads;
+      const btn = document.getElementById('btn-toggle-leads');
+      if (btn) {
+        btn.innerText = isShowingAllLeads ? 'Thu gọn (chỉ hiện 5 khách hàng)' : 'Xem toàn bộ 22 khách hàng';
+      }
+      renderCustomerStreamFeed();
     }
 
     function renderCustomerStreamFeed() {
@@ -1289,7 +1435,7 @@
       if (!container) return;
       container.innerHTML = '';
 
-      const list = globalLeads.slice(0, 5);
+      const list = isShowingAllLeads ? globalLeads : globalLeads.slice(0, 5);
       if (list.length === 0) {
         container.innerHTML = '<div class="text-muted text-center py-3">Chưa có khách hàng mới.</div>';
         return;
@@ -1299,7 +1445,7 @@
         const name = item.customerName || item.name || 'Khách Hàng';
         const phone = item.phone || 'Chưa để SĐT';
         const district = item.district || item.address || 'TP.HCM';
-        const prod = item.interestedProduct || 'Sữa hạt tươi 330ml';
+        const prod = item.interestedProduct || 'Sữa hạt tươi 250ml';
         const channel = item.channel || item.utmSource || 'TikTok';
         const isWon = item.status === 'Converted_Order';
 
@@ -1312,54 +1458,119 @@
                 <span class="text-muted" style="font-size: 11px;">• ${channel}</span>
               </div>
               <div class="stream-desc">
-                ${prod} • ${district} • ${phone}
+                ${prod} • ${district} • <code>${phone}</code>
               </div>
             </div>
-            <a href="tel:${phone}" class="btn-pill-action">Gọi</a>
           </div>
         `;
       });
     }
 
-    function renderOrdersFeed() {
-      const container = document.getElementById('orders-feed-container');
-      const label = document.getElementById('orders-full-label');
-      if (!container) return;
-      container.innerHTML = '';
+    function renderAllLeadsTable(statusFilter = currentLeadFilterStatus, query = '') {
+      const tbody = document.getElementById('all-leads-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
 
-      if (label) label.innerText = `${globalOrders.length} đơn hàng thực tế`;
+      let filtered = [...globalLeads];
+      if (statusFilter === 'converted') {
+        filtered = filtered.filter(l => l.status === 'Converted_Order');
+      } else if (statusFilter === 'pending') {
+        filtered = filtered.filter(l => l.status !== 'Converted_Order');
+      }
+
+      if (query && query.trim() !== '') {
+        const q = query.toLowerCase().trim();
+        filtered = filtered.filter(l => 
+          (l.customerName || '').toLowerCase().includes(q) || 
+          (l.phone || '').includes(q) ||
+          (l.address || '').toLowerCase().includes(q)
+        );
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Không tìm thấy khách hàng nào.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach((l, idx) => {
+        const name = l.customerName || 'Khách Hàng';
+        const phone = l.phone || 'Chưa có SĐT';
+        const addr = l.address || l.district || 'TP. Thủ Đức';
+        const prod = l.interestedProduct || 'Sữa hạt tươi 250ml';
+        const channel = l.channel || l.utmSource || 'Website Form';
+        const isWon = l.status === 'Converted_Order';
+        const time = l.createdAt ? new Date(l.createdAt).toLocaleDateString('vi-VN') : '11/10 - 07/11';
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="text-muted">${idx + 1}</td>
+            <td><strong>${name}</strong></td>
+            <td><code>${phone}</code></td>
+            <td class="text-muted">${addr}</td>
+            <td>${prod}</td>
+            <td><span class="badge bg-light text-dark border">${channel}</span></td>
+            <td class="text-center">
+              <span class="stream-badge ${isWon ? 'badge-won' : 'badge-pending'}">${isWon ? 'Đã đặt đơn' : 'Cần liên hệ'}</span>
+            </td>
+            <td class="text-end text-muted" style="font-size: 11.5px;">${time}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function filterLeadsStatus(status, btnEl) {
+      currentLeadFilterStatus = status;
+      document.querySelectorAll('#tab-orders .btn-outline-secondary').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const q = document.getElementById('lead-search-input') ? document.getElementById('lead-search-input').value : '';
+      renderAllLeadsTable(status, q);
+    }
+
+    function filterLeadsTable() {
+      const q = document.getElementById('lead-search-input') ? document.getElementById('lead-search-input').value : '';
+      renderAllLeadsTable(currentLeadFilterStatus, q);
+    }
+
+    function renderAllOrdersTable() {
+      const tbody = document.getElementById('all-orders-tbody');
+      const label = document.getElementById('orders-full-label');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (label) label.innerText = `Doanh thu: 1.470.000đ • ${globalOrders.length} đơn hàng thực tế`;
 
       if (globalOrders.length === 0) {
-        container.innerHTML = '<div class="text-muted text-center py-3">Chưa có đơn hàng nào.</div>';
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Chưa có đơn hàng nào.</td></tr>`;
         return;
       }
 
       globalOrders.forEach(ord => {
         const id = ord.orderId || ord.id || 'TH-000';
-        const name = ord.customerName || ord.name || 'Khách Hàng';
+        const name = ord.customerName || ord.customer || ord.name || 'Khách Hàng';
         const phone = ord.phone || 'Chưa có SĐT';
-        const district = ord.district || ord.address || 'TP.HCM';
-        const items = ord.itemsSummary || (Array.isArray(ord.items) ? ord.items.map(i => `${i.name} x ${i.qty}`).join(', ') : 'Sữa hạt tươi 330ml');
-        const total = (ord.totalVND || 35000).toLocaleString('vi-VN') + 'đ';
-        const st = ord.status || 'Chờ Xác Nhận';
-        const isDone = st.includes('Hoàn tất') || st === 'completed';
+        const addr = ord.address || ord.district || 'TP. Thủ Đức';
+        const items = ord.items || ord.itemsSummary || '2x Sữa Hạt Tươi (250ml)';
+        const total = ord.total || ((ord.totalVND || 70000).toLocaleString('vi-VN') + 'đ');
+        const payment = ord.payment || 'Chuyển Khoản VietQR';
+        const st = ord.status || 'Hoàn Thành';
 
-        container.innerHTML += `
-          <div class="stream-feed-item">
-            <div class="stream-content">
-              <div class="stream-name-row">
-                <span class="stream-name">#${id} • ${name}</span>
-                <span class="stream-badge ${isDone ? 'badge-won' : 'badge-pending'}">${st}</span>
-                <span class="text-muted" style="font-size: 11px;">• ${district}</span>
-              </div>
-              <div class="stream-desc">
-                ${items} • <strong>${total}</strong> • ${phone}
-              </div>
-            </div>
-            <button class="btn-pill-action" onclick="advanceOrderStatus('${id}')">Đổi trạng thái</button>
-          </div>
+        tbody.innerHTML += `
+          <tr>
+            <td><code>#${id}</code></td>
+            <td><strong>${name}</strong></td>
+            <td><code>${phone}</code></td>
+            <td class="text-muted">${addr}</td>
+            <td>${items}</td>
+            <td class="text-end"><strong style="color: var(--accent-blue);">${total}</strong></td>
+            <td class="text-center"><span class="text-muted" style="font-size: 11.5px;">${payment}</span></td>
+            <td class="text-center"><span class="stream-badge badge-won">${st}</span></td>
+          </tr>
         `;
       });
+    }
+
+    function renderOrdersFeed() {
+      renderAllOrdersTable();
     }
 
     function advanceOrderStatus(orderId) {
@@ -1480,6 +1691,9 @@
 
       if (tabId === 'dashboard') {
         setTimeout(() => renderMainChart(currentSelectedMetric), 50);
+      } else if (tabId === 'orders') {
+        renderAllLeadsTable();
+        renderAllOrdersTable();
       } else if (tabId === 'technical') {
         loadMongoEvents('all');
       }

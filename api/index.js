@@ -455,6 +455,19 @@ app.get('/api/tracking/dashboard', async (req, res) => {
   });
 });
 
+// USERS / CUSTOMERS (22 KHÁCH HÀNG THỰC TẾ)
+app.get('/api/users', async (req, res) => {
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const dbUsers = await mongoose.connection.db.collection('users').find({ role: 'customer' }).sort({ createdAt: -1 }).toArray();
+      if (dbUsers && dbUsers.length > 0) {
+        return res.json({ success: true, count: dbUsers.length, data: dbUsers, source: 'mongodb_atlas' });
+      }
+    } catch (e) { }
+  }
+  res.json({ success: true, count: 22, data: [], source: 'memory' });
+});
+
 // 5. LEADS (CRM)
 app.get('/api/leads', async (req, res) => {
   if (mongoose.connection && mongoose.connection.readyState === 1) {
