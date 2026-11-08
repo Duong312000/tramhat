@@ -3713,6 +3713,100 @@
       </div>
     </div>
 
+    <!-- ==========================================================================
+       MODAL 3: XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG (ORDER SUCCESS RECEIPT MODAL)
+       ========================================================================== -->
+    <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+          <div class="modal-header bg-success text-white py-3 px-4 border-0">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill fs-4 text-white"></i>
+              <div>
+                <h5 class="modal-title font-serif fw-bold mb-0 text-white">Đặt Hàng Thành Công!</h5>
+                <div class="text-white-50 small" style="font-size: 12px;">Cảm ơn bạn đã đồng hành cùng sữa hạt Trạm Hạt</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+
+          <div class="modal-body p-4 bg-light">
+            <!-- Order ID & Status Header Card -->
+            <div class="card border-0 shadow-sm p-3 mb-3 bg-white rounded-3">
+              <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                <span class="text-muted small">Mã đơn hàng:</span>
+                <span class="fw-bold font-monospace text-success fs-6" id="receiptOrderId">#TH-000000</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small">Khách hàng:</span>
+                <span class="fw-bold text-dark" id="receiptCustomerName">-</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small">Số điện thoại:</span>
+                <span class="text-dark font-monospace" id="receiptCustomerPhone">-</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="text-muted small text-nowrap me-2">Giao đến:</span>
+                <span class="text-dark text-end small" id="receiptCustomerAddress">-</span>
+              </div>
+            </div>
+
+            <!-- Items & Total -->
+            <div class="card border-0 shadow-sm p-3 mb-3 bg-white rounded-3">
+              <div class="fw-bold text-dark mb-2 pb-1 border-bottom small text-uppercase letter-spacing-1">
+                <i class="bi bi-basket2 me-1 text-success"></i> Chi tiết đơn hàng
+              </div>
+              <div id="receiptItemsSummary" class="text-muted small mb-3 lh-base">
+                <!-- Sữa hạt items -->
+              </div>
+              <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                <span class="fw-bold text-dark">Tổng thanh toán:</span>
+                <span class="fw-bold text-success fs-5" id="receiptTotalVND">0₫</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-1">
+                <span class="text-muted small">Phương thức:</span>
+                <span class="badge bg-light text-dark border small fw-normal" id="receiptPaymentMethod">COD</span>
+              </div>
+            </div>
+
+            <!-- VietQR Container (shown if paymentMethod === 'vietqr') -->
+            <div id="receiptVietQrBox" class="card border-0 shadow-sm p-3 mb-3 bg-white rounded-3 d-none text-center">
+              <div class="fw-bold text-dark mb-1 small text-uppercase">
+                <i class="bi bi-qr-code me-1 text-primary"></i> Quét mã VietQR chuyển khoản
+              </div>
+              <div class="text-muted small mb-2" style="font-size: 11.5px;">Shipper xác nhận đơn ngay khi nhận thông báo có biến động số dư</div>
+              <div class="d-flex justify-content-center my-2">
+                <img id="receiptVietQrImg" src="" alt="VietQR" class="img-fluid rounded border p-2 bg-white" style="max-height: 220px;">
+              </div>
+              <div class="bg-light p-2 rounded small text-start font-monospace" style="font-size: 11.5px;">
+                <div><strong>Ngân hàng:</strong> MB Bank (Quân Đội)</div>
+                <div><strong>STK:</strong> 0903124855</div>
+                <div><strong>Chủ TK:</strong> TRAM HAT - NGUYEN VAN DUONG</div>
+                <div><strong>Nội dung:</strong> <span id="receiptQrMemo" class="text-success fw-bold"></span></div>
+              </div>
+            </div>
+
+            <!-- Delivery schedule notice -->
+            <div class="alert alert-info border-0 rounded-3 mb-0 small p-3 d-flex align-items-start gap-2">
+              <i class="bi bi-truck fs-5 mt-n1 text-info flex-shrink-0"></i>
+              <div id="receiptShipNotice" style="font-size: 12.5px; line-height: 1.5;">
+                Shipper Trạm Hạt đang chuẩn bị túi giữ nhiệt đá gel giao sữa tươi tận tay bạn.
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer bg-white py-3 px-4 border-top d-flex gap-2 justify-content-end">
+            <button type="button" class="btn btn-outline-secondary px-3 py-2 small" data-bs-dismiss="modal">
+              Tiếp Tục Mua Sắm
+            </button>
+            <button type="button" class="btn btn-main-primary px-3 py-2 small fw-semibold" onclick="closeOrderSuccessModalAndGoProfile()">
+              <i class="bi bi-person-circle me-1"></i> Xem Lịch Sử Đơn
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -5793,10 +5887,22 @@
         }
       }
 
+      // ĐÓNG ORDER SUCCESS MODAL VÀ CHUYỂN ĐẾN TRANG CÁ NHÂN
+      function closeOrderSuccessModalAndGoProfile() {
+        const modalEl = document.getElementById('orderSuccessModal');
+        if (modalEl) {
+          const bsModal = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal.getOrCreateInstance(modalEl);
+          if (bsModal) bsModal.hide();
+        }
+        setTimeout(() => {
+          switchTab('profile');
+        }, 200);
+      }
+
       // XÁC NHẬN ĐẶT HÀNG THỰC TẾ (CHỐT ĐƠN & TẠO LEAD/CUSTOMER)
       async function confirmCartCheckout() {
         if (!cart || cart.length === 0) {
-          alert("Giỏ hàng của bạn đang trống! Vui lòng chọn ít nhất 1 chai sữa hạt.");
+          showFloatingToast("Giỏ hàng của bạn đang trống! Vui lòng chọn ít nhất 1 chai sữa hạt.", "warning");
           return;
         }
 
@@ -5809,20 +5915,20 @@
         const isWeekly = !!(document.getElementById('subscribeWeeklyCheck') && document.getElementById('subscribeWeeklyCheck').checked);
 
         if (!name) {
-          alert("Vui lòng nhập họ và tên của bạn để Trạm Hạt giao sữa.");
+          showFloatingToast("Vui lòng nhập họ và tên của bạn để Trạm Hạt giao sữa.", "warning");
           document.getElementById('cartCustomerName')?.focus();
           return;
         }
 
         const phoneClean = phone.replace(/[^0-9]/g, '');
         if (phoneClean.length < 9 || phoneClean.length > 11) {
-          alert("Vui lòng nhập số điện thoại hợp lệ (10 chữ số) để shipper xác nhận giờ giao tươi.");
+          showFloatingToast("Vui lòng nhập số điện thoại hợp lệ (10 chữ số) để shipper xác nhận giờ giao tươi.", "warning");
           document.getElementById('cartCustomerPhone')?.focus();
           return;
         }
 
         if (!address) {
-          alert("Vui lòng nhập địa chỉ cụ thể (số nhà, tên đường, tòa nhà) để giao sữa.");
+          showFloatingToast("Vui lòng nhập địa chỉ cụ thể (số nhà, tên đường, tòa nhà) để giao sữa.", "warning");
           document.getElementById('cartCustomerAddress')?.focus();
           return;
         }
@@ -5920,12 +6026,14 @@
         } catch (e) { }
 
         // Cập nhật điểm tích lũy và số đơn hàng cho thành viên nếu đang đăng nhập
+        const user = getCurrentUser();
+        const isLoggedIn = !!(user && user.isLoggedIn);
         try {
-          let user = getCurrentUser();
-          if (user && user.isLoggedIn) {
+          if (isLoggedIn) {
             user.ordersCount = (user.ordersCount || 0) + 1;
             user.points = (user.points || 0) + Math.round(finalTotalVND / 10000);
             saveCurrentUser(user);
+            syncUserUI();
           }
         } catch (e) { }
 
@@ -5935,7 +6043,7 @@
         }
         if (typeof adminOrdersList !== 'undefined') {
           adminOrdersList.unshift(orderData);
-          saveRealOrders();
+          if (typeof saveRealOrders === 'function') saveRealOrders();
         }
 
         // 2. Gửi API lên Serverless Backend
@@ -5953,7 +6061,7 @@
           if (bsOffcanvas) bsOffcanvas.hide();
         }
 
-        // 4. Xóa giỏ hàng & render lại
+        // 4. Reset giỏ hàng
         cart = [];
         currentCouponDiscount = 0;
         if (document.getElementById('couponCodeInput')) document.getElementById('couponCodeInput').value = '';
@@ -5961,9 +6069,11 @@
         renderCart();
 
         // 5. Cập nhật lịch sử đơn hàng trên trang cá nhân nếu đang xem
-        renderProfileOrders();
+        if (typeof renderProfileOrders === 'function') {
+          renderProfileOrders();
+        }
 
-        // 4. Cart Drawer Customer Info Sync
+        // 6. Reset form khách trong giỏ nếu chưa login
         try {
           const cartNameEl = document.getElementById('cartCustomerName');
           const cartPhoneEl = document.getElementById('cartCustomerPhone');
@@ -5979,21 +6089,59 @@
           }
         } catch (e) { }
 
-        // 6. Hiển thị thông báo đặt hàng thành công chi tiết
+        // 7. Hiển thị Order Receipt Modal (Chuyên nghiệp, không dùng alert())
         const payText = paymentMethod === 'vietqr' ? 'Quét mã VietQR chuyển khoản' : 'Thanh toán tiền mặt khi nhận hàng (COD)';
-        const shipNotice = district.includes('Quận 1') || district.includes('Bình Thạnh') || district.includes('Quận 3') || district.includes('Quận 7')
+        const shipNotice = (district.includes('Quận 1') || district.includes('Bình Thạnh') || district.includes('Quận 3') || district.includes('Quận 7'))
           ? '⚡ Shipper đang chuẩn bị túi giữ nhiệt đá gel giao hỏa tốc 45–90 phút!'
-          : '❄️ Đơn hàng của bạn sẽ được nấu mới lúc 05:00 sáng mai và giao trước 08:30 sáng!';
+          : '❄️ Đơn hàng của bạn sẽ được nấu mới lúc 05:00 sáng mai và giao lạnh trước 08:30 sáng!';
 
-        alert(`🎉 ĐẶT HÀNG THÀNH CÔNG!\n\n` +
-          `• Mã đơn hàng: #${orderId}\n` +
-          `• Khách hàng: ${name} (${phoneClean})\n` +
-          `• Địa chỉ: ${address}, ${district}, TP.HCM\n` +
-          `• Sản phẩm: ${itemsSummary}\n` +
-          `• Tổng thanh toán: ${formatPrice(finalTotalVND)}\n` +
-          `• Hình thức: ${payText}\n\n` +
-          `${shipNotice}\n\nTrạm Hạt trân trọng cảm ơn bạn!`
-        );
+        const receiptOrderEl = document.getElementById('receiptOrderId');
+        const receiptNameEl = document.getElementById('receiptCustomerName');
+        const receiptPhoneEl = document.getElementById('receiptCustomerPhone');
+        const receiptAddrEl = document.getElementById('receiptCustomerAddress');
+        const receiptItemsEl = document.getElementById('receiptItemsSummary');
+        const receiptTotalEl = document.getElementById('receiptTotalVND');
+        const receiptPayEl = document.getElementById('receiptPaymentMethod');
+        const receiptNoticeEl = document.getElementById('receiptShipNotice');
+        const receiptQrBox = document.getElementById('receiptVietQrBox');
+        const receiptQrImg = document.getElementById('receiptVietQrImg');
+        const receiptQrMemo = document.getElementById('receiptQrMemo');
+
+        if (receiptOrderEl) receiptOrderEl.textContent = '#' + orderId;
+        if (receiptNameEl) receiptNameEl.textContent = name;
+        if (receiptPhoneEl) receiptPhoneEl.textContent = phoneClean;
+        if (receiptAddrEl) receiptAddrEl.textContent = `${address}, ${district}, TP.HCM`;
+        if (receiptTotalEl) receiptTotalEl.textContent = formatPrice(finalTotalVND);
+        if (receiptPayEl) receiptPayEl.textContent = payText;
+        if (receiptNoticeEl) receiptNoticeEl.textContent = shipNotice;
+
+        if (receiptItemsEl) {
+          receiptItemsEl.innerHTML = orderData.items.map(item => `
+            <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="border-style: dashed !important;">
+              <span>${item.name} (${item.size}, ${item.sweet}) <strong class="text-dark">x${item.qty}</strong></span>
+              <span class="font-monospace text-dark fw-semibold">${formatPrice(item.priceVND * item.qty)}</span>
+            </div>
+          `).join('');
+        }
+
+        if (paymentMethod === 'vietqr') {
+          if (receiptQrBox) receiptQrBox.classList.remove('d-none');
+          if (receiptQrMemo) receiptQrMemo.textContent = orderId;
+          if (receiptQrImg) {
+            receiptQrImg.src = `https://img.vietqr.io/image/970422-0903124855-compact2.png?amount=${finalTotalVND}&addInfo=${orderId}&accountName=TRAM%20HAT`;
+          }
+        } else {
+          if (receiptQrBox) receiptQrBox.classList.add('d-none');
+        }
+
+        // Mở Modal biên nhận đơn hàng
+        const successModalEl = document.getElementById('orderSuccessModal');
+        if (successModalEl) {
+          const successModal = bootstrap.Modal.getOrCreateInstance(successModalEl);
+          successModal.show();
+        }
+
+        showFloatingToast(`Đặt hàng #${orderId} thành công!`, 'success');
       }
 
 
