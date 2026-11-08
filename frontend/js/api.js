@@ -122,13 +122,10 @@
     // Gửi sự kiện vi mô lên Database Server (Tracking Engine)
     async sendEvent(eventType, extraData = {}) {
       try {
-        // TUYỆT ĐỐI LOẠI TRỪ ADMIN: Khi đăng nhập Admin sẽ không thu thập bất kỳ dữ liệu nào
+        // LOẠI TRỪ KHI ĐANG Ở TRANG QUẢN TRỊ ADMIN
         if (
-          sessionStorage.getItem('tramhat_admin_auth') === 'true' ||
-          localStorage.getItem('tramhat_admin_auth') === 'true' ||
-          sessionStorage.getItem('tramhat_is_admin') === 'true' ||
-          (window.currentUser && window.currentUser.role === 'admin') ||
-          window.location.hash === '#admin'
+          window.location.hash === '#admin' ||
+          (window.isTramHatAdminActive && window.isTramHatAdminActive())
         ) {
           return;
         }
