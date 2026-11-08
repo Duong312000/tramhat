@@ -1,102 +1,190 @@
 {
-  "_id": "6af047d373f1e913b889b684",
   "key": "current_metrics",
-  "totalVisits": 180,
-  "totalTimeSeconds": 23040,
-  "productViews": 138,
-  "addToCartCount": 34,
-  "checkoutCount": 22,
-  "purchasesCount": 18,
-  "revenueVND": 1470000,
-  "pageViews": {
-    "home": {
-      "name": "Trang Chủ",
-      "views": 180,
-      "totalSeconds": 8100
-    },
-    "menu": {
-      "name": "Thực Đơn",
-      "views": 138,
-      "totalSeconds": 4830
-    },
-    "product-detail": {
-      "name": "Chi Tiết Sản Phẩm",
-      "views": 96,
-      "totalSeconds": 3072
-    },
-    "about": {
-      "name": "Về Trạm Hạt",
-      "views": 42,
-      "totalSeconds": 840
-    },
-    "knowledge": {
-      "name": "Góc Kiến Thức",
-      "views": 31,
-      "totalSeconds": 558
-    },
-    "reviews": {
-      "name": "Cảm Nhận",
-      "views": 25,
-      "totalSeconds": 375
-    }
-  },
-  "scrollDepth": {
-    "depth25": 159,
-    "depth50": 124,
-    "depth75": 84,
-    "depth100": 46
-  },
+  "campaignPeriod": "11/10/2026 - 07/11/2026 (28 ngày)",
+  "usersCount": 118,
+  "returningSessions": 26,
+  "totalVisits": 144,
+  "totalPageViews": 382,
+  "pagesPerSession": 2.65,
+  "engagedSessions": 106,
+  "engagementRatePct": 73.6,
+  "bounceRatePct": 26.4,
+  "avgEngagementSeconds": 102,
+  "avgEngagementFormatted": "1m 42s",
+  "menuViews": 108,
+  "detailViews": 64,
+  "checkoutViews": 28,
+  "leadsCount": 16,
+  "leadPerSessionPct": 11.1,
+  "purchasesCount": 11,
+  "orderPerSessionPct": 7.6,
+  "leadToOrderPct": 68.8,
+  "totalBottles": 25,
+  "revenueVND": 875000,
   "devices": {
-    "mobile": 159,
-    "desktop": 21,
+    "mobile": 126,
+    "mobilePct": 87.5,
+    "desktop": 18,
+    "desktopPct": 12.5,
     "tablet": 0
   },
-  "events": [],
-  "createdAt": "2026-11-08T09:58:43.827Z",
-  "updatedAt": "2026-11-08T16:37:33.793Z",
-  "__v": 0,
-  "detailViews": 96,
-  "usersCount": 162,
-  "utmSources": {
-    "tiktok": 82,
-    "facebook": 38,
-    "instagram": 24,
-    "direct": 36
+  "technical": {
+    "avgLoadTimeSec": 1.18,
+    "fcpSec": 0.78,
+    "lcpSec": 1.18,
+    "errorPagesCount": 0,
+    "uptimePct": 100
   },
-  "pageTimeAverages": {
-    "home": 35,
-    "menu": 52,
-    "detail": 75,
-    "knowledge": 100
-  },
-  "utmPerformance": {
-    "tiktok": {
-      "visits": 82,
+  "channelGroups": [
+    {
+      "group": "Organic Social",
+      "sessions": 84,
+      "pct": 58.3,
+      "users": 70,
+      "engaged": 66,
+      "engagementRate": "78,6%",
       "leads": 10,
-      "orders": 8,
-      "revenue": 665000,
-      "cr": "9.8%"
+      "orders": 7,
+      "revenue": 525000
     },
-    "facebook": {
-      "visits": 38,
-      "leads": 6,
-      "orders": 5,
-      "revenue": 420000,
-      "cr": "13.2%"
-    },
-    "instagram": {
-      "visits": 24,
+    {
+      "group": "Direct (Trực tiếp & QR UEL)",
+      "sessions": 32,
+      "pct": 22.2,
+      "users": 26,
+      "engaged": 22,
+      "engagementRate": "68,8%",
       "leads": 3,
       "orders": 2,
-      "revenue": 140000,
-      "cr": "8.3%"
+      "revenue": 175000
     },
-    "direct": {
-      "visits": 36,
-      "leads": 3,
-      "orders": 3,
-      "revenue": 245000,
-      "cr": "8.3%"
+    {
+      "group": "Organic Search (Google)",
+      "sessions": 18,
+      "pct": 12.5,
+      "users": 14,
+      "engaged": 12,
+      "engagementRate": "66,7%",
+      "leads": 2,
+      "orders": 1,
+      "revenue": 105000
+    },
+    {
+      "group": "Referral (Link chia sẻ Zalo)",
+      "sessions": 10,
+      "pct": 7,
+      "users": 8,
+      "engaged": 6,
+      "engagementRate": "60,0%",
+      "leads": 1,
+      "orders": 1,
+      "revenue": 70000
     }
-  }
+  ],
+  "socialUtmBreakdown": [
+    {
+      "source": "TikTok",
+      "utm": "?utm_source=tiktok",
+      "socialViews": 5700,
+      "profileVisits": 107,
+      "sessions": 52,
+      "shareOfSocialPct": 61.9,
+      "ctrFromProfilePct": 48.6,
+      "users": 44,
+      "leads": 6,
+      "orders": 4,
+      "revenue": 315000
+    },
+    {
+      "source": "Facebook",
+      "utm": "?utm_source=facebook",
+      "socialViews": 289,
+      "profileVisits": 40,
+      "sessions": 18,
+      "shareOfSocialPct": 21.4,
+      "ctrFromProfilePct": 45,
+      "users": 15,
+      "leads": 3,
+      "orders": 2,
+      "revenue": 140000
+    },
+    {
+      "source": "Instagram",
+      "utm": "?utm_source=instagram",
+      "socialViews": 329,
+      "profileVisits": 57,
+      "sessions": 14,
+      "shareOfSocialPct": 16.7,
+      "ctrFromProfilePct": 24.6,
+      "users": 11,
+      "leads": 1,
+      "orders": 1,
+      "revenue": 70000
+    }
+  ],
+  "topPages": [
+    {
+      "rank": 1,
+      "path": "/#home",
+      "title": "Trang chủ (Landing & Tổng quan)",
+      "views": 144,
+      "sessionsPct": 100,
+      "avgTime": "32 giây",
+      "note": "Điểm đáp đầu tiên từ Bio Link & QR; 75% đi tiếp vào Thực đơn"
+    },
+    {
+      "rank": 2,
+      "path": "/#menu",
+      "title": "Thực đơn 6 vị sữa hạt tươi",
+      "views": 108,
+      "sessionsPct": 75,
+      "avgTime": "58 giây",
+      "note": "Trang hút người xem nhất; khách đối chiếu giá 35.000đ và 6 hương vị"
+    },
+    {
+      "rank": 3,
+      "path": "/#product-detail",
+      "title": "Chi tiết vị sữa & Bảng dinh dưỡng",
+      "views": 64,
+      "sessionsPct": 44.4,
+      "avgTime": "1 phút 15 giây",
+      "note": "Đọc kỹ thành phần hạt & calo (Top: Sữa Điều 22, Macca 18, Hạt Sen 12)"
+    },
+    {
+      "rank": 4,
+      "path": "/#campaign",
+      "title": "Chọn hạt theo nhu cầu (Chiến dịch)",
+      "views": 38,
+      "sessionsPct": 26.4,
+      "avgTime": "1 phút 24 giây",
+      "note": "Tương tác gợi ý vị theo nhu cầu (Tỉnh táo, Giữ dáng, Thanh nhiệt)"
+    },
+    {
+      "rank": 5,
+      "path": "/#knowledge",
+      "title": "Góc Hạt (Blog kiến thức & Bảo quản 48h)",
+      "views": 19,
+      "sessionsPct": 13.2,
+      "avgTime": "1 phút 48 giây",
+      "note": "Thời gian đọc lâu nhất; tìm hiểu hiện tượng tách lớp & hạn dùng 48h"
+    },
+    {
+      "rank": 6,
+      "path": "/#about",
+      "title": "Về Trạm Hạt & Cảm nhận khách hàng",
+      "views": 9,
+      "sessionsPct": 6.3,
+      "avgTime": "45 giây",
+      "note": "Kiểm chứng vùng nguyên liệu Bình Phước, Tây Nguyên, Đồng Tháp"
+    }
+  ],
+  "utmSources": {
+    "tiktok": 52,
+    "facebook": 18,
+    "instagram": 14,
+    "direct": 32,
+    "google": 18,
+    "referral": 10
+  },
+  "updatedAt": "2026-11-08T17:18:11.829Z"
 }
