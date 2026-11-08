@@ -3156,6 +3156,22 @@
           <span class="text-dark fw-semibold">Hồ Sơ Cá Nhân</span>
         </div>
 
+        <!-- TRẠNG THÁI KHÁCH CHƯA ĐĂNG NHẬP (GUEST STATE) -->
+        <div id="profileGuestState" class="text-center py-5 my-4">
+          <div style="width: 76px; height: 76px; background: #FFF7ED; color: #EA580C; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 34px; margin-bottom: 20px;">
+            <i class="bi bi-person-lock"></i>
+          </div>
+          <h2 class="display-6 font-serif fw-bold text-dark mb-2" style="font-size: 24px;">Bạn Chưa Đăng Nhập Tài Khoản</h2>
+          <p class="text-muted small mx-auto mb-4" style="max-width: 440px; line-height: 1.6; font-size: 14px;">
+            Vui lòng đăng nhập bằng số điện thoại để quản lý thông tin thành viên, xem lịch sử đơn hàng sữa hạt và tích lũy điểm Hạt Xanh.
+          </p>
+          <button type="button" class="btn btn-main-primary px-4 py-2" onclick="openAccountModal(true)" style="font-size: 14px;">
+            <i class="bi bi-phone me-1"></i> Đăng Nhập Bằng Số Điện Thoại
+          </button>
+        </div>
+
+        <!-- TRẠNG THÁI KHI ĐÃ ĐĂNG NHẬP (LOGGED IN STATE) -->
+        <div id="profileLoggedInState" class="d-none">
         <!-- PROFILE HEADER -->
         <div class="border-bottom pb-4 mb-4">
           <div class="row align-items-center g-4">
@@ -3214,14 +3230,6 @@
         <!-- PROFILE SUB-TAB 1: THÔNG TIN TÀI KHOẢN -->
         <div id="profSectionInfo">
 
-              <!-- BANNER NHẮC ĐĂNG NHẬP DÀNH CHO KHÁCH VÃNG LAI -->
-              <div id="profGuestBanner" class="alert alert-light border border-warning-subtle shadow-sm mb-4 d-flex align-items-center justify-content-between p-3 rounded-3">
-                <div class="d-flex align-items-center gap-2">
-                  <i class="bi bi-info-circle-fill text-warning fs-5"></i>
-                  <span class="small text-dark">Bạn chưa đăng nhập. Vui lòng đăng nhập bằng số điện thoại để đồng bộ đơn hàng và tích lũy điểm Hạt Xanh.</span>
-                </div>
-                <button type="button" class="btn btn-sm btn-dark px-3 py-1" onclick="openAccountModal(true)">Đăng Nhập Ngay</button>
-              </div>
   
           <div class="row g-4">
             <div class="col-lg-7">
@@ -3279,7 +3287,7 @@
                     <div class="fw-semibold small">Mật khẩu tài khoản</div>
                     <div class="text-muted small">Bảo mật thông tin thanh toán & địa chỉ</div>
                   </div>
-                  <button class="btn btn-sm btn-outline-dark" onclick="alert('Đã gửi mã xác nhận đổi mật khẩu đến email/SĐT của bạn!')">Đổi Mật Khẩu</button>
+                  <button class="btn btn-sm btn-outline-dark" onclick="showFloatingToast('Đã gửi mã xác nhận đổi mật khẩu qua SMS!', 'success')">Đổi Mật Khẩu</button>
                 </div>
               </div>
 
@@ -3343,7 +3351,7 @@
                   <div class="text-muted small">Giảm 15% cho đơn hàng kế tiếp - Hạn dùng 30 ngày</div>
                 </div>
                 <button class="btn btn-sm btn-outline-dark"
-                  onclick="navigator.clipboard.writeText('TRAMHAT15'); alert('Đã sao chép mã TRAMHAT15!')">Sao
+                  onclick="navigator.clipboard.writeText('TRAMHAT15'); showFloatingToast('Đã sao chép mã TRAMHAT15!', 'info')">Sao
                   Chép</button>
               </div>
               <div class="border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
@@ -3352,13 +3360,14 @@
                   <div class="text-muted small">Miễn phí 1 chai Sữa Điều Tự Nhiên 300ml khi trả đủ 5 vỏ</div>
                 </div>
                 <button class="btn btn-sm btn-outline-success"
-                  onclick="navigator.clipboard.writeText('DOICHAISANG'); alert('Đã sao chép mã DOICHAISANG!')">Sao
+                  onclick="navigator.clipboard.writeText('DOICHAISANG'); showFloatingToast('Đã sao chép mã DOICHAISANG!', 'info')">Sao
                   Chép</button>
               </div>
             </div>
           </div>
         </div>
 
+        </div><!-- /#profileLoggedInState -->
       </div>
     </div>
 
@@ -6546,37 +6555,42 @@
         if (modalName) modalName.innerText = isLoggedIn ? (user.name || 'Khách Hàng') : 'Chưa đăng nhập';
         if (modalEmail) modalEmail.innerText = isLoggedIn ? (user.phone || user.email || '') : '';
 
-        // 3. Profile Page UI
-        const profAvatar = document.getElementById('profilePageAvatar');
-        const profName = document.getElementById('profilePageName');
-        const profContact = document.getElementById('profilePageContact');
-        const statPoints = document.getElementById('profileStatPoints');
-        const statBottles = document.getElementById('profileStatBottles');
-        const statOrders = document.getElementById('profileStatOrders');
+        // 3. Profile Page Guest vs Logged In View
+        const guestState = document.getElementById('profileGuestState');
+        const loggedInState = document.getElementById('profileLoggedInState');
 
-        if (profAvatar) profAvatar.innerText = initials;
-        const guestBanner = document.getElementById('profGuestBanner');
-        if (guestBanner) {
-          if (isLoggedIn) guestBanner.classList.add('d-none');
-          else guestBanner.classList.remove('d-none');
+        if (isLoggedIn) {
+          if (guestState) guestState.classList.add('d-none');
+          if (loggedInState) loggedInState.classList.remove('d-none');
+
+          const profAvatar = document.getElementById('profilePageAvatar');
+          const profName = document.getElementById('profilePageName');
+          const profContact = document.getElementById('profilePageContact');
+          const statPoints = document.getElementById('profileStatPoints');
+          const statBottles = document.getElementById('profileStatBottles');
+          const statOrders = document.getElementById('profileStatOrders');
+
+          if (profAvatar) profAvatar.innerText = initials;
+          if (profName) profName.innerText = user.name || 'Khách Hàng';
+          if (profContact) profContact.innerText = (user.email ? user.email + ' • ' : '') + (user.phone || '');
+          if (statPoints) statPoints.innerText = user.points || 0;
+          if (statBottles) statBottles.innerText = user.bottlesReturned || 0;
+          if (statOrders) statOrders.innerText = user.ordersCount || 0;
+
+          const editName = document.getElementById('profEditName');
+          const editPhone = document.getElementById('profEditPhone');
+          const editEmail = document.getElementById('profEditEmail');
+          const editAddress = document.getElementById('profEditAddress');
+          if (editName) editName.value = user.name || '';
+          if (editPhone) editPhone.value = user.phone || '';
+          if (editEmail) editEmail.value = user.email || '';
+          if (editAddress) editAddress.value = user.address || '';
+
+          renderProfileOrders();
+        } else {
+          if (guestState) guestState.classList.remove('d-none');
+          if (loggedInState) loggedInState.classList.add('d-none');
         }
-        if (profName) profName.innerText = isLoggedIn ? (user.name || 'Khách Hàng') : 'Khách Vãng Lai';
-        if (profContact) profContact.innerText = isLoggedIn ? ((user.email ? user.email + ' • ' : '') + (user.phone || '')) : 'Vui lòng đăng nhập để xem thông tin';
-        if (statPoints) statPoints.innerText = isLoggedIn ? (user.points || 0) : 0;
-        if (statBottles) statBottles.innerText = isLoggedIn ? (user.bottlesReturned || 0) : 0;
-        if (statOrders) statOrders.innerText = isLoggedIn ? (user.ordersCount || 0) : 0;
-
-        // 4. Edit form
-        const editName = document.getElementById('profEditName');
-        const editPhone = document.getElementById('profEditPhone');
-        const editEmail = document.getElementById('profEditEmail');
-        const editAddress = document.getElementById('profEditAddress');
-        if (editName) editName.value = isLoggedIn ? (user.name || '') : '';
-        if (editPhone) editPhone.value = isLoggedIn ? (user.phone || '') : '';
-        if (editEmail) editEmail.value = isLoggedIn ? (user.email || '') : '';
-        if (editAddress) editAddress.value = isLoggedIn ? (user.address || '') : '';
-
-        renderProfileOrders();
       }
 
       function switchProfileSubTab(tab) {
@@ -6733,7 +6747,7 @@
         if (typeof TramHatTracker !== 'undefined') {
           TramHatTracker.recordEvent('bottle_recycle_request', { user: (user && user.name) ? user.name : 'Khách Hàng' });
         }
-        alert('Đã ghi nhận yêu cầu thu hồi vỏ chai! Shipper sáng mai sẽ mang túi thu gom đến địa chỉ của bạn.');
+        showFloatingToast('Đã ghi nhận yêu cầu thu hồi vỏ chai! Shipper sáng mai sẽ mang túi thu gom đến địa chỉ của bạn.', 'success');
       }
 
       // Tra cứu đơn hàng bằng Số Điện Thoại
