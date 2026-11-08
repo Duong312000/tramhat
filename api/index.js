@@ -401,16 +401,16 @@ app.get('/api/tracking/events', async (req, res) => {
 });
 
 app.get('/api/tracking/dashboard', async (req, res) => {
-  let visitorsCount = 1280;
-  let mqlCount = 48;
-  let sqlCount = 28;
-  let customerCount = 54;
-  let totalRevenue = 1890000;
+  let visitorsCount = 180;
+  let mqlCount = 22;
+  let sqlCount = 20;
+  let customerCount = 18;
+  let totalRevenue = 1470000;
   let utmBreakdown = {
-    tiktok: { visits: 576, leads: 24, cr: '4.16%' },
-    facebook: { visits: 358, leads: 19, cr: '5.30%' },
-    instagram: { visits: 230, leads: 11, cr: '4.78%' },
-    direct: { visits: 116, leads: 6, cr: '5.17%' }
+    tiktok: { visits: 82, leads: 10, cr: '12.2%' },
+    facebook: { visits: 38, leads: 6, cr: '15.8%' },
+    instagram: { visits: 24, leads: 3, cr: '12.5%' },
+    direct: { visits: 36, leads: 3, cr: '8.3%' }
   };
 
   if (mongoose.connection && mongoose.connection.readyState === 1) {
@@ -423,10 +423,10 @@ app.get('/api/tracking/dashboard', async (req, res) => {
         totalRevenue = anDoc.revenueVND || totalRevenue;
       }
       const dbOrdersCount = await db.collection('orders').countDocuments();
-      if (dbOrdersCount > 0) customerCount = Math.max(customerCount, dbOrdersCount);
+      if (dbOrdersCount > 0) customerCount = dbOrdersCount;
 
       const dbLeadsCount = await db.collection('leads').countDocuments();
-      if (dbLeadsCount > 0) mqlCount = Math.max(mqlCount, dbLeadsCount);
+      if (dbLeadsCount > 0) mqlCount = dbLeadsCount;
     } catch (e) { }
   }
 
@@ -440,12 +440,13 @@ app.get('/api/tracking/dashboard', async (req, res) => {
       customers: customerCount,
       revenueVND: totalRevenue,
       aovVND: aov,
-      overallCR: ((customerCount / Math.max(1, visitorsCount)) * 100).toFixed(2) + '%'
+      overallCR: ((customerCount / Math.max(1, visitorsCount)) * 100).toFixed(1) + '%'
     },
     funnel: [
       { stage: 'Vào web (Page View)', count: visitorsCount, pct: 100 },
-      { stage: 'Xem thực đơn & Vị hạt', count: Math.round(visitorsCount * 0.661), pct: 66.1 },
-      { stage: 'Bấm đặt hàng (Thêm giỏ)', count: Math.round(visitorsCount * 0.127), pct: 12.7 },
+      { stage: 'Xem thực đơn', count: 138, pct: 76.7 },
+      { stage: 'Xem chi tiết vị sữa', count: 96, pct: 53.3 },
+      { stage: 'Bấm đặt hàng (Thêm giỏ)', count: 34, pct: 18.9 },
       { stage: 'Gửi form thông tin (Lead)', count: mqlCount, pct: Number(((mqlCount / visitorsCount) * 100).toFixed(1)) },
       { stage: 'Đặt hàng thành công', count: customerCount, pct: Number(((customerCount / visitorsCount) * 100).toFixed(1)) }
     ],
@@ -668,14 +669,14 @@ app.get('/api/analytics', async (req, res) => {
       let dbAnalytics = await db.collection('analytics').findOne({});
       if (!dbAnalytics) {
         dbAnalytics = {
-          totalVisits: 1280,
-          totalTimeSeconds: 171520,
-          productViews: 846,
-          addToCartCount: 162,
-          checkoutCount: 78,
-          purchasesCount: 54,
-          revenueVND: 1890000,
-          devices: { mobile: 896, desktop: 332, tablet: 52 }
+          totalVisits: 180,
+          totalTimeSeconds: 180 * 128,
+          productViews: 138,
+          addToCartCount: 34,
+          checkoutCount: 22,
+          purchasesCount: 18,
+          revenueVND: 1470000,
+          devices: { mobile: 159, desktop: 21, tablet: 0 }
         };
       }
 
@@ -705,11 +706,11 @@ app.get('/api/analytics', async (req, res) => {
       } catch (aggErr) { }
 
       // Tính số người dùng phân biệt (distinct sessionId)
-      let distinctUsersCount = 1042;
+      let distinctUsersCount = 162;
       try {
         const uniqueSessions = await db.collection('trackingevents').distinct('sessionId');
         if (uniqueSessions && uniqueSessions.length > 0) {
-          distinctUsersCount = Math.max(1042, uniqueSessions.length);
+          distinctUsersCount = uniqueSessions.length;
         }
       } catch (sErr) { }
 
@@ -719,17 +720,17 @@ app.get('/api/analytics', async (req, res) => {
         data: {
           ...dbAnalytics,
           usersCount: distinctUsersCount,
-          totalVisits: dbAnalytics.totalVisits || 1280,
-          leadsCount: Math.max(dbAnalytics.checkoutCount || 48, leadsCount),
-          purchasesCount: Math.max(dbAnalytics.purchasesCount || 54, ordersCount),
-          revenueVND: Math.max(dbAnalytics.revenueVND || 1890000, totalRevenueCalculated),
+          totalVisits: dbAnalytics.totalVisits || 180,
+          leadsCount: leadsCount > 0 ? leadsCount : (dbAnalytics.checkoutCount || 22),
+          purchasesCount: ordersCount > 0 ? ordersCount : (dbAnalytics.purchasesCount || 18),
+          revenueVND: totalRevenueCalculated > 0 ? totalRevenueCalculated : (dbAnalytics.revenueVND || 1470000),
           utmSources: {
-            tiktok: utmSources.tiktok > 0 ? utmSources.tiktok : 576,
-            facebook: utmSources.facebook > 0 ? utmSources.facebook : 358,
-            instagram: utmSources.instagram > 0 ? utmSources.instagram : 230,
-            direct: utmSources.direct > 0 ? utmSources.direct : 116
+            tiktok: utmSources.tiktok > 0 ? utmSources.tiktok : 82,
+            facebook: utmSources.facebook > 0 ? utmSources.facebook : 38,
+            instagram: utmSources.instagram > 0 ? utmSources.instagram : 24,
+            direct: utmSources.direct > 0 ? utmSources.direct : 36
           },
-          devices: dbAnalytics.devices || { mobile: 896, desktop: 332, tablet: 52 }
+          devices: dbAnalytics.devices || { mobile: 159, desktop: 21, tablet: 0 }
         }
       });
     } catch (e) {
@@ -740,16 +741,16 @@ app.get('/api/analytics', async (req, res) => {
   res.json({
     success: true,
     data: {
-      usersCount: 1042,
-      totalVisits: 1280,
-      totalTimeSeconds: 171520,
-      productViews: 846,
-      addToCartCount: 162,
-      leadsCount: 48,
-      purchasesCount: 54,
-      revenueVND: 1890000,
-      devices: { mobile: 896, desktop: 332, tablet: 52 },
-      utmSources: { tiktok: 576, facebook: 358, instagram: 230, direct: 116 }
+      usersCount: 162,
+      totalVisits: 180,
+      totalTimeSeconds: 180 * 128,
+      productViews: 138,
+      addToCartCount: 34,
+      leadsCount: 22,
+      purchasesCount: 18,
+      revenueVND: 1470000,
+      devices: { mobile: 159, desktop: 21, tablet: 0 },
+      utmSources: { tiktok: 82, facebook: 38, instagram: 24, direct: 36 }
     },
     source: 'memory'
   });
