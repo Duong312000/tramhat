@@ -370,6 +370,36 @@ app.post('/api/tracking/event', async (req, res) => {
   res.json({ success: true, recorded: true, db: (mongoose.connection && mongoose.connection.readyState === 1) });
 });
 
+// XEM DANH SÁCH ĐỐI TƯỢNG LƯỢT TRUY CẬP TRỰC TIẾP TỪ MONGODB ATLAS
+app.get('/api/tracking/events', async (req, res) => {
+  const limit = Math.min(100, parseInt(req.query.limit) || 20);
+  const type = req.query.type || 'page_view';
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const db = mongoose.connection.db;
+      const query = type === 'all' ? {} : { eventType: type };
+      const events = await db.collection('trackingevents')
+        .find(query)
+        .sort({ _id: -1 })
+        .limit(limit)
+        .toArray();
+      const count = await db.collection('trackingevents').countDocuments(query);
+      return res.json({
+        success: true,
+        source: 'mongodb_atlas',
+        database: 'tramhat_db',
+        collection: 'trackingevents',
+        filter: query,
+        totalInMongo: count,
+        data: events
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, error: e.message });
+    }
+  }
+  res.json({ success: false, message: 'Database connecting...' });
+});
+
 app.get('/api/tracking/dashboard', async (req, res) => {
   let visitorsCount = 1280;
   let mqlCount = 48;
