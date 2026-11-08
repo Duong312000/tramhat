@@ -1557,8 +1557,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
   </style>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-</head>
+  </head>
 
 <body>
 
@@ -3639,115 +3638,69 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
 
-          <!-- Header với tab chuyển đổi Đăng Nhập / Đăng Ký -->
           <div class="modal-header border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
-            <ul class="nav nav-pills card-header-pills" id="authTabsNav">
-              <li class="nav-item">
-                <button class="nav-link active py-1 px-3 fw-semibold small" id="authTabBtnLogin" type="button" onclick="switchAuthTab('login')">Đăng Nhập</button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link py-1 px-3 fw-semibold small text-muted" id="authTabBtnRegister" type="button" onclick="switchAuthTab('register')">Đăng Ký Mới</button>
-              </li>
-            </ul>
+            <div>
+              <h5 class="modal-title font-serif fw-bold mb-0 text-dark">Đăng Nhập Bằng Số Điện Thoại</h5>
+              <div class="text-muted small" style="font-size: 12px;">Tích điểm thành viên &amp; theo dõi lịch trình giao sữa sáng</div>
+            </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
           </div>
 
           <div class="modal-body p-4">
 
-            <!-- TAB 1: FORM ĐĂNG NHẬP -->
+            <!-- FORM ĐĂNG NHẬP DUY NHẤT BẰNG SỐ ĐIỆN THOẠI -->
             <div id="authLoginForm">
-              <form onsubmit="handleUserLoginSubmit(event)">
+              <form onsubmit="handlePhoneLoginSubmit(event)">
                 <div class="mb-3">
-                  <label class="form-label small fw-semibold">Email hoặc Số điện thoại</label>
-                  <input type="text" class="form-control" id="loginIdentifier"
-                    placeholder="Ví dụ: 0903124855 hoặc annhien.office@gmail.com" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label small fw-semibold">Mật khẩu</label>
-                  <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu..."
-                    value="123456" required>
-                  <div class="form-text small text-muted">Mật khẩu mẫu chiến dịch: <code>123456</code></div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                    <label class="form-check-label small" for="rememberMe">Ghi nhớ đăng nhập</label>
+                  <label class="form-label small fw-semibold text-dark">Số Điện Thoại Của Bạn</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light text-muted"><i class="bi bi-telephone"></i></span>
+                    <input type="tel" class="form-control" id="loginPhoneNumber"
+                      placeholder="Ví dụ: 0903124855..." 
+                      pattern="[0-9]{10,11}" 
+                      maxlength="11" 
+                      required autofocus>
                   </div>
-                  <a href="javascript:void(0)" class="small text-muted" onclick="alert('Vui lòng liên hệ Hotline/Zalo 0903 124 855 để được hỗ trợ.')">Quên mật khẩu?</a>
+                  <div class="form-text small text-muted">Hệ thống tự động lưu lịch sử đơn hàng và tích lũy Hạt Xanh theo số điện thoại của bạn.</div>
                 </div>
-                <button type="submit" class="btn-main-primary w-100 py-2">Đăng Nhập</button>
-              </form>
 
-              <!-- ĐĂNG NHẬP NHANH TÀI KHOẢN MẪU CHIẾN DỊCH -->
-              <div class="mt-4 pt-3 border-top">
-                <div class="small fw-semibold text-muted mb-2"><i class="bi bi-person-check me-1"></i> Khách hàng chiến dịch (Bấm để đăng nhập thử):</div>
-                <div class="d-flex flex-wrap gap-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickLoginUser('annhien')">
-                    👩 Nguyễn An Nhiên (0901888777)
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickLoginUser('tram')">
-                    👩 Bích Trâm (0903124855)
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickLoginUser('quan')">
-                    👨 Minh Quân (0977234981)
-                  </button>
-                </div>
-              </div>
-
-              <!-- SOCIAL LOGIN -->
-              <div class="position-relative text-center my-3">
-                <hr class="text-muted opacity-25">
-                <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted">hoặc đăng nhập nhanh</span>
-              </div>
-
-              <div class="d-grid gap-2">
-                <div id="googleBtnContainer" class="d-flex justify-content-center mb-2"></div>
-                <button type="button" class="btn btn-outline-dark btn-sm py-2 w-100" id="btnCustomGoogleLogin" onclick="triggerGoogleOAuthLogin()">
-                  <i class="bi bi-google me-2 text-danger"></i> Tiếp tục với Google (Xác thực thật)
-                </button>
-              </div>
-            </div>
-
-            <!-- TAB 2: FORM ĐĂNG KÝ MỚI -->
-            <div id="authRegisterForm" class="d-none">
-              <form onsubmit="handleUserRegisterSubmit(event)">
-                <div class="mb-3">
-                  <label class="form-label small fw-semibold">Họ và tên</label>
-                  <input type="text" class="form-control" id="regFullName" placeholder="Ví dụ: Lê Thị Mai Anh" required>
-                </div>
-                <div class="row g-2 mb-3">
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Số điện thoại</label>
-                    <input type="tel" class="form-control" id="regPhone" placeholder="09xxxxxxxx" required>
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Email</label>
-                    <input type="email" class="form-control" id="regEmail" placeholder="email@gmail.com" required>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label small fw-semibold">Mật khẩu</label>
-                  <input type="password" class="form-control" id="regPassword" placeholder="Tạo mật khẩu (tối thiểu 6 ký tự)" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label small fw-semibold">Địa chỉ nhận sữa sáng (TP.HCM)</label>
-                  <input type="text" class="form-control" id="regAddress" placeholder="Số nhà, tên đường, Phường, Quận..." required>
-                </div>
                 <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" id="regAgree" checked required>
-                  <label class="form-check-label small text-muted" for="regAgree">Tham gia hội viên Trạm Xanh Eco Citizen để tích điểm & tuần hoàn vỏ chai.</label>
+                  <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                  <label class="form-check-label small text-muted" for="rememberMe">Duy trì đăng nhập trên thiết bị này</label>
                 </div>
-                <button type="submit" class="btn-main-primary w-100 py-2">Đăng Ký Tài Khoản &amp; Nhận 50 Điểm Thưởng</button>
+
+                <button type="submit" class="btn-main-primary w-100 py-2 fw-semibold">
+                  Đăng Nhập / Tiếp Tục
+                </button>
               </form>
+
+              <!-- GỢI Ý ĐĂNG NHẬP NHANH CÁC SĐT KHÁCH HÀNG THỰC TẾ CHIẾN DỊCH -->
+              <div class="mt-4 pt-3 border-top">
+                <div class="small fw-semibold text-muted mb-2"><i class="bi bi-person-check me-1"></i> Số điện thoại khách hàng chiến dịch:</div>
+                <div class="d-flex flex-wrap gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0903124855')">
+                    0903124855 (Bích Trâm)
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0918732109')">
+                    0918732109 (Hoàng Nam)
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0977234981')">
+                    0977234981 (Minh Quân)
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size: 12px;" onclick="quickFillPhone('0901888777')">
+                    0901888777 (An Nhiên)
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- VIEW KHI ĐÃ ĐĂNG NHẬP -->
             <div id="authLoggedInView" class="d-none text-center py-3">
               <div class="mb-3">
                 <div class="avatar-circle mx-auto mb-2" id="authModalAvatar"
-                  style="width: 64px; height: 64px; font-size: 24px;">NA</div>
-                <h5 class="fw-bold mb-1" id="authModalUserName">Nguyễn An Nhiên</h5>
-                <p class="text-muted small mb-0" id="authModalUserEmail">annhien.office@gmail.com</p>
+                  style="width: 64px; height: 64px; font-size: 24px;">TH</div>
+                <h5 class="fw-bold mb-1" id="authModalUserName">Khách Hàng</h5>
+                <p class="text-muted small mb-0" id="authModalUserEmail">0903124855</p>
                 <div class="badge bg-success-subtle text-success border border-success-subtle mt-2" style="font-size: 11px;">Thành viên Eco Citizen</div>
               </div>
               <div class="d-grid gap-2">
@@ -6389,60 +6342,19 @@
         }
       }
 
-      function switchAuthTab(tab) {
-        const btnLogin = document.getElementById('authTabBtnLogin');
-        const btnReg = document.getElementById('authTabBtnRegister');
-        const formLogin = document.getElementById('authLoginForm');
-        const formReg = document.getElementById('authRegisterForm');
-
-        if (tab === 'register') {
-          if (btnLogin) {
-            btnLogin.classList.remove('active');
-            btnLogin.classList.add('text-muted');
-          }
-          if (btnReg) {
-            btnReg.classList.add('active');
-            btnReg.classList.remove('text-muted');
-          }
-          if (formLogin) formLogin.classList.add('d-none');
-          if (formReg) formReg.classList.remove('d-none');
-        } else {
-          if (btnReg) {
-            btnReg.classList.remove('active');
-            btnReg.classList.add('text-muted');
-          }
-          if (btnLogin) {
-            btnLogin.classList.add('active');
-            btnLogin.classList.remove('text-muted');
-          }
-          if (formReg) formReg.classList.add('d-none');
-          if (formLogin) formLogin.classList.remove('d-none');
-        }
-      }
-
       function openAccountModal(forceLogin = false) {
         const user = getCurrentUser();
         const loginForm = document.getElementById('authLoginForm');
-        const registerForm = document.getElementById('authRegisterForm');
         const loggedInView = document.getElementById('authLoggedInView');
-        const tabsNav = document.getElementById('authTabsNav');
-        const idInput = document.getElementById('loginIdentifier');
-        const pwdInput = document.getElementById('loginPassword');
-
-        switchAuthTab('login');
+        const phoneInput = document.getElementById('loginPhoneNumber');
 
         if (!forceLogin && user && user.isLoggedIn) {
           if (loginForm) loginForm.classList.add('d-none');
-          if (registerForm) registerForm.classList.add('d-none');
-          if (tabsNav) tabsNav.classList.add('d-none');
           if (loggedInView) loggedInView.classList.remove('d-none');
         } else {
           if (loggedInView) loggedInView.classList.add('d-none');
-          if (tabsNav) tabsNav.classList.remove('d-none');
           if (loginForm) loginForm.classList.remove('d-none');
-          if (registerForm) registerForm.classList.add('d-none');
-          if (idInput) idInput.value = '';
-          if (pwdInput) pwdInput.value = '123456';
+          if (phoneInput) phoneInput.value = '';
         }
 
         const modalEl = document.getElementById('accountModal');
@@ -6466,95 +6378,31 @@
         }, 150);
       }
 
-      function quickLoginUser(persona) {
-        let user;
-        if (persona === 'tram') {
-          user = {
-            id: 'USR-CUST-101',
-            name: 'Nguyễn Thị Bích Trâm',
-            phone: '0903124855',
-            email: 'nguyenthibichtram101@gmail.com',
-            address: 'KTX Khu B ĐHQG, Phường Đông Hòa, Dĩ An',
-            district: 'TP. Dĩ An',
-            points: 50,
-            bottlesReturned: 3,
-            ordersCount: 1,
-            tier: 'Khách Đã Mua (TikTok)',
-            isLoggedIn: true
-          };
-        } else if (persona === 'quan') {
-          user = {
-            id: 'USR-CUST-105',
-            name: 'Võ Minh Quân',
-            phone: '0977234981',
-            email: 'vominhquan105@gmail.com',
-            address: 'Chung cư Safira Khang Điền, Phú Hữu, TP. Thủ Đức',
-            district: 'TP. Thủ Đức',
-            points: 50,
-            bottlesReturned: 2,
-            ordersCount: 1,
-            tier: 'Khách Đã Mua (Facebook)',
-            isLoggedIn: true
-          };
-        } else if (persona === 'nam') {
-          user = {
-            id: 'USR-CUST-102',
-            name: 'Lê Hoàng Nam',
-            phone: '0918732109',
-            email: 'lehoangnam102@gmail.com',
-            address: 'Trường ĐH Kinh tế - Luật (UEL), Khu phố 6, Linh Trung, TP. Thủ Đức',
-            district: 'TP. Thủ Đức',
-            points: 50,
-            bottlesReturned: 2,
-            ordersCount: 1,
-            tier: 'Khách Đã Mua (TikTok)',
-            isLoggedIn: true
-          };
-        } else {
-          user = {
-            id: 'USR-CUST-100',
-            name: 'Nguyễn An Nhiên',
-            phone: '0901888777',
-            email: 'annhien.office@gmail.com',
-            address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Phường Bến Nghé, Quận 1, TP.HCM',
-            district: 'Quận 1',
-            points: 120,
-            bottlesReturned: 8,
-            ordersCount: 3,
-            tier: 'Eco Citizen (Sống Xanh)',
-            isLoggedIn: true
-          };
-        }
-
-        if (typeof TramHatSession !== 'undefined') {
-          TramHatSession.createSession(user, true);
-        }
-        saveCurrentUser(user);
-        closeAccountModal();
-        setTimeout(() => {
-          switchTab('profile');
-        }, 150);
+      function quickFillPhone(phone) {
+        const input = document.getElementById('loginPhoneNumber');
+        if (input) input.value = phone;
+        executePhoneLogin(phone);
       }
 
-      function handleUserLoginSubmit(e) {
+      function handlePhoneLoginSubmit(e) {
         e.preventDefault();
-        const id = document.getElementById('loginIdentifier').value.trim().toLowerCase();
-        const pwd = document.getElementById('loginPassword').value.trim();
+        const input = document.getElementById('loginPhoneNumber');
+        if (!input) return;
+        const phone = input.value.trim();
+        executePhoneLogin(phone);
+      }
 
-        if (!id) {
-          alert('Vui lòng nhập Email hoặc Số điện thoại!');
+      async function executePhoneLogin(rawPhone) {
+        const clean = rawPhone.trim().replace(/[^0-9]/g, '');
+        if (!clean || clean.length < 9) {
+          alert('Vui lòng nhập số điện thoại hợp lệ (10 chữ số)!');
           return;
         }
 
         const isRemember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
 
         // 1. Kiểm tra tài khoản Quản Trị Viên (admin)
-        if (id === 'admin' || id === 'admin@tramhat.vn') {
-          if (pwd && pwd !== 'admin' && pwd !== 'admin123' && pwd !== '123' && pwd !== '123456') {
-            alert('Mật khẩu quản trị viên không chính xác. Vui lòng thử lại!');
-            return;
-          }
-
+        if (clean === '0909999999' || rawPhone.toLowerCase() === 'admin') {
           const adminUser = {
             id: 'admin',
             name: 'Quản Trị Viên Trạm Hạt',
@@ -6567,11 +6415,9 @@
             ordersCount: 0,
             isLoggedIn: true
           };
-
           TramHatSession.createSession(adminUser, isRemember);
           saveCurrentUser(adminUser);
           closeAccountModal();
-
           setTimeout(() => {
             switchTab('admin');
             if (typeof refreshAdminAnalytics === 'function') refreshAdminAnalytics();
@@ -6579,71 +6425,61 @@
           return;
         }
 
-        // 2. Khách hàng thông thường từ data/users.json
+        // 2. Tìm kiếm trong danh sách khách hàng cục bộ
         const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
-        const matched = dataUsers.find(u =>
-          (u.email && u.email.toLowerCase() === id) ||
-          (u.phone && u.phone === id) ||
-          (u.id && u.id.toLowerCase() === id)
-        );
+        const matched = dataUsers.find(u => u.phone === clean);
 
-        let userObj;
+        let userObj = null;
+
         if (matched) {
           userObj = { ...matched, isLoggedIn: true };
         } else {
-          userObj = {
-            id: 'kh_' + Date.now().toString().slice(-4),
-            name: id.includes('@') ? id.split('@')[0] : 'Khách Hàng',
-            phone: id.includes('@') ? '0901888777' : id,
-            email: id.includes('@') ? id : (id + '@khachhang.tramhat.vn'),
-            address: 'TP.HCM',
-            points: 50,
-            bottlesReturned: 0,
-            ordersCount: 0,
-            tier: 'Eco Citizen (Thành viên)',
-            isLoggedIn: true
-          };
+          // Khách hàng mới: hỏi tên thân mật (hoặc đặt mặc định)
+          let custName = prompt('Chào mừng bạn đến với Trạm Hạt!\nVui lòng nhập Họ & Tên của bạn để nhận 50 Hạt Xanh tích lũy:');
+          if (!custName || !custName.trim()) custName = 'Khách Hàng (' + clean.slice(-4) + ')';
+          else custName = custName.trim();
+
+          // Đồng bộ với API Backend MongoDB Atlas
+          try {
+            const res = await fetch('/api/users/phone-auth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone: clean,
+                name: custName
+              })
+            });
+            const data = await res.json();
+            if (data && data.success && data.user) {
+              userObj = data.user;
+            }
+          } catch (e) { }
+
+          if (!userObj) {
+            userObj = {
+              id: 'USR-TEL-' + clean.slice(-6),
+              name: custName,
+              phone: clean,
+              email: clean + '@khachhang.tramhat.vn',
+              address: 'TP.HCM',
+              role: 'customer',
+              tier: 'Eco Citizen (Thành viên Mới)',
+              points: 50,
+              bottlesReturned: 0,
+              ordersCount: 0,
+              isLoggedIn: true
+            };
+          }
         }
 
-        TramHatSession.createSession(userObj, isRemember);
+        userObj.isLoggedIn = true;
+        if (typeof TramHatSession !== 'undefined') {
+          TramHatSession.createSession(userObj, isRemember);
+        }
         saveCurrentUser(userObj);
         closeAccountModal();
-        setTimeout(() => {
-          switchTab('profile');
-        }, 150);
-      }
 
-      function handleUserRegisterSubmit(e) {
-        e.preventDefault();
-        const fullName = document.getElementById('regFullName').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const address = document.getElementById('regAddress').value.trim();
-
-        if (!fullName || !phone) {
-          alert('Vui lòng điền đầy đủ họ tên và số điện thoại!');
-          return;
-        }
-
-        const newUser = {
-          id: 'USR-NEW-' + Date.now().toString().slice(-4),
-          name: fullName,
-          phone: phone,
-          email: email || (phone + '@khachhang.tramhat.vn'),
-          address: address || 'TP.HCM',
-          points: 50,
-          bottlesReturned: 0,
-          ordersCount: 0,
-          tier: 'Eco Citizen (Thành viên)',
-          isLoggedIn: true
-        };
-
-        if (typeof TramHatSession !== 'undefined') {
-          TramHatSession.createSession(newUser, true);
-        }
-        saveCurrentUser(newUser);
-        closeAccountModal();
-        alert('🎉 Chúc mừng ' + fullName + ' đã tạo tài khoản thành công!\nBạn nhận được 50 Hạt Xanh chào mừng.');
+        alert('🎉 Đăng nhập thành công!\nChào mừng ' + (userObj.name || 'bạn') + ' (SĐT: ' + clean + ') đến với Trạm Hạt.');
         setTimeout(() => {
           switchTab('profile');
         }, 150);
@@ -6669,175 +6505,6 @@
         syncUserUI();
         closeAccountModal();
         switchTab('home');
-      }
-
-      
-      // ==========================================================================
-      // REAL GOOGLE IDENTITY SERVICES (GIS) / OAUTH 2.0 INTEGRATION
-      // ==========================================================================
-      window.GOOGLE_CLIENT_ID = localStorage.getItem('tramhat_google_client_id') || '';
-
-      function initGoogleOAuth() {
-        if (!window.GOOGLE_CLIENT_ID) return;
-        if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
-          setTimeout(initGoogleOAuth, 500);
-          return;
-        }
-
-        try {
-          google.accounts.id.initialize({
-            client_id: window.GOOGLE_CLIENT_ID,
-            callback: handleGoogleCredentialResponse,
-            auto_select: false,
-            cancel_on_tap_outside: true
-          });
-
-          const container = document.getElementById('googleBtnContainer');
-          const customBtn = document.getElementById('btnCustomGoogleLogin');
-          if (container) {
-            container.innerHTML = '';
-            google.accounts.id.renderButton(container, {
-              theme: 'outline',
-              size: 'large',
-              width: 360,
-              text: 'continue_with',
-              shape: 'rectangular',
-              logo_alignment: 'left',
-              locale: 'vi'
-            });
-            if (customBtn) customBtn.classList.add('d-none');
-          }
-        } catch (e) {
-          console.warn('Google OAuth init warning:', e);
-        }
-      }
-
-      function triggerGoogleOAuthLogin() {
-        if (!window.GOOGLE_CLIENT_ID) {
-          const inputId = prompt(
-            "CẤU HÌNH ĐĂNG NHẬP GOOGLE OAUTH THẬT:\n\n" +
-            "Vui lòng dán Google Client ID của bạn (dạng: xxxxxx.apps.googleusercontent.com)\n" +
-            "đã đăng ký từ Google Cloud Console:\n\n" +
-            "(Nếu chưa có, hãy đóng thông báo này để xem hướng dẫn 3 bước tạo miễn phí)."
-          );
-          if (inputId && inputId.trim()) {
-            window.GOOGLE_CLIENT_ID = inputId.trim();
-            localStorage.setItem('tramhat_google_client_id', window.GOOGLE_CLIENT_ID);
-            alert("Đã lưu Google Client ID! Cửa sổ đăng nhập Google đang khởi chạy...");
-            initGoogleOAuth();
-            setTimeout(() => {
-              if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-                google.accounts.id.prompt();
-              }
-            }, 400);
-          }
-          return;
-        }
-
-        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-          google.accounts.id.prompt();
-        }
-      }
-
-      async function handleGoogleCredentialResponse(response) {
-        if (!response || !response.credential) return;
-
-        try {
-          // 1. Giải mã JWT Token thật do Google cấp
-          const jwt = response.credential;
-          const base64Url = jwt.split('.')[1];
-          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-          const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-          }).join(''));
-          const googleProfile = JSON.parse(jsonPayload);
-
-          // 2. Trích xuất thông tin người dùng thật từ Google
-          const realName = googleProfile.name || googleProfile.given_name || 'Khách Hàng Google';
-          const realEmail = googleProfile.email;
-          const realAvatar = googleProfile.picture || '';
-          const googleSub = googleProfile.sub;
-
-          // 3. Gửi về Backend để đồng bộ trực tiếp vào MongoDB Atlas (Bộ sưu tập users & trackingevents)
-          let persistentUser = null;
-          try {
-            const apiRes = await fetch('/api/users/google-auth', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                name: realName,
-                email: realEmail,
-                avatar: realAvatar,
-                googleId: googleSub
-              })
-            });
-            const apiData = await apiRes.json();
-            if (apiData && apiData.success && apiData.user) {
-              persistentUser = apiData.user;
-            }
-          } catch (apiErr) {
-            console.warn('API sync warning:', apiErr);
-          }
-
-          const userObj = persistentUser || {
-            id: 'USR-GG-' + googleSub.slice(-6),
-            name: realName,
-            email: realEmail,
-            avatar: realAvatar,
-            phone: '',
-            role: 'customer',
-            tier: 'Eco Citizen (Thành viên Google)',
-            points: 50,
-            bottlesReturned: 0,
-            ordersCount: 0,
-            isLoggedIn: true
-          };
-
-          userObj.isLoggedIn = true;
-
-          // 4. Lưu phiên và cập nhật giao diện
-          if (typeof TramHatSession !== 'undefined') {
-            TramHatSession.createSession(userObj, true);
-          }
-          saveCurrentUser(userObj);
-          closeAccountModal();
-
-          alert('🎉 Đăng nhập Google thành công!\nChào mừng ' + realName + ' (' + realEmail + ') đến với Trạm Hạt.');
-          setTimeout(() => {
-            switchTab('profile');
-          }, 150);
-        } catch (err) {
-          console.error('Lỗi xử lý xác thực Google:', err);
-          alert('Không thể xác thực tài khoản Google. Chi tiết: ' + err.message);
-        }
-      }
-
-      window.addEventListener('load', () => {
-        setTimeout(initGoogleOAuth, 800);
-      });
-
-      function mockSocialLogin(provider) {
-        const user = {
-          id: 'USR-CUST-100',
-          name: 'Nguyễn An Nhiên',
-          phone: '0901888777',
-          email: 'annhien.office@gmail.com',
-          address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Phường Bến Nghé, Quận 1, TP.HCM',
-          district: 'Quận 1',
-          points: 120,
-          bottlesReturned: 8,
-          ordersCount: 3,
-          tier: 'Eco Citizen (Sống Xanh)',
-          isLoggedIn: true
-        };
-        if (typeof TramHatSession !== 'undefined') {
-          TramHatSession.createSession(user, true);
-        }
-        saveCurrentUser(user);
-        closeAccountModal();
-        setTimeout(() => {
-          switchTab('profile');
-        }, 150);
       }
 
       function goToProfilePage() {

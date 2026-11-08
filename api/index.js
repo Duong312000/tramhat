@@ -474,6 +474,80 @@ app.get(['/api/users', '/users'], async (req, res) => {
   res.json({ success: true, count: 16, data: [], source: 'memory' });
 });
 
+// XÁC THỰC ĐĂNG NHẬP DUY NHẤT BẰNG SỐ ĐIỆN THOẠI & ĐỒNG BỘ MONGODB ATLAS
+app.post(['/api/users/phone-auth', '/users/phone-auth'], async (req, res) => {
+  try {
+    let { phone, name, address, district } = req.body || {};
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Vui lòng cung cấp số điện thoại' });
+    }
+    phone = phone.replace(/[^0-9]/g, '');
+
+    let userObj = null;
+
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+      const db = mongoose.connection.db;
+      // 1. Tìm kiếm trong MongoDB
+      const existing = await db.collection('users').findOne({ phone: phone });
+      if (existing) {
+        userObj = existing;
+      } else {
+        // Tạo khách hàng mới
+        userObj = {
+          id: 'USR-TEL-' + phone.slice(-6),
+          name: name || ('Khách Hàng ' + phone.slice(-4)),
+          phone: phone,
+          email: phone + '@khachhang.tramhat.vn',
+          address: address || 'TP.HCM',
+          district: district || 'TP.HCM',
+          role: 'customer',
+          source: 'phone_auth',
+          channelGroup: 'Direct / Phone Login',
+          tier: 'Eco Citizen (Thành viên Mới)',
+          points: 50,
+          bottlesReturned: 0,
+          ordersCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        await db.collection('users').insertOne(userObj);
+      }
+
+      // Ghi nhận sự kiện tracking thật vào MongoDB
+      await db.collection('trackingevents').insertOne({
+        eventType: 'user_login',
+        eventCategory: 'auth',
+        provider: 'phone',
+        phone: phone,
+        userName: userObj.name,
+        userId: userObj.id,
+        createdAt: new Date()
+      });
+    } else {
+      userObj = {
+        id: 'USR-TEL-' + phone.slice(-6),
+        name: name || ('Khách Hàng ' + phone.slice(-4)),
+        phone: phone,
+        email: phone + '@khachhang.tramhat.vn',
+        address: address || 'TP.HCM',
+        role: 'customer',
+        tier: 'Eco Citizen',
+        points: 50,
+        bottlesReturned: 0,
+        ordersCount: 0
+      };
+    }
+
+    return res.json({
+      success: true,
+      message: 'Đăng nhập số điện thoại thành công',
+      user: userObj
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // XÁC THỰC GOOGLE OAUTH THẬT & ĐỒNG BỘ MONGODB ATLAS
 app.post(['/api/users/google-auth', '/users/google-auth'], async (req, res) => {
   try {

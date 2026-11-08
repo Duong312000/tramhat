@@ -79,6 +79,46 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+exports.phoneAuth = async (req, res) => {
+  try {
+    let { phone, name, address, district } = req.body || {};
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Vui lòng cung cấp số điện thoại' });
+    }
+    phone = phone.replace(/[^0-9]/g, '');
+
+    let existing = await User.findOne({ phone });
+    if (existing) {
+      const resUser = existing.toObject();
+      delete resUser.password;
+      return res.json({ success: true, user: resUser });
+    }
+
+    const id = 'USR-TEL-' + phone.slice(-6);
+    const newUser = new User({
+      id,
+      name: name || ('Khách Hàng ' + phone.slice(-4)),
+      phone,
+      email: phone + '@khachhang.tramhat.vn',
+      address: address || 'TP.HCM',
+      district: district || 'TP.HCM',
+      role: 'customer',
+      source: 'phone_auth',
+      channelGroup: 'Direct / Phone Login',
+      tier: 'Eco Citizen (Thành viên Mới)',
+      points: 50,
+      bottlesReturned: 0,
+      ordersCount: 0
+    });
+    const saved = await newUser.save();
+    const resUser = saved.toObject();
+    delete resUser.password;
+    res.status(201).json({ success: true, user: resUser });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 exports.googleAuth = async (req, res) => {
   try {
     const { name, email, avatar, googleId } = req.body || {};
