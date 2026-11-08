@@ -4,11 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trạm Hạt • Báo Cáo Hiệu Suất Website & Chuyển Đổi (Mục 7.2.4)</title>
+  <title>Trạm Hạt • Bảng Điều Khiển Dành Cho Doanh Nghiệp (Mục 7.2.4)</title>
   <link rel="icon" type="image/png" href="images/logo_thumb.png">
 
-  <!-- Bootstrap 5 CSS -->
+  <!-- Bootstrap 5 CSS & Bootstrap Icons (Chuẩn Facebook Icon Circle) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
   <!-- Fonts: Nunito & Be Vietnam Pro -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,14 +21,13 @@
 
   <style>
     /* ==========================================================================
-       TỐI GIẢN TRIỆT ĐỂ (RADICAL MINIMALISM - FACEBOOK & TIKTOK DASHBOARD)
-       Chuẩn hóa theo 4 Nhóm Chỉ Số Mục 7.2.4 Báo Cáo Marketing Website
+       GIAO DIỆN CHUẨN FACEBOOK PROFESSIONAL DASHBOARD & TIKTOK ANALYTICS
+       Sidebar dạng Icon Tròn (36px Circle) • Typography Facebook • Không vỡ dòng
        ========================================================================== */
     :root {
-      --bg-page: #F6F7F9;
+      --bg-page: #F0F2F5;
       --bg-card: #FFFFFF;
       --border-subtle: #E4E6EB;
-      --border-active: #0866FF;
       
       --text-title: #050505;
       --text-body: #1C1E21;
@@ -36,7 +37,6 @@
       --accent-blue-soft: #E7F3FF;
       --accent-green: #00A400;
       --accent-green-soft: #E8F5E9;
-      --accent-orange: #ED8936;
       --accent-red: #FA383E;
       
       --font-title: 'Nunito', -apple-system, sans-serif;
@@ -53,7 +53,7 @@
     body {
       background-color: var(--bg-page);
       color: var(--text-body);
-      font-size: 13.5px;
+      font-size: 14px;
       line-height: 1.45;
       -webkit-font-smoothing: antialiased;
     }
@@ -63,90 +63,169 @@
       font-weight: 800;
     }
 
-    /* Minimal Clean Sidebar */
-    .app-sidebar {
-      width: 225px;
-      background: #FFFFFF;
-      border-right: 1px solid var(--border-subtle);
+    /* ==========================================================================
+       THANH ĐIỀU HƯỚNG BÊN TRÁI CHUẨN FACEBOOK PROFESSIONAL DASHBOARD (280px)
+       ========================================================================== */
+    .fb-sidebar {
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
-      z-index: 1000;
+      width: 280px;
+      background: #FFFFFF;
+      border-right: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 18px 12px;
+      padding: 12px 10px 16px 10px;
+      z-index: 1000;
+      overflow-y: auto;
     }
 
-    .brand-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 6px 10px 18px 10px;
-      border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 14px;
+    .fb-brand-header {
+      padding: 10px 12px 14px 12px;
     }
 
-    .brand-box img {
-      width: 30px;
-      height: 30px;
-      border-radius: 6px;
-    }
-
-    .brand-text {
-      font-size: 16px;
+    .fb-brand-title {
+      font-size: 19px;
       font-weight: 800;
       color: var(--text-title);
+      line-height: 1.25;
       letter-spacing: -0.02em;
+      margin: 0;
     }
 
-    .brand-sub {
-      font-size: 11px;
+    .fb-brand-subtitle {
+      font-size: 12px;
       color: var(--text-muted);
-      font-weight: 500;
+      margin-top: 3px;
     }
 
-    .nav-list {
+    .fb-nav-menu {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
-    .nav-item-btn {
+    /* Mục Nav Item (Icon Tròn 36px + Label không vỡ dòng) */
+    .fb-nav-item {
       display: flex;
       align-items: center;
-      padding: 9px 12px;
+      gap: 12px;
+      padding: 8px 12px;
       border-radius: 8px;
-      color: var(--text-body);
-      font-size: 13.5px;
-      font-weight: 600;
       cursor: pointer;
+      color: var(--text-title);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease;
+      white-space: nowrap;
       border: none;
       background: transparent;
       width: 100%;
       text-align: left;
-      transition: background 0.15s ease;
     }
 
-    .nav-item-btn:hover {
+    .fb-nav-item:hover {
       background: #F0F2F5;
+      color: var(--text-title);
     }
 
-    .nav-item-btn.active {
+    .fb-nav-item.active {
       background: var(--accent-blue-soft);
       color: var(--accent-blue);
       font-weight: 700;
     }
 
-    /* Main Content */
-    .app-main {
-      margin-left: 225px;
-      padding: 22px 34px 50px 34px;
-      max-width: 1300px;
+    /* Icon Tròn Signature Facebook (36px Circle) */
+    .fb-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #E4E6EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #050505;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
     }
 
-    /* Header Bar */
+    .fb-nav-item:hover .fb-icon-circle {
+      background: #D8DADF;
+    }
+
+    .fb-nav-item.active .fb-icon-circle {
+      background: var(--accent-blue);
+      color: #FFFFFF;
+    }
+
+    .fb-nav-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Accordion Section Header */
+    .fb-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 12px 6px 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      cursor: default;
+    }
+
+    .fb-subnav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* Nút CTA Xanh Facebook (Tương tự nút "Tạo bài viết ▾") */
+    .fb-sidebar-bottom {
+      padding: 12px 8px 4px 8px;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 12px;
+    }
+
+    .fb-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--accent-blue);
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      width: 100%;
+      transition: background 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .fb-btn-primary:hover {
+      background: #0055D6;
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       MAIN VIEWPORT & CARDS (Facebook & TikTok Clean Layout)
+       ========================================================================== */
+    .app-main {
+      margin-left: 280px;
+      padding: 24px 36px 60px 36px;
+      max-width: 1320px;
+    }
+
     .app-topbar {
       display: flex;
       align-items: center;
@@ -155,7 +234,7 @@
     }
 
     .page-title {
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 800;
       color: var(--text-title);
       margin-bottom: 3px;
@@ -163,7 +242,7 @@
     }
 
     .page-subtitle {
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
@@ -185,9 +264,9 @@
     .period-btn {
       border: none;
       background: transparent;
-      padding: 4px 14px;
+      padding: 5px 16px;
       border-radius: 16px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
@@ -205,7 +284,7 @@
       background: #FFFFFF;
       padding: 6px 14px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-body);
       cursor: pointer;
@@ -221,7 +300,7 @@
       color: var(--text-title);
     }
 
-    /* Section White Cards */
+    /* White Cards */
     .metric-section-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
@@ -239,7 +318,7 @@
     }
 
     .section-title {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-title);
       letter-spacing: -0.01em;
@@ -255,7 +334,7 @@
       color: #4A5568;
     }
 
-    /* 4 METRIC TILES AS CONTROLLERS (Nhóm 1 & 3: Users, Sessions, Leads, Orders) */
+    /* 4 METRIC TILES AS CONTROLLERS */
     .metric-tiles-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -284,7 +363,7 @@
     }
 
     .metric-name {
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-muted);
       font-weight: 600;
       margin-bottom: 4px;
@@ -348,7 +427,7 @@
       transition: width 0.4s ease;
     }
 
-    /* STEP-BY-STEP FUNNEL (NHÓM 3 - PHẦN QUAN TRỌNG NHẤT) */
+    /* STEP-BY-STEP FUNNEL (NHÓM 3) */
     .funnel-step-list {
       display: flex;
       flex-direction: column;
@@ -393,71 +472,7 @@
       margin-top: 4px;
     }
 
-    /* CONTENT THUMBNAILS (NHÓM 2 - TOP VIEWED PAGES & PRODUCTS) */
-    .content-scroll-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-    }
-
-    .content-card {
-      background: #FFFFFF;
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
-    }
-
-    .content-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    .content-thumb {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      background: #F0F2F5;
-      display: block;
-    }
-
-    .content-card-body {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .content-card-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--text-title);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .content-card-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .content-card-stats {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid #F0F2F5;
-      padding-top: 6px;
-      margin-top: 4px;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-title);
-    }
-
-    /* NATURAL CUSTOMER STREAM (FACEBOOK SOCIAL FEED) */
+    /* NATURAL CUSTOMER STREAM (FACEBOOK FEED) */
     .stream-feed-list {
       display: flex;
       flex-direction: column;
@@ -566,7 +581,62 @@
       color: #FFFFFF;
     }
 
-    /* Offcanvas Customer Drawer */
+    /* Content Cards */
+    .content-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease;
+    }
+
+    .content-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .content-thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #F0F2F5;
+      display: block;
+    }
+
+    .content-card-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .content-card-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .content-card-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .content-card-stats {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #F0F2F5;
+      padding-top: 6px;
+      margin-top: 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    /* Drawer */
     .offcanvas-customer {
       width: 440px !important;
       border-left: 1px solid var(--border-subtle);
@@ -592,40 +662,88 @@
 
 <body>
 
-  <!-- MINIMAL LEFT SIDEBAR (No Noisy Icons, Tailored to Section 7.2.4) -->
-  <aside class="app-sidebar">
+  <!-- ==========================================================================
+       THANH BÊN (SIDEBAR) CHUẨN FACEBOOK PROFESSIONAL DASHBOARD
+       ========================================================================== -->
+  <aside class="fb-sidebar">
     <div>
-      <div class="brand-box">
-        <img src="images/logo_thumb.png" alt="Trạm Hạt Logo" onerror="this.src='https://placehold.co/30x30/0866FF/FFFFFF?text=TH'">
-        <div>
-          <div class="brand-text">Trạm Hạt</div>
-          <div class="brand-sub">Báo Cáo Mục 7.2.4 (Website)</div>
-        </div>
+      <div class="fb-brand-header">
+        <h2 class="fb-brand-title">Bảng điều khiển dành cho doanh nghiệp</h2>
+        <div class="fb-brand-subtitle">Trạm Hạt • Mục 7.2.4 (Website)</div>
       </div>
 
-      <nav class="nav-list">
-        <button class="nav-item-btn active" onclick="showTab('dashboard', this)">Tổng quan 4 nhóm</button>
-        <button class="nav-item-btn" onclick="showTab('funnel', this)">Phễu chuyển đổi (Nhóm 3)</button>
-        <button class="nav-item-btn" onclick="showTab('traffic', this)">Lưu lượng & UTM (Nhóm 1)</button>
-        <button class="nav-item-btn" onclick="showTab('engagement', this)">Mức độ quan tâm (Nhóm 2)</button>
-        <button class="nav-item-btn" onclick="showTab('orders', this)">Đơn hàng & Khách thật</button>
+      <nav class="fb-nav-menu">
+        <!-- 1. Trang chủ -->
+        <button class="fb-nav-item active" onclick="showTab('dashboard', this)">
+          <div class="fb-icon-circle"><i class="bi bi-house-door-fill"></i></div>
+          <span class="fb-nav-label">Trang chủ</span>
+        </button>
+
+        <!-- Section: Thông tin chi tiết (Mục 7.2.4) -->
+        <div class="fb-section-header">
+          <span>Thông tin chi tiết</span>
+          <i class="bi bi-chevron-up" style="font-size: 12px; color: var(--text-muted);"></i>
+        </div>
+
+        <div class="fb-subnav-list">
+          <!-- Nhóm 1: Lượt xem & Lưu lượng -->
+          <button class="fb-nav-item" onclick="showTab('traffic', this)">
+            <div class="fb-icon-circle"><i class="bi bi-eye-fill"></i></div>
+            <span class="fb-nav-label">Lượt xem & Lưu lượng</span>
+          </button>
+
+          <!-- Nhóm 2: Lượt tương tác -->
+          <button class="fb-nav-item" onclick="showTab('engagement', this)">
+            <div class="fb-icon-circle"><i class="bi bi-chat-dots-fill"></i></div>
+            <span class="fb-nav-label">Lượt tương tác</span>
+          </button>
+
+          <!-- Nhóm 3: Phễu chuyển đổi -->
+          <button class="fb-nav-item" onclick="showTab('funnel', this)">
+            <div class="fb-icon-circle"><i class="bi bi-funnel-fill"></i></div>
+            <span class="fb-nav-label">Phễu chuyển đổi</span>
+          </button>
+
+          <!-- Nhóm 4: Đối tượng & Thiết bị -->
+          <button class="fb-nav-item" onclick="showTab('technical', this)">
+            <div class="fb-icon-circle"><i class="bi bi-people-fill"></i></div>
+            <span class="fb-nav-label">Đối tượng</span>
+          </button>
+        </div>
+
+        <!-- Section: Khách hàng & Đơn hàng -->
+        <div class="fb-section-header">
+          <span>Khách hàng & Đơn hàng</span>
+          <i class="bi bi-chevron-down" style="font-size: 12px; color: var(--text-muted);"></i>
+        </div>
+
+        <div class="fb-subnav-list">
+          <button class="fb-nav-item" onclick="showTab('orders', this)">
+            <div class="fb-icon-circle"><i class="bi bi-receipt-cutoff"></i></div>
+            <span class="fb-nav-label">Đơn hàng & Khách thật</span>
+          </button>
+        </div>
       </nav>
     </div>
 
-    <div>
-      <a href="index.html" target="_blank" class="btn-clean w-100" style="justify-content: center;">
-        Xem cửa hàng &rarr;
+    <!-- Blue Primary Button (Like Facebook's "Tạo bài viết") -->
+    <div class="fb-sidebar-bottom">
+      <a href="index.html" target="_blank" class="fb-btn-primary">
+        <span>Xem cửa hàng Trạm Hạt</span>
+        <i class="bi bi-arrow-up-right"></i>
       </a>
     </div>
   </aside>
 
-  <!-- MAIN VIEWPORT -->
+  <!-- ==========================================================================
+       MAIN VIEWPORT
+       ========================================================================== -->
   <main class="app-main">
 
-    <!-- TOPBAR (Clean Facebook Insights Header, No redundant DB pill or logout) -->
+    <!-- TOPBAR -->
     <header class="app-topbar">
       <div>
-        <h1 class="page-title">Hiệu suất Website (Mục 7.2.4)</h1>
+        <h1 class="page-title">Trang tổng quan hiệu suất Website</h1>
         <div class="page-subtitle">Đo lường từ Google Analytics 4 (GA4) & Đồng bộ trực tiếp từ Database</div>
       </div>
 
@@ -643,7 +761,7 @@
     </header>
 
     <!-- ==========================================================================
-         TAB 1: TỔNG QUAN 4 NHÓM CHỈ SỐ GA4 (CHUẨN MỤC 7.2.4)
+         TAB 1: TRANG CHỦ (TỔNG QUAN)
          ========================================================================== -->
     <div id="tab-dashboard">
 
@@ -651,7 +769,7 @@
       <section class="metric-section-card">
         <div class="section-header">
           <div>
-            <div class="section-title">Chỉ số đo lường chính (GA4 & Chuyển đổi)</div>
+            <div class="section-title">Số liệu chính (GA4 & Chuyển đổi)</div>
             <div class="text-muted" style="font-size: 12px;" id="metric-period-label">11 Tháng 10 - 7 Tháng 11</div>
           </div>
           <div class="text-muted" style="font-size: 12px;">Nhấp thẻ để xem biểu đồ xu hướng</div>
@@ -786,7 +904,7 @@
               <div class="col-6">
                 <div class="p-3 border rounded-3 bg-light">
                   <div class="text-muted small">Tỷ lệ Lead / Phiên</div>
-                  <div class="fs-4 fw-bold" style="color: var(--accent-orange);">3.75%</div>
+                  <div class="fs-4 fw-bold" style="color: var(--accent-blue);">3.75%</div>
                   <div class="text-muted" style="font-size: 11px;">48 lead / 1.280 phiên</div>
                 </div>
               </div>
@@ -815,7 +933,7 @@
 
       </div>
 
-      <!-- NHÓM 3: PHỄU CHUYỂN ĐỔI TỪNG BƯỚC & ĐIỂM RƠI RỤNG (PHẦN THẦY QUAN TÂM NHẤT) -->
+      <!-- NHÓM 3: PHỄU CHUYỂN ĐỔI TỪNG BƯỚC & ĐIỂM RƠI RỤNG -->
       <section class="metric-section-card mb-4">
         <div class="section-header">
           <div>
@@ -922,41 +1040,6 @@
         </div>
       </section>
 
-      <!-- NHÓM 4: CHỈ SỐ KỸ THUẬT (MOBILE VS DESKTOP & TỐC ĐỘ TẢI TRANG) -->
-      <section class="metric-section-card mb-4">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Nhóm 4: Chỉ số kỹ thuật (Thiết bị & Tốc độ tải trang)</div>
-            <div class="text-muted" style="font-size: 12px;">Khách mục tiêu chủ yếu truy cập bằng điện thoại thông minh</div>
-          </div>
-          <span class="section-badge">Technical Performance</span>
-        </div>
-
-        <div class="row g-3">
-          <div class="col-md-4">
-            <div class="p-3 border rounded-3 bg-light text-center">
-              <div class="text-muted small mb-1">Điện thoại (Mobile)</div>
-              <div class="fs-3 fw-bold" style="color: var(--accent-blue);">70.0%</div>
-              <div class="text-muted small">896 phiên (Thiết bị chính)</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="p-3 border rounded-3 bg-light text-center">
-              <div class="text-muted small mb-1">Máy tính (Desktop)</div>
-              <div class="fs-3 fw-bold">25.9%</div>
-              <div class="text-muted small">332 phiên làm việc văn phòng</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="p-3 border rounded-3 bg-light text-center">
-              <div class="text-muted small mb-1">Tốc độ tải trang</div>
-              <div class="fs-3 fw-bold" style="color: var(--accent-green);">1.18s</div>
-              <div class="text-muted small">0 trang lỗi • Uptime 99.98%</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- DÒNG KHÁCH HÀNG & ĐƠN HÀNG THỰC TẾ (ĐỒNG BỘ TỪ MONGODB ATLAS) -->
       <section class="metric-section-card">
         <div class="section-header">
@@ -975,14 +1058,88 @@
     </div>
 
     <!-- ==========================================================================
-         TAB 2: PHỄU CHUYỂN ĐỔI CHI TIẾT (NHÓM 3)
+         TAB 2: LƯU LƯỢNG & NGUỒN UTM (NHÓM 1)
+         ========================================================================== -->
+    <div id="tab-traffic" style="display: none;">
+      <section class="metric-section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Lượt xem & Lưu lượng truy cập (Nhóm 1)</div>
+            <div class="text-muted" style="font-size: 12px;">Chi tiết Traffic Acquisition từ GA4</div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="p-3 border rounded-3 bg-light">
+              <h6 class="fw-bold mb-3">Bảng phân bổ UTM Campaign</h6>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>TikTok • #GheTramCoChuyen</span>
+                <strong>576 phiên (49.5%)</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>Facebook • Halloween 6 Vị</span>
+                <strong>358 phiên (30.8%)</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>Instagram • Story Giảm 15%</span>
+                <strong>230 phiên (19.7%)</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>Direct / Bookmark / Zalo</span>
+                <strong>116 phiên (9.0%)</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-3 border rounded-3 bg-light">
+              <h6 class="fw-bold mb-3">Tỷ lệ chuyển đổi theo nguồn</h6>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>TikTok: 576 phiên → 24 đơn</span>
+                <strong style="color: var(--accent-blue);">CR: 4.16%</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>Facebook: 358 phiên → 19 đơn</span>
+                <strong style="color: var(--accent-green);">CR: 5.30% (Chất lượng cao nhất)</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>Instagram: 230 phiên → 11 đơn</span>
+                <strong style="color: var(--accent-blue);">CR: 4.78%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 3: LƯỢT TƯƠNG TÁC & NỘI DUNG (NHÓM 2)
+         ========================================================================== -->
+    <div id="tab-engagement" style="display: none;">
+      <section class="metric-section-card">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Lượt tương tác & Nội dung hút người xem (Nhóm 2)</div>
+            <div class="text-muted" style="font-size: 12px;">Đo lường thời gian đọc và 6 vị sữa hạt tươi</div>
+          </div>
+        </div>
+
+        <div class="row g-3" id="products-content-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+    </div>
+
+    <!-- ==========================================================================
+         TAB 4: PHỄU CHUYỂN ĐỔI (NHÓM 3)
          ========================================================================== -->
     <div id="tab-funnel" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
           <div>
-            <div class="section-title">Chi tiết Phễu Chuyển Đổi & Điểm Rơi Rụng (Nhóm 3)</div>
-            <div class="text-muted" style="font-size: 12px;">Dữ liệu đối chiếu phục vụ bài báo cáo và thuyết trình</div>
+            <div class="section-title">Bảng đối chiếu Phễu chuyển đổi & Điểm rơi rụng</div>
+            <div class="text-muted" style="font-size: 12px;">Dữ liệu chi tiết phục vụ bài viết Mục 7.2.4</div>
           </div>
         </div>
 
@@ -1023,8 +1180,8 @@
                 <td><strong>4. Mở Modal Đặt Hàng</strong></td>
                 <td>162</td>
                 <td>12.7%</td>
-                <td><span class="text-danger fw-bold">-68.4% (Cao nhất)</span></td>
-                <td>Điểm thắt cổ chai lớn nhất do phân vân combo</td>
+                <td><span class="text-danger fw-bold">-68.4% (Điểm rơi rụng cao nhất)</span></td>
+                <td>Điểm thắt cổ chai do phân vân combo và phí ship</td>
               </tr>
               <tr>
                 <td><strong>5. Gửi Form / Để lại SĐT</strong></td>
@@ -1047,55 +1204,37 @@
     </div>
 
     <!-- ==========================================================================
-         TAB 3: LƯU LƯỢNG & NGUỒN UTM (NHÓM 1)
+         TAB 5: ĐỐI TƯỢNG & KỸ THUẬT (NHÓM 4)
          ========================================================================== -->
-    <div id="tab-traffic" style="display: none;">
+    <div id="tab-technical" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
           <div>
-            <div class="section-title">Nhóm 1: Báo cáo Lưu lượng & Kênh UTM</div>
-            <div class="text-muted" style="font-size: 12px;">Đo lường kênh dẫn lưu lượng từ 7.2.1 – 7.2.3</div>
+            <div class="section-title">Đối tượng & Chỉ số kỹ thuật (Nhóm 4)</div>
+            <div class="text-muted" style="font-size: 12px;">Thiết bị, Nhân khẩu học & Hiệu năng tải trang</div>
           </div>
         </div>
 
         <div class="row g-3">
-          <div class="col-md-6">
-            <div class="p-3 border rounded-3 bg-light">
-              <h6 class="fw-bold mb-3">Bảng phân bổ UTM Campaign</h6>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>utm_source=tiktok • #GheTramCoChuyen</span>
-                <strong>576 phiên (49.5%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>utm_source=facebook • Halloween 6 Vị</span>
-                <strong>358 phiên (30.8%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>utm_source=instagram • Story Giảm 15%</span>
-                <strong>230 phiên (19.7%)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2">
-                <span>Direct / Bookmark / Zalo</span>
-                <strong>116 phiên (9.0%)</strong>
-              </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-light text-center">
+              <div class="text-muted small mb-1">Điện thoại di động (Mobile)</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-blue);">70.0%</div>
+              <div class="text-muted small">896 phiên • Thiết bị chính</div>
             </div>
           </div>
-
-          <div class="col-md-6">
-            <div class="p-3 border rounded-3 bg-light">
-              <h6 class="fw-bold mb-3">Hiệu quả chuyển đổi theo từng kênh</h6>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>TikTok: 576 phiên → 24 đơn</span>
-                <strong style="color: var(--accent-blue);">CR: 4.16%</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Facebook: 358 phiên → 19 đơn</span>
-                <strong style="color: var(--accent-green);">CR: 5.30% (Chất lượng cao nhất)</strong>
-              </div>
-              <div class="d-flex justify-content-between py-2">
-                <span>Instagram: 230 phiên → 11 đơn</span>
-                <strong style="color: var(--accent-orange);">CR: 4.78%</strong>
-              </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-light text-center">
+              <div class="text-muted small mb-1">Máy tính (Desktop)</div>
+              <div class="fs-2 fw-bold">25.9%</div>
+              <div class="text-muted small">332 phiên làm việc</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-light text-center">
+              <div class="text-muted small mb-1">Tốc độ tải trang TB</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-green);">1.18s</div>
+              <div class="text-muted small">0 trang lỗi • Uptime 99.98%</div>
             </div>
           </div>
         </div>
@@ -1103,31 +1242,13 @@
     </div>
 
     <!-- ==========================================================================
-         TAB 4: MỨC ĐỘ QUAN TÂM & NỘI DUNG (NHÓM 2)
-         ========================================================================== -->
-    <div id="tab-engagement" style="display: none;">
-      <section class="metric-section-card">
-        <div class="section-header">
-          <div>
-            <div class="section-title">Nhóm 2: Mức độ quan tâm & Nội dung hút người xem nhất</div>
-            <div class="text-muted" style="font-size: 12px;">Xếp hạng 6 vị sữa và các bài viết nội dung</div>
-          </div>
-        </div>
-
-        <div class="row g-3" id="products-content-grid">
-          <!-- Rendered dynamically -->
-        </div>
-      </section>
-    </div>
-
-    <!-- ==========================================================================
-         TAB 5: ĐƠN HÀNG THỰC TẾ
+         TAB 6: ĐƠN HÀNG & KHÁCH HÀNG THỰC TẾ
          ========================================================================== -->
     <div id="tab-orders" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
           <div>
-            <div class="section-title">Danh sách đơn hàng thực tế</div>
+            <div class="section-title">Danh sách đơn hàng & Khách hàng thực tế</div>
             <div class="text-muted" style="font-size: 12px;" id="orders-full-label">Đồng bộ từ MongoDB Atlas</div>
           </div>
         </div>
@@ -1612,19 +1733,19 @@
     }
 
     // ==========================================================================
-    // CHUYỂN TAB CHÍNH
+    // CHUYỂN TAB CHÍNH (ĐỒNG BỘ NÚT VÀ GIAO DIỆN)
     // ==========================================================================
     function showTab(tabId, btnEl) {
-      ['dashboard', 'funnel', 'traffic', 'engagement', 'orders'].forEach(t => {
+      ['dashboard', 'traffic', 'engagement', 'funnel', 'technical', 'orders'].forEach(t => {
         const el = document.getElementById('tab-' + t);
         if (el) el.style.display = (t === tabId) ? 'block' : 'none';
       });
 
-      document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.fb-nav-item').forEach(b => b.classList.remove('active'));
       if (btnEl) {
         btnEl.classList.add('active');
       } else {
-        const matchingBtn = Array.from(document.querySelectorAll('.nav-item-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
+        const matchingBtn = Array.from(document.querySelectorAll('.fb-nav-item')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
         if (matchingBtn) matchingBtn.classList.add('active');
       }
 
