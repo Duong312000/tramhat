@@ -456,7 +456,7 @@ app.get('/api/tracking/dashboard', async (req, res) => {
 });
 
 // USERS / CUSTOMERS (22 KHÁCH HÀNG THỰC TẾ)
-app.get('/api/users', async (req, res) => {
+app.get(['/api/users', '/users'], async (req, res) => {
   if (mongoose.connection && mongoose.connection.readyState === 1) {
     try {
       const dbUsers = await mongoose.connection.db.collection('users').find({ role: 'customer' }).sort({ createdAt: -1 }).toArray();
@@ -469,7 +469,7 @@ app.get('/api/users', async (req, res) => {
 });
 
 // 5. LEADS (CRM)
-app.get('/api/leads', async (req, res) => {
+app.get(['/api/leads', '/leads'], async (req, res) => {
   if (mongoose.connection && mongoose.connection.readyState === 1) {
     try {
       const dbLeads = await mongoose.connection.db.collection('leads').find({}).sort({ createdAt: -1 }).toArray();
