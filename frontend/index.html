@@ -3472,8 +3472,8 @@
           <!-- Render bằng javascript -->
         </div>
 
-        <!-- Phần tính toán, mã coupon & thanh toán -->
-        <div class="border-top pt-3 mt-3" id="cartCheckoutSection">
+        <!-- Phần tính toán, mã coupon & thanh toán (Mặc định ẩn khi giỏ rỗng) -->
+        <div class="border-top pt-3 mt-3 d-none" id="cartCheckoutSection">
 
           <!-- Nhập mã giảm giá -->
           <div class="input-group input-group-sm mb-3">
@@ -5560,6 +5560,7 @@
           cart.push({ name, priceVND, img, size, sweet, qty: 1 });
         }
         renderCart();
+        showFloatingToast(`Đã thêm "${name}" vào giỏ hàng!`, 'success');
       }
 
       function updateCartQty(idx, delta) {
@@ -5753,16 +5754,27 @@
         const code = (document.getElementById('couponCodeInput')?.value || '').trim().toUpperCase();
         const noticeEl = document.getElementById('couponNotice');
 
+        if (!code) {
+          showFloatingToast("Vui lòng nhập mã giảm giá trước khi bấm áp dụng!", "warning");
+          return;
+        }
+
         if (code === 'TRAMHAT10') {
           currentCouponDiscount = 0.10;
-          noticeEl.innerText = "Áp dụng thành công mã TRAMHAT10: Giảm 10% tổng đơn!";
-          noticeEl.classList.remove('d-none');
+          if (noticeEl) {
+            noticeEl.innerText = "Áp dụng thành công mã TRAMHAT10: Giảm 10% tổng đơn!";
+            noticeEl.classList.remove('d-none');
+          }
+          showFloatingToast("Đã áp dụng mã TRAMHAT10: Giảm 10% tổng đơn!", "success");
         } else if (code === 'FREESHIP' || code === 'TRAMHAT15K') {
           currentCouponDiscount = 15000;
-          noticeEl.innerText = "Áp dụng thành công mã Freeship giao lạnh 15.000đ!";
-          noticeEl.classList.remove('d-none');
+          if (noticeEl) {
+            noticeEl.innerText = "Áp dụng thành công mã Freeship giao lạnh 15.000đ!";
+            noticeEl.classList.remove('d-none');
+          }
+          showFloatingToast("Đã kích hoạt ưu đãi Miễn phí giao lạnh 15.000đ!", "success");
         } else {
-          alert("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10, FREESHIP hoặc TRAMHAT15K");
+          showFloatingToast("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10 hoặc FREESHIP", "warning");
           if (noticeEl) noticeEl.classList.add('d-none');
           currentCouponDiscount = 0;
         }
@@ -8096,6 +8108,7 @@
         }
         checkAdminAuth();
         initStarRatingPicker();
+        renderCart();
         fetchAndApplyJSONData();
         try {
           const savedContent = localStorage.getItem('tramhat_custom_content');
