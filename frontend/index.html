@@ -3724,6 +3724,15 @@
         if (tabId && tabId.startsWith('#')) tabId = tabId.slice(1);
         if (!tabId) tabId = 'home';
 
+        // Nếu khách chưa đăng nhập mà bấm vào profile -> Mở ngay modal đăng nhập số điện thoại
+        if (tabId === 'profile') {
+          const u = getCurrentUser();
+          if (!u || !u.isLoggedIn) {
+            openAccountModal(true);
+            return;
+          }
+        }
+
         const validTabs = [
           'home',
           'menu',
@@ -3860,6 +3869,25 @@
       // Dữ liệu đo thật từng giây, lưu vào data/analytics.json & data/orders.json
       // ==========================================================================
       const TramHatTracker = (function () {
+        // HÀM GỬI SỰ KIỆN TRỰC TIẾP VÀO MONGODB ATLAS
+        function dispatchMongoEvent(eventType, extra = {}) {
+          if (isAdminActive()) return;
+          try {
+            fetch('/api/tracking/event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventType: eventType,
+                tab: currentTab,
+                visitorCode: currentVisitorCode,
+                device: getDeviceType(),
+                utmSource: getUtmSource(),
+                clientTime: new Date().toISOString(),
+                ...extra
+              })
+            }).catch(() => {});
+          } catch(e) {}
+        }
         const STORAGE_KEY = 'tramhat_real_analytics';
         const VISITORS_KEY = 'tramhat_visitor_sessions';
         let currentTab = 'home';
@@ -4111,71 +4139,17 @@
         return {
           isAdminActive: isAdminActive,
           recordPageView: function (tabId) {
-            if (isAdminActive()) return; // KHÔNG THU THẬP KHI ADMIN LÀM VIỆC
+            if (isAdminActive()) return;
             currentTab = tabId || 'home';
-            loggedDepths = {}; // reset scroll tracker for new tab
+            loggedDepths = {};
             if (!data.pageViews[currentTab]) {
               data.pageViews[currentTab] = { name: currentTab, views: 0, totalSeconds: 0 };
             }
             data.pageViews[currentTab].views++;
             data.totalVisits++;
-            logEvent('Xem Trang', 'Khách truy cập mục ' + (data.pageViews[currentTab].name || currentTab));
-            try {
-              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
-                window.TramHatAPI.sendEvent('page_view', { tab: currentTab });
-              }
-            } catch (e) { }
-          },
-          recordProductView: function (key, name) {
-            if (isAdminActive()) return;
-            data.productViews++;
-            const pName = name || key;
-            logEvent('Xem Sản Phẩm', 'Khách xem chi tiết: ' + pName);
-            updateCurrentVisitor(v => {
-              if (!v.flavors.includes(pName)) v.flavors.push(pName);
-            });
-            try {
-              if (window.TramHatAPI && typeof window.TramHatAPI.trackProductView === 'function') {
-                window.TramHatAPI.trackProductView(key, pName);
-              }
-            } catch (e) { }
-          },
-          recordAddToCart: function (key, name) {
-            if (isAdminActive()) return;
-            data.addToCartCount++;
-            const pName = name || key;
-            logEvent('Thêm Giỏ Hàng', 'Khách thêm vào giỏ: ' + pName);
-            updateCurrentVisitor(v => {
-              v.hasCart = true;
-              v.status = 'Đã Thêm Giỏ Hàng';
-              if (!v.flavors.includes(pName)) v.flavors.push(pName);
-            });
-            try {
-              if (window.TramHatAPI && typeof window.TramHatAPI.trackAddToCart === 'function') {
-                window.TramHatAPI.trackAddToCart(key, pName);
-              }
-            } catch (e) { }
-          },
-          recordCheckoutStart: function () {
-            if (isAdminActive()) return;
-            data.checkoutCount++;
-            logEvent('Mở Giỏ Hàng', 'Khách mở giỏ hàng chuẩn bị đặt mua');
-            try {
-              if (window.TramHatAPI && typeof window.TramHatAPI.recordCheckoutStart === 'function') {
-                window.TramHatAPI.recordCheckoutStart();
-              }
-            } catch (e) { }
-          },
-          recordPurchase: function (totalVND, orderId) {
-            if (isAdminActive()) return;
-            data.purchasesCount++;
-            data.revenueVND += (totalVND || 0);
-            logEvent('Đặt Hàng Thành Công', 'Đơn hàng #' + orderId + ' (' + (totalVND || 0).toLocaleString('vi-VN') + 'đ)');
-            updateCurrentVisitor(v => {
-              v.hasOrdered = true;
-              v.status = 'Đã Đặt Hàng Thành Công';
-            });
+            logEvent('Xem Trang', 'Khách xem trang ' + (data.pageViews[currentTab].name || currentTab));
             persist();
+            dispatchMongoEvent('page_view', { tab: currentTab });
             try {
               if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
                 window.TramHatAPI.sendEvent('purchase', { metadata: { totalVND, orderId } });
@@ -6291,21 +6265,21 @@
       window.TramHatSession = TramHatSession;
 
       const DEFAULT_USER = {
-        name: 'Nguyễn An Nhiên',
-        phone: '0901888777',
-        email: 'annhien.office@gmail.com',
-        address: 'Tầng 4, Tòa nhà Bitexco, 02 Hải Triều, Phường Bến Nghé, Quận 1, TP.HCM',
-        points: 120,
-        bottlesReturned: 8,
-        ordersCount: 3,
-        tier: 'Eco Citizen (Sống Xanh)',
-        isLoggedIn: true
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        points: 0,
+        bottlesReturned: 0,
+        ordersCount: 0,
+        tier: '',
+        isLoggedIn: false
       };
 
       function getCurrentUser() {
         if (typeof TramHatSession !== 'undefined') {
           const sess = TramHatSession.getSession();
-          if (sess && sess.user) {
+          if (sess && sess.user && sess.user.isLoggedIn) {
             return { ...sess.user, role: sess.role, isLoggedIn: true };
           }
         }
@@ -6313,20 +6287,23 @@
           const stored = localStorage.getItem('tramhat_current_user');
           if (stored) {
             const parsed = JSON.parse(stored);
-            if (parsed && typeof parsed === 'object') return parsed;
+            if (parsed && typeof parsed === 'object' && parsed.isLoggedIn) {
+              return parsed;
+            }
           }
         } catch (e) { }
-        return { ...DEFAULT_USER };
+        return { ...DEFAULT_USER, isLoggedIn: false };
       }
 
       function saveCurrentUser(user) {
-        localStorage.setItem('tramhat_current_user', JSON.stringify(user));
+        if (user && user.isLoggedIn) {
+          localStorage.setItem('tramhat_current_user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('tramhat_current_user');
+        }
         syncUserUI();
       }
 
-      // Khi bấm vào nút Trang Cá Nhân hoặc Icon trên Navbar:
-      // - Nếu ĐÃ đăng nhập: Mở thẳng trang cá nhân (switchTab('profile'))
-      // - Nếu CHƯA đăng nhập: Mở modal để nhập tài khoản
       function handleNavProfileClick() {
         const user = getCurrentUser();
         if (user && user.isLoggedIn) {
@@ -6336,7 +6313,7 @@
             switchTab('profile');
           }
         } else {
-          openAccountModal();
+          openAccountModal(true);
         }
       }
 
@@ -6352,7 +6329,10 @@
         } else {
           if (loggedInView) loggedInView.classList.add('d-none');
           if (loginForm) loginForm.classList.remove('d-none');
-          if (phoneInput) phoneInput.value = '';
+          if (phoneInput) {
+            phoneInput.value = '';
+            setTimeout(() => phoneInput.focus(), 300);
+          }
         }
 
         const modalEl = document.getElementById('accountModal');
@@ -6391,7 +6371,7 @@
       }
 
       async function executePhoneLogin(rawPhone) {
-        const clean = rawPhone.trim().replace(/[^0-9]/g, '');
+        const clean = (rawPhone || '').trim().replace(/[^0-9]/g, '');
         if (!clean || clean.length < 9) {
           alert('Vui lòng nhập số điện thoại hợp lệ (10 chữ số)!');
           return;
@@ -6399,7 +6379,7 @@
 
         const isRemember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
 
-        // 1. Kiểm tra tài khoản Quản Trị Viên (admin)
+        // 1. Quản trị viên
         if (clean === '0909999999' || rawPhone.toLowerCase() === 'admin') {
           const adminUser = {
             id: 'admin',
@@ -6423,7 +6403,7 @@
           return;
         }
 
-        // 2. Tìm kiếm trong danh sách khách hàng cục bộ
+        // 2. Tìm kiếm trong danh sách khách hàng chiến dịch
         const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
         const matched = dataUsers.find(u => u.phone === clean);
 
@@ -6432,7 +6412,7 @@
         if (matched) {
           userObj = { ...matched, isLoggedIn: true };
         } else {
-          // Khách hàng mới: hỏi tên thân mật (hoặc đặt mặc định)
+          // Khách hàng mới: hỏi tên thân mật
           let custName = prompt('Chào mừng bạn đến với Trạm Hạt!\nVui lòng nhập Họ & Tên của bạn để nhận 50 Hạt Xanh tích lũy:');
           if (!custName || !custName.trim()) custName = 'Khách Hàng (' + clean.slice(-4) + ')';
           else custName = custName.trim();
@@ -6449,7 +6429,7 @@
             });
             const data = await res.json();
             if (data && data.success && data.user) {
-              userObj = data.user;
+              userObj = { ...data.user, isLoggedIn: true };
             }
           } catch (e) { }
 
@@ -6500,9 +6480,12 @@
         localStorage.removeItem('tramhat_admin_auth');
         localStorage.removeItem('tramhat_current_user');
         sessionStorage.removeItem('tramhat_current_user');
+        
+        window.currentUser = null;
         syncUserUI();
         closeAccountModal();
         switchTab('home');
+        alert('Đã đăng xuất tài khoản thành công!');
       }
 
       function goToProfilePage() {
@@ -6520,35 +6503,31 @@
       }
 
       function syncUserUI() {
-        const user = getCurrentUser() || DEFAULT_USER;
-        const initials = getInitials(user ? user.name : 'TH');
+        const user = getCurrentUser();
+        const isLoggedIn = Boolean(user && user.isLoggedIn);
+        const initials = isLoggedIn ? getInitials(user.name || user.phone || 'TH') : 'TH';
 
-        // Navbar Icon & Button styling
+        // 1. Navbar Icon Button
         const navAccountBtn = document.getElementById('navAccountIconBtn');
         if (navAccountBtn) {
-          if (user && user.isLoggedIn) {
+          if (isLoggedIn) {
             navAccountBtn.classList.add('text-danger', 'border-danger');
-            navAccountBtn.title = 'Hồ sơ: ' + (user.name || 'Khách hàng') + ' (Bấm để xem trang cá nhân)';
+            navAccountBtn.title = 'Hồ sơ: ' + (user.name || user.phone || 'Thành viên') + ' (Bấm để xem trang cá nhân)';
           } else {
             navAccountBtn.classList.remove('text-danger', 'border-danger');
             navAccountBtn.title = 'Đăng nhập tài khoản';
           }
         }
 
-        // Modal UI
+        // 2. Modal UI
         const modalAvatar = document.getElementById('authModalAvatar');
-        const modalName = document.getElementById('authModalName') || document.getElementById('authModalUserName');
-        const modalEmail = document.getElementById('authModalEmail') || document.getElementById('authModalUserEmail');
-        const modalPoints = document.getElementById('authModalPoints');
-        const modalBottles = document.getElementById('authModalBottles');
-
+        const modalName = document.getElementById('authModalUserName');
+        const modalEmail = document.getElementById('authModalUserEmail');
         if (modalAvatar) modalAvatar.innerText = initials;
-        if (modalName) modalName.innerText = (user && user.name) ? user.name : 'Khách Hàng';
-        if (modalEmail) modalEmail.innerText = (user && user.email) ? user.email : '';
-        if (modalPoints) modalPoints.innerText = ((user && user.points) || 0) + ' Điểm';
-        if (modalBottles) modalBottles.innerText = ((user && user.bottlesReturned) || 0) + ' Chai';
+        if (modalName) modalName.innerText = isLoggedIn ? (user.name || 'Khách Hàng') : 'Chưa đăng nhập';
+        if (modalEmail) modalEmail.innerText = isLoggedIn ? (user.phone || user.email || '') : '';
 
-        // Profile Page UI
+        // 3. Profile Page UI
         const profAvatar = document.getElementById('profilePageAvatar');
         const profName = document.getElementById('profilePageName');
         const profContact = document.getElementById('profilePageContact');
@@ -6556,42 +6535,22 @@
         const statBottles = document.getElementById('profileStatBottles');
         const statOrders = document.getElementById('profileStatOrders');
 
-        if (profAvatar) {
-          if (user && user.avatar) {
-            profAvatar.innerHTML = '<img src="' + user.avatar + '" alt="' + (user.name || '') + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
-          } else {
-            profAvatar.innerText = initials;
-          }
-        }
-        if (modalAvatar) {
-          if (user && user.avatar) {
-            modalAvatar.innerHTML = '<img src="' + user.avatar + '" alt="' + (user.name || '') + '" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">';
-          } else {
-            modalAvatar.innerText = initials;
-          }
-        }
-        if (profName) profName.innerText = (user && user.name) ? user.name : 'Khách Hàng';
-        if (profContact) profContact.innerText = ((user && user.email) || 'Chưa cập nhật email') + ' • ' + ((user && user.phone) || 'Chưa cập nhật SĐT');
-        if (statPoints) statPoints.innerText = (user && user.points) || 0;
-        if (statBottles) statBottles.innerText = (user && user.bottlesReturned) || 0;
-        if (statOrders) statOrders.innerText = (user && user.ordersCount) || 0;
+        if (profAvatar) profAvatar.innerText = initials;
+        if (profName) profName.innerText = isLoggedIn ? (user.name || 'Khách Hàng') : 'Khách Vãng Lai';
+        if (profContact) profContact.innerText = isLoggedIn ? ((user.email ? user.email + ' • ' : '') + (user.phone || '')) : 'Vui lòng đăng nhập để xem thông tin';
+        if (statPoints) statPoints.innerText = isLoggedIn ? (user.points || 0) : 0;
+        if (statBottles) statBottles.innerText = isLoggedIn ? (user.bottlesReturned || 0) : 0;
+        if (statOrders) statOrders.innerText = isLoggedIn ? (user.ordersCount || 0) : 0;
 
-        // Profile Edit Form values
+        // 4. Edit form
         const editName = document.getElementById('profEditName');
         const editPhone = document.getElementById('profEditPhone');
         const editEmail = document.getElementById('profEditEmail');
         const editAddress = document.getElementById('profEditAddress');
-
-        if (editName) editName.value = (user && user.name) ? user.name : '';
-        if (editPhone) editPhone.value = (user && user.phone) ? user.phone : '';
-        if (editEmail) editEmail.value = (user && user.email) ? user.email : '';
-        if (editAddress) editAddress.value = (user && user.address) ? user.address : '';
-
-        // Auto-fill review name if empty
-        const revName = document.getElementById('reviewAuthorName');
-        if (revName && !revName.value && user && user.isLoggedIn && user.name && user.name !== 'Khách Hàng') {
-          revName.value = user.name;
-        }
+        if (editName) editName.value = isLoggedIn ? (user.name || '') : '';
+        if (editPhone) editPhone.value = isLoggedIn ? (user.phone || '') : '';
+        if (editEmail) editEmail.value = isLoggedIn ? (user.email || '') : '';
+        if (editAddress) editAddress.value = isLoggedIn ? (user.address || '') : '';
 
         renderProfileOrders();
       }
