@@ -5513,16 +5513,22 @@
           }
         } catch (e) { }
 
-        // Tự động điền thông tin nếu khách hàng đã đăng nhập
+        // Luôn đồng bộ chuẩn xác thông tin với tài khoản đang đăng nhập
         try {
           const user = getCurrentUser();
+          const nameEl = document.getElementById('cartCustomerName');
+          const phoneEl = document.getElementById('cartCustomerPhone');
+          const addrEl = document.getElementById('cartCustomerAddress');
+
           if (user && user.isLoggedIn) {
-            const nameEl = document.getElementById('cartCustomerName');
-            const phoneEl = document.getElementById('cartCustomerPhone');
-            const addrEl = document.getElementById('cartCustomerAddress');
-            if (nameEl && !nameEl.value && user.name && user.name !== 'Khách Hàng') nameEl.value = user.name;
-            if (phoneEl && !phoneEl.value && user.phone) phoneEl.value = user.phone;
-            if (addrEl && !addrEl.value && user.address) addrEl.value = user.address;
+            if (nameEl) nameEl.value = user.name || '';
+            if (phoneEl) phoneEl.value = user.phone || '';
+            if (addrEl) addrEl.value = user.address || '';
+          } else {
+            // Khách chưa đăng nhập: làm sạch ô nhập liệu, không giữ thông tin của người khác
+            if (nameEl) nameEl.value = '';
+            if (phoneEl) phoneEl.value = '';
+            if (addrEl) addrEl.value = '';
           }
         } catch (e) { }
 
@@ -5588,18 +5594,23 @@
           }
         }
 
+        const checkoutSection = document.getElementById('cartCheckoutSection');
         if (cart.length === 0) {
           listEl.innerHTML = `
           <div class="text-center py-5 text-muted">
             <i class="bi bi-bag" style="font-size: 36px;"></i>
-            <div class="mt-2 small">Giỏ hàng của bạn đang trống</div>
-            <a href="#menu" class="btn btn-sm btn-main-outline mt-3" data-bs-dismiss="offcanvas">Khám Phá Menu 6 Vị</a>
+            <div class="mt-2 small fw-semibold text-dark">Giỏ hàng của bạn đang trống</div>
+            <div class="text-muted small mt-1">Hãy chọn những chai sữa hạt tươi thơm lành để bắt đầu ngày mới!</div>
+            <button type="button" class="btn btn-sm btn-main-primary mt-3 px-3 py-1" onclick="switchTab('menu')" data-bs-dismiss="offcanvas">Khám Phá Menu 6 Vị</button>
           </div>
         `;
-          document.getElementById('cartSubtotalText').innerText = formatPrice(0);
-          document.getElementById('cartShippingText').innerText = formatPrice(0);
-          document.getElementById('cartTotalText').innerText = formatPrice(0);
+          if (checkoutSection) checkoutSection.classList.add('d-none');
+          if (document.getElementById('cartSubtotalText')) document.getElementById('cartSubtotalText').innerText = formatPrice(0);
+          if (document.getElementById('cartShippingText')) document.getElementById('cartShippingText').innerText = formatPrice(0);
+          if (document.getElementById('cartTotalText')) document.getElementById('cartTotalText').innerText = formatPrice(0);
           return;
+        } else {
+          if (checkoutSection) checkoutSection.classList.remove('d-none');
         }
 
         let subtotal = 0;
@@ -5875,6 +5886,22 @@
 
         // 5. Cập nhật lịch sử đơn hàng trên trang cá nhân nếu đang xem
         renderProfileOrders();
+
+        // 4. Cart Drawer Customer Info Sync
+        try {
+          const cartNameEl = document.getElementById('cartCustomerName');
+          const cartPhoneEl = document.getElementById('cartCustomerPhone');
+          const cartAddrEl = document.getElementById('cartCustomerAddress');
+          if (isLoggedIn) {
+            if (cartNameEl) cartNameEl.value = user.name || '';
+            if (cartPhoneEl) cartPhoneEl.value = user.phone || '';
+            if (cartAddrEl) cartAddrEl.value = user.address || '';
+          } else {
+            if (cartNameEl) cartNameEl.value = '';
+            if (cartPhoneEl) cartPhoneEl.value = '';
+            if (cartAddrEl) cartAddrEl.value = '';
+          }
+        } catch (e) { }
 
         // 6. Hiển thị thông báo đặt hàng thành công chi tiết
         const payText = paymentMethod === 'vietqr' ? 'Quét mã VietQR chuyển khoản' : 'Thanh toán tiền mặt khi nhận hàng (COD)';
@@ -6510,6 +6537,14 @@
         sessionStorage.removeItem('tramhat_current_user');
         
         window.currentUser = null;
+        try {
+          const cName = document.getElementById('cartCustomerName');
+          const cPhone = document.getElementById('cartCustomerPhone');
+          const cAddr = document.getElementById('cartCustomerAddress');
+          if (cName) cName.value = '';
+          if (cPhone) cPhone.value = '';
+          if (cAddr) cAddr.value = '';
+        } catch (e) {}
         syncUserUI();
         closeAccountModal();
         switchTab('home');
