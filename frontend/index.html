@@ -6212,9 +6212,29 @@
         const inputEl = document.getElementById('newReviewComment');
         if (inputEl) inputEl.value = '';
 
+        const prodKey = typeof currentSelectedDetailKey !== 'undefined' ? currentSelectedDetailKey : 'general';
+        const prodName = (typeof productsDB !== 'undefined' && productsDB[prodKey]) ? productsDB[prodKey].name : 'Sữa Hạt Trạm Hạt';
+
+        // Gửi lưu trực tiếp lên cơ sở dữ liệu MongoDB Atlas
+        try {
+          fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: userName,
+              role: 'Khách mua sản phẩm',
+              avatar: userName.slice(0, 2).toUpperCase(),
+              stars: parseInt(stars),
+              date: new Date().toLocaleDateString('vi-VN'),
+              tag: prodName,
+              comment: text
+            })
+          }).catch(() => {});
+        } catch (e) { }
+
         if (typeof TramHatTracker !== 'undefined') {
           TramHatTracker.recordEvent('submit_product_review', {
-            product: typeof currentSelectedDetailKey !== 'undefined' ? currentSelectedDetailKey : 'general',
+            product: prodKey,
             stars: parseInt(stars),
             author: userName
           });
@@ -6886,9 +6906,16 @@
           if (raw) stored = JSON.parse(raw);
           stored.unshift(newReview);
           localStorage.setItem('tramhat_user_reviews', JSON.stringify(stored));
-        } catch (err) {
-          console.error('LocalStorage write error:', err);
-        }
+        } catch (err) { }
+
+        // Gửi lưu trực tiếp lên MongoDB Atlas qua API
+        try {
+          fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newReview)
+          }).catch(() => {});
+        } catch (e) { }
 
         // Silent tracking
         if (typeof TramHatTracker !== 'undefined') {
@@ -6960,6 +6987,26 @@
         } catch (e) {
           console.log('Loading via bundled window.TRAMHAT_DATA from data.js');
         }
+
+        // Nạp thêm đánh giá thời gian thực từ MongoDB Atlas
+        try {
+          const revRes = await fetch('/api/reviews');
+          if (revRes.ok) {
+            const revData = await revRes.json();
+            const apiRevs = Array.isArray(revData) ? revData : (revData && Array.isArray(revData.data) ? revData.data : []);
+            if (apiRevs.length > 0 && window.TRAMHAT_DATA) {
+              const currentRevs = Array.isArray(window.TRAMHAT_DATA.reviews) ? window.TRAMHAT_DATA.reviews : [];
+              const combined = [...apiRevs, ...currentRevs];
+              const seen = new Set();
+              window.TRAMHAT_DATA.reviews = combined.filter(r => {
+                const k = (r.id || '') + '|' + (r.comment || '');
+                if (seen.has(k)) return false;
+                seen.add(k);
+                return true;
+              });
+            }
+          }
+        } catch (e) { }
 
         applyAllJSONDataToWebsite();
       }

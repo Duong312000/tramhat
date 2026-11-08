@@ -212,6 +212,7 @@ let memoryBatches = getTodayBatches();
 let memoryOrders = [];
 let memoryLeads = [];
 let memoryEvents = [];
+let memoryReviews = [];
 
 // Seed some initial real-looking leads
 if (memoryLeads.length === 0) {
@@ -830,6 +831,45 @@ app.put('/api/orders/:orderId/status', async (req, res) => {
     return res.json({ success: true, order });
   }
   res.json({ success: true, orderId, status });
+});
+
+// 6.5. REVIEWS
+app.get('/api/reviews', async (req, res) => {
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const dbReviews = await mongoose.connection.db.collection('reviews').find({}).sort({ createdAt: -1 }).toArray();
+      if (dbReviews && dbReviews.length > 0) {
+        return res.json({ success: true, data: dbReviews, source: 'mongodb_atlas' });
+      }
+    } catch (e) { }
+  }
+  res.json({ success: true, data: memoryReviews, source: 'memory' });
+});
+
+app.post('/api/reviews', async (req, res) => {
+  const b = req.body || {};
+  const newRev = {
+    id: Date.now(),
+    name: b.name || 'Khách Hàng',
+    role: b.role || 'Khách hàng thân thiết',
+    avatar: b.avatar || (b.name ? b.name.slice(0, 2).toUpperCase() : 'TH'),
+    stars: Number(b.stars) || 5,
+    date: b.date || new Date().toLocaleDateString('vi-VN'),
+    tag: b.tag || 'Trải nghiệm chung',
+    comment: b.comment || '',
+    isUserSubmitted: true,
+    createdAt: new Date().toISOString()
+  };
+
+  memoryReviews.unshift(newRev);
+
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      await mongoose.connection.db.collection('reviews').insertOne(newRev);
+    } catch (e) { }
+  }
+
+  res.status(201).json({ success: true, data: newRev });
 });
 
 // 7. ANALYTICS (TỔNG HỢP 100% TỪ MONGODB ATLAS - CHUẨN MỤC 7.2.4)
