@@ -6,6 +6,8 @@
 
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const dns = require('dns');
 
 const app = express();
 
@@ -15,6 +17,35 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use((req, res, next) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
+
+// --- KẾT NỐI MONGODB ATLAS CLUSTER TRỰC TIẾP ---
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb+srv://tramhat:tramhat123@cluster0.wozls21.mongodb.net/tramhat_db?retryWrites=true&w=majority';
+
+let isDbConnected = false;
+async function ensureDbConnected() {
+  if (isDbConnected && mongoose.connection.readyState === 1) return;
+  if (MONGODB_URI.startsWith('mongodb+srv://')) {
+    try { dns.setServers(['8.8.8.8', '1.1.1.1']); } catch (e) { }
+  }
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+      bufferCommands: false
+    });
+    isDbConnected = true;
+    console.log('✅ [Vercel API] Đã kết nối thành công MongoDB Atlas!');
+  } catch (err) {
+    console.warn('⚠️ [Vercel API] Kết nối MongoDB Atlas:', err.message);
+  }
+}
+
+// Auto-connect middleware
+app.use(async (req, res, next) => {
+  try {
+    await ensureDbConnected();
+  } catch (e) { }
   next();
 });
 
@@ -233,11 +264,15 @@ if (memoryLeads.length === 0) {
   ];
 }
 
-// 1. HEALTH CHECK
+// 1. HEALTH CHECK & DATABASE STATUS
 app.get(['/api/health', '/health'], (req, res) => {
+  const dbState = mongoose.connection ? mongoose.connection.readyState : 0;
+  const states = ['Disconnected', 'Connected (MongoDB Atlas)', 'Connecting', 'Disconnecting'];
   res.json({
     status: 'online',
     system: 'TRẠM HẠT® - REST API Serverless Engine',
+    database: states[dbState] || 'Hybrid State',
+    cluster: 'cluster0.wozls21.mongodb.net/tramhat_db',
     uptime: process.uptime(),
     timestamp: new Date().toISOString()
   });
@@ -259,12 +294,20 @@ app.get('/api/products', (req, res) => {
 });
 
 // 4. TRACKING EVENTS & METRICS
-app.post('/api/tracking/event', (req, res) => {
+app.post('/api/tracking/event', async (req, res) => {
   const event = req.body || {};
   event.serverTime = new Date().toISOString();
   memoryEvents.push(event);
   if (memoryEvents.length > 500) memoryEvents.shift();
-  res.json({ success: true, recorded: true });
+
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const TrackingModel = mongoose.models.TrackingEvent || mongoose.model('TrackingEvent', new mongoose.Schema({}, { strict: false }));
+      await TrackingModel.create(event);
+    } catch (e) { }
+  }
+
+  res.json({ success: true, recorded: true, db: (mongoose.connection && mongoose.connection.readyState === 1) });
 });
 
 app.get('/api/tracking/dashboard', (req, res) => {
@@ -357,7 +400,15 @@ app.post('/api/leads', (req, res) => {
   };
 
   memoryLeads.unshift(newLead);
-  res.status(201).json({ success: true, lead: newLead });
+
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const LeadModel = mongoose.models.Lead || mongoose.model('Lead', new mongoose.Schema({}, { strict: false }));
+      await LeadModel.create(newLead);
+    } catch (e) { }
+  }
+
+  res.status(201).json({ success: true, lead: newLead, db: (mongoose.connection && mongoose.connection.readyState === 1) });
 });
 
 app.put('/api/leads/:leadId/status', (req, res) => {
@@ -453,7 +504,15 @@ app.post('/api/orders', (req, res) => {
   }
 
   memoryOrders.unshift(newOrder);
-  res.status(201).json({ success: true, order: newOrder });
+
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    try {
+      const OrderModel = mongoose.models.Order || mongoose.model('Order', new mongoose.Schema({}, { strict: false }));
+      await OrderModel.create(newOrder);
+    } catch (e) { }
+  }
+
+  res.status(201).json({ success: true, order: newOrder, db: (mongoose.connection && mongoose.connection.readyState === 1) });
 });
 
 app.put('/api/orders/:orderId/status', (req, res) => {

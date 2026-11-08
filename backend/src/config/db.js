@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+const dns = require('dns');
 
 let mongodInstance = null;
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tramhat_db';
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb+srv://tramhat:tramhat123@cluster0.wozls21.mongodb.net/tramhat_db?retryWrites=true&w=majority';
+
+  if (uri.startsWith('mongodb+srv://')) {
+    try {
+      dns.setServers(['8.8.8.8', '1.1.1.1']);
+    } catch (e) { }
+  }
 
   try {
-    console.log(`[Database] Đang kết nối tới Database Server tại: ${uri}...`);
+    console.log(`[Database] Đang kết nối tới Database Server tại: ${uri.replace(/:[^:]*@/, ':****@')}...`);
     const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 4000,
+      serverSelectionTimeoutMS: 8000,
     });
-    console.log(`✅ [Database] Đã kết nối thành công Database Server: ${conn.connection.host}:${conn.connection.port}/${conn.connection.name}`);
+    console.log(`✅ [Database] Đã kết nối thành công Database Server (MongoDB Atlas): ${conn.connection.host}/${conn.connection.name}`);
     return conn;
   } catch (err) {
     console.warn(`⚠️ [Database Cảnh báo] Chưa thấy Database Server độc lập chạy tại ${uri} (${err.message}).`);
