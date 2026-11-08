@@ -4103,6 +4103,11 @@
             data.pageViews[currentTab].views++;
             data.totalVisits++;
             logEvent('Xem Trang', 'Khách truy cập mục ' + (data.pageViews[currentTab].name || currentTab));
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
+                window.TramHatAPI.sendEvent('page_view', { tab: currentTab });
+              }
+            } catch (e) { }
           },
           recordProductView: function (key, name) {
             if (isAdminActive()) return;
@@ -4112,6 +4117,11 @@
             updateCurrentVisitor(v => {
               if (!v.flavors.includes(pName)) v.flavors.push(pName);
             });
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.trackProductView === 'function') {
+                window.TramHatAPI.trackProductView(key, pName);
+              }
+            } catch (e) { }
           },
           recordAddToCart: function (key, name) {
             if (isAdminActive()) return;
@@ -4123,11 +4133,21 @@
               v.status = 'Đã Thêm Giỏ Hàng';
               if (!v.flavors.includes(pName)) v.flavors.push(pName);
             });
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.trackAddToCart === 'function') {
+                window.TramHatAPI.trackAddToCart(key, pName);
+              }
+            } catch (e) { }
           },
           recordCheckoutStart: function () {
             if (isAdminActive()) return;
             data.checkoutCount++;
             logEvent('Mở Giỏ Hàng', 'Khách mở giỏ hàng chuẩn bị đặt mua');
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.recordCheckoutStart === 'function') {
+                window.TramHatAPI.recordCheckoutStart();
+              }
+            } catch (e) { }
           },
           recordPurchase: function (totalVND, orderId) {
             if (isAdminActive()) return;
@@ -4139,6 +4159,11 @@
               v.status = 'Đã Đặt Hàng Thành Công';
             });
             persist();
+            try {
+              if (window.TramHatAPI && typeof window.TramHatAPI.sendEvent === 'function') {
+                window.TramHatAPI.sendEvent('purchase', { metadata: { totalVND, orderId } });
+              }
+            } catch (e) { }
           },
           getData: function () {
             // Luôn đọc lại từ localStorage để dữ liệu cập nhật thời gian thực tức thì

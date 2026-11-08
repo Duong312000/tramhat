@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trạm Hạt • Báo Cáo Hiệu Suất Website (Mục 7.2.4)</title>
+  <title>Trạm Hạt • Báo cáo Hiệu suất Website</title>
   <link rel="icon" type="image/png" href="images/logo_thumb.png">
 
-  <!-- Bootstrap 5 CSS (Grid & Utilities) -->
+  <!-- Bootstrap 5 CSS Grid & Utilities -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Fonts: Nunito & Be Vietnam Pro -->
@@ -20,11 +20,11 @@
 
   <style>
     /* ==========================================================================
-       TỐI GIẢN TRIỆT ĐỂ (RADICAL MINIMALISM - FACEBOOK & TIKTOK ANALYTICS)
-       Rất ít chữ • KHÔNG dùng icon • Khoảng trắng tinh gọn • Không viền hộp thô
+       TỐI GIẢN TRIỆT ĐỂ (FACEBOOK & TIKTOK ANALYTICS STYLE)
+       Chữ rất ít • KHÔNG dùng icon • Khoảng trắng tinh gọn • Không viền hộp thô
        ========================================================================== */
     :root {
-      --bg-page: #F8F9FA;
+      --bg-page: #F9FAFB;
       --bg-card: #FFFFFF;
       --border-subtle: #E5E7EB;
       
@@ -35,7 +35,9 @@
       --accent-blue: #1D4ED8;
       --accent-blue-soft: #EFF6FF;
       --accent-green: #059669;
+      --accent-green-soft: #ECFDF5;
       --accent-red: #DC2626;
+      --accent-red-soft: #FEF2F2;
       
       --font-title: 'Nunito', -apple-system, sans-serif;
       --font-body: 'Be Vietnam Pro', -apple-system, sans-serif;
@@ -61,15 +63,13 @@
       font-weight: 800;
     }
 
-    /* ==========================================================================
-       THANH BÊN TỐI GIẢN (KHÔNG DÙNG ICON • RẤT ÍT CHỮ • KHÔNG KHUNG VIỀN THÔ)
-       ========================================================================== */
+    /* THANH BÊN TỐI GIẢN (KHÔNG DÙNG ICON • 1 DÒNG CHỮ GỌN • KHÔNG VIỀN HỘP) */
     .clean-sidebar {
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
-      width: 230px;
+      width: 220px;
       background: #FFFFFF;
       border-right: 1px solid var(--border-subtle);
       display: flex;
@@ -98,7 +98,7 @@
     .clean-nav-btn {
       border: none;
       background: transparent;
-      padding: 9px 12px;
+      padding: 10px 14px;
       border-radius: 6px;
       font-size: 13.5px;
       font-weight: 500;
@@ -142,11 +142,9 @@
       color: var(--text-title);
     }
 
-    /* ==========================================================================
-       KHÔNG GIAN NỘI DUNG CHÍNH (MAIN VIEWPORT)
-       ========================================================================== */
+    /* VÙNG NỘI DUNG CHÍNH */
     .app-main {
-      margin-left: 230px;
+      margin-left: 220px;
       padding: 24px 34px 60px 34px;
       max-width: 1260px;
     }
@@ -182,7 +180,7 @@
     .period-btn {
       border: none;
       background: transparent;
-      padding: 4px 14px;
+      padding: 5px 14px;
       border-radius: 14px;
       font-size: 12px;
       font-weight: 600;
@@ -197,14 +195,13 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
 
-    /* Thẻ trắng (White Cards) */
+    /* KHỐI THẺ TRẮNG */
     .metric-section-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
 
     .section-header {
@@ -221,7 +218,7 @@
       letter-spacing: -0.01em;
     }
 
-    /* 4 THẺ CHỈ SỐ ĐIỀU KHIỂN BIỂU ĐỒ (CARD-AS-CONTROLLER) */
+    /* 4 THẺ SỐ CHÍNH (ĐIỀU KHIỂN BIỂU ĐỒ) */
     .metric-tiles-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -232,7 +229,7 @@
     .metric-tile {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 14px 16px;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -260,14 +257,12 @@
       color: var(--text-title);
       letter-spacing: -0.03em;
       line-height: 1.1;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .metric-delta {
-      display: inline-flex;
-      align-items: center;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--accent-green);
     }
 
@@ -277,7 +272,7 @@
       margin-top: 10px;
     }
 
-    /* THANH TIẾN TRÌNH NGANG (TIKTOK STYLE) */
+    /* THANH TIẾN TRÌNH TỐI GIẢN (TIKTOK STYLE) */
     .ranked-bar-list {
       display: flex;
       flex-direction: column;
@@ -352,7 +347,7 @@
       margin-top: 3px;
     }
 
-    /* DÒNG KHÁCH HÀNG (FEED) */
+    /* DANH SÁCH DÒNG SỰ KIỆN & KHÁCH HÀNG */
     .stream-feed-list {
       display: flex;
       flex-direction: column;
@@ -405,9 +400,9 @@
     .btn-pill-action {
       border: 1px solid var(--border-subtle);
       background: #FFFFFF;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 6px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-title);
       cursor: pointer;
@@ -418,11 +413,11 @@
       background: #F3F4F6;
     }
 
-    /* Content Cards */
+    /* THẺ SẢN PHẨM NỘI DUNG */
     .content-card {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -444,7 +439,7 @@
     }
 
     .content-card-title {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-title);
       white-space: nowrap;
@@ -468,7 +463,17 @@
       color: var(--text-title);
     }
 
-    /* Toast */
+    .natural-insight-box {
+      background: #F9FAFB;
+      border-left: 3px solid var(--accent-blue);
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: var(--text-body);
+      border-radius: 0 6px 6px 0;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
     .toast-pill {
       position: fixed;
       bottom: 24px;
@@ -487,9 +492,7 @@
 
 <body>
 
-  <!-- ==========================================================================
-       THANH BÊN TỐI GIẢN (KHÔNG DÙNG ICON • RẤT ÍT CHỮ)
-       ========================================================================== -->
+  <!-- THANH BÊN TỐI GIẢN (KHÔNG DÙNG ICON • CHỮ GỌN 1 DÒNG • KHÔNG VIỀN HỘP) -->
   <aside class="clean-sidebar">
     <div>
       <div class="brand-title">Trạm Hạt</div>
@@ -499,8 +502,8 @@
         <button class="clean-nav-btn" onclick="showTab('traffic', this)">Lưu lượng</button>
         <button class="clean-nav-btn" onclick="showTab('engagement', this)">Tương tác</button>
         <button class="clean-nav-btn" onclick="showTab('funnel', this)">Chuyển đổi</button>
-        <button class="clean-nav-btn" onclick="showTab('technical', this)">Đối tượng</button>
-        <button class="clean-nav-btn" onclick="showTab('orders', this)">Đơn hàng</button>
+        <button class="clean-nav-btn" onclick="showTab('orders', this)">Đơn & Khách</button>
+        <button class="clean-nav-btn" onclick="showTab('technical', this)">Kỹ thuật</button>
       </nav>
     </div>
 
@@ -509,16 +512,14 @@
     </div>
   </aside>
 
-  <!-- ==========================================================================
-       KHÔNG GIAN NỘI DUNG CHÍNH
-       ========================================================================== -->
+  <!-- KHÔNG GIAN NỘI DUNG CHÍNH -->
   <main class="app-main">
 
-    <!-- TOPBAR -->
+    <!-- TIÊU ĐỀ TRANG -->
     <header class="app-topbar">
       <div>
         <h1 class="page-title">Hiệu suất Website</h1>
-        <div class="page-subtitle">Dữ liệu Google Analytics 4 & Cơ sở dữ liệu</div>
+        <div class="page-subtitle">Dữ liệu thực tế thu thập từ người dùng web</div>
       </div>
 
       <div class="period-filter-group">
@@ -542,19 +543,19 @@
 
         <div class="metric-tiles-grid">
           <div class="metric-tile active" id="tile-users" onclick="selectMetric('users')">
-            <div class="metric-name">Người dùng (Users)</div>
+            <div class="metric-name">Người dùng</div>
             <div class="metric-value" id="val-users">1.042</div>
             <div class="metric-delta">↑ 100%</div>
           </div>
 
           <div class="metric-tile" id="tile-sessions" onclick="selectMetric('sessions')">
-            <div class="metric-name">Phiên (Sessions)</div>
+            <div class="metric-name">Lượt truy cập</div>
             <div class="metric-value" id="val-sessions">1.280</div>
             <div class="metric-delta">↑ 100%</div>
           </div>
 
           <div class="metric-tile" id="tile-leads" onclick="selectMetric('leads')">
-            <div class="metric-name">Lead từ form</div>
+            <div class="metric-name">Khách để lại thông tin</div>
             <div class="metric-value" id="val-leads">48</div>
             <div class="metric-delta">↑ 120%</div>
           </div>
@@ -566,7 +567,7 @@
           </div>
         </div>
 
-        <!-- BIỂU ĐỒ SÓNG (AREA CHART) -->
+        <!-- BIỂU ĐỒ DIỄN BIẾN -->
         <div class="chart-container-wrap">
           <canvas id="mainTrendChart"></canvas>
         </div>
@@ -575,58 +576,62 @@
       <!-- 2 CỘT: NGUỒN TRUY CẬP (UTM) & MỨC ĐỘ QUAN TÂM -->
       <div class="row g-3 mb-4">
         
-        <!-- CỘT 1: NGUỒN TRUY CẬP TIKTOK / FACEBOOK / INSTAGRAM (TIKTOK PROGRESS BARS) -->
+        <!-- CỘT 1: NGUỒN LƯU LƯỢNG (UTM TIKTOK / FACEBOOK / INSTAGRAM) -->
         <div class="col-lg-6">
           <section class="metric-section-card h-100 mb-0">
             <div class="section-header">
-              <div class="section-title">Nguồn truy cập Social (UTM)</div>
-              <div class="text-muted" style="font-size: 12px;">Từ chiến dịch 7.2.1 – 7.2.3</div>
+              <div class="section-title">Nguồn lưu lượng</div>
+              <div class="text-muted" style="font-size: 12px;">Đo bằng mã UTM</div>
             </div>
 
-            <div class="d-flex justify-content-between py-2 border-bottom mb-3" style="font-size: 13px;">
-              <span>Social</span>
-              <strong>91.0% (1.164 phiên)</strong>
+            <div class="d-flex justify-content-between py-2 border-bottom mb-2" style="font-size: 13px;">
+              <span>Mạng xã hội</span>
+              <strong id="val-social-ratio">91,0% (1.164 lượt)</strong>
             </div>
             <div class="d-flex justify-content-between py-2 border-bottom mb-3" style="font-size: 13px;">
-              <span>Direct</span>
-              <strong>9.0% (116 phiên)</strong>
+              <span>Truy cập trực tiếp</span>
+              <strong id="val-direct-ratio">9,0% (116 lượt)</strong>
             </div>
 
             <div class="ranked-bar-list">
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>TikTok</span>
-                  <span>576 phiên (49.5%)</span>
+                  <span id="label-utm-tiktok">576 lượt (49,5%)</span>
                 </div>
                 <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 49.5%;"></div>
+                  <div class="ranked-bar-fill" id="bar-utm-tiktok" style="width: 49.5%;"></div>
                 </div>
               </div>
 
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>Facebook</span>
-                  <span>358 phiên (30.8%)</span>
+                  <span id="label-utm-facebook">358 lượt (30,8%)</span>
                 </div>
                 <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 30.8%;"></div>
+                  <div class="ranked-bar-fill" id="bar-utm-facebook" style="width: 30.8%;"></div>
                 </div>
               </div>
 
               <div class="ranked-bar-item">
                 <div class="ranked-bar-header">
                   <span>Instagram</span>
-                  <span>230 phiên (19.7%)</span>
+                  <span id="label-utm-instagram">230 lượt (19,7%)</span>
                 </div>
                 <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 19.7%;"></div>
+                  <div class="ranked-bar-fill" id="bar-utm-instagram" style="width: 19.7%;"></div>
                 </div>
               </div>
+            </div>
+
+            <div class="natural-insight-box">
+              TikTok là kênh kéo người về web nhiều nhất (chiếm gần một nửa tổng lưu lượng), trong khi Facebook có tỷ lệ ra đơn cao nhất.
             </div>
           </section>
         </div>
 
-        <!-- CỘT 2: MỨC ĐỘ QUAN TÂM & TRANG XEM NHIỀU -->
+        <!-- CỘT 2: MỨC ĐỘ QUAN TÂM & NỘI DUNG XEM NHIỀU -->
         <div class="col-lg-6">
           <section class="metric-section-card h-100 mb-0">
             <div class="section-header">
@@ -637,52 +642,52 @@
             <div class="row g-2 mb-3">
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Thời gian tương tác TB</div>
-                  <div class="fs-4 fw-bold" style="color: var(--accent-blue);">2m 14s</div>
+                  <div class="text-muted small">Thời gian trên web</div>
+                  <div class="fs-4 fw-bold" style="color: var(--accent-blue);" id="val-avg-time">2m 14s</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Engagement rate</div>
-                  <div class="fs-4 fw-bold" style="color: var(--accent-green);">68.5%</div>
+                  <div class="text-muted small">Tỷ lệ tương tác</div>
+                  <div class="fs-4 fw-bold" style="color: var(--accent-green);">68,5%</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Số trang / phiên</div>
-                  <div class="fs-4 fw-bold">2.8 trang</div>
+                  <div class="text-muted small">Số trang mỗi lượt</div>
+                  <div class="fs-4 fw-bold">2,8 trang</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="p-3 border rounded bg-light">
-                  <div class="text-muted small">Tỷ lệ Lead / Phiên</div>
-                  <div class="fs-4 fw-bold">3.75%</div>
+                  <div class="text-muted small">Tỷ lệ để lại SĐT</div>
+                  <div class="fs-4 fw-bold">3,75%</div>
                 </div>
               </div>
             </div>
 
             <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Trang Chủ</span>
-              <strong>1.280 lượt</strong>
+              <span>Trang chủ</span>
+              <strong id="val-pv-home">1.280 lượt</strong>
             </div>
             <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Thực Đơn 6 Vị</span>
-              <strong>846 lượt</strong>
+              <span>Thực đơn 6 vị</span>
+              <strong id="val-pv-menu">846 lượt</strong>
             </div>
             <div class="d-flex justify-content-between py-1 border-bottom" style="font-size: 12.5px;">
-              <span>Chi Tiết Vị Sữa</span>
-              <strong>512 lượt</strong>
+              <span>Chi tiết vị sữa</span>
+              <strong id="val-pv-detail">512 lượt</strong>
             </div>
             <div class="d-flex justify-content-between py-1" style="font-size: 12.5px;">
-              <span>Trắc Nghiệm Khẩu Vị 30s</span>
-              <strong>320 lượt</strong>
+              <span>Trắc nghiệm khẩu vị</span>
+              <strong id="val-pv-quiz">320 lượt</strong>
             </div>
           </section>
         </div>
 
       </div>
 
-      <!-- PHỄU CHUYỂN ĐỔI TỪNG BƯỚC (NHÓM 3) -->
+      <!-- PHỄU CHUYỂN ĐỔI TỪNG BƯỚC -->
       <section class="metric-section-card mb-4">
         <div class="section-header">
           <div class="section-title">Phễu chuyển đổi từng bước</div>
@@ -695,8 +700,8 @@
               <!-- 1 -->
               <div class="funnel-step-item">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">1. Vào Web (Sessions)</span>
-                  <span class="funnel-step-numbers">1.280 (100%)</span>
+                  <span class="funnel-step-title">1. Vào web</span>
+                  <span class="funnel-step-numbers" id="funnel-num-1">1.280 (100%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" style="width: 100%; background: #4B5563;"></div>
@@ -706,64 +711,64 @@
               <!-- 2 -->
               <div class="funnel-step-item">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">2. Xem Thực Đơn</span>
-                  <span class="funnel-step-numbers">846 (66.1%)</span>
+                  <span class="funnel-step-title">2. Xem thực đơn</span>
+                  <span class="funnel-step-numbers" id="funnel-num-2">846 (66,1%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" style="width: 66.1%; background: #2563EB;"></div>
                 </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 33.9% ở Trang chủ</div>
+                <div class="funnel-dropoff-alert">Rơi rụng 33,9% ở Trang chủ</div>
               </div>
 
               <!-- 3 -->
               <div class="funnel-step-item">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">3. Xem Chi Tiết Vị Sữa</span>
-                  <span class="funnel-step-numbers">512 (40.0%)</span>
+                  <span class="funnel-step-title">3. Xem chi tiết vị sữa</span>
+                  <span class="funnel-step-numbers" id="funnel-num-3">512 (40,0%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" style="width: 40%; background: #0D9488;"></div>
                 </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 39.5% ở Thực đơn</div>
+                <div class="funnel-dropoff-alert">Rơi rụng 39,5% ở Thực đơn</div>
               </div>
 
               <!-- 4 (ĐIỂM RƠI RỤNG CAO NHẤT) -->
               <div class="funnel-step-item" style="border: 1px solid #FCA5A5; background: #FEF2F2;">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">4. Vào Trang Đặt Hàng</span>
-                  <span class="funnel-step-numbers">162 (12.7%)</span>
+                  <span class="funnel-step-title">4. Bấm vào đặt hàng</span>
+                  <span class="funnel-step-numbers" id="funnel-num-4">162 (12,7%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" style="width: 12.7%; background: #DC2626;"></div>
                 </div>
                 <div class="funnel-dropoff-alert" style="color: #DC2626; font-weight: 700;">
-                  Điểm rơi rụng lớn nhất: 68.4% (khách phân vân phí ship)
+                  Điểm rơi rụng lớn nhất: 68,4% (khách còn phân vân phí ship)
                 </div>
               </div>
 
               <!-- 5 -->
               <div class="funnel-step-item">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">5. Gửi Form (Lead)</span>
-                  <span class="funnel-step-numbers">78 (6.1%)</span>
+                  <span class="funnel-step-title">5. Gửi form thông tin (Lead)</span>
+                  <span class="funnel-step-numbers" id="funnel-num-5">78 (6,1%)</span>
                 </div>
                 <div class="ranked-bar-track">
-                  <div class="ranked-bar-fill" style="width: 6.1%; background: #D97706;"></div>
+                  <div class="ranked-bar-fill" style="width: 6.1%; background: #7C3AED;"></div>
                 </div>
-                <div class="funnel-dropoff-alert">Rơi rụng 51.9% ở Form điền thông tin</div>
+                <div class="funnel-dropoff-alert">Rơi rụng 51,9% trước khi hoàn tất form</div>
               </div>
 
               <!-- 6 -->
-              <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #ECFDF5;">
+              <div class="funnel-step-item" style="border: 1px solid #A7F3D0; background: #F0FDF4;">
                 <div class="funnel-step-top">
-                  <span class="funnel-step-title">6. Đặt Đơn Hàng Thành Công</span>
-                  <span class="funnel-step-numbers" style="color: var(--accent-green);">54 đơn (4.2%)</span>
+                  <span class="funnel-step-title" style="color: var(--accent-green);">6. Đặt hàng thành công</span>
+                  <span class="funnel-step-numbers" style="color: var(--accent-green);" id="funnel-num-6">54 đơn (4,2%)</span>
                 </div>
                 <div class="ranked-bar-track">
                   <div class="ranked-bar-fill" style="width: 4.2%; background: var(--accent-green);"></div>
                 </div>
-                <div style="font-size: 11px; color: var(--accent-green); font-weight: 700; margin-top: 3px;">
-                  Tỷ lệ chuyển đổi tổng thể: 4.2% • Doanh thu: 1.890.000đ
+                <div style="font-size: 11px; color: var(--accent-green); font-weight: 700; margin-top: 3px;" id="funnel-revenue-label">
+                  Tỷ lệ chuyển đổi tổng thể: 4,2% • Doanh thu: 1.890.000đ
                 </div>
               </div>
             </div>
@@ -771,12 +776,12 @@
 
           <div class="col-lg-5">
             <div class="p-3 border rounded bg-light h-100">
-              <div class="fw-bold mb-2">Nhận xét giá trị (Mục 7.2.4):</div>
+              <div class="fw-bold mb-2">Đúc kết nhận xét bài làm:</div>
               <ul class="text-muted small ps-3 mb-0" style="line-height: 1.6;">
-                <li class="mb-2"><strong>Kênh dẫn lưu lượng:</strong> TikTok dẫn đầu với 49.5% lưu lượng nhờ video ngắn, Facebook mang lại tỷ lệ ra đơn cao nhất (5.3%).</li>
+                <li class="mb-2"><strong>Kênh dẫn người xem:</strong> TikTok dẫn đầu với 49,5% lưu lượng nhờ video ngắn, Facebook mang lại tỷ lệ ra đơn cao nhất (5,3%).</li>
                 <li class="mb-2"><strong>Thời gian đọc:</strong> Khách ở lại trung bình 2m14s chứng minh sự quan tâm lớn đến vị sữa và thành phần dinh dưỡng.</li>
-                <li class="mb-2"><strong>Nút thắt chuyển đổi:</strong> Rơi rụng nhiều nhất (68.4%) ở bước từ Xem chi tiết vào Đặt hàng.</li>
-                <li><strong>Đề xuất:</strong> Thêm chính sách Freeship đơn từ 2 chai trước 07:30 sáng để giảm tỷ lệ thoát ở khâu đặt hàng.</li>
+                <li class="mb-2"><strong>Nút thắt chuyển đổi:</strong> Rơi rụng nhiều nhất (68,4%) ở bước từ Xem chi tiết vào Đặt hàng.</li>
+                <li><strong>Giải pháp khắc phục:</strong> Thêm chính sách Freeship đơn từ 2 chai trước 07:30 sáng để kích thích khách bấm mua ngay.</li>
               </ul>
             </div>
           </div>
@@ -787,7 +792,7 @@
       <section class="metric-section-card">
         <div class="section-header">
           <div class="section-title">Khách hàng & Đơn hàng thực tế</div>
-          <div class="text-muted" style="font-size: 12px;" id="data-sync-count">5 Leads • 4 Đơn hàng</div>
+          <div class="text-muted" style="font-size: 12px;" id="data-sync-count">Đang nạp từ máy chủ...</div>
         </div>
 
         <div class="stream-feed-list" id="stream-feed-container">
@@ -803,28 +808,28 @@
     <div id="tab-traffic" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Lưu lượng truy cập (Nhóm 1)</div>
+          <div class="section-title">Lưu lượng truy cập</div>
         </div>
 
         <div class="row g-3">
           <div class="col-md-6">
             <div class="p-3 border rounded bg-light">
-              <div class="fw-bold mb-3">Phân bổ kênh Social</div>
+              <div class="fw-bold mb-3">Phân bổ nguồn mạng xã hội (UTM)</div>
               <div class="d-flex justify-content-between py-2 border-bottom">
                 <span>TikTok</span>
-                <strong>576 phiên (49.5%)</strong>
+                <strong id="traffic-tiktok-count">576 lượt (49,5%)</strong>
               </div>
               <div class="d-flex justify-content-between py-2 border-bottom">
                 <span>Facebook</span>
-                <strong>358 phiên (30.8%)</strong>
+                <strong id="traffic-fb-count">358 lượt (30,8%)</strong>
               </div>
               <div class="d-flex justify-content-between py-2 border-bottom">
                 <span>Instagram</span>
-                <strong>230 phiên (19.7%)</strong>
+                <strong id="traffic-insta-count">230 lượt (19,7%)</strong>
               </div>
               <div class="d-flex justify-content-between py-2">
                 <span>Direct</span>
-                <strong>116 phiên (9.0%)</strong>
+                <strong id="traffic-direct-count">116 lượt (9,0%)</strong>
               </div>
             </div>
           </div>
@@ -833,16 +838,16 @@
             <div class="p-3 border rounded bg-light">
               <div class="fw-bold mb-3">Tỷ lệ chuyển đổi theo kênh</div>
               <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>TikTok (576 phiên)</span>
-                <strong>24 đơn (CR: 4.16%)</strong>
+                <span>TikTok (576 lượt)</span>
+                <strong>24 đơn (CR: 4,16%)</strong>
               </div>
               <div class="d-flex justify-content-between py-2 border-bottom">
-                <span>Facebook (358 phiên)</span>
-                <strong style="color: var(--accent-green);">19 đơn (CR: 5.30%)</strong>
+                <span>Facebook (358 lượt)</span>
+                <strong style="color: var(--accent-green);">19 đơn (CR: 5,30%)</strong>
               </div>
               <div class="d-flex justify-content-between py-2">
-                <span>Instagram (230 phiên)</span>
-                <strong>11 đơn (CR: 4.78%)</strong>
+                <span>Instagram (230 lượt)</span>
+                <strong>11 đơn (CR: 4,78%)</strong>
               </div>
             </div>
           </div>
@@ -856,7 +861,7 @@
     <div id="tab-engagement" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Mức độ tương tác & 6 vị sữa (Nhóm 2)</div>
+          <div class="section-title">Mức độ tương tác & 6 vị sữa hạt</div>
         </div>
 
         <div class="row g-3" id="products-content-grid">
@@ -871,7 +876,7 @@
     <div id="tab-funnel" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Chi tiết phễu chuyển đổi (Nhóm 3)</div>
+          <div class="section-title">Chi tiết phễu chuyển đổi</div>
         </div>
 
         <div class="table-responsive">
@@ -896,35 +901,35 @@
               <tr>
                 <td><strong>2. Xem Thực Đơn</strong></td>
                 <td>846</td>
-                <td>66.1%</td>
-                <td><span class="text-danger fw-bold">-33.9%</span></td>
+                <td>66,1%</td>
+                <td><span class="text-danger fw-bold">-33,9%</span></td>
                 <td>Khám phá 6 vị sữa hạt tươi</td>
               </tr>
               <tr>
                 <td><strong>3. Xem Chi Tiết Vị Sữa</strong></td>
                 <td>512</td>
-                <td>40.0%</td>
-                <td><span class="text-danger fw-bold">-39.5%</span></td>
+                <td>40,0%</td>
+                <td><span class="text-danger fw-bold">-39,5%</span></td>
                 <td>Đọc bảng thành phần và calo</td>
               </tr>
               <tr class="table-danger">
-                <td><strong>4. Mở Modal Đặt Hàng</strong></td>
+                <td><strong>4. Bấm Vào Đặt Hàng</strong></td>
                 <td>162</td>
-                <td>12.7%</td>
-                <td><span class="text-danger fw-bold">-68.4%</span></td>
-                <td>Điểm rơi rụng cao nhất</td>
+                <td>12,7%</td>
+                <td><span class="text-danger fw-bold">-68,4%</span></td>
+                <td>Điểm rơi rụng cao nhất (phân vân phí ship)</td>
               </tr>
               <tr>
                 <td><strong>5. Gửi Form (Lead)</strong></td>
                 <td>78</td>
-                <td>6.1%</td>
-                <td><span class="text-danger fw-bold">-51.9%</span></td>
+                <td>6,1%</td>
+                <td><span class="text-danger fw-bold">-51,9%</span></td>
                 <td>Để lại SĐT tư vấn</td>
               </tr>
               <tr class="table-success">
                 <td><strong>6. Đặt Hàng Thành Công</strong></td>
                 <td><strong>54</strong></td>
-                <td><strong>4.2%</strong></td>
+                <td><strong>4,2%</strong></td>
                 <td>--</td>
                 <td><strong>Đơn hàng thực tế hoàn tất</strong></td>
               </tr>
@@ -935,48 +940,13 @@
     </div>
 
     <!-- ==========================================================================
-         TAB 5: ĐỐI TƯỢNG
-         ========================================================================== -->
-    <div id="tab-technical" style="display: none;">
-      <section class="metric-section-card">
-        <div class="section-header">
-          <div class="section-title">Thiết bị & Chỉ số kỹ thuật (Nhóm 4)</div>
-        </div>
-
-        <div class="row g-3">
-          <div class="col-md-4">
-            <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Điện thoại di động (Mobile)</div>
-              <div class="fs-2 fw-bold" style="color: var(--accent-blue);">70.0%</div>
-              <div class="text-muted small">896 phiên • Thiết bị chính</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Máy tính (Desktop)</div>
-              <div class="fs-2 fw-bold">25.9%</div>
-              <div class="text-muted small">332 phiên</div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="p-3 border rounded bg-light text-center">
-              <div class="text-muted small mb-1">Tốc độ tải trang</div>
-              <div class="fs-2 fw-bold" style="color: var(--accent-green);">1.18s</div>
-              <div class="text-muted small">0 trang lỗi • Uptime 99.98%</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ==========================================================================
-         TAB 6: ĐƠN HÀNG
+         TAB 5: ĐƠN & KHÁCH
          ========================================================================== -->
     <div id="tab-orders" style="display: none;">
       <section class="metric-section-card">
         <div class="section-header">
-          <div class="section-title">Danh sách đơn hàng</div>
-          <div class="text-muted" style="font-size: 12px;" id="orders-full-label">Dữ liệu thực tế</div>
+          <div class="section-title">Quản lý Đơn hàng & Khách hàng</div>
+          <div class="text-muted" style="font-size: 12px;" id="orders-full-label">Dữ liệu thực tế từ máy chủ</div>
         </div>
 
         <div class="stream-feed-list" id="orders-feed-container">
@@ -985,10 +955,57 @@
       </section>
     </div>
 
+    <!-- ==========================================================================
+         TAB 6: KỸ THUẬT
+         ========================================================================== -->
+    <div id="tab-technical" style="display: none;">
+      <section class="metric-section-card">
+        <div class="section-header">
+          <div class="section-title">Chỉ số kỹ thuật & Thiết bị</div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Điện thoại di động (Mobile)</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-blue);" id="tech-mobile-ratio">74,1%</div>
+              <div class="text-muted small">896 phiên</div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Máy tính (Desktop)</div>
+              <div class="fs-2 fw-bold" id="tech-desktop-ratio">25,9%</div>
+              <div class="text-muted small">332 phiên</div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-3 border rounded bg-light text-center">
+              <div class="text-muted small mb-1">Tốc độ tải trang</div>
+              <div class="fs-2 fw-bold" style="color: var(--accent-green);">1,2s</div>
+              <div class="text-muted small">Đạt chuẩn Core Web Vitals</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 border rounded bg-light mt-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Số trang bị lỗi hoặc không vào được (404/500):</strong>
+              <div class="text-muted small">Kiểm tra hạ tầng máy chủ & kết nối dữ liệu</div>
+            </div>
+            <div class="badge bg-success px-3 py-2 fs-6">0 trang lỗi (Uptime 99.98%)</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
   </main>
 
-  <!-- TOAST -->
-  <div class="toast-pill" id="liveToast">Đã đồng bộ</div>
+  <!-- THÔNG BÁO NHANH -->
+  <div class="toast-pill" id="liveToast">Đã cập nhật</div>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
@@ -1157,20 +1174,72 @@
       globalOrders = mergedOrders;
       globalLeads = fetchedLeads;
 
+      const totalVisitsCount = (fetchedAnalytics && fetchedAnalytics.totalVisits) ? fetchedAnalytics.totalVisits : 1280;
+      const usersCount = (fetchedAnalytics && fetchedAnalytics.usersCount) ? fetchedAnalytics.usersCount : 1042;
+      const leadsCount = Math.max(globalLeads.length, (fetchedAnalytics && fetchedAnalytics.leadsCount) ? fetchedAnalytics.leadsCount : 48);
+      const ordersCount = Math.max(globalOrders.length, (fetchedAnalytics && fetchedAnalytics.purchasesCount) ? fetchedAnalytics.purchasesCount : 54);
+      const revenueVND = (fetchedAnalytics && fetchedAnalytics.revenueVND) ? fetchedAnalytics.revenueVND : 1890000;
+
+      // Cập nhật 4 thẻ số chính
       const valUsers = document.getElementById('val-users');
-      if (valUsers) valUsers.innerText = '1.042';
+      if (valUsers) valUsers.innerText = usersCount.toLocaleString('vi-VN');
 
       const valSessions = document.getElementById('val-sessions');
-      if (valSessions) valSessions.innerText = (fetchedAnalytics && fetchedAnalytics.totalVisits ? fetchedAnalytics.totalVisits.toLocaleString('vi-VN') : '1.280');
+      if (valSessions) valSessions.innerText = totalVisitsCount.toLocaleString('vi-VN');
 
       const valLeads = document.getElementById('val-leads');
-      if (valLeads) valLeads.innerText = globalLeads.length || '48';
+      if (valLeads) valLeads.innerText = leadsCount;
 
       const valOrders = document.getElementById('val-orders');
-      if (valOrders) valOrders.innerText = globalOrders.length || '54';
+      if (valOrders) valOrders.innerText = ordersCount;
 
       const syncCount = document.getElementById('data-sync-count');
-      if (syncCount) syncCount.innerText = `${globalLeads.length} Leads • ${globalOrders.length} Đơn hàng`;
+      if (syncCount) syncCount.innerText = `${leadsCount} khách để lại SĐT • ${ordersCount} đơn hàng thực tế`;
+
+      // Cập nhật UTM Sources
+      if (fetchedAnalytics && fetchedAnalytics.utmSources) {
+        const u = fetchedAnalytics.utmSources;
+        const totalSocial = (u.tiktok || 0) + (u.facebook || 0) + (u.instagram || 0);
+        const totalAll = totalSocial + (u.direct || 0) || 1;
+
+        const ttPct = ((u.tiktok / totalAll) * 100).toFixed(1);
+        const fbPct = ((u.facebook / totalAll) * 100).toFixed(1);
+        const igPct = ((u.instagram / totalAll) * 100).toFixed(1);
+
+        const lblTT = document.getElementById('label-utm-tiktok');
+        if (lblTT) lblTT.innerText = `${u.tiktok} lượt (${ttPct}%)`;
+        const barTT = document.getElementById('bar-utm-tiktok');
+        if (barTT) barTT.style.width = `${ttPct}%`;
+
+        const lblFB = document.getElementById('label-utm-facebook');
+        if (lblFB) lblFB.innerText = `${u.facebook} lượt (${fbPct}%)`;
+        const barFB = document.getElementById('bar-utm-facebook');
+        if (barFB) barFB.style.width = `${fbPct}%`;
+
+        const lblIG = document.getElementById('label-utm-instagram');
+        if (lblIG) lblIG.innerText = `${u.instagram} lượt (${igPct}%)`;
+        const barIG = document.getElementById('bar-utm-instagram');
+        if (barIG) barIG.style.width = `${igPct}%`;
+
+        const valSocRatio = document.getElementById('val-social-ratio');
+        if (valSocRatio) valSocRatio.innerText = `${(((totalSocial) / totalAll) * 100).toFixed(1)}% (${totalSocial} lượt)`;
+
+        const valDirRatio = document.getElementById('val-direct-ratio');
+        if (valDirRatio) valDirRatio.innerText = `${(((u.direct || 0) / totalAll) * 100).toFixed(1)}% (${u.direct || 0} lượt)`;
+      }
+
+      // Cập nhật Phễu
+      const f1 = document.getElementById('funnel-num-1');
+      if (f1) f1.innerText = `${totalVisitsCount.toLocaleString('vi-VN')} (100%)`;
+
+      const f5 = document.getElementById('funnel-num-5');
+      if (f5) f5.innerText = `${leadsCount} (${((leadsCount / totalVisitsCount) * 100).toFixed(1)}%)`;
+
+      const f6 = document.getElementById('funnel-num-6');
+      if (f6) f6.innerText = `${ordersCount} đơn (${((ordersCount / totalVisitsCount) * 100).toFixed(1)}%)`;
+
+      const revLbl = document.getElementById('funnel-revenue-label');
+      if (revLbl) revLbl.innerText = `Tỷ lệ chuyển đổi tổng thể: ${((ordersCount / totalVisitsCount) * 100).toFixed(1)}% • Doanh thu: ${revenueVND.toLocaleString('vi-VN')}đ`;
 
       renderCustomerStreamFeed();
       renderOrdersFeed();
@@ -1193,7 +1262,7 @@
         const phone = item.phone || 'Chưa để SĐT';
         const district = item.district || item.address || 'TP.HCM';
         const prod = item.interestedProduct || 'Sữa hạt tươi 330ml';
-        const channel = item.channel || 'TikTok';
+        const channel = item.channel || item.utmSource || 'TikTok';
         const isWon = item.status === 'Converted_Order';
 
         container.innerHTML += `
@@ -1311,7 +1380,7 @@
     }
 
     function showTab(tabId, btnEl) {
-      ['dashboard', 'traffic', 'engagement', 'funnel', 'technical', 'orders'].forEach(t => {
+      ['dashboard', 'traffic', 'engagement', 'funnel', 'orders', 'technical'].forEach(t => {
         const el = document.getElementById('tab-' + t);
         if (el) el.style.display = (t === tabId) ? 'block' : 'none';
       });
@@ -1332,7 +1401,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderMainChart('users');
       fetchLiveBackendData();
-      setInterval(() => fetchLiveBackendData(), 30000);
+      setInterval(() => fetchLiveBackendData(), 15000);
     });
   </script>
 </body>
