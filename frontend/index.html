@@ -3534,25 +3534,16 @@
             <span class="text-danger" id="cartTotalText">0đ</span>
           </div>
 
-          <!-- Chọn phương thức thanh toán -->
+          <!-- Phương thức thanh toán trực tiếp duy nhất -->
           <div class="mb-3">
-            <label class="form-label small fw-bold text-uppercase text-muted" style="font-size: 11px;">Phương Thức Thanh
-              Toán</label>
-            <select class="form-select form-select-sm" id="paymentMethodSelect"
-              onchange="handlePaymentMethodChange(this.value)">
-              <option value="cod">Tiền mặt khi nhận sữa tươi (COD)</option>
-              <option value="vietqr">Quét mã VietQR / MoMo (Xác nhận tức thì)</option>
-              <option value="atm">Thẻ ATM / Chuyển khoản ngân hàng</option>
-            </select>
-          </div>
-
-          <!-- Khung hiện mã QR nếu chọn VietQR -->
-          <div id="qrPaymentBox" class="p-2 border rounded text-center mb-3 bg-light d-none">
-            <div class="small fw-semibold mb-1">Quét mã QR để thanh toán đơn hàng:</div>
-            <img id="cartQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=TRAMHAT-THANHTOAN"
-              alt="VietQR" style="width: 120px; height: 120px;" class="border rounded">
-            <div class="small text-muted mt-1" style="font-size: 11px;">Nội dung CK: <span class="fw-bold text-danger"
-                id="cartQrContent">TRAMHAT</span></div>
+            <label class="form-label small fw-bold text-uppercase text-muted" style="font-size: 11px;">Phương Thức Thanh Toán</label>
+            <div class="p-2 border rounded bg-light d-flex align-items-center gap-2">
+              <i class="bi bi-cash-stack text-success fs-5"></i>
+              <div>
+                <div class="small fw-bold text-dark">Thanh toán trực tiếp khi nhận hàng (COD)</div>
+                <div class="text-muted" style="font-size: 11px;">Nhận túi giữ nhiệt đá gel mát lạnh, kiểm tra sữa tươi và thanh toán trực tiếp cho shipper.</div>
+              </div>
+            </div>
           </div>
 
           <!-- Thông tin người nhận & Geofencing TP.HCM -->
@@ -3799,22 +3790,7 @@
               </div>
             </div>
 
-            <!-- VietQR Container (shown if paymentMethod === 'vietqr') -->
-            <div id="receiptVietQrBox" class="card border-0 shadow-sm p-3 mb-3 bg-white rounded-3 d-none text-center">
-              <div class="fw-bold text-dark mb-1 small text-uppercase">
-                <i class="bi bi-qr-code me-1 text-primary"></i> Quét mã VietQR chuyển khoản
-              </div>
-              <div class="text-muted small mb-2" style="font-size: 11.5px;">Shipper xác nhận đơn ngay khi nhận thông báo có biến động số dư</div>
-              <div class="d-flex justify-content-center my-2">
-                <img id="receiptVietQrImg" src="" alt="VietQR" class="img-fluid rounded border p-2 bg-white" style="max-height: 220px;">
-              </div>
-              <div class="bg-light p-2 rounded small text-start font-monospace" style="font-size: 11.5px;">
-                <div><strong>Ngân hàng:</strong> MB Bank (Quân Đội)</div>
-                <div><strong>STK:</strong> 0903124855</div>
-                <div><strong>Chủ TK:</strong> TRAM HAT - NGUYEN VAN DUONG</div>
-                <div><strong>Nội dung:</strong> <span id="receiptQrMemo" class="text-success fw-bold"></span></div>
-              </div>
-            </div>
+
 
             <!-- Delivery schedule notice -->
             <div class="alert alert-info border-0 rounded-3 mb-0 small p-3 d-flex align-items-start gap-2">
@@ -4829,16 +4805,6 @@
         document.getElementById('cartSubtotalText').innerText = formatPrice(subtotal);
         document.getElementById('cartShippingText').innerText = shipping === 0 ? 'MIỄN PHÍ (0đ)' : formatPrice(shipping);
         document.getElementById('cartTotalText').innerText = formatPrice(total);
-
-        // Cập nhật QR code nếu đang chọn VietQR
-        const qrImg = document.getElementById('cartQrImage');
-        const qrContent = document.getElementById('cartQrContent');
-        if (qrImg) {
-          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=2|99|0901888777|TR%E1%BA%A0M%20H%E1%BA%A0T||0|0|${total}|TRAMHAT`;
-        }
-        if (qrContent) {
-          qrContent.innerText = `TRAMHAT ${formatPrice(total)}`;
-        }
       }
 
       // MÃ GIẢM GIÁ
@@ -4873,18 +4839,6 @@
         renderCart();
       }
 
-      // CHỌN CỔNG THANH TOÁN
-      function handlePaymentMethodChange(val) {
-        const qrBox = document.getElementById('qrPaymentBox');
-        if (qrBox) {
-          if (val === 'vietqr') {
-            qrBox.classList.remove('d-none');
-          } else {
-            qrBox.classList.add('d-none');
-          }
-        }
-      }
-
       // ĐÓNG ORDER SUCCESS MODAL VÀ CHUYỂN ĐẾN TRANG CÁ NHÂN
       function closeOrderSuccessModalAndGoProfile() {
         const modalEl = document.getElementById('orderSuccessModal');
@@ -4909,7 +4863,7 @@
         const district = (document.getElementById('cartCustomerDistrict')?.value || 'Quận 1').trim();
         const address = (document.getElementById('cartCustomerAddress')?.value || '').trim();
         const notes = (document.getElementById('cartCustomerNotes')?.value || '').trim();
-        const paymentMethod = document.getElementById('paymentMethodSelect')?.value || 'cod';
+        const paymentMethod = 'cod';
         const isWeekly = !!(document.getElementById('subscribeWeeklyCheck') && document.getElementById('subscribeWeeklyCheck').checked);
 
         if (!name) {
@@ -5098,7 +5052,7 @@
         } catch (e) { }
 
         // 7. Hiển thị Order Receipt Modal (Chuyên nghiệp, không dùng alert())
-        const payText = paymentMethod === 'vietqr' ? 'Quét mã VietQR chuyển khoản' : 'Thanh toán tiền mặt khi nhận hàng (COD)';
+        const payText = 'Thanh toán trực tiếp khi nhận hàng (COD)';
         const shipNotice = (district.includes('Quận 1') || district.includes('Bình Thạnh') || district.includes('Quận 3') || district.includes('Quận 7'))
           ? '⚡ Shipper đang chuẩn bị túi giữ nhiệt đá gel giao hỏa tốc 45–90 phút!'
           : '❄️ Đơn hàng của bạn sẽ được nấu mới lúc 05:00 sáng mai và giao lạnh trước 08:30 sáng!';
@@ -5111,9 +5065,6 @@
         const receiptTotalEl = document.getElementById('receiptTotalVND');
         const receiptPayEl = document.getElementById('receiptPaymentMethod');
         const receiptNoticeEl = document.getElementById('receiptShipNotice');
-        const receiptQrBox = document.getElementById('receiptVietQrBox');
-        const receiptQrImg = document.getElementById('receiptVietQrImg');
-        const receiptQrMemo = document.getElementById('receiptQrMemo');
 
         if (receiptOrderEl) receiptOrderEl.textContent = '#' + orderId;
         if (receiptNameEl) receiptNameEl.textContent = name;
@@ -5130,16 +5081,6 @@
               <span class="font-monospace text-dark fw-semibold">${formatPrice(item.priceVND * item.qty)}</span>
             </div>
           `).join('');
-        }
-
-        if (paymentMethod === 'vietqr') {
-          if (receiptQrBox) receiptQrBox.classList.remove('d-none');
-          if (receiptQrMemo) receiptQrMemo.textContent = orderId;
-          if (receiptQrImg) {
-            receiptQrImg.src = `https://img.vietqr.io/image/970422-0903124855-compact2.png?amount=${finalTotalVND}&addInfo=${orderId}&accountName=TRAM%20HAT`;
-          }
-        } else {
-          if (receiptQrBox) receiptQrBox.classList.add('d-none');
         }
 
         // Mở Modal biên nhận đơn hàng
