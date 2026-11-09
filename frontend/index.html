@@ -3703,7 +3703,7 @@
                   <div class="input-group">
                     <span class="input-group-text bg-light text-muted"><i class="bi bi-telephone"></i></span>
                     <input type="tel" class="form-control" id="loginPhoneNumber"
-                      placeholder="Ví dụ: 0903124855..." 
+                      placeholder="Nhập số điện thoại nhận sữa (VD: 0912345678)..." 
                       pattern="[0-9]{10,11}" 
                       maxlength="11" 
                       required autofocus>
@@ -5040,12 +5040,26 @@
           TramHatTracker.recordPurchase(finalTotalVND, orderId);
         }
 
-        // 2. Gửi API lên Serverless Backend
-        if (window.TramHatAPI) {
-          try {
-            window.TramHatAPI.createOrder(orderData);
-            window.TramHatAPI.submitLead(leadData);
-          } catch (e) { }
+        // 2. Đồng bộ đơn hàng & lead lên MongoDB Atlas Serverless Backend
+        try {
+          fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+          }).catch(err => console.warn('[MongoDB Atlas] Lưu order thất bại:', err));
+
+          fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadData)
+          }).catch(err => console.warn('[MongoDB Atlas] Lưu lead thất bại:', err));
+
+          if (window.TramHatAPI) {
+            if (typeof window.TramHatAPI.createOrder === 'function') window.TramHatAPI.createOrder(orderData);
+            if (typeof window.TramHatAPI.submitLead === 'function') window.TramHatAPI.submitLead(leadData);
+          }
+        } catch (e) {
+          console.warn('Lỗi gửi API đơn hàng:', e);
         }
 
         // 3. Đóng offcanvas giỏ hàng
@@ -6005,7 +6019,7 @@
           const ordId = o.orderId || o.id || 'TH-000000';
           const totalStr = typeof o.totalVND === 'number' ? formatPrice(o.totalVND) : (o.total || '70.000đ');
           const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('vi-VN') : 'Gần đây';
-          const itemsStr = o.itemsSummary || (Array.isArray(o.items) ? o.items.map(i => `${i.name} x ${i.qty || 1}`).join(', ') : 'Sữa hạt tươi');
+          const itemsStr = o.itemsSummary || (Array.isArray(o.items) ? o.items.map(i => `${i.name} x ${i.qty || 1}`).join(', ') : (typeof o.items === 'string' && o.items ? o.items : 'Sữa hạt tươi'));
           const status = o.status || 'Chờ Xác Nhận';
           const isDone = status.toLowerCase().includes('hoàn') || status.toLowerCase().includes('giao');
           const badgeClass = isDone ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-warning-subtle text-warning border border-warning-subtle';

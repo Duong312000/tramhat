@@ -741,20 +741,29 @@ app.post('/api/orders', async (req, res) => {
   const totalVND = Number(b.totalVND) || 0;
   const paymentMethod = b.paymentMethod || 'cod';
 
+  const itemsText = Array.isArray(items) 
+    ? items.map(i => `${i.name} (${i.size || '330ml'}) x${i.qty || 1}`).join(', ') 
+    : (b.itemsSummary || String(items));
+
   const newOrder = {
     orderId: orderId,
     id: orderId,
+    customer: customerName,
     customerName: customerName,
     name: customerName,
     phone: phone,
     district: district,
     address: address,
     notes: b.notes || '',
-    items: items,
+    items: itemsText,
+    itemsList: items,
+    itemsSummary: itemsText,
+    total: totalVND.toLocaleString('vi-VN') + 'đ',
     totalVND: totalVND,
+    payment: (paymentMethod === 'vietqr' || paymentMethod === 'bank') ? 'Chuyển Khoản VietQR' : 'COD - Tiền Mặt',
     paymentMethod: paymentMethod,
-    status: b.status || 'pending', // pending | packed | delivering | completed | cancelled
-    channel: b.channel || 'Website',
+    status: b.status || 'Chờ Bếp Nấu',
+    channel: b.channel || 'Website Trạm Hạt',
     isWeekly: !!b.isWeekly,
     createdAt: new Date().toISOString()
   };
