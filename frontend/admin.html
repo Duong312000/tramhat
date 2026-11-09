@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trạm Hạt • Business Suite & Store Analytics</title>
+  <title>Trạm Hạt • Ads & Store Manager</title>
   <link rel="icon" type="image/png" href="logo_Keep_the_same_2k_202602051521.png">
 
   <!-- Fonts: Inter -->
@@ -22,9 +22,8 @@
 
   <style>
     /* ==========================================================================
-       MODERN ADS MANAGER & CREATOR STUDIO DESIGN (NO STATIC DATA)
-       - 100% Dữ liệu thực tính trực tiếp từ MongoDB Atlas
-       - Tối giản văn bản, tập trung hiển thị bảng số liệu & trạng thái
+       TIKTOK & FACEBOOK ADS MANAGER MINIMAL DESIGN SYSTEM
+       - Không văn bản rườm rà • Không thẻ tag thừa • Dữ liệu cô đọng tối đa
        ========================================================================== */
     :root {
       --bg-page: #F8FAFC;
@@ -97,13 +96,13 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 240px;
+      width: 220px;
       background: #FFFFFF;
       border-right: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px 14px;
+      padding: 20px 12px;
       z-index: 100;
     }
 
@@ -117,8 +116,8 @@
     }
 
     .brand-logo-img {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
       object-fit: cover;
     }
@@ -169,10 +168,7 @@
       white-space: nowrap;
     }
 
-    .clean-nav-btn i {
-      font-size: 15px;
-      color: #64748B;
-    }
+    .clean-nav-btn i { font-size: 15px; color: #64748B; }
 
     .clean-nav-btn:hover {
       background: #F1F5F9;
@@ -188,15 +184,15 @@
     .clean-nav-btn.active i { color: var(--accent-blue); }
 
     .sidebar-footer {
-      padding: 14px 10px 6px 10px;
+      padding: 12px 10px 4px 10px;
       border-top: 1px solid #F1F5F9;
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-muted);
     }
 
     /* MAIN CONTENT */
     .clean-main {
-      margin-left: 240px;
+      margin-left: 220px;
       padding: 24px 32px 64px 32px;
       max-width: 1320px;
     }
@@ -205,8 +201,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 20px;
-      margin-bottom: 22px;
+      padding-bottom: 18px;
+      margin-bottom: 20px;
       border-bottom: 1px solid var(--border-subtle);
     }
 
@@ -214,19 +210,10 @@
       font-size: 20px;
       font-weight: 800;
       color: var(--text-title);
-      margin-bottom: 3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .page-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
       margin-bottom: 0;
     }
 
-    /* CARD CONTAINERS */
+    /* CARDS */
     .metric-section-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
@@ -245,31 +232,11 @@
       border-bottom: 1px solid #F1F5F9;
     }
 
-    .group-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--accent-blue);
-      background: var(--accent-blue-soft);
-      padding: 3px 8px;
-      border-radius: 6px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
     .section-title {
       font-size: 15px;
       font-weight: 700;
       color: var(--text-title);
-      margin-bottom: 2px;
-    }
-
-    .section-desc {
-      font-size: 11.5px;
-      color: var(--text-muted);
+      margin-bottom: 0;
     }
 
     /* KPI TILES */
@@ -344,7 +311,7 @@
       color: #64748B;
       background: #F8FAFC;
       border-bottom: 1px solid var(--border-subtle);
-      padding: 8px 12px;
+      padding: 9px 12px;
       white-space: nowrap;
     }
     .table tbody td {
@@ -478,39 +445,41 @@
       </div>
 
       <nav class="clean-nav">
-        <div class="nav-group-label">Phân tích hiệu suất</div>
+        <div class="nav-group-label">Báo cáo</div>
         <button class="clean-nav-btn active" onclick="filterReportSection('all', this)">
           <i class="bi bi-grid-1x2-fill"></i>
-          <span>Tổng quan hiệu suất</span>
+          <span>Tổng quan</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group1', this)">
           <i class="bi bi-signpost-split-fill"></i>
-          <span>Kênh chuyển đổi (UTM)</span>
+          <span>Kênh</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group2', this)">
           <i class="bi bi-cup-hot-fill"></i>
-          <span>Vị sữa & Sản phẩm</span>
+          <span>Sản phẩm</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group3', this)">
           <i class="bi bi-funnel-fill"></i>
-          <span>Phễu bán hàng</span>
+          <span>Phễu</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group4', this)">
           <i class="bi bi-phone-fill"></i>
-          <span>Thiết bị truy cập</span>
+          <span>Thiết bị</span>
         </button>
 
-        <div class="nav-group-label">Quản lý bán hàng</div>
+        <div class="nav-group-label">Bán hàng</div>
         <button class="clean-nav-btn" onclick="filterReportSection('crm', this)">
           <i class="bi bi-people-fill"></i>
-          <span>Khách hàng & Đơn hàng</span>
+          <span>Khách hàng & Đơn</span>
         </button>
       </nav>
     </div>
 
     <div class="sidebar-footer">
-      <div class="fw-bold text-dark">MongoDB Atlas Engine</div>
-      <div id="db-sync-indicator" class="mt-1 text-muted" style="font-size: 11px;">Đang kết nối...</div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="pulse-live-dot"></span>
+        <span class="fw-semibold text-dark">Hệ thống Live</span>
+      </div>
     </div>
   </aside>
 
@@ -519,17 +488,12 @@
 
     <!-- TOP HEADER -->
     <header class="page-header-row">
-      <div>
-        <h1 class="page-title">
-          <span>Bảng Quản Trị & Hiệu Suất Bán Hàng</span>
-        </h1>
-        <p class="page-subtitle">Dữ liệu thực tế tự động cập nhật từ hệ thống MongoDB Atlas</p>
-      </div>
+      <h1 class="page-title">Tổng quan hiệu suất</h1>
 
       <div class="d-flex align-items-center gap-2">
-        <span class="stream-badge badge-pending" id="header-metrics-badge">
-          <span class="pulse-live-dot" style="background:#F59E0B;"></span>
-          <span id="header-metrics-text">Đang kết nối MongoDB Atlas...</span>
+        <span class="stream-badge badge-won" id="header-metrics-badge">
+          <span class="pulse-live-dot"></span>
+          <span id="header-metrics-text">Đang đồng bộ...</span>
         </span>
       </div>
     </header>
@@ -537,17 +501,13 @@
     <!-- SECTION: TREND CHARTS & 4 BIG METRICS TILES -->
     <section class="metric-section-card" id="sec-overview-chart">
       <div class="group-header-banner">
-        <div>
-          <div class="section-title">Diễn biến lưu lượng & chuyển đổi thực tế theo ngày</div>
-          <div class="section-desc">Biểu đồ tổng hợp từ các sự kiện và đơn hàng thực tế lưu trong MongoDB</div>
-        </div>
-        <div class="text-muted" style="font-size: 11.5px;">Bấm từng ô để đổi biểu đồ</div>
+        <div class="section-title">Hiệu suất theo ngày</div>
       </div>
 
       <div class="metric-tiles-grid">
         <div class="metric-tile clickable active" id="tile-sessions" onclick="selectMetric('sessions')">
           <div class="metric-name">
-            <span>Sessions (Phiên)</span>
+            <span>Sessions</span>
             <i class="bi bi-graph-up text-primary"></i>
           </div>
           <div class="metric-value" id="val-sessions"><span class="metric-skeleton"></span></div>
@@ -556,7 +516,7 @@
 
         <div class="metric-tile clickable" id="tile-users" onclick="selectMetric('users')">
           <div class="metric-name">
-            <span>Users (Khách riêng biệt)</span>
+            <span>Users</span>
             <i class="bi bi-people text-secondary"></i>
           </div>
           <div class="metric-value" id="val-users"><span class="metric-skeleton"></span></div>
@@ -565,7 +525,7 @@
 
         <div class="metric-tile clickable" id="tile-leads" onclick="selectMetric('leads')">
           <div class="metric-name">
-            <span>Leads (Khách để lại thông tin)</span>
+            <span>Leads</span>
             <i class="bi bi-person-check text-warning"></i>
           </div>
           <div class="metric-value" id="val-leads"><span class="metric-skeleton"></span></div>
@@ -574,7 +534,7 @@
 
         <div class="metric-tile clickable" id="tile-orders" onclick="selectMetric('orders')">
           <div class="metric-name">
-            <span>Đơn hoàn tất (Orders)</span>
+            <span>Orders</span>
             <i class="bi bi-bag-check text-success"></i>
           </div>
           <div class="metric-value" id="val-orders"><span class="metric-skeleton"></span></div>
@@ -587,43 +547,35 @@
       </div>
     </section>
 
-    <!-- SECTION 1: UTM CHANNELS (ĐỘNG TỪ DB) -->
+    <!-- SECTION 1: UTM CHANNELS -->
     <section class="metric-section-card report-group" id="sec-group1">
       <div class="group-header-banner">
-        <div>
-          <span class="group-tag"><i class="bi bi-diagram-3-fill me-1"></i>ACQUISITION • NGUỒN CHUYỂN ĐỔI</span>
-          <div class="section-title">Phân bổ nguồn truy cập & Doanh thu theo kênh (UTM)</div>
-          <div class="section-desc">Tổng hợp tự động từ sự kiện truy cập và đơn hàng trong MongoDB Atlas</div>
-        </div>
+        <div class="section-title">Kênh chuyển đổi</div>
       </div>
 
       <div class="table-responsive border rounded-3 bg-white">
         <table class="table align-middle mb-0">
           <thead>
             <tr>
-              <th>Nguồn truy cập (UTM Source)</th>
-              <th class="text-center">Số phiên (Sessions)</th>
-              <th class="text-center">Số Lead</th>
-              <th class="text-center">Đơn hoàn tất</th>
-              <th class="text-end">Doanh thu ghi nhận</th>
-              <th class="text-center">Tỷ lệ chốt đơn (CR)</th>
+              <th>Kênh</th>
+              <th class="text-center">Sessions</th>
+              <th class="text-center">Leads</th>
+              <th class="text-center">Đơn hàng</th>
+              <th class="text-end">Doanh thu</th>
+              <th class="text-center">CR</th>
             </tr>
           </thead>
           <tbody id="channels-tbody">
-            <tr><td colspan="6" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang truy vấn dữ liệu từ MongoDB Atlas...</td></tr>
+            <tr><td colspan="6" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải dữ liệu...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- SECTION 2: PRODUCTS POPULARITY (ĐỘNG TỪ DB) -->
+    <!-- SECTION 2: PRODUCTS POPULARITY -->
     <section class="metric-section-card report-group" id="sec-group2">
       <div class="group-header-banner">
-        <div>
-          <span class="group-tag"><i class="bi bi-cup-hot me-1"></i>PRODUCT POPULARITY • MỨC ĐỘ QUAN TÂM</span>
-          <div class="section-title">Xếp hạng vị sữa theo số lượt xem và thêm vào giỏ hàng</div>
-          <div class="section-desc">Đo lường trực tiếp từ sự kiện <code>product_view</code> và <code>add_to_cart</code> trên website</div>
-        </div>
+        <div class="section-title">Sản phẩm quan tâm</div>
       </div>
 
       <div class="table-responsive border rounded-3 bg-white">
@@ -631,7 +583,7 @@
           <thead>
             <tr>
               <th style="width: 40px;">#</th>
-              <th>Tên sản phẩm / Vị sữa</th>
+              <th>Vị sữa</th>
               <th class="text-center">Lượt xem (Views)</th>
               <th class="text-center">Thêm giỏ (Cart)</th>
               <th class="text-center">Đơn mua thành công</th>
@@ -639,42 +591,34 @@
             </tr>
           </thead>
           <tbody id="products-tbody">
-            <tr><td colspan="5" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang truy vấn dữ liệu từ MongoDB Atlas...</td></tr>
+            <tr><td colspan="6" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải dữ liệu...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- SECTION 3: REAL SALES FUNNEL (ĐỘNG TỪ DB) -->
+    <!-- SECTION 3: REAL SALES FUNNEL -->
     <section class="metric-section-card report-group" id="sec-group3">
       <div class="group-header-banner">
-        <div>
-          <span class="group-tag"><i class="bi bi-funnel me-1"></i>CONVERSION • PHỄU BÁN HÀNG</span>
-          <div class="section-title">Phễu chuyển đổi bán hàng thực tế 5 bước</div>
-          <div class="section-desc">Tính toán trực tiếp từ dữ liệu phiên, hành vi sản phẩm, lead và đơn hàng thực tế</div>
-        </div>
+        <div class="section-title">Phễu chuyển đổi</div>
       </div>
 
       <div class="funnel-step-list" id="funnel-container">
-        <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang xây dựng phễu từ MongoDB Atlas...</div>
+        <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải phễu...</div>
       </div>
     </section>
 
-    <!-- SECTION 4: TECHNICAL & DEVICES (ĐỘNG TỪ DB) -->
+    <!-- SECTION 4: TECHNICAL & DEVICES -->
     <section class="metric-section-card report-group" id="sec-group4">
       <div class="group-header-banner">
-        <div>
-          <span class="group-tag"><i class="bi bi-cpu-fill me-1"></i>INFRASTRUCTURE • THIẾT BỊ TRUY CẬP</span>
-          <div class="section-title">Tỷ trọng thiết bị truy cập thực tế</div>
-          <div class="section-desc">Đo lường trực tiếp từ User-Agent và tham số thiết bị được gửi về MongoDB</div>
-        </div>
+        <div class="section-title">Thiết bị</div>
       </div>
 
       <div class="row g-3">
         <div class="col-md-6">
           <div class="metric-tile">
             <div class="metric-name">
-              <span>Thiết bị Di động (Mobile)</span>
+              <span>Di động (Mobile)</span>
               <i class="bi bi-phone text-primary"></i>
             </div>
             <div class="metric-value text-primary" id="device-mobile-pct">--</div>
@@ -694,64 +638,22 @@
       </div>
     </section>
 
-    <!-- SECTION CRM: LEADS & ORDERS (ĐỘNG TỪ DB) -->
+    <!-- SECTION CRM: LEADS & ORDERS -->
     <div id="sec-crm">
-      
-      <!-- REAL-TIME EVENT STREAM -->
-      <section class="metric-section-card" id="sec-realtime-stream">
-        <div class="group-header-banner">
-          <div>
-            <span class="group-tag" style="background:#ECFDF5; color:#065F46; border: 1px solid #A7F3D0;">
-              <span class="pulse-live-dot"></span>
-              LIVE EVENT STREAM
-            </span>
-            <div class="section-title">Nhật ký truy cập thiết bị thời gian thực (MongoDB Atlas)</div>
-            <div class="section-desc">Tự động bắt và hiển thị ngay lập tức thao tác của khách hàng trên toàn website</div>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" onclick="fetchLiveBackendData()">
-              <i class="bi bi-arrow-repeat me-1"></i> Làm mới
-            </button>
-          </div>
-        </div>
-
-        <div class="table-responsive border rounded-3 bg-white" style="max-height: 360px;">
-          <table class="table align-middle mb-0">
-            <thead class="sticky-top" style="background: #F8FAFC;">
-              <tr>
-                <th style="width: 120px;">Thời gian</th>
-                <th>Sự kiện</th>
-                <th>Thao tác</th>
-                <th>Thiết bị</th>
-                <th>Khách hàng / Mã Session</th>
-                <th>Nguồn UTM</th>
-                <th class="text-center">Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody id="realtime-stream-tbody">
-              <tr><td colspan="7" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang kết nối luồng sự kiện...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
 
       <!-- BẢNG KHÁCH HÀNG TIỀM NĂNG (LEADS) -->
       <section class="metric-section-card">
         <div class="group-header-banner">
-          <div>
-            <span class="group-tag"><i class="bi bi-person-lines-fill me-1"></i>LEAD MANAGEMENT • KHÁCH TIỀM NĂNG</span>
-            <div class="section-title">Danh sách khách hàng để lại thông tin (Leads Live)</div>
-            <div class="section-desc">Lưu trực tiếp trong MongoDB Atlas từ form đặt hàng và tư vấn</div>
-          </div>
+          <div class="section-title">Khách hàng tiềm năng (Leads)</div>
           <div>
             <input type="text" class="form-control form-control-sm" id="lead-search-input" placeholder="Tìm tên, SĐT, địa chỉ..." oninput="filterLeadsTable()" style="width: 220px; font-size: 12px;">
           </div>
         </div>
 
         <div class="d-flex gap-2 mb-3">
-          <button class="btn btn-sm btn-outline-secondary active" id="btn-filter-all" onclick="filterLeadsStatus('all', this)">Tất cả Lead (<span id="count-all-leads">0</span>)</button>
-          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-converted" onclick="filterLeadsStatus('converted', this)">Đã đặt đơn (<span id="count-conv-leads">0</span>)</button>
-          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-pending" onclick="filterLeadsStatus('pending', this)">Đang tư vấn (<span id="count-pend-leads">0</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary active" id="btn-filter-all" onclick="filterLeadsStatus('all', this)">Tất cả (<span id="count-all-leads">0</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-converted" onclick="filterLeadsStatus('converted', this)">Đã mua (<span id="count-conv-leads">0</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-pending" onclick="filterLeadsStatus('pending', this)">Chờ tư vấn (<span id="count-pend-leads">0</span>)</button>
         </div>
 
         <div class="table-responsive border rounded-3 bg-white">
@@ -761,15 +663,15 @@
                 <th style="width: 36px;">#</th>
                 <th>Họ và tên</th>
                 <th>Số điện thoại</th>
-                <th>Khu vực nhận hàng</th>
+                <th>Khu vực</th>
                 <th>Vị sữa quan tâm</th>
-                <th>Kênh UTM</th>
+                <th>Kênh</th>
                 <th>Ghi chú</th>
                 <th class="text-center">Trạng thái</th>
               </tr>
             </thead>
             <tbody id="all-leads-tbody">
-              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Lead từ MongoDB...</td></tr>
+              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách...</td></tr>
             </tbody>
           </table>
         </div>
@@ -778,11 +680,8 @@
       <!-- BẢNG ĐƠN HÀNG (ORDERS) -->
       <section class="metric-section-card mb-0">
         <div class="group-header-banner">
-          <div>
-            <span class="group-tag"><i class="bi bi-box-seam-fill me-1"></i>ORDER MANAGEMENT • ĐƠN HÀNG</span>
-            <div class="section-title">Danh sách đơn hàng hoàn tất (MongoDB Atlas)</div>
-            <div class="section-desc">Giá trị đơn hàng trung bình (AOV): <strong id="val-aov-desc" class="text-primary">--</strong></div>
-          </div>
+          <div class="section-title">Đơn hàng</div>
+          <div class="text-muted" style="font-size: 12px;">AOV: <strong id="val-aov-desc" class="text-primary">--</strong></div>
         </div>
 
         <div class="table-responsive border rounded-3 bg-white">
@@ -794,13 +693,13 @@
                 <th>Số điện thoại</th>
                 <th>Địa chỉ giao hàng</th>
                 <th>Sản phẩm</th>
-                <th>Nguồn UTM</th>
+                <th>Kênh</th>
                 <th class="text-end">Thành tiền</th>
                 <th class="text-center">Thanh toán</th>
               </tr>
             </thead>
             <tbody id="all-orders-tbody">
-              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Đơn hàng từ MongoDB...</td></tr>
+              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách...</td></tr>
             </tbody>
           </table>
         </div>
@@ -809,7 +708,7 @@
 
   </main>
 
-  <!-- JAVASCRIPT: 100% ĐỘNG TỪ MONGODB ATLAS (KHÔNG DỮ LIỆU TĨNH / FALLBACK MOCK) -->
+  <!-- JAVASCRIPT: 100% ĐỘNG TỪ MONGODB ATLAS -->
   <script>
     const API_HOST = window.location.origin.includes('localhost') ? 'http://localhost:5000/api' : '/api';
 
@@ -842,10 +741,10 @@
       const rawData = liveDailySeries[metricKey] && liveDailySeries[metricKey].length > 0 ? liveDailySeries[metricKey] : [0];
 
       const metricNames = {
-        sessions: 'Phiên truy cập (Sessions)',
-        users: 'Khách riêng biệt (Users)',
-        leads: 'Lead từ Form (Leads)',
-        orders: 'Đơn hàng hoàn tất (Orders)'
+        sessions: 'Sessions',
+        users: 'Users',
+        leads: 'Leads',
+        orders: 'Orders'
       };
 
       mainChartInstance = new Chart(ctx, {
@@ -967,7 +866,7 @@
       const tbody = document.getElementById('channels-tbody');
       if (!tbody) return;
       if (!channels || Object.keys(channels).length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">Chưa ghi nhận nguồn UTM nào trong MongoDB.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">Chưa có dữ liệu kênh.</td></tr>';
         return;
       }
 
@@ -985,12 +884,12 @@
         else if (key === 'facebook') channelLabel = '<i class="bi bi-facebook me-1 text-primary"></i> Facebook';
         else if (key === 'instagram') channelLabel = '<i class="bi bi-instagram me-1 text-danger"></i> Instagram';
         else if (key === 'google') channelLabel = '<i class="bi bi-google me-1 text-success"></i> Google Search';
-        else if (key === 'direct') channelLabel = '<i class="bi bi-qr-code-scan me-1"></i> Trực tiếp / QR Bàn';
-        else if (key === 'referral') channelLabel = '<i class="bi bi-chat-dots me-1"></i> Zalo / Giới thiệu';
+        else if (key === 'direct') channelLabel = '<i class="bi bi-qr-code-scan me-1"></i> Trực tiếp (Direct)';
+        else if (key === 'referral') channelLabel = '<i class="bi bi-chat-dots me-1"></i> Zalo Referral';
 
         html += `
           <tr>
-            <td><strong>${channelLabel}</strong> <code>?utm_source=${key}</code></td>
+            <td><strong>${channelLabel}</strong></td>
             <td class="text-center"><strong>${val.visits || 0}</strong></td>
             <td class="text-center">${val.leads || 0}</td>
             <td class="text-center"><strong class="text-primary">${val.orders || 0}</strong></td>
@@ -1018,7 +917,7 @@
       const tbody = document.getElementById('products-tbody');
       if (!tbody) return;
       if (!Array.isArray(products) || products.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-muted">Chưa có sự kiện xem vị sữa nào được ghi nhận trong MongoDB.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">Chưa có dữ liệu sản phẩm.</td></tr>';
         return;
       }
 
@@ -1044,7 +943,7 @@
       const container = document.getElementById('funnel-container');
       if (!container) return;
       if (!Array.isArray(funnel) || funnel.length === 0) {
-        container.innerHTML = '<div class="text-center py-3 text-muted">Chưa có dữ liệu phễu từ MongoDB.</div>';
+        container.innerHTML = '<div class="text-center py-3 text-muted">Chưa có dữ liệu phễu.</div>';
         return;
       }
 
@@ -1073,86 +972,18 @@
       const mEl = document.getElementById('device-mobile-pct');
       if (mEl) mEl.textContent = mobPct;
       const mcEl = document.getElementById('device-mobile-count');
-      if (mcEl) mcEl.textContent = `${mob} / ${total} lượt thao tác`;
+      if (mcEl) mcEl.textContent = `${mob} / ${total} sessions`;
 
       const dEl = document.getElementById('device-desktop-pct');
       if (dEl) dEl.textContent = deskPct;
       const dcEl = document.getElementById('device-desktop-count');
-      if (dcEl) dcEl.textContent = `${desk} / ${total} lượt thao tác`;
-    }
-
-    function renderLiveEventsStream(events) {
-      const tbody = document.getElementById('realtime-stream-tbody');
-      if (!tbody) return;
-      if (!Array.isArray(events) || events.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">Chưa có sự kiện mới từ thiết bị.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = events.map(ev => {
-        const rawTime = ev.createdAt || ev.serverTime || ev.clientTime;
-        const timeDate = rawTime ? new Date(rawTime) : null;
-        const timeStr = timeDate && !isNaN(timeDate.getTime()) 
-          ? (timeDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' ' + timeDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }))
-          : 'Vừa xong';
-
-        const evType = ev.eventType || 'event';
-        let badgeType = 'badge bg-light text-dark border';
-        let typeName = evType;
-        if (evType === 'page_view') { badgeType = 'badge bg-primary-subtle text-primary border border-primary-subtle'; typeName = 'Xem Trang'; }
-        else if (evType === 'product_view') { badgeType = 'badge bg-info-subtle text-info border border-info-subtle'; typeName = 'Xem Vị Sữa'; }
-        else if (evType === 'add_to_cart') { badgeType = 'badge bg-warning-subtle text-warning border border-warning-subtle'; typeName = 'Thêm Giỏ Hàng'; }
-        else if (evType === 'user_login') { badgeType = 'badge bg-success-subtle text-success border border-success-subtle'; typeName = 'Đăng Nhập'; }
-        else if (evType === 'purchase') { badgeType = 'badge bg-danger-subtle text-danger border border-danger-subtle'; typeName = 'Đặt Đơn Hàng'; }
-
-        const tab = ev.tab ? ('/' + ev.tab) : (ev.provider ? ('Auth: ' + ev.provider) : 'Website');
-        
-        // Trích xuất thiết bị chuẩn xác (tránh [object Object])
-        let deviceName = 'Thiết bị di động';
-        let isDesktop = false;
-        if (ev.device) {
-          const rawDev = typeof ev.device === 'object' ? (ev.device.deviceType || '') : String(ev.device);
-          if (rawDev.toLowerCase().includes('desktop') || rawDev.toLowerCase().includes('windows') || rawDev.toLowerCase().includes('mac')) {
-            deviceName = 'Máy tính (Desktop)';
-            isDesktop = true;
-          } else if (rawDev.toLowerCase().includes('mobile') || rawDev.toLowerCase().includes('ios') || rawDev.toLowerCase().includes('android')) {
-            deviceName = 'Điện thoại (Mobile)';
-          } else if (rawDev.trim() !== '') {
-            deviceName = rawDev;
-          }
-        }
-
-        const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
-
-        // Chuẩn hóa tên kênh UTM
-        const rawUtm = (ev.utm && ev.utm.source) || ev.utmSource || 'direct';
-        let cleanUtm = String(rawUtm).toLowerCase().trim();
-        if (cleanUtm.includes('tiktok')) cleanUtm = 'TikTok';
-        else if (cleanUtm.includes('facebook')) cleanUtm = 'Facebook';
-        else if (cleanUtm.includes('instagram')) cleanUtm = 'Instagram';
-        else if (cleanUtm.includes('google')) cleanUtm = 'Google';
-        else if (cleanUtm.includes('zalo') || cleanUtm.includes('referral')) cleanUtm = 'Zalo Referral';
-        else cleanUtm = 'Trực tiếp (Direct)';
-
-        return `
-          <tr>
-            <td class="text-muted"><i class="bi bi-clock me-1"></i><strong>${timeStr}</strong></td>
-            <td><span class="${badgeType}">${typeName}</span></td>
-            <td><code>${tab}</code></td>
-            <td><i class="bi bi-${isDesktop ? 'laptop' : 'phone'} me-1"></i>${deviceName}</td>
-            <td><strong>${visitor}</strong></td>
-            <td><span class="badge bg-light text-secondary border">${cleanUtm}</span></td>
-            <td class="text-center"><span class="badge bg-success-subtle text-success"><i class="bi bi-cloud-check me-1"></i>Atlas</span></td>
-          </tr>
-        `;
-      }).join('');
+      if (dcEl) dcEl.textContent = `${desk} / ${total} sessions`;
     }
 
     async function fetchLiveBackendData() {
       try {
-        const [dashRes, eventsRes, lRes, oRes] = await Promise.all([
+        const [dashRes, lRes, oRes] = await Promise.all([
           fetch(`${API_HOST}/tracking/dashboard`).then(r => r.json()).catch(() => null),
-          fetch(`${API_HOST}/tracking/events?limit=15&type=all`).then(r => r.json()).catch(() => null),
           fetch(`${API_HOST}/leads`).then(r => r.json()).catch(() => null),
           fetch(`${API_HOST}/orders`).then(r => r.json()).catch(() => null)
         ]);
@@ -1174,7 +1005,7 @@
           const uEl = document.getElementById('val-users');
           const uDelta = document.getElementById('val-users-delta');
           if (uEl) uEl.textContent = u;
-          if (uDelta) uDelta.innerHTML = `<i class="bi bi-people"></i> ${u} khách truy cập`;
+          if (uDelta) uDelta.innerHTML = `<i class="bi bi-people"></i> ${u} users`;
 
           const lEl = document.getElementById('val-leads');
           const lDelta = document.getElementById('val-leads-delta');
@@ -1186,14 +1017,10 @@
           if (oEl) oEl.textContent = o;
           if (oDelta) oDelta.innerHTML = `<i class="bi bi-check2-circle"></i> CR: ${ov.overallCR || '0%'} • ${rev.toLocaleString('vi-VN')}đ`;
 
-          const bEl = document.getElementById('header-metrics-badge');
+          const bEl = document.getElementById('header-metrics-text');
           if (bEl) {
-            bEl.className = 'stream-badge badge-won';
-            bEl.innerHTML = `<span class="pulse-live-dot" style="background:#10B981;"></span> ${u} Users • ${s} Sessions • ${l} Leads • ${o} Đơn`;
+            bEl.textContent = `${u} Users • ${s} Sessions • ${l} Leads • ${o} Đơn`;
           }
-
-          const syncEl = document.getElementById('db-sync-indicator');
-          if (syncEl) syncEl.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Đồng bộ MongoDB Atlas</span>`;
 
           const aovEl = document.getElementById('val-aov-desc');
           if (aovEl) aovEl.textContent = `${aov.toLocaleString('vi-VN')}đ/đơn (${o} đơn)`;
@@ -1226,10 +1053,6 @@
           globalOrders = [];
         }
         renderAllOrdersTable();
-
-        if (eventsRes && Array.isArray(eventsRes.data)) {
-          renderLiveEventsStream(eventsRes.data);
-        }
 
       } catch (err) {
         console.warn('Sync live backend error:', err);
@@ -1269,7 +1092,7 @@
       }
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Chưa có khách hàng nào trong danh sách.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Chưa có khách hàng nào.</td></tr>`;
         return;
       }
 
@@ -1278,8 +1101,8 @@
         const phone = l.phone || '';
         const addr = l.address || l.district || 'TP. Thủ Đức';
         const prod = l.interestedProduct || 'Sữa hạt tươi 250ml';
-        const channel = l.channel || l.utmSource || 'Website Form';
-        const note = l.notes || l.inquiryContent || 'Để lại thông tin qua form đặt hàng';
+        const channel = l.channel || l.utmSource || 'Website';
+        const note = l.notes || l.inquiryContent || 'Quan tâm sữa hạt';
         const isWon = l.status === 'Converted_Order';
 
         tbody.innerHTML += `
@@ -1292,7 +1115,7 @@
             <td><span class="badge bg-light text-dark border">${channel}</span></td>
             <td class="text-muted" style="font-size: 11.5px;">${note}</td>
             <td class="text-center">
-              <span class="stream-badge ${isWon ? 'badge-won' : 'badge-pending'}">${isWon ? 'Đã đặt đơn' : 'Đang tư vấn'}</span>
+              <span class="stream-badge ${isWon ? 'badge-won' : 'badge-pending'}">${isWon ? 'Đã mua' : 'Chờ tư vấn'}</span>
             </td>
           </tr>
         `;
@@ -1318,7 +1141,7 @@
       tbody.innerHTML = '';
 
       if (globalOrders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Chưa có đơn hàng nào trong MongoDB Atlas.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Chưa có đơn hàng nào.</td></tr>`;
         return;
       }
 
