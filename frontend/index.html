@@ -3354,13 +3354,12 @@
               <div class="border rounded-3 p-3 mb-3 bg-light">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="small fw-semibold">Tiến độ đợt này:</span>
-                  <span class="fw-bold text-success">3 / 5 Vỏ chai</span>
+                  <span class="fw-bold text-success" id="ecoBottleProgressText">0 / 5 Vỏ chai</span>
                 </div>
                 <div class="progress" style="height: 8px;">
-                  <div class="progress-bar bg-success" style="width: 60%;"></div>
+                  <div class="progress-bar bg-success" id="ecoBottleProgressBar" style="width: 0%;"></div>
                 </div>
-                <div class="text-muted small mt-2">Cần gửi thêm 2 vỏ chai nữa để tự động nhận voucher giảm 10.000đ.
-                </div>
+                <div class="text-muted small mt-2" id="ecoBottleNoticeText">Cần gửi 5 vỏ chai để tự động nhận mã giảm 10.000đ hoặc 01 chai sữa miễn phí.</div>
               </div>
               <button class="btn-main-outline py-2 px-3"
                 onclick="handleRequestBottleReturn()">
@@ -3375,17 +3374,15 @@
                   <div class="text-muted small">Giảm 15% cho đơn hàng kế tiếp - Hạn dùng 30 ngày</div>
                 </div>
                 <button class="btn btn-sm btn-outline-dark"
-                  onclick="navigator.clipboard.writeText('TRAMHAT15'); showFloatingToast('Đã sao chép mã TRAMHAT15!', 'info')">Sao
-                  Chép</button>
+                  onclick="applyCouponDirectly('TRAMHAT15')">Dùng Ngay</button>
               </div>
               <div class="border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
                 <div>
                   <div class="fw-bold font-serif text-success">DOICHAISANG</div>
-                  <div class="text-muted small">Miễn phí 1 chai Sữa Điều Tự Nhiên 300ml khi trả đủ 5 vỏ</div>
+                  <div class="text-muted small">Tặng 35.000đ (tương đương 1 chai Sữa Điều 330ml miễn phí)</div>
                 </div>
                 <button class="btn btn-sm btn-outline-success"
-                  onclick="navigator.clipboard.writeText('DOICHAISANG'); showFloatingToast('Đã sao chép mã DOICHAISANG!', 'info')">Sao
-                  Chép</button>
+                  onclick="applyCouponDirectly('DOICHAISANG')">Dùng Ngay</button>
               </div>
             </div>
           </div>
@@ -4827,6 +4824,20 @@
             noticeEl.classList.remove('d-none');
           }
           showFloatingToast("Đã áp dụng mã TRAMHAT10: Giảm 10% tổng đơn!", "success");
+        } else if (code === 'TRAMHAT15') {
+          currentCouponDiscount = 0.15;
+          if (noticeEl) {
+            noticeEl.innerText = "Áp dụng thành công mã TRAMHAT15: Giảm 15% tổng đơn!";
+            noticeEl.classList.remove('d-none');
+          }
+          showFloatingToast("Đã áp dụng mã TRAMHAT15: Giảm 15% tổng đơn!", "success");
+        } else if (code === 'DOICHAISANG') {
+          currentCouponDiscount = 35000;
+          if (noticeEl) {
+            noticeEl.innerText = "Áp dụng thành công mã DOICHAISANG: Tặng 35.000đ (01 chai sữa hạt miễn phí)!";
+            noticeEl.classList.remove('d-none');
+          }
+          showFloatingToast("Đã áp dụng mã đổi vỏ chai: Giảm 35.000đ trực tiếp!", "success");
         } else if (code === 'FREESHIP' || code === 'TRAMHAT15K') {
           currentCouponDiscount = 15000;
           if (noticeEl) {
@@ -4835,11 +4846,19 @@
           }
           showFloatingToast("Đã kích hoạt ưu đãi Miễn phí giao lạnh 15.000đ!", "success");
         } else {
-          showFloatingToast("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10 hoặc FREESHIP", "warning");
+          showFloatingToast("Mã giảm giá không hợp lệ. Hãy thử: TRAMHAT10, TRAMHAT15 hoặc FREESHIP", "warning");
           if (noticeEl) noticeEl.classList.add('d-none');
           currentCouponDiscount = 0;
         }
         renderCart();
+      }
+
+      function applyCouponDirectly(code) {
+        if (!code) return;
+        const input = document.getElementById('couponCodeInput');
+        if (input) input.value = code;
+        applyCouponCode();
+        openCartDrawer();
       }
 
       // ĐÓNG ORDER SUCCESS MODAL VÀ CHUYỂN ĐẾN TRANG CÁ NHÂN
@@ -5745,6 +5764,22 @@
           if (statBottles) statBottles.innerText = user.bottlesReturned || 0;
           if (statOrders) statOrders.innerText = user.ordersCount || 0;
 
+          // Cập nhật tiến độ thu hồi vỏ chai Trạm Xanh
+          const bottles = user.bottlesReturned || 0;
+          const currentCycle = bottles % 5;
+          const percent = (currentCycle / 5) * 100;
+          const needed = 5 - currentCycle;
+          const ecoProgText = document.getElementById('ecoBottleProgressText');
+          const ecoProgBar = document.getElementById('ecoBottleProgressBar');
+          const ecoProgNotice = document.getElementById('ecoBottleNoticeText');
+          if (ecoProgText) ecoProgText.innerText = `${currentCycle} / 5 Vỏ chai`;
+          if (ecoProgBar) ecoProgBar.style.width = `${percent}%`;
+          if (ecoProgNotice) {
+            ecoProgNotice.innerText = (currentCycle === 0 && bottles > 0)
+              ? 'Chúc mừng bạn đã hoàn thành chu kỳ 5 vỏ chai! Hãy bấm Dùng Ngay mã DOICHAISANG để nhận 01 chai sữa hạt tươi miễn phí!'
+              : `Cần gửi thêm ${needed} vỏ chai nữa để tự động nhận mã quà tặng!`;
+          }
+
           const editName = document.getElementById('profEditName');
           const editPhone = document.getElementById('profEditPhone');
           const editEmail = document.getElementById('profEditEmail');
@@ -5922,6 +5957,7 @@
         if (user && user.isLoggedIn) {
           user.bottlesReturned = (user.bottlesReturned || 0) + 1;
           saveCurrentUser(user);
+          syncUserUI();
         }
         if (typeof TramHatTracker !== 'undefined') {
           TramHatTracker.recordEvent('bottle_recycle_request', { user: (user && user.name) ? user.name : 'Khách Hàng' });
