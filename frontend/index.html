@@ -3451,7 +3451,7 @@
             <ul class="list-unstyled text-muted small d-flex flex-column gap-2 mb-0">
               <li><i class="bi bi-clock me-2 text-dark"></i><strong>Nấu mới:</strong> 05:00 sáng mỗi ngày</li>
               <li><i class="bi bi-truck me-2 text-dark"></i><strong>Giao lạnh:</strong> 07:30 – 16:30 (Thứ 2 – Thứ 7)</li>
-              <li><i class="bi bi-telephone me-2 text-dark"></i><strong>Hotline:</strong> 0903 124 855</li>
+              <li><i class="bi bi-telephone me-2 text-dark"></i><strong>Hotline:</strong> 098.765.4321 (06:00 – 21:00)</li>
               <li><i class="bi bi-geo-alt me-2 text-dark"></i><strong>Khu vực:</strong> TP. Thủ Đức & Nội thành TP.HCM</li>
             </ul>
           </div>
@@ -4568,7 +4568,10 @@
         if (detailView) detailView.classList.remove('d-none');
         window.scrollTo({ top: 0, behavior: 'instant' });
         if (window.location.hash !== '#product-detail') history.pushState(null, null, '#product-detail');
-        setTimeout(() => renderRelatedProducts(key), 60);
+        setTimeout(() => {
+          renderRelatedProducts(key);
+          renderProductReviews(key);
+        }, 60);
       }
 
       function closeProductDetail() {
@@ -6214,6 +6217,53 @@
       }
 
       // 12. ĐÁNH GIÁ 5 SAO & BÌNH LUẬN TRANG CHI TIẾT SẢN PHẨM
+      function renderProductReviews(key) {
+        const container = document.getElementById('productReviewsContainer');
+        if (!container) return;
+
+        const p = productsDB[key];
+        const pName = p ? p.name.toLowerCase() : '';
+
+        // Nạp danh sách đánh giá từ window.TRAMHAT_DATA hoặc bộ nhớ
+        const allReviews = (window.TRAMHAT_DATA && Array.isArray(window.TRAMHAT_DATA.reviews)) 
+          ? window.TRAMHAT_DATA.reviews 
+          : [];
+
+        // Lọc các review theo từ khóa của từng vị sữa
+        let matched = allReviews.filter(r => {
+          const cLower = (r.comment || '').toLowerCase();
+          const tLower = (r.tag || '').toLowerCase();
+          if (key === 'cashew') return cLower.includes('điều') || tLower.includes('điều');
+          if (key === 'walnut') return cLower.includes('óc chó') || cLower.includes('mè đen') || tLower.includes('óc chó');
+          if (key === 'almond') return cLower.includes('hạnh nhân') || cLower.includes('cacao') || tLower.includes('hạnh nhân');
+          if (key === 'macca') return cLower.includes('macca') || cLower.includes('yến mạch') || tLower.includes('macca');
+          if (key === 'lotus') return cLower.includes('sen') || cLower.includes('lá dứa') || tLower.includes('sen');
+          if (key === 'redbean') return cLower.includes('đậu đỏ') || cLower.includes('kỷ tử') || tLower.includes('đậu đỏ');
+          return pName && (cLower.includes(pName) || tLower.includes(pName));
+        });
+
+        if (matched.length === 0) {
+          matched = allReviews.slice(0, 3);
+        }
+
+        let html = '';
+        matched.forEach(r => {
+          const starStr = '&#9733;'.repeat(r.stars || 5);
+          html += `
+            <div class="review-user-item p-3 border rounded bg-white mb-2 shadow-sm">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold small text-dark">${r.name} <span class="text-muted fw-normal">(${r.role ? r.role.split('•')[0].trim() : 'Khách hàng'})</span></span>
+                <span class="star-gold small">${starStr}</span>
+              </div>
+              <p class="text-muted small mb-1">${r.comment}</p>
+              <div class="text-muted" style="font-size: 11px;"><i class="bi bi-clock me-1"></i>${r.date || 'Gần đây'} ${r.tag ? '• <span class="text-success fw-semibold">' + r.tag + '</span>' : ''}</div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      }
+
       function submitUserReview() {
         const stars = document.getElementById('newReviewStars')?.value || '5';
         const text = (document.getElementById('newReviewComment')?.value || '').trim();
@@ -6226,13 +6276,14 @@
         const container = document.getElementById('productReviewsContainer');
         const starStr = '&#9733;'.repeat(parseInt(stars));
         const item = document.createElement('div');
-        item.className = 'review-user-item';
+        item.className = 'review-user-item p-3 border rounded bg-white mb-2 shadow-sm';
         item.innerHTML = `
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <span class="fw-bold small">${userName} (Vừa xong)</span>
+            <span class="fw-bold small text-dark">${userName} (Vừa xong)</span>
             <span class="star-gold small">${starStr}</span>
           </div>
-          <p class="text-muted small mb-0">${text}</p>
+          <p class="text-muted small mb-1">${text}</p>
+          <div class="text-muted" style="font-size: 11px;"><i class="bi bi-clock me-1"></i>Vừa xong • <span class="text-success fw-semibold">Đã xác thực</span></div>
         `;
         if (container) container.prepend(item);
         const inputEl = document.getElementById('newReviewComment');
@@ -6241,20 +6292,26 @@
         const prodKey = typeof currentSelectedDetailKey !== 'undefined' ? currentSelectedDetailKey : 'general';
         const prodName = (typeof productsDB !== 'undefined' && productsDB[prodKey]) ? productsDB[prodKey].name : 'Sữa Hạt Trạm Hạt';
 
+        const newReviewObj = {
+          name: userName,
+          role: 'Khách mua sản phẩm',
+          avatar: userName.slice(0, 2).toUpperCase(),
+          stars: parseInt(stars),
+          date: new Date().toLocaleDateString('vi-VN'),
+          tag: prodName,
+          comment: text
+        };
+
+        if (window.TRAMHAT_DATA && Array.isArray(window.TRAMHAT_DATA.reviews)) {
+          window.TRAMHAT_DATA.reviews.unshift(newReviewObj);
+        }
+
         // Gửi lưu trực tiếp lên cơ sở dữ liệu MongoDB Atlas
         try {
           fetch('/api/reviews', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: userName,
-              role: 'Khách mua sản phẩm',
-              avatar: userName.slice(0, 2).toUpperCase(),
-              stars: parseInt(stars),
-              date: new Date().toLocaleDateString('vi-VN'),
-              tag: prodName,
-              comment: text
-            })
+            body: JSON.stringify(newReviewObj)
           }).catch(() => {});
         } catch (e) { }
 
