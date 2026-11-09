@@ -632,9 +632,10 @@
             <tr>
               <th style="width: 40px;">#</th>
               <th>Tên sản phẩm / Vị sữa</th>
-              <th class="text-center">Lượt xem chi tiết (Views)</th>
-              <th class="text-center">Lượt thêm giỏ hàng (Add to Cart)</th>
-              <th class="text-center">Tỷ lệ thêm giỏ / Lượt xem</th>
+              <th class="text-center">Lượt xem (Views)</th>
+              <th class="text-center">Thêm giỏ (Cart)</th>
+              <th class="text-center">Đơn mua thành công</th>
+              <th class="text-center">Tỷ lệ chốt / Lượt xem</th>
             </tr>
           </thead>
           <tbody id="products-tbody">
@@ -1024,13 +1025,15 @@
       tbody.innerHTML = products.map((p, idx) => {
         const views = p.views || 0;
         const cart = p.cart || 0;
-        const rate = views > 0 ? ((cart / views) * 100).toFixed(1) + '%' : '0%';
+        const orders = p.orders || 0;
+        const rate = views > 0 ? ((orders / views) * 100).toFixed(1) + '%' : '0%';
         return `
           <tr>
             <td class="text-muted">${idx + 1}</td>
             <td><strong>${p.name || 'Sản phẩm'}</strong></td>
-            <td class="text-center"><strong>${views}</strong> lượt xem</td>
-            <td class="text-center text-primary"><strong>${cart}</strong> lượt thêm</td>
+            <td class="text-center"><strong>${views}</strong></td>
+            <td class="text-center text-primary">${cart}</td>
+            <td class="text-center"><strong class="text-success">${orders}</strong> đơn</td>
             <td class="text-center"><span class="badge bg-light text-dark border">${rate}</span></td>
           </tr>
         `;
@@ -1087,7 +1090,12 @@
       }
 
       tbody.innerHTML = events.map(ev => {
-        const timeStr = ev.clientTime ? new Date(ev.clientTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : (ev.serverTime ? new Date(ev.serverTime).toLocaleTimeString('vi-VN') : 'Vừa xong');
+        const rawTime = ev.createdAt || ev.serverTime || ev.clientTime;
+        const timeDate = rawTime ? new Date(rawTime) : null;
+        const timeStr = timeDate && !isNaN(timeDate.getTime()) 
+          ? (timeDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' ' + timeDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }))
+          : 'Vừa xong';
+
         const evType = ev.eventType || 'event';
         let badgeType = 'badge bg-light text-dark border';
         let typeName = evType;
@@ -1098,18 +1106,42 @@
         else if (evType === 'purchase') { badgeType = 'badge bg-danger-subtle text-danger border border-danger-subtle'; typeName = 'Đặt Đơn Hàng'; }
 
         const tab = ev.tab ? ('/' + ev.tab) : (ev.provider ? ('Auth: ' + ev.provider) : 'Website');
-        const device = ev.device || 'Thiết bị di động';
+        
+        // Trích xuất thiết bị chuẩn xác (tránh [object Object])
+        let deviceName = 'Thiết bị di động';
+        let isDesktop = false;
+        if (ev.device) {
+          const rawDev = typeof ev.device === 'object' ? (ev.device.deviceType || '') : String(ev.device);
+          if (rawDev.toLowerCase().includes('desktop') || rawDev.toLowerCase().includes('windows') || rawDev.toLowerCase().includes('mac')) {
+            deviceName = 'Máy tính (Desktop)';
+            isDesktop = true;
+          } else if (rawDev.toLowerCase().includes('mobile') || rawDev.toLowerCase().includes('ios') || rawDev.toLowerCase().includes('android')) {
+            deviceName = 'Điện thoại (Mobile)';
+          } else if (rawDev.trim() !== '') {
+            deviceName = rawDev;
+          }
+        }
+
         const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
-        const utm = (ev.utm && ev.utm.source) || ev.utmSource || 'Trực tiếp';
+
+        // Chuẩn hóa tên kênh UTM
+        const rawUtm = (ev.utm && ev.utm.source) || ev.utmSource || 'direct';
+        let cleanUtm = String(rawUtm).toLowerCase().trim();
+        if (cleanUtm.includes('tiktok')) cleanUtm = 'TikTok';
+        else if (cleanUtm.includes('facebook')) cleanUtm = 'Facebook';
+        else if (cleanUtm.includes('instagram')) cleanUtm = 'Instagram';
+        else if (cleanUtm.includes('google')) cleanUtm = 'Google';
+        else if (cleanUtm.includes('zalo') || cleanUtm.includes('referral')) cleanUtm = 'Zalo Referral';
+        else cleanUtm = 'Trực tiếp (Direct)';
 
         return `
           <tr>
             <td class="text-muted"><i class="bi bi-clock me-1"></i><strong>${timeStr}</strong></td>
             <td><span class="${badgeType}">${typeName}</span></td>
             <td><code>${tab}</code></td>
-            <td><i class="bi bi-${String(device).toLowerCase().includes('desktop') ? 'laptop' : 'phone'} me-1"></i>${device}</td>
+            <td><i class="bi bi-${isDesktop ? 'laptop' : 'phone'} me-1"></i>${deviceName}</td>
             <td><strong>${visitor}</strong></td>
-            <td><span class="badge bg-light text-secondary border">${utm}</span></td>
+            <td><span class="badge bg-light text-secondary border">${cleanUtm}</span></td>
             <td class="text-center"><span class="badge bg-success-subtle text-success"><i class="bi bi-cloud-check me-1"></i>Atlas</span></td>
           </tr>
         `;

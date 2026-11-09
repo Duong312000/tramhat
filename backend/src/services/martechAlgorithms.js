@@ -104,14 +104,14 @@ class MartechAlgorithmService {
 
     if (currentHour >= 6 && currentHour <= 10) {
       // Giờ sáng: Cần năng lượng no lâu thay bữa sáng nhanh
-      recommendedFlavor = 'Sữa Điều Rang Mộc (29.000đ) hoặc Sữa Macca Yến Mạch (35.000đ)';
+      recommendedFlavor = 'Sữa Điều Tự Nhiên (35.000đ) hoặc Sữa Macca Yến Mạch (35.000đ)';
       rationale = 'Khung giờ sáng: Ưu tiên dòng sữa giàu tinh bột phức và protein lành mạnh giúp no lâu, tập trung làm việc.';
     } else if (currentHour >= 13 && currentHour <= 16) {
       // Giờ chiều: Cần giải tỏa căng thẳng và thanh nhiệt xế chiều
-      recommendedFlavor = 'Sữa Hạnh Nhân Cacao Đắk Lắk (39.000đ) hoặc Sữa Điều Sen Tuyết (35.000đ)';
+      recommendedFlavor = 'Sữa Hạnh Nhân Cacao (35.000đ) hoặc Sữa Hạt Sen Lá Dứa (35.000đ)';
       rationale = 'Khung giờ xế chiều: Cacao nguyên chất kích thích giải phóng Endorphin chống mệt mỏi, hạt sen thanh mát nhẹ bụng.';
     } else {
-      recommendedFlavor = 'Sữa Hạt Điều Sen Tuyết (35.000đ)';
+      recommendedFlavor = 'Sữa Hạt Sen Lá Dứa (35.000đ)';
       rationale = 'Thức uống nhẹ bụng, dễ tiêu hóa cho buổi tối thư giãn.';
     }
 
