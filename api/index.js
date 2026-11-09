@@ -508,9 +508,9 @@ app.post(['/api/users/phone-auth', '/users/phone-auth'], async (req, res) => {
         // Tạo khách hàng mới
         userObj = {
           id: 'USR-TEL-' + phone.slice(-6),
-          name: name || ('Khách Hàng ' + phone.slice(-4)),
+          name: name || ('Thành viên ' + phone.slice(-4)),
           phone: phone,
-          email: phone + '@khachhang.tramhat.vn',
+          email: req.body.email || '',
           address: address || 'TP.HCM',
           district: district || 'TP.HCM',
           role: 'customer',
@@ -539,9 +539,9 @@ app.post(['/api/users/phone-auth', '/users/phone-auth'], async (req, res) => {
     } else {
       userObj = {
         id: 'USR-TEL-' + phone.slice(-6),
-        name: name || ('Khách Hàng ' + phone.slice(-4)),
+        name: name || ('Thành viên ' + phone.slice(-4)),
         phone: phone,
-        email: phone + '@khachhang.tramhat.vn',
+        email: req.body.email || '',
         address: address || 'TP.HCM',
         role: 'customer',
         tier: 'Eco Citizen',
@@ -555,6 +555,42 @@ app.post(['/api/users/phone-auth', '/users/phone-auth'], async (req, res) => {
       success: true,
       message: 'Đăng nhập số điện thoại thành công',
       user: userObj
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// CẬP NHẬT HỒ SƠ THÀNH VIÊN VÀ ĐỒNG BỘ MONGODB ATLAS
+app.put(['/api/users/profile', '/users/profile'], async (req, res) => {
+  try {
+    let { phone, name, email, address, district } = req.body || {};
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Vui lòng cung cấp số điện thoại' });
+    }
+    phone = phone.replace(/[^0-9]/g, '');
+
+    const updateFields = {
+      name: (name || '').trim(),
+      email: (email || '').trim(),
+      address: (address || '').trim(),
+      district: (district || 'TP.HCM').trim(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+      const db = mongoose.connection.db;
+      await db.collection('users').updateOne(
+        { phone: phone },
+        { $set: updateFields },
+        { upsert: true }
+      );
+    }
+
+    return res.json({
+      success: true,
+      message: 'Cập nhật thông tin thành công',
+      user: { phone, ...updateFields }
     });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });

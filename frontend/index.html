@@ -5658,36 +5658,34 @@
         }
 
         const isRemember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : true;
-
-        // 1. Tìm kiếm trong danh sách khách hàng hoặc tạo tài khoản mới ngay lập tức
-        const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
-        const matched = dataUsers.find(u => u.phone === clean);
-
+        const custName = 'Thành viên ' + clean.slice(-4);
         let userObj = null;
 
-        if (matched) {
-          userObj = { ...matched, isLoggedIn: true };
-        } else {
-          // Khách hàng mới: tạo tên thành viên tự nhiên, không làm phiền bằng prompt popup
-          const custName = 'Thành viên ' + clean.slice(-4);
+        // 1. Xác thực và nạp dữ liệu tức thì từ MongoDB Atlas
+        try {
+          const res = await fetch('/api/users/phone-auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: clean,
+              name: custName
+            })
+          });
+          const data = await res.json();
+          if (data && data.success && data.user) {
+            userObj = { ...data.user, isLoggedIn: true };
+          }
+        } catch (e) {
+          console.warn('[Phone Auth API error]:', e);
+        }
 
-          // Đồng bộ với API Backend MongoDB Atlas
-          try {
-            const res = await fetch('/api/users/phone-auth', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                phone: clean,
-                name: custName
-              })
-            });
-            const data = await res.json();
-            if (data && data.success && data.user) {
-              userObj = { ...data.user, isLoggedIn: true };
-            }
-          } catch (e) { }
-
-          if (!userObj) {
+        // 2. Dự phòng offline nếu mất kết nối mạng
+        if (!userObj) {
+          const dataUsers = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.users) ? window.TRAMHAT_DATA.users : [];
+          const matched = dataUsers.find(u => (u.phone || '').replace(/[^0-9]/g, '') === clean);
+          if (matched) {
+            userObj = { ...matched, isLoggedIn: true };
+          } else {
             userObj = {
               id: 'USR-TEL-' + clean.slice(-6),
               name: custName,
@@ -5842,15 +5840,37 @@
         }
       }
 
-      function handleUpdateProfileInfo(e) {
+      async function handleUpdateProfileInfo(e) {
         e.preventDefault();
-        let user = getCurrentUser();
-        user.name = document.getElementById('profEditName').value.trim();
-        user.phone = document.getElementById('profEditPhone').value.trim();
-        user.email = document.getElementById('profEditEmail').value.trim();
-        user.address = document.getElementById('profEditAddress').value.trim();
-        saveCurrentUser(user);
+        let user = getCurrentUser() || {};
+        const newName = document.getElementById('profEditName').value.trim();
+        const newPhone = document.getElementById('profEditPhone').value.trim().replace(/[^0-9]/g, '');
+        const newEmail = document.getElementById('profEditEmail').value.trim();
+        const newAddress = document.getElementById('profEditAddress').value.trim();
 
+        user.name = newName;
+        user.phone = newPhone || user.phone;
+        user.email = newEmail;
+        user.address = newAddress;
+        saveCurrentUser(user);
+        syncUserUI();
+
+        // Đồng bộ dữ liệu hồ sơ lên MongoDB Atlas
+        try {
+          fetch('/api/users/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: user.phone,
+              name: user.name,
+              email: user.email,
+              address: user.address,
+              district: user.district || 'TP.HCM'
+            })
+          }).catch(err => console.warn('[MongoDB Atlas] Lưu profile thất bại:', err));
+        } catch (err) { }
+
+        showFloatingToast('Cập nhật thông tin hồ sơ thành công!', 'success');
         const msg = document.getElementById('profSaveSuccessMsg');
         if (msg) {
           msg.classList.remove('d-none');
@@ -5858,7 +5878,7 @@
         }
       }
 
-      function renderProfileOrders() {
+      async function renderProfileOrders() {
         const container = document.getElementById('profileOrdersListContainer');
         if (!container) return;
 
@@ -5870,7 +5890,7 @@
           const localOrders = JSON.parse(localStorage.getItem('tramhat_orders_list') || '[]');
           if (Array.isArray(localOrders) && localOrders.length > 0) {
             if (user && user.isLoggedIn && user.phone) {
-              const myOrders = localOrders.filter(o => o.phone === user.phone);
+              const myOrders = localOrders.filter(o => (o.phone || '').replace(/[^0-9]/g, '') === user.phone);
               orders.push(...myOrders);
             } else {
               orders.push(...localOrders);
@@ -5878,11 +5898,28 @@
           }
         } catch (e) { }
 
-        // 2. Tra cứu đối chiếu đơn hàng trong cơ sở dữ liệu chiến dịch (window.TRAMHAT_DATA.orders)
+        // 2. Tra cứu tức thời từ MongoDB Atlas theo số điện thoại thành viên
+        if (user && user.isLoggedIn && user.phone) {
+          try {
+            const res = await fetch(`/api/orders?phone=${user.phone}`);
+            if (res.ok) {
+              const data = await res.json();
+              const apiOrders = Array.isArray(data) ? data : (data && Array.isArray(data.data) ? data.data : []);
+              apiOrders.forEach(ao => {
+                const aoId = ao.orderId || ao.id;
+                if (!orders.some(existing => (existing.orderId || existing.id) === aoId)) {
+                  orders.push(ao);
+                }
+              });
+            }
+          } catch (e) { }
+        }
+
+        // 3. Tra cứu đối chiếu đơn hàng trong cơ sở dữ liệu chiến dịch (window.TRAMHAT_DATA.orders)
         const dbOrders = (window.TRAMHAT_DATA && window.TRAMHAT_DATA.orders) ? window.TRAMHAT_DATA.orders : [];
         if (user && user.isLoggedIn && user.phone) {
           const matchedDb = dbOrders.filter(o => 
-            o.phone === user.phone && 
+            (o.phone || '').replace(/[^0-9]/g, '') === user.phone && 
             !orders.some(existing => (existing.orderId === o.orderId || existing.id === o.id))
           );
           orders.push(...matchedDb);
