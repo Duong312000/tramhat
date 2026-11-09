@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trạm Hạt • Business Suite & Ads Manager</title>
+  <title>Trạm Hạt • Business Suite & Store Analytics</title>
   <link rel="icon" type="image/png" href="logo_Keep_the_same_2k_202602051521.png">
 
   <!-- Fonts: Inter -->
@@ -22,32 +22,25 @@
 
   <style>
     /* ==========================================================================
-       TIKTOK CREATOR STUDIO & META ADS MANAGER MODERN CLEAN DESIGN SYSTEM
-       - Tối giản chữ, cô đọng số liệu, tối đa hóa mật độ thông tin hữu ích
-       - Palette: Neutral Slate, Soft Accent Indigo/Blue, Subtle Semantic Colors
+       MODERN ADS MANAGER & CREATOR STUDIO DESIGN (NO STATIC DATA)
+       - 100% Dữ liệu thực tính trực tiếp từ MongoDB Atlas
+       - Tối giản văn bản, tập trung hiển thị bảng số liệu & trạng thái
        ========================================================================== */
     :root {
       --bg-page: #F8FAFC;
       --bg-card: #FFFFFF;
       --border-subtle: #E2E8F0;
-      --border-hover: #CBD5E1;
       --text-title: #0F172A;
       --text-body: #334155;
       --text-muted: #64748B;
       --accent-blue: #2563EB;
       --accent-blue-soft: #EFF6FF;
-      --brand-tiktok: #000000;
-      --brand-facebook: #1877F2;
-      --brand-instagram: #E1306C;
-      --brand-google: #0F9D58;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-page);
       color: var(--text-body);
       margin: 0;
@@ -74,7 +67,7 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    /* TOP LIVE LOADER */
+    /* TOP LOADER */
     .admin-global-loader {
       position: fixed;
       top: 0;
@@ -98,7 +91,7 @@
       100% { transform: scaleX(1); }
     }
 
-    /* SIDEBAR (THEO PHONG CÁCH TIKTOK ADS / META BUSINESS SUITE) */
+    /* SIDEBAR */
     .clean-sidebar {
       position: fixed;
       left: 0;
@@ -128,7 +121,6 @@
       height: 34px;
       border-radius: 8px;
       object-fit: cover;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
     .brand-name {
@@ -180,25 +172,20 @@
     .clean-nav-btn i {
       font-size: 15px;
       color: #64748B;
-      transition: color 0.15s;
     }
 
     .clean-nav-btn:hover {
       background: #F1F5F9;
       color: var(--text-title);
     }
-    .clean-nav-btn:hover i {
-      color: var(--text-title);
-    }
+    .clean-nav-btn:hover i { color: var(--text-title); }
 
     .clean-nav-btn.active {
       background: var(--accent-blue-soft);
       color: var(--accent-blue);
       font-weight: 700;
     }
-    .clean-nav-btn.active i {
-      color: var(--accent-blue);
-    }
+    .clean-nav-btn.active i { color: var(--accent-blue); }
 
     .sidebar-footer {
       padding: 14px 10px 6px 10px;
@@ -207,14 +194,13 @@
       color: var(--text-muted);
     }
 
-    /* MAIN CONTENT VIEW */
+    /* MAIN CONTENT */
     .clean-main {
       margin-left: 240px;
       padding: 24px 32px 64px 32px;
       max-width: 1320px;
     }
 
-    /* TOP BAR WITH CAMPAIGN FILTER */
     .page-header-row {
       display: flex;
       justify-content: space-between;
@@ -238,20 +224,6 @@
       font-size: 12px;
       color: var(--text-muted);
       margin-bottom: 0;
-    }
-
-    .filter-pill {
-      background: #FFFFFF;
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-body);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
 
     /* CARD CONTAINERS */
@@ -300,7 +272,7 @@
       color: var(--text-muted);
     }
 
-    /* STATS KPI TILES (FACEBOOK ADS / TIKTOK ADS STYLE) */
+    /* KPI TILES */
     .metric-tiles-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -314,13 +286,9 @@
       border-radius: 10px;
       padding: 14px 16px;
       transition: all 0.15s ease;
-      position: relative;
     }
 
-    .metric-tile.clickable {
-      cursor: pointer;
-    }
-
+    .metric-tile.clickable { cursor: pointer; }
     .metric-tile.clickable:hover {
       border-color: #94A3B8;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
@@ -360,23 +328,14 @@
       gap: 4px;
     }
 
-    .metric-delta.subtle {
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* CHART CONTAINER */
     .chart-container-wrap {
       height: 240px;
       position: relative;
       width: 100%;
     }
 
-    /* TABLES (TIKTOK / META CONDENSED CLEAN STYLE) */
-    .table {
-      font-size: 12.5px;
-      margin-bottom: 0;
-    }
+    /* TABLES */
+    .table { font-size: 12.5px; margin-bottom: 0; }
     .table thead th {
       font-size: 11px;
       font-weight: 700;
@@ -393,33 +352,9 @@
       border-bottom: 1px solid #F1F5F9;
       vertical-align: middle;
     }
-    .table tbody tr:hover {
-      background-color: #F8FAFC;
-    }
+    .table tbody tr:hover { background-color: #F8FAFC; }
 
-    /* MINI PROGRESS BARS */
-    .mini-progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mini-progress-bar {
-      width: 65px;
-      height: 6px;
-      background: #F1F5F9;
-      border-radius: 3px;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .mini-progress-fill {
-      height: 100%;
-      background: var(--accent-blue);
-      border-radius: 3px;
-    }
-
-    /* FUNNEL STEPS (COMPACT & SHARP) */
+    /* FUNNEL */
     .funnel-step-list {
       display: flex;
       flex-direction: column;
@@ -466,39 +401,6 @@
       border-radius: 3px;
     }
 
-    .funnel-dropoff-note {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 5px;
-    }
-
-    /* INSIGHT CARDS (STREAMLINED TIPS) */
-    .insight-box {
-      background: #F8FAFC;
-      border: 1px solid var(--border-subtle);
-      border-left: 3px solid var(--accent-blue);
-      padding: 12px 14px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .insight-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-title);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .insight-text {
-      font-size: 11.5px;
-      color: var(--text-body);
-      margin-bottom: 0;
-      line-height: 1.45;
-    }
-
     /* BADGES */
     .stream-badge {
       display: inline-flex;
@@ -522,22 +424,6 @@
       border: 1px solid #FDE68A;
     }
 
-    .channel-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 5px;
-    }
-    .channel-tiktok { background: #000; color: #FFF; }
-    .channel-fb { background: #E7F3FF; color: #1877F2; }
-    .channel-ig { background: #FDF2F8; color: #DB2777; }
-    .channel-google { background: #ECFDF5; color: #059669; }
-    .channel-direct { background: #F1F5F9; color: #475569; }
-
-    /* PULSE DOT */
     @keyframes pulseLive {
       0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
       70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
@@ -580,38 +466,38 @@
 <body>
   <div id="adminGlobalLoader" class="admin-global-loader"><div class="admin-loader-bar"></div></div>
 
-  <!-- SIDEBAR NAVIGATION (ADS MANAGER STYLE) -->
+  <!-- SIDEBAR NAVIGATION -->
   <aside class="clean-sidebar">
     <div>
       <div class="brand-title">
         <img src="logo_Keep_the_same_2k_202602051521.png" alt="Trạm Hạt" class="brand-logo-img">
         <div>
           <div class="brand-name">Trạm Hạt</div>
-          <span class="brand-subtitle">Business Suite • Ads</span>
+          <span class="brand-subtitle">Business Suite</span>
         </div>
       </div>
 
       <nav class="clean-nav">
-        <div class="nav-group-label">Phân tích chiến dịch</div>
+        <div class="nav-group-label">Phân tích hiệu suất</div>
         <button class="clean-nav-btn active" onclick="filterReportSection('all', this)">
           <i class="bi bi-grid-1x2-fill"></i>
           <span>Tổng quan hiệu suất</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group1', this)">
           <i class="bi bi-signpost-split-fill"></i>
-          <span>Nguồn truy cập (UTM)</span>
+          <span>Kênh chuyển đổi (UTM)</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group2', this)">
           <i class="bi bi-cup-hot-fill"></i>
-          <span>Tương tác & Sản phẩm</span>
+          <span>Vị sữa & Sản phẩm</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group3', this)">
           <i class="bi bi-funnel-fill"></i>
-          <span>Phễu chuyển đổi (CR)</span>
+          <span>Phễu bán hàng</span>
         </button>
         <button class="clean-nav-btn" onclick="filterReportSection('group4', this)">
           <i class="bi bi-phone-fill"></i>
-          <span>Thiết bị & Tốc độ</span>
+          <span>Thiết bị truy cập</span>
         </button>
 
         <div class="nav-group-label">Quản lý bán hàng</div>
@@ -623,9 +509,8 @@
     </div>
 
     <div class="sidebar-footer">
-      <div class="fw-bold text-dark">Ghé Trạm Có Chuyện</div>
-      <div>11/10 – 07/11/2026 • 28 ngày</div>
-      <div class="mt-2 text-muted" style="font-size: 10px;">Atlas API Live Sync v2.0</div>
+      <div class="fw-bold text-dark">MongoDB Atlas Engine</div>
+      <div id="db-sync-indicator" class="mt-1 text-muted" style="font-size: 11px;">Đang kết nối...</div>
     </div>
   </aside>
 
@@ -636,20 +521,15 @@
     <header class="page-header-row">
       <div>
         <h1 class="page-title">
-          <span>Hiệu suất Chiến dịch</span>
-          <span class="badge bg-primary-subtle text-primary border border-primary-subtle" style="font-size: 12px; font-weight: 600;">Ghé Trạm Có Chuyện</span>
+          <span>Bảng Quản Trị & Hiệu Suất Bán Hàng</span>
         </h1>
-        <p class="page-subtitle">Dữ liệu đối soát đa kênh: TikTok, Facebook Ads, Instagram Bio, Google Search & QR Trực tiếp</p>
+        <p class="page-subtitle">Dữ liệu thực tế tự động cập nhật từ hệ thống MongoDB Atlas</p>
       </div>
 
       <div class="d-flex align-items-center gap-2">
-        <div class="filter-pill">
-          <i class="bi bi-calendar3 text-muted"></i>
-          <span>11/10 – 07/11 (28 ngày)</span>
-        </div>
         <span class="stream-badge badge-pending" id="header-metrics-badge">
           <span class="pulse-live-dot" style="background:#F59E0B;"></span>
-          <span id="header-metrics-text">Kết nối MongoDB...</span>
+          <span id="header-metrics-text">Đang kết nối MongoDB Atlas...</span>
         </span>
       </div>
     </header>
@@ -658,8 +538,8 @@
     <section class="metric-section-card" id="sec-overview-chart">
       <div class="group-header-banner">
         <div>
-          <div class="section-title">Diễn biến theo ngày theo lịch phân phối bài đăng</div>
-          <div class="section-desc">Đỉnh truy cập trùng khớp các ngày phát hành trên Facebook (14, 20, 24, 31/10), TikTok (27/10) và Instagram (02, 04/11)</div>
+          <div class="section-title">Diễn biến lưu lượng & chuyển đổi thực tế theo ngày</div>
+          <div class="section-desc">Biểu đồ tổng hợp từ các sự kiện và đơn hàng thực tế lưu trong MongoDB</div>
         </div>
         <div class="text-muted" style="font-size: 11.5px;">Bấm từng ô để đổi biểu đồ</div>
       </div>
@@ -671,25 +551,25 @@
             <i class="bi bi-graph-up text-primary"></i>
           </div>
           <div class="metric-value" id="val-sessions"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta" id="val-sessions-delta"><span class="text-muted">Đang tải...</span></div>
+          <div class="metric-delta" id="val-sessions-delta"><span class="text-muted">--</span></div>
         </div>
 
         <div class="metric-tile clickable" id="tile-users" onclick="selectMetric('users')">
           <div class="metric-name">
-            <span>Users (Người dùng)</span>
+            <span>Users (Khách riêng biệt)</span>
             <i class="bi bi-people text-secondary"></i>
           </div>
           <div class="metric-value" id="val-users"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta" id="val-users-delta"><span class="text-muted">Đang tải...</span></div>
+          <div class="metric-delta" id="val-users-delta"><span class="text-muted">--</span></div>
         </div>
 
         <div class="metric-tile clickable" id="tile-leads" onclick="selectMetric('leads')">
           <div class="metric-name">
-            <span>Lead MQL (Form SĐT)</span>
+            <span>Leads (Khách để lại thông tin)</span>
             <i class="bi bi-person-check text-warning"></i>
           </div>
           <div class="metric-value" id="val-leads"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta" id="val-leads-delta"><span class="text-muted">Đang tải...</span></div>
+          <div class="metric-delta" id="val-leads-delta"><span class="text-muted">--</span></div>
         </div>
 
         <div class="metric-tile clickable" id="tile-orders" onclick="selectMetric('orders')">
@@ -698,7 +578,7 @@
             <i class="bi bi-bag-check text-success"></i>
           </div>
           <div class="metric-value" id="val-orders"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta" id="val-orders-delta"><span class="text-muted">Đang tải...</span></div>
+          <div class="metric-delta" id="val-orders-delta"><span class="text-muted">--</span></div>
         </div>
       </div>
 
@@ -707,573 +587,113 @@
       </div>
     </section>
 
-    <!-- SECTION 1: ACQUISITION / CHANNELS (MỤC 7.2.4 - NHÓM 1) -->
+    <!-- SECTION 1: UTM CHANNELS (ĐỘNG TỪ DB) -->
     <section class="metric-section-card report-group" id="sec-group1">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-diagram-3-fill me-1"></i>ACQUISITION • LƯU LƯỢNG ĐA KÊNH</span>
-          <div class="section-title">Phân bổ nguồn truy cập & Hiệu quả Mạng xã hội (UTM Source)</div>
-          <div class="section-desc">Đối soát trực tiếp lưu lượng đổ về từ TikTok Bio, Facebook Page, Instagram, Google Search và QR Trực tiếp</div>
+          <span class="group-tag"><i class="bi bi-diagram-3-fill me-1"></i>ACQUISITION • NGUỒN CHUYỂN ĐỔI</span>
+          <div class="section-title">Phân bổ nguồn truy cập & Doanh thu theo kênh (UTM)</div>
+          <div class="section-desc">Tổng hợp tự động từ sự kiện truy cập và đơn hàng trong MongoDB Atlas</div>
         </div>
       </div>
 
-      <div class="row g-4">
-        <!-- BẢNG 1A: 4 NGUỒN TRUY CẬP CHUẨN GA4 -->
-        <div class="col-lg-6">
-          <div class="fw-bold mb-2 text-dark" style="font-size: 13px;">1.1. Kênh tiếp cận (Default Channel Group)</div>
-          <div class="table-responsive border rounded-3 bg-white">
-            <table class="table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th>Kênh GA4</th>
-                  <th class="text-center">Users</th>
-                  <th class="text-center">Sessions</th>
-                  <th>Tỷ trọng</th>
-                  <th class="text-center">Lead</th>
-                  <th class="text-center">Đơn</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>Organic Social</strong>
-                    <div class="text-muted" style="font-size: 11px;">TikTok, FB, IG (UTM)</div>
-                  </td>
-                  <td class="text-center">70</td>
-                  <td class="text-center"><strong>84</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 58.3%;"></div></div>
-                      <span class="fw-bold">58,3%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">10</td>
-                  <td class="text-center"><strong class="text-primary">7</strong></td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Direct</strong>
-                    <div class="text-muted" style="font-size: 11px;">Trực tiếp & QR bàn UEL</div>
-                  </td>
-                  <td class="text-center">26</td>
-                  <td class="text-center"><strong>32</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 22.2%;"></div></div>
-                      <span class="fw-bold">22,2%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">3</td>
-                  <td class="text-center"><strong class="text-primary">2</strong></td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Organic Search</strong>
-                    <div class="text-muted" style="font-size: 11px;">Google "Trạm Hạt"</div>
-                  </td>
-                  <td class="text-center">14</td>
-                  <td class="text-center"><strong>18</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 12.5%;"></div></div>
-                      <span class="fw-bold">12,5%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">2</td>
-                  <td class="text-center"><strong class="text-primary">1</strong></td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Referral</strong>
-                    <div class="text-muted" style="font-size: 11px;">Zalo nhóm / Giới thiệu</div>
-                  </td>
-                  <td class="text-center">8</td>
-                  <td class="text-center"><strong>10</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 7.0%;"></div></div>
-                      <span class="fw-bold">7,0%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">1</td>
-                  <td class="text-center"><strong class="text-primary">1</strong></td>
-                </tr>
-                <tr class="table-light fw-bold">
-                  <td>TỔNG TOÀN SÀN</td>
-                  <td class="text-center">118</td>
-                  <td class="text-center text-primary">144</td>
-                  <td>100%</td>
-                  <td class="text-center">16</td>
-                  <td class="text-center text-primary">11 đơn</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- BẢNG 1B: CHI TIẾT NGUỒN SOCIAL QUA UTM -->
-        <div class="col-lg-6">
-          <div class="fw-bold mb-2 text-dark" style="font-size: 13px;">1.2. Hiệu quả chuyển đổi Social qua UTM</div>
-          <div class="table-responsive border rounded-3 bg-white">
-            <table class="table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th>Kênh & Tham số UTM</th>
-                  <th class="text-center">Gốc MXH</th>
-                  <th class="text-center">Về Web</th>
-                  <th class="text-center">CTR Web</th>
-                  <th class="text-center">Lead</th>
-                  <th class="text-end">Đơn & Doanh số</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center gap-1 mb-1">
-                      <span class="channel-badge channel-tiktok"><i class="bi bi-tiktok"></i> TikTok</span>
-                    </div>
-                    <code>?utm_source=tiktok</code>
-                  </td>
-                  <td class="text-center">
-                    5.700 views
-                    <div class="text-muted" style="font-size: 10.5px;">107 xem hồ sơ</div>
-                  </td>
-                  <td class="text-center">
-                    <strong class="text-primary">52</strong>
-                    <div class="text-muted" style="font-size: 10.5px;">(61,9% Social)</div>
-                  </td>
-                  <td class="text-center fw-bold">48,6%</td>
-                  <td class="text-center">6</td>
-                  <td class="text-end"><strong>4 đơn</strong> <span class="text-muted" style="font-size: 11px;">(315k)</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center gap-1 mb-1">
-                      <span class="channel-badge channel-fb"><i class="bi bi-facebook"></i> Facebook</span>
-                    </div>
-                    <code>?utm_source=facebook</code>
-                  </td>
-                  <td class="text-center">
-                    289 views
-                    <div class="text-muted" style="font-size: 10.5px;">40 xem trang</div>
-                  </td>
-                  <td class="text-center">
-                    <strong class="text-primary">18</strong>
-                    <div class="text-muted" style="font-size: 10.5px;">(21,4% Social)</div>
-                  </td>
-                  <td class="text-center fw-bold">45,0%</td>
-                  <td class="text-center">3</td>
-                  <td class="text-end"><strong>2 đơn</strong> <span class="text-muted" style="font-size: 11px;">(140k)</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center gap-1 mb-1">
-                      <span class="channel-badge channel-ig"><i class="bi bi-instagram"></i> Instagram</span>
-                    </div>
-                    <code>?utm_source=instagram</code>
-                  </td>
-                  <td class="text-center">
-                    329 views
-                    <div class="text-muted" style="font-size: 10.5px;">57 reach</div>
-                  </td>
-                  <td class="text-center">
-                    <strong class="text-primary">14</strong>
-                    <div class="text-muted" style="font-size: 10.5px;">(16,7% Social)</div>
-                  </td>
-                  <td class="text-center fw-bold">24,6%</td>
-                  <td class="text-center">1</td>
-                  <td class="text-end"><strong>1 đơn</strong> <span class="text-muted" style="font-size: 11px;">(70k)</span></td>
-                </tr>
-                <tr class="table-light fw-bold">
-                  <td>TỔNG SOCIAL</td>
-                  <td class="text-center">204 ghé Bio</td>
-                  <td class="text-center text-primary">84 phiên</td>
-                  <td class="text-center">41,2%</td>
-                  <td class="text-center">10</td>
-                  <td class="text-end text-primary">7 đơn (525.000đ)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="table-responsive border rounded-3 bg-white">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Nguồn truy cập (UTM Source)</th>
+              <th class="text-center">Số phiên (Sessions)</th>
+              <th class="text-center">Số Lead</th>
+              <th class="text-center">Đơn hoàn tất</th>
+              <th class="text-end">Doanh thu ghi nhận</th>
+              <th class="text-center">Tỷ lệ chốt đơn (CR)</th>
+            </tr>
+          </thead>
+          <tbody id="channels-tbody">
+            <tr><td colspan="6" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang truy vấn dữ liệu từ MongoDB Atlas...</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- SECTION 2: ENGAGEMENT & PRODUCTS (MỤC 7.2.4 - NHÓM 2) -->
+    <!-- SECTION 2: PRODUCTS POPULARITY (ĐỘNG TỪ DB) -->
     <section class="metric-section-card report-group" id="sec-group2">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-fire me-1"></i>ENGAGEMENT • TƯƠNG TÁC NỘI DUNG</span>
-          <div class="section-title">Thời gian tương tác & Mức độ quan tâm theo hương vị</div>
-          <div class="section-desc">Đo lường thời gian xem trang, tỷ lệ tương tác thực và độ hot của từng vị sữa hạt 250ml</div>
+          <span class="group-tag"><i class="bi bi-cup-hot me-1"></i>PRODUCT POPULARITY • MỨC ĐỘ QUAN TÂM</span>
+          <div class="section-title">Xếp hạng vị sữa theo số lượt xem và thêm vào giỏ hàng</div>
+          <div class="section-desc">Đo lường trực tiếp từ sự kiện <code>product_view</code> và <code>add_to_cart</code> trên website</div>
         </div>
       </div>
 
-      <!-- 4 TILES NHÓM 2 -->
-      <div class="metric-tiles-grid">
-        <div class="metric-tile">
-          <div class="metric-name">Thời gian tương tác TB</div>
-          <div class="metric-value text-primary">1m 42s</div>
-          <div class="metric-delta subtle">102 giây / phiên truy cập</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Engagement Rate (Tương tác thực)</div>
-          <div class="metric-value text-primary">73,6%</div>
-          <div class="metric-delta subtle">106 / 144 phiên (Bounce: 26,4%)</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Số trang / phiên (Pages/Session)</div>
-          <div class="metric-value">2,65</div>
-          <div class="metric-delta subtle">Tổng 382 pageviews</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Vị sữa Hot #1</div>
-          <div class="metric-value" style="font-size: 20px;">Điều Tự Nhiên</div>
-          <div class="metric-delta subtle">34,4% quan tâm • 4 đơn</div>
-        </div>
-      </div>
-
-      <div class="row g-4">
-        <!-- BẢNG 2A: XẾP HẠNG TRANG ĐƯỢC XEM NHIỀU NHẤT -->
-        <div class="col-lg-7">
-          <div class="fw-bold mb-2 text-dark" style="font-size: 13px;">2.1. Trang được xem nhiều nhất (Pages & Screens)</div>
-          <div class="table-responsive border rounded-3 bg-white">
-            <table class="table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th>Trang nội dung</th>
-                  <th class="text-center">Lượt xem</th>
-                  <th>% Phiên</th>
-                  <th class="text-center">Thời gian đọc</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>Trang chủ (Landing & Tổng quan)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Điểm đáp Bio & QR bàn</div>
-                  </td>
-                  <td class="text-center"><strong>144</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 100%;"></div></div>
-                      <span>100%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">32 giây</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Thực đơn 6 vị (<code>/menu</code>)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Nội dung hút khách nhất</div>
-                  </td>
-                  <td class="text-center"><strong class="text-primary">108</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 75%;"></div></div>
-                      <span>75,0%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">58 giây</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Chi tiết vị & Calo (<code>/product-detail</code>)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Thành phần hạt & độ ngọt</div>
-                  </td>
-                  <td class="text-center"><strong>64</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 44.4%;"></div></div>
-                      <span>44,4%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">1m 15s</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Trắc nghiệm Taste Quiz (<code>/campaign</code>)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Gợi ý vị theo nhu cầu cá nhân</div>
-                  </td>
-                  <td class="text-center"><strong>38</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 26.4%;"></div></div>
-                      <span>26,4%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">1m 24s</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Góc Hạt & Bảo quản 48h (<code>/knowledge</code>)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Hiện tượng tách lớp tự nhiên</div>
-                  </td>
-                  <td class="text-center"><strong>19</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 13.2%;"></div></div>
-                      <span>13,2%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">1m 48s</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Câu chuyện & Đánh giá (<code>/reviews</code>)</strong>
-                    <div class="text-muted" style="font-size: 11px;">Nguồn hạt sạch bản địa</div>
-                  </td>
-                  <td class="text-center"><strong>9</strong></td>
-                  <td>
-                    <div class="mini-progress-wrap">
-                      <div class="mini-progress-bar"><div class="mini-progress-fill" style="width: 6.3%;"></div></div>
-                      <span>6,3%</span>
-                    </div>
-                  </td>
-                  <td class="text-center">45 giây</td>
-                </tr>
-                <tr class="table-light fw-bold">
-                  <td>TỔNG LƯỢT XEM TRANG</td>
-                  <td class="text-center text-primary">382</td>
-                  <td>2,65 trang/phiên</td>
-                  <td class="text-center">TB 1m 42s</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- BẢNG 2B: MỨC ĐỘ QUAN TÂM THEO 6 VỊ -->
-        <div class="col-lg-5">
-          <div class="fw-bold mb-2 text-dark" style="font-size: 13px;">2.2. Xếp hạng 6 vị sữa hạt theo tương tác</div>
-          <div class="p-3 border rounded-3 bg-white">
-            <div class="d-flex flex-column gap-3">
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>1. Sữa Điều Tự Nhiên</strong> <span class="badge bg-danger-subtle text-danger" style="font-size: 10px;">Top 1 IG</span></span>
-                  <span><strong>22 lượt</strong> (34,4%) • 4 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 100%;"></div></div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>2. Sữa Macca Yến Mạch</strong> <span class="badge bg-primary-subtle text-primary" style="font-size: 10px;">Top 2 IG</span></span>
-                  <span><strong>18 lượt</strong> (28,1%) • 3 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 81.8%;"></div></div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>3. Sữa Hạt Sen Lá Dứa</strong> <span class="badge bg-success-subtle text-success" style="font-size: 10px;">Top 1 FB</span></span>
-                  <span><strong>12 lượt</strong> (18,8%) • 2 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 54.5%;"></div></div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>4. Sữa Óc Chó Mè Đen</strong></span>
-                  <span><strong>5 lượt</strong> (7,8%) • 1 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 22.7%;"></div></div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>5. Sữa Hạnh Nhân Cacao</strong></span>
-                  <span><strong>4 lượt</strong> (6,3%) • 1 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 18.2%;"></div></div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-1" style="font-size: 12.5px;">
-                  <span><strong>6. Sữa Đậu Đỏ Kỷ Tử</strong></span>
-                  <span><strong>3 lượt</strong> (4,6%) • 0 đơn</span>
-                </div>
-                <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 13.6%;"></div></div>
-              </div>
-            </div>
-
-            <div class="mt-3 pt-2 border-top text-muted" style="font-size: 11px;">
-              <strong>Đồng bộ đa kênh:</strong> Top 3 vị hot (<em>Điều, Macca, Hạt Sen</em> - chiếm 81,3% lượt quan tâm) khớp 100% với các bài đạt reach cao nhất trên TikTok & Facebook.
-            </div>
-          </div>
-        </div>
+      <div class="table-responsive border rounded-3 bg-white">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th style="width: 40px;">#</th>
+              <th>Tên sản phẩm / Vị sữa</th>
+              <th class="text-center">Lượt xem chi tiết (Views)</th>
+              <th class="text-center">Lượt thêm giỏ hàng (Add to Cart)</th>
+              <th class="text-center">Tỷ lệ thêm giỏ / Lượt xem</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="5" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang truy vấn dữ liệu từ MongoDB Atlas...</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- SECTION 3: CONVERSION & FUNNEL (MỤC 7.2.4 - NHÓM 3) -->
+    <!-- SECTION 3: REAL SALES FUNNEL (ĐỘNG TỪ DB) -->
     <section class="metric-section-card report-group" id="sec-group3">
       <div class="group-header-banner">
         <div>
           <span class="group-tag"><i class="bi bi-funnel me-1"></i>CONVERSION • PHỄU BÁN HÀNG</span>
-          <div class="section-title">Tỷ lệ chuyển đổi & Phễu rơi rụng 6 bước</div>
-          <div class="section-desc">Đo lường từng chặng từ lượt vào website, duyệt menu, xem sản phẩm, mở giỏ đến chốt đơn thành công</div>
+          <div class="section-title">Phễu chuyển đổi bán hàng thực tế 5 bước</div>
+          <div class="section-desc">Tính toán trực tiếp từ dữ liệu phiên, hành vi sản phẩm, lead và đơn hàng thực tế</div>
         </div>
       </div>
 
-      <!-- 4 TILES NHÓM 3 -->
-      <div class="metric-tiles-grid">
-        <div class="metric-tile">
-          <div class="metric-name">Lead từ form (SĐT)</div>
-          <div class="metric-value text-primary" id="g3-leads-val"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta subtle" id="g3-leads-sub">Đang đồng bộ...</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Tỷ lệ Lead / Phiên</div>
-          <div class="metric-value text-primary" id="g3-lead-cr-val"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta subtle" id="g3-lead-cr-sub">Đang đồng bộ...</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Đơn đặt hàng hoàn tất</div>
-          <div class="metric-value text-primary" id="g3-orders-val"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta subtle" id="g3-orders-sub">Đang đồng bộ...</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Tỷ lệ Chốt từ Lead (Sales CR)</div>
-          <div class="metric-value text-success" id="g3-order-cr-val"><span class="metric-skeleton"></span></div>
-          <div class="metric-delta subtle" id="g3-order-cr-sub">Đang đồng bộ...</div>
-        </div>
-      </div>
-
-      <div class="row g-4">
-        <!-- CỘT TRÁI: PHỄU 6 BƯỚC -->
-        <div class="col-lg-7">
-          <div class="fw-bold mb-3 text-dark" style="font-size: 13px;">3.1. Phễu chuyển đổi 6 bước trên Website</div>
-
-          <div class="funnel-step-list">
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 1: Truy cập Website (Sessions)</span>
-                <span class="funnel-step-numbers" id="funnel-step-1-num"><span class="metric-skeleton" style="min-width:40px;"></span></span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 100%;"></div></div>
-            </div>
-
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 2: Xem Thực đơn (<code>/menu</code>)</span>
-                <span class="funnel-step-numbers">108 phiên (75,0%)</span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 75.0%;"></div></div>
-              <div class="funnel-dropoff-note">Đi tiếp: 75,0% • Rơi rụng: <strong>36 phiên (-25,0%)</strong> thoát ngay trang chủ</div>
-            </div>
-
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 3: Xem chi tiết vị (<code>/product-detail</code>)</span>
-                <span class="funnel-step-numbers">64 phiên (44,4%)</span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 44.4%;"></div></div>
-              <div class="funnel-dropoff-note">Đi tiếp: 59,3% • Rơi rụng: <strong>44 phiên (-40,7%)</strong> chỉ lướt menu chung</div>
-            </div>
-
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 4: Mở giỏ hàng & Đặt hàng (<code>Checkout</code>)</span>
-                <span class="funnel-step-numbers">28 phiên (19,4%)</span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 19.4%;"></div></div>
-              <div class="funnel-dropoff-note">Đi tiếp: 43,8% • <strong>Điểm gãy lớn nhất: 36 phiên (-56,3%)</strong> xem vị nhưng chưa bấm mua</div>
-            </div>
-
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 5: Gửi thông tin (<code>Lead SĐT</code>)</span>
-                <span class="funnel-step-numbers">16 khách (11,1%)</span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 11.1%;"></div></div>
-              <div class="funnel-dropoff-note">Đi tiếp: 57,1% • Rơi rụng: <strong>12 phiên (-42,9%)</strong> mở giỏ nhưng bỏ ngang</div>
-            </div>
-
-            <div class="funnel-step-item">
-              <div class="funnel-step-top">
-                <span class="funnel-step-title">Bước 6: Đơn hàng hoàn tất (<code>Converted Orders</code>)</span>
-                <span class="funnel-step-numbers">11 đơn (7,6%)</span>
-              </div>
-              <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: 7.6%;"></div></div>
-              <div class="funnel-dropoff-note">Tỷ lệ chốt Lead: <strong>68,8% (11/16 khách)</strong> • 5 khách còn lại đang hẹn lịch nhận</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CỘT PHẢI: INSIGHTS & TỐI ƯU GIAO DIỆN -->
-        <div class="col-lg-5">
-          <div class="fw-bold mb-3 text-dark" style="font-size: 13px;">3.2. Đánh giá điểm rơi rụng & Đề xuất giải pháp</div>
-
-          <div class="insight-box">
-            <div class="insight-title"><i class="bi bi-exclamation-triangle-fill text-warning"></i> 1. Điểm rơi rụng lớn nhất: Bước 3 → Bước 4 (-56,3%)</div>
-            <p class="insight-text">
-              Khách đọc chi tiết lâu (1m 15s) nhưng e ngại ship 1 chai lẻ và hạn dùng 48h khi không có tủ lạnh.<br>
-              <strong>Giải pháp:</strong> Gắn nhãn <em>"Túi đá gel 4h giữ lạnh tận bàn"</em> và ưu đãi Freeship khi đặt từ 2 chai.
-            </p>
-          </div>
-
-          <div class="insight-box">
-            <div class="insight-title"><i class="bi bi-cart-x-fill text-danger"></i> 2. Điểm rơi rụng thứ hai: Bước 4 → Bước 5 (-42,9%)</div>
-            <p class="insight-text">
-              28 lượt mở giỏ nhưng chỉ 16 gửi form do ngại nhập nhiều trường địa chỉ.<br>
-              <strong>Giải pháp:</strong> Tối giản giỏ hàng còn 3 trường (Tên, SĐT, Tòa nhà/Ký túc xá) để chốt Lead ngay.
-            </p>
-          </div>
-
-          <div class="insight-box mb-0">
-            <div class="insight-title"><i class="bi bi-check-circle-fill text-success"></i> 3. Hiệu quả chốt đơn: 68,8% (11/16 Lead)</div>
-            <p class="insight-text">
-              11 khách mua tổng cộng 25 chai (TB 2,27 chai/đơn, AOV 79.545đ). 5 khách chưa chốt đều hẹn gom đơn chung với bạn bè.
-            </p>
-          </div>
-        </div>
+      <div class="funnel-step-list" id="funnel-container">
+        <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang xây dựng phễu từ MongoDB Atlas...</div>
       </div>
     </section>
 
-    <!-- SECTION 4: TECHNICAL & DEVICES (MỤC 7.2.4 - NHÓM 4) -->
+    <!-- SECTION 4: TECHNICAL & DEVICES (ĐỘNG TỪ DB) -->
     <section class="metric-section-card report-group" id="sec-group4">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-cpu-fill me-1"></i>INFRASTRUCTURE • THIẾT BỊ & HỆ THỐNG</span>
-          <div class="section-title">Tỷ trọng thiết bị, Tốc độ tải & Độ ổn định kỹ thuật</div>
-          <div class="section-desc">Kiểm thử hiệu năng trang trên nền tảng di động - kênh tiếp cận chính từ TikTok & Instagram</div>
+          <span class="group-tag"><i class="bi bi-cpu-fill me-1"></i>INFRASTRUCTURE • THIẾT BỊ TRUY CẬP</span>
+          <div class="section-title">Tỷ trọng thiết bị truy cập thực tế</div>
+          <div class="section-desc">Đo lường trực tiếp từ User-Agent và tham số thiết bị được gửi về MongoDB</div>
         </div>
       </div>
 
-      <div class="metric-tiles-grid mb-0">
-        <div class="metric-tile">
-          <div class="metric-name">Di động (Mobile)</div>
-          <div class="metric-value text-primary">87,5%</div>
-          <div class="metric-delta subtle">126 / 144 phiên (Từ Bio link & QR bàn)</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="metric-tile">
+            <div class="metric-name">
+              <span>Thiết bị Di động (Mobile)</span>
+              <i class="bi bi-phone text-primary"></i>
+            </div>
+            <div class="metric-value text-primary" id="device-mobile-pct">--</div>
+            <div class="metric-delta text-muted" id="device-mobile-count">Đang đồng bộ...</div>
+          </div>
         </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Máy tính (Desktop)</div>
-          <div class="metric-value">12,5%</div>
-          <div class="metric-delta subtle">18 / 144 phiên (Từ Google Search & Zalo PC)</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Tốc độ tải trang (LCP)</div>
-          <div class="metric-value text-success">1,18s</div>
-          <div class="metric-delta subtle">FCP: 0,78s (Chuẩn Google Core Web Vitals)</div>
-        </div>
-
-        <div class="metric-tile">
-          <div class="metric-name">Lỗi phát sinh (4xx/5xx)</div>
-          <div class="metric-value text-primary">0 lỗi</div>
-          <div class="metric-delta subtle">100% link UTM & QR hoạt động thông suốt</div>
+        <div class="col-md-6">
+          <div class="metric-tile">
+            <div class="metric-name">
+              <span>Máy tính (Desktop)</span>
+              <i class="bi bi-laptop text-secondary"></i>
+            </div>
+            <div class="metric-value text-secondary" id="device-desktop-pct">--</div>
+            <div class="metric-delta text-muted" id="device-desktop-count">Đang đồng bộ...</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: CRM & ORDERS (DỮ LIỆU ĐỒNG BỘ MONGODB ATLAS) -->
+    <!-- SECTION CRM: LEADS & ORDERS (ĐỘNG TỪ DB) -->
     <div id="sec-crm">
       
       <!-- REAL-TIME EVENT STREAM -->
@@ -1288,9 +708,6 @@
             <div class="section-desc">Tự động bắt và hiển thị ngay lập tức thao tác của khách hàng trên toàn website</div>
           </div>
           <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" id="stream-status-badge">
-              <i class="bi bi-broadcast me-1"></i> Đồng bộ mỗi 8 giây
-            </span>
             <button class="btn btn-sm btn-outline-secondary" onclick="fetchLiveBackendData()">
               <i class="bi bi-arrow-repeat me-1"></i> Làm mới
             </button>
@@ -1307,7 +724,7 @@
                 <th>Thiết bị</th>
                 <th>Khách hàng / Mã Session</th>
                 <th>Nguồn UTM</th>
-                <th class="text-center">Atlas</th>
+                <th class="text-center">Trạng thái</th>
               </tr>
             </thead>
             <tbody id="realtime-stream-tbody">
@@ -1323,7 +740,7 @@
           <div>
             <span class="group-tag"><i class="bi bi-person-lines-fill me-1"></i>LEAD MANAGEMENT • KHÁCH TIỀM NĂNG</span>
             <div class="section-title">Danh sách khách hàng để lại thông tin (Leads Live)</div>
-            <div class="section-desc">Bao gồm 11 khách đã đặt đơn và 5 khách đang tư vấn hoặc hẹn lịch giao</div>
+            <div class="section-desc">Lưu trực tiếp trong MongoDB Atlas từ form đặt hàng và tư vấn</div>
           </div>
           <div>
             <input type="text" class="form-control form-control-sm" id="lead-search-input" placeholder="Tìm tên, SĐT, địa chỉ..." oninput="filterLeadsTable()" style="width: 220px; font-size: 12px;">
@@ -1331,9 +748,9 @@
         </div>
 
         <div class="d-flex gap-2 mb-3">
-          <button class="btn btn-sm btn-outline-secondary active" id="btn-filter-all" onclick="filterLeadsStatus('all', this)">Tất cả Lead (<span id="count-all-leads">--</span>)</button>
-          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-converted" onclick="filterLeadsStatus('converted', this)">Đã đặt đơn (<span id="count-conv-leads">--</span>)</button>
-          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-pending" onclick="filterLeadsStatus('pending', this)">Đang tư vấn (<span id="count-pend-leads">--</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary active" id="btn-filter-all" onclick="filterLeadsStatus('all', this)">Tất cả Lead (<span id="count-all-leads">0</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-converted" onclick="filterLeadsStatus('converted', this)">Đã đặt đơn (<span id="count-conv-leads">0</span>)</button>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-filter-pending" onclick="filterLeadsStatus('pending', this)">Đang tư vấn (<span id="count-pend-leads">0</span>)</button>
         </div>
 
         <div class="table-responsive border rounded-3 bg-white">
@@ -1351,7 +768,7 @@
               </tr>
             </thead>
             <tbody id="all-leads-tbody">
-              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Lead...</td></tr>
+              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Lead từ MongoDB...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1363,7 +780,7 @@
           <div>
             <span class="group-tag"><i class="bi bi-box-seam-fill me-1"></i>ORDER MANAGEMENT • ĐƠN HÀNG</span>
             <div class="section-title">Danh sách đơn hàng hoàn tất (MongoDB Atlas)</div>
-            <div class="section-desc">Giá trị đơn trung bình (AOV): 79.545đ/đơn • 2,27 chai/đơn</div>
+            <div class="section-desc">Giá trị đơn hàng trung bình (AOV): <strong id="val-aov-desc" class="text-primary">--</strong></div>
           </div>
         </div>
 
@@ -1382,7 +799,7 @@
               </tr>
             </thead>
             <tbody id="all-orders-tbody">
-              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Đơn hàng...</td></tr>
+              <tr><td colspan="8" class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-secondary me-2"></div>Đang tải danh sách Đơn hàng từ MongoDB...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1391,71 +808,16 @@
 
   </main>
 
-  <!-- JAVASCRIPT LOGIC (GIỮ NGUYÊN 100% KẾT NỐI MONGODB ATLAS & BIỂU ĐỒ) -->
+  <!-- JAVASCRIPT: 100% ĐỘNG TỪ MONGODB ATLAS (KHÔNG DỮ LIỆU TĨNH / FALLBACK MOCK) -->
   <script>
     const API_HOST = window.location.origin.includes('localhost') ? 'http://localhost:5000/api' : '/api';
-
-    const FALLBACK_LEADS = [
-      { customerName: 'Nguyễn Thị Bích Trâm', phone: '0903124855', address: 'KTX Khu B ĐHQG, Đông Hòa, Dĩ An', interestedProduct: 'Sữa Điều Tự Nhiên', channel: 'TikTok Bio (UTM)', notes: 'Đặt combo 3 chai dùng thử sau khi xem clip TikTok', status: 'Converted_Order' },
-      { customerName: 'Võ Minh Quân', phone: '0977234981', address: 'Chung cư Safira Khang Điền, TP. Thủ Đức', interestedProduct: 'Sữa Hạt Sen Lá Dứa', channel: 'Facebook Page (UTM)', notes: 'Xem bài đăng Sữa Hạt Sen Lá Dứa ngày 14/10 trên Fanpage', status: 'Converted_Order' },
-      { customerName: 'Lê Hoàng Nam', phone: '0918732109', address: 'Trường ĐH Kinh tế - Luật (UEL), TP. Thủ Đức', interestedProduct: 'Sữa Điều Tự Nhiên', channel: 'TikTok Bio (UTM)', notes: 'Nhận sữa giờ giải lao tại sảnh UEL', status: 'Converted_Order' },
-      { customerName: 'Hoàng Mai Chi', phone: '0945671239', address: 'KTX Khu B ĐHQG, Đông Hòa, Dĩ An', interestedProduct: 'Sữa Hạt Sen Lá Dứa', channel: 'Facebook Page (UTM)', notes: 'Xem bài Menu 6 vị trên Fanpage và đặt qua form web', status: 'Converted_Order' },
-      { customerName: 'Trịnh Quốc Thắng', phone: '0978654321', address: 'Đường số 8, Linh Trung, TP. Thủ Đức', interestedProduct: 'Sữa Hạnh Nhân Cacao', channel: 'Direct / QR UEL', notes: 'Hoàn thành trắc nghiệm chọn hạt, hẹn đặt vào tuần tới', status: 'Qualified' },
-      { customerName: 'Phan Tuấn Anh', phone: '0971238910', address: 'Khu Đô Thị Sala, An Khánh, TP. Thủ Đức', interestedProduct: 'Sữa Điều Tự Nhiên', channel: 'Google Search', notes: 'Tìm kiếm từ khóa "Trạm Hạt sữa hạt tươi" trên Google', status: 'Converted_Order' },
-      { customerName: 'Hồ Thảo Vy', phone: '0937889901', address: 'Tòa nhà Bitexco, Quận 1, TP.HCM', interestedProduct: 'Sữa Điều Tự Nhiên', channel: 'TikTok Bio (UTM)', notes: 'Đắn đo phí ship lẻ 1 chai về Quận 1, chờ ghép đơn', status: 'Qualified' },
-      { customerName: 'Trần Phương Thảo', phone: '0984551203', address: 'KTX Khu A ĐHQG, Linh Trung, TP. Thủ Đức', interestedProduct: 'Sữa Macca Yến Mạch', channel: 'TikTok Bio (UTM)', notes: 'Chọn vị ít ngọt, giao lạnh kèm đá gel', status: 'Converted_Order' },
-      { customerName: 'Bùi Gia Hưng', phone: '0922881934', address: 'Ký túc xá UEL, Linh Trung, TP. Thủ Đức', interestedProduct: 'Sữa Óc Chó Mè Đen', channel: 'Direct / QR UEL', notes: 'Quét mã QR standee tại bàn, gom đơn 3 chai cùng phòng', status: 'Converted_Order' },
-      { customerName: 'Trần Nhật Minh', phone: '0919283746', address: 'ĐH Sư Phạm Kỹ Thuật, Võ Văn Ngân, Thủ Đức', interestedProduct: 'Sữa Hạnh Nhân Cacao', channel: 'Direct / QR UEL', notes: 'Đặt dịp bài đăng Halloween Ghé Trạm Có Chuyện', status: 'Converted_Order' },
-      { customerName: 'Lê Thảo My', phone: '0909988776', address: 'Làng Đại Học Quốc Gia, Đông Hòa, Dĩ An', interestedProduct: 'Sữa Hạt Sen Lá Dứa', channel: 'Facebook Page (UTM)', notes: 'Hỏi cách giữ lạnh sữa khi học cả ngày ở giảng đường', status: 'Qualified' },
-      { customerName: 'Nguyễn Đăng Khoa', phone: '0944556677', address: 'Đường Kha Vạn Cân, Hiệp Bình Chánh, Thủ Đức', interestedProduct: 'Sữa Macca Yến Mạch', channel: 'TikTok Bio (UTM)', notes: 'Đặt uống buổi chiều chống đói khi chạy deadline', status: 'Converted_Order' },
-      { customerName: 'Nguyễn Thành Đạt', phone: '0981122334', address: 'Đường D2 (Nguyễn Gia Trí), Bình Thạnh', interestedProduct: 'Sữa Macca Yến Mạch', channel: 'TikTok Bio (UTM)', notes: 'Đang rủ đồng nghiệp đặt đủ 3 chai để nhận Freeship', status: 'Qualified' },
-      { customerName: 'Đỗ Hải Yến', phone: '0933719405', address: 'Landmark 4, Vinhomes Central Park, Bình Thạnh', interestedProduct: 'Sữa Điều Tự Nhiên', channel: 'Instagram Bio (UTM)', notes: 'Nhấp Bio Link từ bài post Sữa Điều trên Instagram', status: 'Converted_Order' },
-      { customerName: 'Đặng Quốc Bảo', phone: '0909182374', address: 'Khu phố 6, Linh Trung, TP. Thủ Đức', interestedProduct: 'Sữa Macca Yến Mạch', channel: 'Zalo Referral', notes: 'Bạn cùng lớp gửi link đặt thử qua nhóm Zalo', status: 'Converted_Order' },
-      { customerName: 'Vũ Ngọc Hân', phone: '0966778899', address: 'Thảo Điền, TP. Thủ Đức', interestedProduct: 'Sữa Đậu Đỏ Kỷ Tử', channel: 'Google Search', notes: 'Hỏi tư vấn chế độ 0% đường cho thực đơn Eat Clean', status: 'Qualified' }
-    ];
-
-    const FALLBACK_ORDERS = [
-      { orderId: 'TH-2610-01', customerName: 'Nguyễn Thị Bích Trâm', phone: '0903124855', address: 'KTX Khu B ĐHQG, Đông Hòa, Dĩ An', items: '3x Sữa Điều Tự Nhiên (250ml)', utmSource: 'tiktok', total: '105.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-02', customerName: 'Lê Hoàng Nam', phone: '0918732109', address: 'Trường ĐH Kinh tế - Luật (UEL), TP. Thủ Đức', items: '2x Sữa Điều Tự Nhiên (250ml)', utmSource: 'tiktok', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-03', customerName: 'Trần Phương Thảo', phone: '0984551203', address: 'KTX Khu A ĐHQG, Linh Trung, TP. Thủ Đức', items: '2x Sữa Macca Yến Mạch (250ml)', utmSource: 'tiktok', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-04', customerName: 'Nguyễn Đăng Khoa', phone: '0944556677', address: 'Đường Kha Vạn Cân, Hiệp Bình Chánh, Thủ Đức', items: '2x Sữa Macca Yến Mạch (250ml)', utmSource: 'tiktok', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-05', customerName: 'Võ Minh Quân', phone: '0977234981', address: 'Chung cư Safira Khang Điền, TP. Thủ Đức', items: '2x Sữa Hạt Sen Lá Dứa (250ml)', utmSource: 'facebook', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-06', customerName: 'Hoàng Mai Chi', phone: '0945671239', address: 'KTX Khu B ĐHQG, Đông Hòa, Dĩ An', items: '2x Sữa Hạt Sen Lá Dứa (250ml)', utmSource: 'facebook', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-07', customerName: 'Đỗ Hải Yến', phone: '0933719405', address: 'Landmark 4, Vinhomes Central Park, Bình Thạnh', items: '2x Sữa Điều Tự Nhiên (250ml)', utmSource: 'instagram', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-08', customerName: 'Bùi Gia Hưng', phone: '0922881934', address: 'Ký túc xá UEL, Linh Trung, TP. Thủ Đức', items: '3x Sữa Óc Chó Mè Đen (250ml)', utmSource: 'direct', total: '105.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-09', customerName: 'Trần Nhật Minh', phone: '0919283746', address: 'ĐH Sư Phạm Kỹ Thuật, Võ Văn Ngân, Thủ Đức', items: '2x Sữa Hạnh Nhân Cacao (250ml)', utmSource: 'direct', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-10', customerName: 'Phan Tuấn Anh', phone: '0971238910', address: 'Khu Đô Thị Sala, An Khánh, TP. Thủ Đức', items: '3x Sữa Điều Tự Nhiên (250ml)', utmSource: 'google', total: '105.000đ', payment: 'COD - Trực tiếp khi nhận hàng' },
-      { orderId: 'TH-2610-11', customerName: 'Đặng Quốc Bảo', phone: '0909182374', address: 'Khu phố 6, Linh Trung, TP. Thủ Đức', items: '2x Sữa Macca Yến Mạch (250ml)', utmSource: 'zalo_referral', total: '70.000đ', payment: 'COD - Trực tiếp khi nhận hàng' }
-    ];
 
     let globalLeads = [];
     let globalOrders = [];
     let currentSelectedMetric = 'sessions';
     let mainChartInstance = null;
     let currentLeadFilterStatus = 'all';
-
-    const campaignDailySeries = {
-      labels: [
-        '11/10 (Ra mắt)',
-        '13/10',
-        '14/10 (Sen FB)',
-        '16/10',
-        '18/10',
-        '20/10 (20/10)',
-        '22/10',
-        '24/10 (Menu 6 vị)',
-        '27/10 (TikTok)',
-        '29/10',
-        '31/10 (Halloween)',
-        '02/11 (Điều IG)',
-        '04/11 (Macca)',
-        '07/11'
-      ],
-      sessions: [6, 3, 16, 4, 5, 12, 4, 14, 28, 6, 13, 15, 13, 5],
-      users:    [5, 3, 14, 3, 4, 10, 3, 11, 23, 5, 11, 12, 10, 4],
-      leads:    [1, 0,  2, 0, 0,  1, 0,  2,  4, 0,  2,  2,  2, 0],
-      orders:   [1, 0,  1, 0, 0,  1, 0,  1,  3, 0,  1,  1,  2, 0]
-    };
+    let liveDailySeries = { labels: [], sessions: [], users: [], leads: [], orders: [] };
 
     function selectMetric(metricKey) {
       currentSelectedMetric = metricKey;
@@ -1466,10 +828,7 @@
     }
 
     function renderMainChart(metricKey) {
-      if (typeof Chart === 'undefined') {
-        console.warn('Chart.js not ready');
-        return;
-      }
+      if (typeof Chart === 'undefined') return;
       const ctx = document.getElementById('mainTrendChart');
       if (!ctx) return;
       metricKey = metricKey || currentSelectedMetric || 'sessions';
@@ -1478,18 +837,20 @@
         mainChartInstance.destroy();
       }
 
-      const rawData = campaignDailySeries[metricKey] || campaignDailySeries.sessions;
+      const labels = liveDailySeries.labels && liveDailySeries.labels.length > 0 ? liveDailySeries.labels : ['Hôm nay'];
+      const rawData = liveDailySeries[metricKey] && liveDailySeries[metricKey].length > 0 ? liveDailySeries[metricKey] : [0];
+
       const metricNames = {
         sessions: 'Phiên truy cập (Sessions)',
-        users: 'Người dùng (Users)',
-        leads: 'Lead MQL (Form)',
+        users: 'Khách riêng biệt (Users)',
+        leads: 'Lead từ Form (Leads)',
         orders: 'Đơn hàng hoàn tất (Orders)'
       };
 
       mainChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: campaignDailySeries.labels,
+          labels: labels,
           datasets: [{
             label: metricNames[metricKey] || 'Chỉ số',
             data: rawData,
@@ -1601,6 +962,122 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function renderChannelsTable(channels) {
+      const tbody = document.getElementById('channels-tbody');
+      if (!tbody) return;
+      if (!channels || Object.keys(channels).length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">Chưa ghi nhận nguồn UTM nào trong MongoDB.</td></tr>';
+        return;
+      }
+
+      let totalV = 0, totalL = 0, totalO = 0, totalRev = 0;
+      let html = '';
+
+      for (const [key, val] of Object.entries(channels)) {
+        totalV += val.visits || 0;
+        totalL += val.leads || 0;
+        totalO += val.orders || 0;
+        totalRev += val.revenue || 0;
+
+        let channelLabel = key.toUpperCase();
+        if (key === 'tiktok') channelLabel = '<i class="bi bi-tiktok me-1"></i> TikTok';
+        else if (key === 'facebook') channelLabel = '<i class="bi bi-facebook me-1 text-primary"></i> Facebook';
+        else if (key === 'instagram') channelLabel = '<i class="bi bi-instagram me-1 text-danger"></i> Instagram';
+        else if (key === 'google') channelLabel = '<i class="bi bi-google me-1 text-success"></i> Google Search';
+        else if (key === 'direct') channelLabel = '<i class="bi bi-qr-code-scan me-1"></i> Trực tiếp / QR Bàn';
+        else if (key === 'referral') channelLabel = '<i class="bi bi-chat-dots me-1"></i> Zalo / Giới thiệu';
+
+        html += `
+          <tr>
+            <td><strong>${channelLabel}</strong> <code>?utm_source=${key}</code></td>
+            <td class="text-center"><strong>${val.visits || 0}</strong></td>
+            <td class="text-center">${val.leads || 0}</td>
+            <td class="text-center"><strong class="text-primary">${val.orders || 0}</strong></td>
+            <td class="text-end"><strong>${(val.revenue || 0).toLocaleString('vi-VN')}đ</strong></td>
+            <td class="text-center"><span class="badge bg-light text-dark border">${val.cr || '0%'}</span></td>
+          </tr>
+        `;
+      }
+
+      html += `
+        <tr class="table-light fw-bold">
+          <td>TỔNG CỘNG</td>
+          <td class="text-center text-primary">${totalV}</td>
+          <td class="text-center">${totalL}</td>
+          <td class="text-center text-primary">${totalO} đơn</td>
+          <td class="text-end text-primary">${totalRev.toLocaleString('vi-VN')}đ</td>
+          <td class="text-center">${totalV > 0 ? ((totalO / totalV) * 100).toFixed(1) + '%' : '0%'}</td>
+        </tr>
+      `;
+
+      tbody.innerHTML = html;
+    }
+
+    function renderProductsTable(products) {
+      const tbody = document.getElementById('products-tbody');
+      if (!tbody) return;
+      if (!Array.isArray(products) || products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-muted">Chưa có sự kiện xem vị sữa nào được ghi nhận trong MongoDB.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = products.map((p, idx) => {
+        const views = p.views || 0;
+        const cart = p.cart || 0;
+        const rate = views > 0 ? ((cart / views) * 100).toFixed(1) + '%' : '0%';
+        return `
+          <tr>
+            <td class="text-muted">${idx + 1}</td>
+            <td><strong>${p.name || 'Sản phẩm'}</strong></td>
+            <td class="text-center"><strong>${views}</strong> lượt xem</td>
+            <td class="text-center text-primary"><strong>${cart}</strong> lượt thêm</td>
+            <td class="text-center"><span class="badge bg-light text-dark border">${rate}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderFunnel(funnel) {
+      const container = document.getElementById('funnel-container');
+      if (!container) return;
+      if (!Array.isArray(funnel) || funnel.length === 0) {
+        container.innerHTML = '<div class="text-center py-3 text-muted">Chưa có dữ liệu phễu từ MongoDB.</div>';
+        return;
+      }
+
+      container.innerHTML = funnel.map(st => {
+        const count = st.count || 0;
+        const pct = st.pct || 0;
+        return `
+          <div class="funnel-step-item">
+            <div class="funnel-step-top">
+              <span class="funnel-step-title">${st.stage}</span>
+              <span class="funnel-step-numbers">${count} (${pct}%)</span>
+            </div>
+            <div class="ranked-bar-track"><div class="ranked-bar-fill" style="width: ${Math.min(100, Math.max(2, pct))}%;"></div></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDevices(devices) {
+      const mob = devices.mobile || 0;
+      const desk = devices.desktop || 0;
+      const total = mob + desk;
+      const mobPct = total > 0 ? ((mob / total) * 100).toFixed(1) + '%' : '0%';
+      const deskPct = total > 0 ? ((desk / total) * 100).toFixed(1) + '%' : '0%';
+
+      const mEl = document.getElementById('device-mobile-pct');
+      if (mEl) mEl.textContent = mobPct;
+      const mcEl = document.getElementById('device-mobile-count');
+      if (mcEl) mcEl.textContent = `${mob} / ${total} lượt thao tác`;
+
+      const dEl = document.getElementById('device-desktop-pct');
+      if (dEl) dEl.textContent = deskPct;
+      const dcEl = document.getElementById('device-desktop-count');
+      if (dcEl) dcEl.textContent = `${desk} / ${total} lượt thao tác`;
+    }
+
     function renderLiveEventsStream(events) {
       const tbody = document.getElementById('realtime-stream-tbody');
       if (!tbody) return;
@@ -1623,14 +1100,14 @@
         const tab = ev.tab ? ('/' + ev.tab) : (ev.provider ? ('Auth: ' + ev.provider) : 'Website');
         const device = ev.device || 'Thiết bị di động';
         const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
-        const utm = ev.utmSource || 'Trực tiếp (Direct)';
+        const utm = (ev.utm && ev.utm.source) || ev.utmSource || 'Trực tiếp';
 
         return `
           <tr>
             <td class="text-muted"><i class="bi bi-clock me-1"></i><strong>${timeStr}</strong></td>
             <td><span class="${badgeType}">${typeName}</span></td>
             <td><code>${tab}</code></td>
-            <td><i class="bi bi-${device.toLowerCase().includes('desktop') ? 'laptop' : 'phone'} me-1"></i>${device}</td>
+            <td><i class="bi bi-${String(device).toLowerCase().includes('desktop') ? 'laptop' : 'phone'} me-1"></i>${device}</td>
             <td><strong>${visitor}</strong></td>
             <td><span class="badge bg-light text-secondary border">${utm}</span></td>
             <td class="text-center"><span class="badge bg-success-subtle text-success"><i class="bi bi-cloud-check me-1"></i>Atlas</span></td>
@@ -1650,31 +1127,32 @@
 
         if (dashRes && dashRes.overview) {
           const ov = dashRes.overview;
-          const s = ov.visitors || 147;
-          const u = ov.users || 119;
-          const l = ov.mql || 16;
-          const o = ov.customers || 11;
-          const rev = ov.revenueVND || 875000;
+          const s = ov.visitors || 0;
+          const u = ov.users || 0;
+          const l = ov.mql || 0;
+          const o = ov.customers || 0;
+          const rev = ov.revenueVND || 0;
+          const aov = ov.aovVND || 0;
 
           const sEl = document.getElementById('val-sessions');
           const sDelta = document.getElementById('val-sessions-delta');
           if (sEl) sEl.textContent = s;
-          if (sDelta) sDelta.innerHTML = `<i class="bi bi-arrow-up-right"></i> ${(s / Math.max(1, u)).toFixed(2)} phiên/người`;
+          if (sDelta) sDelta.innerHTML = `<i class="bi bi-arrow-up-right"></i> ${s > 0 ? (s / Math.max(1, u)).toFixed(2) : 0} phiên/người`;
 
           const uEl = document.getElementById('val-users');
           const uDelta = document.getElementById('val-users-delta');
           if (uEl) uEl.textContent = u;
-          if (uDelta) uDelta.innerHTML = `<i class="bi bi-arrow-repeat"></i> ${Math.max(0, s - u)} quay lại (${(((s - u) / Math.max(1, s)) * 100).toFixed(1)}%)`;
+          if (uDelta) uDelta.innerHTML = `<i class="bi bi-people"></i> ${u} khách truy cập`;
 
           const lEl = document.getElementById('val-leads');
           const lDelta = document.getElementById('val-leads-delta');
           if (lEl) lEl.textContent = l;
-          if (lDelta) lDelta.innerHTML = `<i class="bi bi-graph-up-arrow"></i> CR: ${ov.leadCR || (((l / s) * 100).toFixed(1) + '%')}`;
+          if (lDelta) lDelta.innerHTML = `<i class="bi bi-graph-up-arrow"></i> CR: ${ov.leadCR || '0%'}`;
 
           const oEl = document.getElementById('val-orders');
           const oDelta = document.getElementById('val-orders-delta');
           if (oEl) oEl.textContent = o;
-          if (oDelta) oDelta.innerHTML = `<i class="bi bi-check2-circle"></i> CR: ${ov.overallCR || (((o / s) * 100).toFixed(1) + '%')} • ${rev.toLocaleString('vi-VN')}đ`;
+          if (oDelta) oDelta.innerHTML = `<i class="bi bi-check2-circle"></i> CR: ${ov.overallCR || '0%'} • ${rev.toLocaleString('vi-VN')}đ`;
 
           const bEl = document.getElementById('header-metrics-badge');
           if (bEl) {
@@ -1682,53 +1160,38 @@
             bEl.innerHTML = `<span class="pulse-live-dot" style="background:#10B981;"></span> ${u} Users • ${s} Sessions • ${l} Leads • ${o} Đơn`;
           }
 
-          const g3L = document.getElementById('g3-leads-val');
-          if (g3L) g3L.textContent = `${l} khách`;
-          const g3LSub = document.getElementById('g3-leads-sub');
-          if (g3LSub) g3LSub.textContent = 'Đầy đủ Tên, SĐT & Địa chỉ';
+          const syncEl = document.getElementById('db-sync-indicator');
+          if (syncEl) syncEl.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Đồng bộ MongoDB Atlas</span>`;
 
-          const g3LCR = document.getElementById('g3-lead-cr-val');
-          if (g3LCR) g3LCR.textContent = ov.leadCR || (((l / s) * 100).toFixed(1) + '%');
-          const g3LCRSub = document.getElementById('g3-lead-cr-sub');
-          if (g3LCRSub) g3LCRSub.textContent = `${l} Lead / ${s} Phiên`;
+          const aovEl = document.getElementById('val-aov-desc');
+          if (aovEl) aovEl.textContent = `${aov.toLocaleString('vi-VN')}đ/đơn (${o} đơn)`;
 
-          const g3O = document.getElementById('g3-orders-val');
-          if (g3O) g3O.textContent = `${o} đơn`;
-          const g3OSub = document.getElementById('g3-orders-sub');
-          if (g3OSub) g3OSub.textContent = `25 chai (35k/chai) • ${rev.toLocaleString('vi-VN')}đ`;
+          if (dashRes.channels) renderChannelsTable(dashRes.channels);
+          if (dashRes.products) renderProductsTable(dashRes.products);
+          if (dashRes.funnel) renderFunnel(dashRes.funnel);
+          if (dashRes.devices) renderDevices(dashRes.devices);
 
-          const g3OCR = document.getElementById('g3-order-cr-val');
-          if (g3OCR) g3OCR.textContent = ov.overallCR || (((o / s) * 100).toFixed(1) + '%');
-          const g3OCRSub = document.getElementById('g3-order-cr-sub');
-          if (g3OCRSub) g3OCRSub.textContent = `Chốt ${((o / Math.max(1, l)) * 100).toFixed(1)}% (${o}/${l} Lead)`;
-
-          const f1 = document.getElementById('funnel-step-1-num');
-          if (f1) f1.textContent = `${s} phiên (100%)`;
-
-          if (s > 144) {
-            campaignDailySeries.sessions[campaignDailySeries.sessions.length - 1] = 5 + (s - 144);
+          if (dashRes.dailySeries && dashRes.dailySeries.labels && dashRes.dailySeries.labels.length > 0) {
+            liveDailySeries = dashRes.dailySeries;
+            renderMainChart(currentSelectedMetric);
           }
-          if (u > 118) {
-            campaignDailySeries.users[campaignDailySeries.users.length - 1] = 4 + (u - 118);
-          }
-          renderMainChart(currentSelectedMetric);
         }
 
-        if (lRes && Array.isArray(lRes.data) && lRes.data.length > 0) {
+        if (lRes && Array.isArray(lRes.data)) {
           globalLeads = lRes.data;
-        } else if (Array.isArray(lRes) && lRes.length > 0) {
+        } else if (Array.isArray(lRes)) {
           globalLeads = lRes;
-        } else if (globalLeads.length === 0) {
-          globalLeads = FALLBACK_LEADS;
+        } else {
+          globalLeads = [];
         }
         renderAllLeadsTable();
 
-        if (oRes && Array.isArray(oRes.data) && oRes.data.length > 0) {
+        if (oRes && Array.isArray(oRes.data)) {
           globalOrders = oRes.data;
-        } else if (Array.isArray(oRes) && oRes.length > 0) {
+        } else if (Array.isArray(oRes)) {
           globalOrders = oRes;
-        } else if (globalOrders.length === 0) {
-          globalOrders = FALLBACK_ORDERS;
+        } else {
+          globalOrders = [];
         }
         renderAllOrdersTable();
 
@@ -1774,7 +1237,7 @@
       }
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Không tìm thấy khách hàng phù hợp.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-3 text-muted">Chưa có khách hàng nào trong danh sách.</td></tr>`;
         return;
       }
 
@@ -1822,15 +1285,20 @@
       if (!tbody) return;
       tbody.innerHTML = '';
 
+      if (globalOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Chưa có đơn hàng nào trong MongoDB Atlas.</td></tr>`;
+        return;
+      }
+
       globalOrders.forEach(ord => {
         const id = ord.orderId || ord.id || 'TH-2610';
-        const name = ord.customerName || ord.customer || 'Khách hàng';
+        const name = ord.customerName || ord.customer || ord.name || 'Khách hàng';
         const phone = ord.phone || '';
         const addr = ord.address || ord.district || 'TP. Thủ Đức';
-        const items = ord.items || '2x Sữa hạt tươi (250ml)';
+        const items = ord.itemsSummary || ord.items || 'Sữa hạt tươi (250ml)';
         const src = ord.utmSource || (ord.utm && ord.utm.source) || 'direct';
         const total = ord.total || ((ord.totalVND || 70000).toLocaleString('vi-VN') + 'đ');
-        const payment = ord.payment || 'COD - Trực tiếp khi nhận hàng';
+        const payment = ord.payment || ord.paymentMethod || 'COD';
 
         tbody.innerHTML += `
           <tr>
@@ -1838,7 +1306,7 @@
             <td><strong>${name}</strong></td>
             <td><code>${phone}</code></td>
             <td class="text-muted">${addr}</td>
-            <td>${items}</td>
+            <td>${typeof items === 'string' ? items : JSON.stringify(items)}</td>
             <td><code>${src}</code></td>
             <td class="text-end"><strong class="text-primary">${total}</strong></td>
             <td class="text-center"><span class="text-muted" style="font-size: 11px;">${payment}</span></td>

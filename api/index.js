@@ -405,72 +405,209 @@ app.get('/api/tracking/events', async (req, res) => {
 });
 
 app.get('/api/tracking/dashboard', async (req, res) => {
-  let usersCount = 118;
-  let visitorsCount = 144;
-  let mqlCount = 16;
-  let sqlCount = 16;
-  let customerCount = 11;
-  let totalRevenue = 875000;
-  let utmBreakdown = {
-    tiktok: { visits: 52, leads: 6, orders: 4, revenue: 315000, cr: '7.7%' },
-    facebook: { visits: 18, leads: 3, orders: 2, revenue: 140000, cr: '11.1%' },
-    instagram: { visits: 14, leads: 1, orders: 1, revenue: 70000, cr: '7.1%' },
-    direct: { visits: 32, leads: 3, orders: 2, revenue: 175000, cr: '6.3%' },
-    google: { visits: 18, leads: 2, orders: 1, revenue: 105000, cr: '5.6%' },
-    referral: { visits: 10, leads: 1, orders: 1, revenue: 70000, cr: '10.0%' }
+  try {
+    await ensureDbConnected();
+  } catch (e) { }
+
+  let overview = {
+    users: 0,
+    visitors: 0,
+    mql: 0,
+    customers: 0,
+    revenueVND: 0,
+    aovVND: 0,
+    leadCR: '0%',
+    overallCR: '0%'
   };
+  let channels = {};
+  let products = [];
+  let devices = { mobile: 0, desktop: 0 };
+  let funnel = [];
+  let dailySeries = { labels: [], sessions: [], users: [], leads: [], orders: [] };
 
   if (mongoose.connection && mongoose.connection.readyState === 1) {
     try {
       const db = mongoose.connection.db;
-      let anDoc = await db.collection('analytics').findOne({ key: 'current_metrics' });
-      if (!anDoc) anDoc = await db.collection('analytics').findOne({});
-      if (anDoc) {
-        usersCount = anDoc.usersCount || usersCount;
-        visitorsCount = anDoc.totalVisits || visitorsCount;
-        customerCount = anDoc.purchasesCount || customerCount;
-        totalRevenue = anDoc.revenueVND || totalRevenue;
-      }
-      
-      try {
-        const uniqueVisitors = await db.collection('trackingevents').distinct('visitorCode');
-        if (uniqueVisitors && uniqueVisitors.length > 0) {
-          const extraUsers = uniqueVisitors.filter(c => c && typeof c === 'string' && !c.includes('TEST') && c.startsWith('#KH-')).length;
-          usersCount = Math.max(usersCount, 118 + extraUsers);
-        }
-      } catch (uErr) { }
-      const dbOrdersCount = await db.collection('orders').countDocuments();
-      if (dbOrdersCount > 0) customerCount = dbOrdersCount;
 
-      const dbLeadsCount = await db.collection('leads').countDocuments();
-      if (dbLeadsCount > 0) mqlCount = dbLeadsCount;
-    } catch (e) { }
+      // 1. Orders & Revenue từ MongoDB Atlas
+      const allOrders = await db.collection('orders').find({}).toArray();
+      const confirmedOrdersCount = allOrders.length;
+      const totalRevenue = allOrders.reduce((sum, o) => sum + (Number(o.totalVND) || 0), 0);
+      const aov = confirmedOrdersCount > 0 ? Math.round(totalRevenue / confirmedOrdersCount) : 0;
+
+      // 2. Leads từ MongoDB Atlas
+      const allLeads = await db.collection('leads').find({}).toArray();
+      const leadsCount = allLeads.length;
+
+      // 3. Tracking Events từ MongoDB Atlas
+      const allEvents = await db.collection('trackingevents').find({}).sort({ createdAt: 1 }).toArray();
+
+      const sessionSet = new Set();
+      const userSet = new Set();
+      let menuViewCount = 0;
+      let productViewCount = 0;
+      let checkoutViewCount = 0;
+      let addToCartCount = 0;
+      const channelStats = {};
+      const productStats = {};
+      const devStats = { mobile: 0, desktop: 0 };
+      const dateMap = {};
+
+      allEvents.forEach(ev => {
+        if (ev.sessionId) sessionSet.add(ev.sessionId);
+        const uid = ev.userId || ev.visitorCode || ev.sessionId;
+        if (uid) userSet.add(uid);
+
+        // Kênh UTM
+        const src = (ev.utm && ev.utm.source) || ev.utmSource || 'direct';
+        const cleanSrc = src.toLowerCase().trim();
+        if (!channelStats[cleanSrc]) {
+          channelStats[cleanSrc] = { visits: new Set(), leads: 0, orders: 0, revenue: 0 };
+        }
+        if (ev.sessionId) channelStats[cleanSrc].visits.add(ev.sessionId);
+
+        // Lượt xem vị sữa & menu & checkout
+        const isProductDetail = ev.tab === 'product-detail' || ev.eventType === 'product_view';
+        if (isProductDetail) {
+          productViewCount++;
+          const pName = ev.productName || (ev.productId ? ('Sữa ' + ev.productId) : 'Sữa hạt tươi');
+          if (!productStats[pName]) productStats[pName] = { views: 0, cart: 0, orders: 0 };
+          productStats[pName].views++;
+        }
+        if (ev.tab === 'menu') {
+          menuViewCount++;
+        }
+        if (ev.eventType === 'add_to_cart' || ev.tab === 'checkout' || ev.eventType === 'checkout_view') {
+          checkoutViewCount++;
+          if (ev.eventType === 'add_to_cart') {
+            const pName = ev.productName || ev.productId || 'Sữa hạt tươi';
+            if (!productStats[pName]) productStats[pName] = { views: 0, cart: 0, orders: 0 };
+            productStats[pName].cart++;
+          }
+        }
+
+        // Thiết bị
+        const rawDev = typeof ev.device === 'object' ? (ev.device.deviceType || '') : String(ev.device || '');
+        const dLower = rawDev.toLowerCase();
+        if (dLower.includes('mobile') || dLower.includes('ios') || dLower.includes('android')) {
+          devStats.mobile++;
+        } else {
+          devStats.desktop++;
+        }
+
+        // Gom nhóm theo ngày
+        if (ev.createdAt) {
+          const dStr = new Date(ev.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+          if (!dateMap[dStr]) dateMap[dStr] = { sessions: new Set(), users: new Set(), leads: 0, orders: 0 };
+          if (ev.sessionId) dateMap[dStr].sessions.add(ev.sessionId);
+          if (uid) dateMap[dStr].users.add(uid);
+        }
+      });
+
+      // Đối soát đơn hàng theo kênh & ngày
+      allOrders.forEach(ord => {
+        const src = (ord.utm && ord.utm.source) || ord.utmSource || 'direct';
+        const cleanSrc = src.toLowerCase().trim();
+        if (!channelStats[cleanSrc]) {
+          channelStats[cleanSrc] = { visits: new Set(), leads: 0, orders: 0, revenue: 0 };
+        }
+        channelStats[cleanSrc].orders++;
+        channelStats[cleanSrc].revenue += Number(ord.totalVND) || 0;
+
+        if (ord.createdAt) {
+          const dStr = new Date(ord.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+          if (dateMap[dStr]) dateMap[dStr].orders++;
+        }
+      });
+
+      // Đối soát Leads theo kênh & ngày
+      allLeads.forEach(ld => {
+        const src = ld.utmSource || (ld.channel ? ld.channel.toLowerCase() : 'direct');
+        let cleanSrc = 'direct';
+        if (src.includes('tiktok')) cleanSrc = 'tiktok';
+        else if (src.includes('facebook')) cleanSrc = 'facebook';
+        else if (src.includes('instagram')) cleanSrc = 'instagram';
+        else if (src.includes('google')) cleanSrc = 'google';
+        else if (src.includes('zalo') || src.includes('referral')) cleanSrc = 'referral';
+
+        if (!channelStats[cleanSrc]) {
+          channelStats[cleanSrc] = { visits: new Set(), leads: 0, orders: 0, revenue: 0 };
+        }
+        channelStats[cleanSrc].leads++;
+
+        if (ld.createdAt) {
+          const dStr = new Date(ld.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+          if (dateMap[dStr]) dateMap[dStr].leads++;
+        }
+      });
+
+      // Chuẩn hóa dữ liệu kênh
+      for (const [key, val] of Object.entries(channelStats)) {
+        const vCount = val.visits.size || 1;
+        channels[key] = {
+          visits: vCount,
+          leads: val.leads,
+          orders: val.orders,
+          revenue: val.revenue,
+          cr: ((val.orders / vCount) * 100).toFixed(1) + '%'
+        };
+      }
+
+      // Xếp hạng sản phẩm theo lượt xem
+      products = Object.keys(productStats).map(pName => ({
+        name: pName,
+        views: productStats[pName].views,
+        cart: productStats[pName].cart
+      })).sort((a, b) => b.views - a.views);
+
+      const totalVisits = sessionSet.size || allEvents.length || 0;
+      const totalUsers = userSet.size || totalVisits || 0;
+
+      overview = {
+        users: totalUsers,
+        visitors: totalVisits,
+        mql: leadsCount,
+        customers: confirmedOrdersCount,
+        revenueVND: totalRevenue,
+        aovVND: aov,
+        leadCR: totalVisits > 0 ? ((leadsCount / totalVisits) * 100).toFixed(1) + '%' : '0%',
+        overallCR: totalVisits > 0 ? ((confirmedOrdersCount / totalVisits) * 100).toFixed(1) + '%' : '0%'
+      };
+
+      funnel = [
+        { stage: '1. Truy cập Website (Sessions)', count: totalVisits, pct: 100.0 },
+        { stage: '2. Xem Thực Đơn (/menu)', count: menuViewCount, pct: totalVisits > 0 ? Number(((menuViewCount / totalVisits) * 100).toFixed(1)) : 0 },
+        { stage: '3. Xem Chi Tiết Vị Sữa (/product-detail)', count: productViewCount, pct: totalVisits > 0 ? Number(((productViewCount / totalVisits) * 100).toFixed(1)) : 0 },
+        { stage: '4. Mở Giỏ Hàng & Đặt Hàng (Checkout)', count: checkoutViewCount, pct: totalVisits > 0 ? Number(((checkoutViewCount / totalVisits) * 100).toFixed(1)) : 0 },
+        { stage: '5. Gửi Form Thông Tin (Leads)', count: leadsCount, pct: totalVisits > 0 ? Number(((leadsCount / totalVisits) * 100).toFixed(1)) : 0 },
+        { stage: '6. Đơn Hàng Hoàn Tất (Orders)', count: confirmedOrdersCount, pct: totalVisits > 0 ? Number(((confirmedOrdersCount / totalVisits) * 100).toFixed(1)) : 0 }
+      ];
+
+      devices = devStats;
+
+      const sortedDates = Object.keys(dateMap).slice(-14);
+      dailySeries = {
+        labels: sortedDates,
+        sessions: sortedDates.map(d => dateMap[d].sessions.size),
+        users: sortedDates.map(d => dateMap[d].users.size),
+        leads: sortedDates.map(d => dateMap[d].leads),
+        orders: sortedDates.map(d => dateMap[d].orders)
+      };
+
+    } catch (err) {
+      console.warn('[Dashboard Dynamic Aggregation Error]:', err);
+    }
   }
 
-  const aov = customerCount > 0 ? Math.round(totalRevenue / customerCount) : 35000;
-
   res.json({
-    overview: {
-      users: usersCount,
-      visitors: visitorsCount,
-      mql: mqlCount,
-      sql: sqlCount,
-      customers: customerCount,
-      revenueVND: totalRevenue,
-      aovVND: aov,
-      leadCR: ((mqlCount / Math.max(1, visitorsCount)) * 100).toFixed(1) + '%',
-      overallCR: ((customerCount / Math.max(1, visitorsCount)) * 100).toFixed(1) + '%'
-    },
-    funnel: [
-      { stage: '1. Vào web (Sessions)', count: visitorsCount, pct: 100.0 },
-      { stage: '2. Xem Menu (/menu)', count: 108, pct: 75.0 },
-      { stage: '3. Xem chi tiết vị sữa (/product-detail)', count: 64, pct: 44.4 },
-      { stage: '4. Vào trang Đặt hàng (Checkout)', count: 28, pct: 19.4 },
-      { stage: '5. Gửi form thông tin (Lead từ form)', count: mqlCount, pct: Number(((mqlCount / visitorsCount) * 100).toFixed(1)) },
-      { stage: '6. Đặt đơn thành công (Đơn đặt hàng)', count: customerCount, pct: Number(((customerCount / visitorsCount) * 100).toFixed(1)) }
-    ],
-    channels: utmBreakdown,
-    source: (mongoose.connection && mongoose.connection.readyState === 1) ? 'mongodb_atlas' : 'memory'
+    success: true,
+    overview,
+    funnel,
+    channels,
+    products,
+    devices,
+    dailySeries,
+    source: (mongoose.connection && mongoose.connection.readyState === 1) ? 'mongodb_atlas' : 'empty'
   });
 });
 
