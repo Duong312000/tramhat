@@ -4691,6 +4691,11 @@
         }
         renderCart();
         showFloatingToast(`Đã thêm "${name}" vào giỏ hàng!`, 'success');
+        try {
+          if (window.TramHatAPI && typeof window.TramHatAPI.trackAddToCart === 'function') {
+            window.TramHatAPI.trackAddToCart(name, name, 1);
+          }
+        } catch (e) { }
       }
 
       function updateCartQty(idx, delta) {
