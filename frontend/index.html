@@ -792,10 +792,35 @@
     .chat-bubble-agent {
       background: var(--bg-subtle);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px 8px 8px 2px;
       padding: 10px 12px;
       align-self: flex-start;
-      max-width: 90%;
+      max-width: 88%;
+      line-height: 1.5;
+    }
+
+    .chat-bubble-user {
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border-radius: 8px 8px 2px 8px;
+      padding: 9px 13px;
+      align-self: flex-end;
+      max-width: 85%;
+      word-break: break-word;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    .chat-typing-indicator {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      background: var(--bg-subtle);
+      border-radius: 6px;
+      align-self: flex-start;
     }
 
     .chat-quick-question-btn {
@@ -3598,10 +3623,16 @@
             - Sữa hạt bảo quản được bao lâu?
           </button>
           <button class="chat-quick-question-btn" onclick="sendChatAnswer('Cách đặt gói tuần 5 ngày?')">
-            - Đặt gói tuần giao mỗi sáng 8:00 thế nào?
+            - Đặt gói tuần giao mỗi sáng thế nào?
           </button>
           <button class="chat-quick-question-btn" onclick="sendChatAnswer('Chính sách thu hồi vỏ chai?')">
-            - Chính sách thu hồi chai thủy tinh ra sao?
+            - Chính sách hoàn 5 vỏ chai tặng voucher?
+          </button>
+          <button class="chat-quick-question-btn" onclick="sendChatAnswer('Mẹ bầu uống vị nào tốt nhất?')">
+            - Mẹ bầu uống vị nào tốt nhất?
+          </button>
+          <button class="chat-quick-question-btn" onclick="sendChatAnswer('Vị nào ít calo hỗ trợ Eat Clean?')">
+            - Vị nào ít calo hỗ trợ Eat Clean?
           </button>
         </div>
       </div>
@@ -6163,6 +6194,9 @@
 
         // 3. Đồng bộ UI tài khoản
         syncUserUI();
+
+        // 4. Khôi phục lịch sử chat tư vấn (nếu có)
+        initChatHistory();
       });
 
 
@@ -6242,87 +6276,178 @@
         showFloatingToast("Cảm ơn bạn đã gửi đánh giá trải nghiệm sản phẩm cho Trạm Hạt!", "success");
       }
 
-      // 13. CHAT CSKH TRỰC TUYẾN
+      // 13. CHAT CSKH TRỰC TUYẾN (LIVE CHAT 24/7)
+      function escapeChatHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function initChatHistory() {
+        try {
+          const raw = sessionStorage.getItem('tramhat_livechat_history');
+          if (!raw) return;
+          const history = JSON.parse(raw);
+          const box = document.getElementById('chatMessagesBox');
+          if (!box || !Array.isArray(history) || history.length === 0) return;
+
+          history.forEach(msg => {
+            const el = document.createElement('div');
+            el.className = (msg.role === 'user') ? 'chat-bubble-user' : 'chat-bubble-agent';
+            el.innerHTML = msg.text;
+            box.appendChild(el);
+          });
+          box.scrollTop = box.scrollHeight;
+        } catch (e) {
+          console.warn('initChatHistory error:', e);
+        }
+      }
+
+      function saveChatMessage(role, text) {
+        try {
+          let history = JSON.parse(sessionStorage.getItem('tramhat_livechat_history') || '[]');
+          history.push({ role, text, time: Date.now() });
+          if (history.length > 50) history = history.slice(-50);
+          sessionStorage.setItem('tramhat_livechat_history', JSON.stringify(history));
+        } catch (e) { }
+      }
+
       function toggleLiveChat() {
         const win = document.getElementById('liveChatWindow');
-        if (win) win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+        if (win) {
+          const isOpening = (win.style.display !== 'flex');
+          win.style.display = isOpening ? 'flex' : 'none';
+          if (isOpening) {
+            const input = document.getElementById('chatInputText');
+            if (input) setTimeout(() => input.focus(), 150);
+            const box = document.getElementById('chatMessagesBox');
+            if (box) box.scrollTop = box.scrollHeight;
+          }
+        }
       }
 
       function openLiveChat() {
         const win = document.getElementById('liveChatWindow');
-        if (win) win.style.display = 'flex';
+        if (win) {
+          win.style.display = 'flex';
+          const input = document.getElementById('chatInputText');
+          if (input) setTimeout(() => input.focus(), 150);
+          const box = document.getElementById('chatMessagesBox');
+          if (box) box.scrollTop = box.scrollHeight;
+        }
       }
 
+      let isChatResponding = false;
+
       function sendChatAnswer(question) {
+        if (!question || !question.trim()) return;
         const box = document.getElementById('chatMessagesBox');
-        const qLower = question.toLowerCase();
+        if (!box) return;
 
-        let reply = "Cảm ơn bạn! Để được tư vấn chi tiết nhất và nhận mã Freeship 15k đơn đầu, bạn có thể để lại Số Điện Thoại ở khung chat này nhé!";
+        const cleanQuestion = escapeChatHtml(question.trim());
+        const qLower = question.toLowerCase().trim();
 
-        // Phone number detection (Lead Capture)
-        const phoneMatch = question.match(/(0[3|5|7|8|9][0-9]{8})/);
-        if (phoneMatch) {
-          const phone = phoneMatch[0];
-          reply = `Dạ Trạm Hạt đã nhận số điện thoại <strong>${phone}</strong> của bạn! Đội ngũ bếp và tư vấn sẽ liên hệ gửi thực đơn dinh dưỡng và mã Freeship 15.000đ cho bạn ngay nhé.`;
+        // 1. Render User Bubble Immediately
+        const userBubble = document.createElement('div');
+        userBubble.className = 'chat-bubble-user';
+        userBubble.innerHTML = cleanQuestion;
+        box.appendChild(userBubble);
+        saveChatMessage('user', cleanQuestion);
 
-          // Auto capture lead
-          const lead = {
-            leadId: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
-            id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
-            customerName: 'Khách Tư Vấn Chat',
-            name: 'Khách Tư Vấn Chat',
-            phone: phone,
-            district: 'TP.HCM',
-            channel: 'Live Chatbot',
-            interestedProduct: 'Tư vấn vị sữa & đặt mẻ tươi',
-            productInterest: 'Tư vấn vị sữa & đặt mẻ tươi',
-            aiScore: 60,
-            score: 60,
-            funnelStage: 'MQL',
-            stage: 'MQL',
-            status: 'Needs_Call',
-            history: [{ time: new Date().toLocaleTimeString('vi-VN'), action: `Để lại SĐT ${phone} qua live chat` }],
-            createdAt: new Date().toISOString()
-          };
-          try {
-            let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
-            leads.unshift(lead);
-            localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
-            if (window.TramHatAPI) window.TramHatAPI.submitLead(lead);
-          } catch (e) { }
-        } else if (qLower.includes('bao lâu') || qLower.includes('hạn dùng') || qLower.includes('bảo quản')) {
-          reply = "Sữa tươi Trạm Hạt nấu thủ công nguyên chất không chất bảo quản, trữ lạnh ở 2°C - 5°C và ngon nhất trong 48 giờ kể từ lúc xuất xưởng!";
-        } else if (qLower.includes('gói tuần') || qLower.includes('định kỳ')) {
-          reply = "Gói tuần giao đều đặn từ Thứ 2 đến Thứ 6 vào lúc 08:00 sáng tại văn phòng. Bạn được giảm 10% (chỉ 189.000đ/6 chai) và hoàn toàn MIỄN PHÍ giao hàng!";
-        } else if (qLower.includes('vỏ chai') || qLower.includes('thu hồi')) {
-          reply = "Chính sách Trạm Xanh: Cứ mỗi 5 vỏ chai thủy tinh gửi lại shipper khi nhận mẻ mới, bạn sẽ được tặng ngay 01 chai sữa hạt tươi tùy chọn!";
-        } else if (qLower.includes('giảm cân') || qLower.includes('eat clean') || qLower.includes('calo')) {
-          reply = "Nếu bạn đang Eat Clean giữ dáng, Trạm Hạt đề xuất <strong>Sữa Macca Yến Mạch</strong> (175 kcal, giàu chất xơ beta-glucan) và <strong>Sữa Hạt Sen Lá Dứa</strong> (160 kcal, thanh mát ít calo)!";
-        } else if (qLower.includes('trí não') || qLower.includes('deadline') || qLower.includes('tập trung')) {
-          reply = "Để nạp năng lượng tập trung chạy deadlines, bạn nên chọn <strong>Sữa Óc Chó Mè Đen</strong> (dồi dào Omega-3) hoặc <strong>Sữa Điều Tự Nhiên</strong> êm bụng!";
-        } else if (qLower.includes('ngủ ngon') || qLower.includes('mất ngủ') || qLower.includes('thư giãn')) {
-          reply = "Để xoa dịu áp lực và ngủ ngon sâu giấc, <strong>Sữa Hạt Sen Lá Dứa Đồng Tháp</strong> và <strong>Sữa Đậu Đỏ Kỷ Tử</strong> là lựa chọn số 1 ạ!";
-        } else if (qLower.includes('ship') || qLower.includes('giao hàng') || qLower.includes('quận')) {
-          reply = "Trạm Hạt giao lạnh bằng túi giữ nhiệt đá gel hỏa tốc 45–90 phút tại Q.1, Q.3, Q.4, Q.7, Q.10, Bình Thạnh, Phú Nhuận. Đơn từ 3 chai được FREESHIP 100%!";
-        }
-
-        box.innerHTML += `
-        <div class="p-2 bg-white border rounded small align-self-end text-dark" style="max-width: 85%;">
-          ${question}
-        </div>
-        <div class="chat-bubble-agent">
-          ${reply}
-        </div>
-      `;
+        // 2. Typing indicator
+        const indicator = document.createElement('div');
+        indicator.className = 'chat-typing-indicator';
+        indicator.id = 'chatTypingIndicator';
+        indicator.innerHTML = '<span class="spinner-grow spinner-grow-sm text-success" style="width: 8px; height: 8px;"></span> <span>Trạm Hạt đang soạn phản hồi...</span>';
+        box.appendChild(indicator);
         box.scrollTop = box.scrollHeight;
+
+        isChatResponding = true;
+
+        setTimeout(() => {
+          // Remove indicator
+          const currInd = document.getElementById('chatTypingIndicator');
+          if (currInd) currInd.remove();
+          isChatResponding = false;
+
+          let reply = "Cảm ơn bạn đã nhắn tin! Để chuyên viên dinh dưỡng Trạm Hạt tư vấn thực đơn chi tiết nhất và gửi tặng bạn <strong>mã Freeship 15.000đ</strong>, bạn có thể để lại Số Điện Thoại ở đây nhé!";
+
+          // Regex detect VN phone number
+          const phoneMatch = question.match(/(0[3|5|7|8|9][0-9]{8})/);
+          if (phoneMatch) {
+            const phone = phoneMatch[0];
+            reply = `Dạ Trạm Hạt đã ghi nhận số điện thoại <strong>${phone}</strong>! Chuyên viên dinh dưỡng của Trạm sẽ liên hệ hỗ trợ bạn thực đơn theo tuần và gửi mã ưu đãi Freeship ngay ạ.`;
+
+            // Auto capture lead
+            const lead = {
+              leadId: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+              id: 'LEAD-' + Math.floor(10000 + Math.random() * 90000),
+              customerName: 'Khách Tư Vấn LiveChat',
+              name: 'Khách Tư Vấn LiveChat',
+              phone: phone,
+              district: 'TP.HCM',
+              channel: 'Live Chatbot',
+              interestedProduct: 'Tư vấn vị sữa & thực đơn',
+              productInterest: 'Tư vấn vị sữa & thực đơn',
+              aiScore: 70,
+              score: 70,
+              funnelStage: 'MQL',
+              stage: 'MQL',
+              status: 'Needs_Call',
+              history: [{ time: new Date().toLocaleTimeString('vi-VN'), action: `Để lại SĐT ${phone} qua Live Chat CSKH` }],
+              createdAt: new Date().toISOString()
+            };
+            try {
+              let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
+              leads.unshift(lead);
+              localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
+              if (window.TramHatAPI && window.TramHatAPI.submitLead) {
+                window.TramHatAPI.submitLead(lead);
+              }
+            } catch (e) { }
+          } else if (qLower.includes('bao lâu') || qLower.includes('hạn dùng') || qLower.includes('bảo quản') || qLower.includes('tủ lạnh') || qLower.includes('để được')) {
+            reply = "Sữa tươi Trạm Hạt nấu thủ công nguyên chất 100% không chất bảo quản, trữ lạnh sâu ở 2°C - 5°C và ngon nhất trong <strong>48 giờ</strong> kể từ lúc nấu xuất xưởng!";
+          } else if (qLower.includes('gói tuần') || qLower.includes('định kỳ') || qLower.includes('đặt tuần') || qLower.includes('mỗi sáng')) {
+            reply = "Gói tuần giao đều đặn từ Thứ 2 đến Thứ 6 vào khung giờ <strong>trước 08:30 sáng</strong> tận bàn làm việc. Bạn được giảm 10% và hoàn toàn <strong>MIỄN PHÍ giao hàng 100%</strong>!";
+          } else if (qLower.includes('vỏ chai') || qLower.includes('thu hồi') || qLower.includes('hoàn chai') || qLower.includes('đổi chai') || qLower.includes('chai thủy tinh')) {
+            reply = "Chính sách <strong>Trạm Xanh - Đổi Vỏ Chai</strong>: Cứ mỗi 5 vỏ chai thủy tinh sạch bạn gửi lại shipper khi nhận mẻ mới, Trạm Hạt tặng ngay voucher 10.000đ hoặc 01 chai sữa hạt tươi tùy chọn!";
+          } else if (qLower.includes('bầu') || qLower.includes('mang thai') || qLower.includes('mẹ bé') || qLower.includes('sau sinh') || qLower.includes('cho con bú')) {
+            reply = "Dành cho mẹ bầu và mẹ sau sinh, dòng <strong>Sữa Hạt Hạnh Nhân Nguyên Chất</strong> và <strong>Sữa Hạt Điều Thô Dịu</strong> cực kỳ dồi dào Axit Folic, Canxi và Omega-3, lành tính 100%, giúp mẹ êm bụng và thai nhi phát triển khỏe mạnh!";
+          } else if (qLower.includes('giảm cân') || qLower.includes('eat clean') || qLower.includes('calo') || qLower.includes('ăn kiêng') || qLower.includes('ít ngọt') || qLower.includes('không đường')) {
+            reply = "Nếu bạn đang Eat Clean giữ dáng, Trạm Hạt gợi ý <strong>Sữa Macca Yến Mạch</strong> (175 kcal, giàu chất xơ beta-glucan) và <strong>Sữa Đậu Đỏ Yến Mạch</strong> (giàu đạm thực vật, có tùy chọn ngọt thanh từ chà là tự nhiên)!";
+          } else if (qLower.includes('trí não') || qLower.includes('deadline') || qLower.includes('tập trung') || qLower.includes('trí nhớ') || qLower.includes('não')) {
+            reply = "Để nạp năng lượng tập trung làm việc và vượt deadlines, bạn nên chọn <strong>Sữa Óc Chó Mè Đen</strong> (dồi dào Omega-3 và vitamin E) hoặc <strong>Sữa Điều Tự Nhiên</strong> sánh mịn!";
+          } else if (qLower.includes('ngủ ngon') || qLower.includes('mất ngủ') || qLower.includes('thư giãn') || qLower.includes('stress') || qLower.includes('căng thẳng')) {
+            reply = "Để xoa dịu áp lực và ngủ ngon sâu giấc, <strong>Sữa Hạt Sen Lá Dứa Đồng Tháp</strong> (chứa glucozit tự nhiên giúp an thần) dùng 1 ly ấm trước khi ngủ là bí quyết tuyệt vời nhất!";
+          } else if (qLower.includes('ship') || qLower.includes('giao hàng') || qLower.includes('quận') || qLower.includes('phí ship')) {
+            reply = "Trạm Hạt giao lạnh bằng túi giữ nhiệt đá gel hỏa tốc 45–90 phút tại tất cả các quận TP.HCM. Đơn từ 3 chai hoặc combo tuần được <strong>FREESHIP 100%</strong>!";
+          } else if (qLower.includes('giá') || qLower.includes('bao nhiêu') || qLower.includes('menu') || qLower.includes('thực đơn')) {
+            reply = "Sữa hạt tươi Trạm Hạt nấu mẻ tươi mỗi sáng đóng chai thủy tinh 330ml có giá chỉ từ <strong>38.000đ - 45.000đ/chai</strong>. Bạn có thể bấm xem toàn bộ các vị trên mục <strong>Thực Đơn</strong> phía trên nhé!";
+          } else if (qLower.includes('khuyến mãi') || qLower.includes('mã giảm') || qLower.includes('voucher') || qLower.includes('ưu đãi')) {
+            reply = "Trạm Hạt đang có mã <strong>FREESHIP15K</strong> giảm ngay 15.000đ phí ship cho khách hàng trải nghiệm, cùng ưu đãi Hoàn 5 Vỏ Chai nhận thêm quà tặng xanh!";
+          }
+
+          const agentBubble = document.createElement('div');
+          agentBubble.className = 'chat-bubble-agent';
+          agentBubble.innerHTML = reply;
+          box.appendChild(agentBubble);
+          saveChatMessage('agent', reply);
+          box.scrollTop = box.scrollHeight;
+        }, 450);
       }
 
       function sendCustomChat() {
+        if (isChatResponding) return;
         const input = document.getElementById('chatInputText');
+        if (!input) return;
         const val = input.value.trim();
         if (!val) return;
-        sendChatAnswer(val);
         input.value = '';
+        sendChatAnswer(val);
       }
 
       // 14. ADMIN PORTAL (DASHBOARD, MAINTENANCE, IN HÓA ĐƠN)
