@@ -473,8 +473,8 @@ app.get('/api/tracking/dashboard', async (req, res) => {
         if (d === 'mobile') mobCount++;
         else deskCount++;
       });
-      devStats.mobile = mobCount || 126;
-      devStats.desktop = deskCount || 18;
+      devStats.mobile = mobCount;
+      devStats.desktop = deskCount;
 
       // Đối soát 100% đơn hàng theo kênh & ngày
       allOrders.forEach(ord => {
@@ -513,7 +513,7 @@ app.get('/api/tracking/dashboard', async (req, res) => {
 
       // Chuẩn hóa dữ liệu kênh (Khớp 100% tổng đơn và doanh thu)
       for (const [key, val] of Object.entries(channelStats)) {
-        const vCount = val.visits.size || (key === 'direct' ? 32 : 10);
+        const vCount = val.visits.size;
         channels[key] = {
           visits: vCount,
           leads: val.leads,
