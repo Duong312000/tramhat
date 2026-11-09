@@ -591,9 +591,7 @@
     <section class="metric-section-card report-group" id="sec-group1">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-diagram-3-fill me-1"></i>ACQUISITION • NGUỒN CHUYỂN ĐỔI</span>
-          <div class="section-title">Phân bổ nguồn truy cập & Doanh thu theo kênh (UTM)</div>
-          <div class="section-desc">Tổng hợp tự động từ sự kiện truy cập và đơn hàng trong MongoDB Atlas</div>
+          <div class="section-title">Phân bổ nguồn truy cập & Doanh thu theo kênh</div>
         </div>
       </div>
 
@@ -620,9 +618,7 @@
     <section class="metric-section-card report-group" id="sec-group2">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-cup-hot me-1"></i>PRODUCT POPULARITY • MỨC ĐỘ QUAN TÂM</span>
-          <div class="section-title">Xếp hạng vị sữa theo số lượt xem và thêm vào giỏ hàng</div>
-          <div class="section-desc">Đo lường trực tiếp từ sự kiện <code>product_view</code> và <code>add_to_cart</code> trên website</div>
+          <div class="section-title">Xếp hạng vị sữa theo mức độ quan tâm</div>
         </div>
       </div>
 
@@ -632,9 +628,10 @@
             <tr>
               <th style="width: 40px;">#</th>
               <th>Tên sản phẩm / Vị sữa</th>
-              <th class="text-center">Lượt xem chi tiết (Views)</th>
-              <th class="text-center">Lượt thêm giỏ hàng (Add to Cart)</th>
-              <th class="text-center">Tỷ lệ thêm giỏ / Lượt xem</th>
+              <th class="text-center">Lượt xem (Views)</th>
+              <th class="text-center">Thêm giỏ (Cart)</th>
+              <th class="text-center">Đơn mua thành công</th>
+              <th class="text-center">Tỷ lệ chốt / Lượt xem</th>
             </tr>
           </thead>
           <tbody id="products-tbody">
@@ -648,9 +645,7 @@
     <section class="metric-section-card report-group" id="sec-group3">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-funnel me-1"></i>CONVERSION • PHỄU BÁN HÀNG</span>
-          <div class="section-title">Phễu chuyển đổi bán hàng thực tế 5 bước</div>
-          <div class="section-desc">Tính toán trực tiếp từ dữ liệu phiên, hành vi sản phẩm, lead và đơn hàng thực tế</div>
+          <div class="section-title">Phễu chuyển đổi bán hàng</div>
         </div>
       </div>
 
@@ -663,9 +658,7 @@
     <section class="metric-section-card report-group" id="sec-group4">
       <div class="group-header-banner">
         <div>
-          <span class="group-tag"><i class="bi bi-cpu-fill me-1"></i>INFRASTRUCTURE • THIẾT BỊ TRUY CẬP</span>
-          <div class="section-title">Tỷ trọng thiết bị truy cập thực tế</div>
-          <div class="section-desc">Đo lường trực tiếp từ User-Agent và tham số thiết bị được gửi về MongoDB</div>
+          <div class="section-title">Thiết bị truy cập</div>
         </div>
       </div>
 
@@ -700,12 +693,7 @@
       <section class="metric-section-card" id="sec-realtime-stream">
         <div class="group-header-banner">
           <div>
-            <span class="group-tag" style="background:#ECFDF5; color:#065F46; border: 1px solid #A7F3D0;">
-              <span class="pulse-live-dot"></span>
-              LIVE EVENT STREAM
-            </span>
-            <div class="section-title">Nhật ký truy cập thiết bị thời gian thực (MongoDB Atlas)</div>
-            <div class="section-desc">Tự động bắt và hiển thị ngay lập tức thao tác của khách hàng trên toàn website</div>
+            <div class="section-title">Nhật ký truy cập thiết bị</div>
           </div>
           <div class="d-flex align-items-center gap-2">
             <button class="btn btn-sm btn-outline-secondary" onclick="fetchLiveBackendData()">
@@ -738,9 +726,7 @@
       <section class="metric-section-card">
         <div class="group-header-banner">
           <div>
-            <span class="group-tag"><i class="bi bi-person-lines-fill me-1"></i>LEAD MANAGEMENT • KHÁCH TIỀM NĂNG</span>
-            <div class="section-title">Danh sách khách hàng để lại thông tin (Leads Live)</div>
-            <div class="section-desc">Lưu trực tiếp trong MongoDB Atlas từ form đặt hàng và tư vấn</div>
+            <div class="section-title">Danh sách khách hàng tiềm năng (Leads)</div>
           </div>
           <div>
             <input type="text" class="form-control form-control-sm" id="lead-search-input" placeholder="Tìm tên, SĐT, địa chỉ..." oninput="filterLeadsTable()" style="width: 220px; font-size: 12px;">
@@ -778,9 +764,8 @@
       <section class="metric-section-card mb-0">
         <div class="group-header-banner">
           <div>
-            <span class="group-tag"><i class="bi bi-box-seam-fill me-1"></i>ORDER MANAGEMENT • ĐƠN HÀNG</span>
-            <div class="section-title">Danh sách đơn hàng hoàn tất (MongoDB Atlas)</div>
-            <div class="section-desc">Giá trị đơn hàng trung bình (AOV): <strong id="val-aov-desc" class="text-primary">--</strong></div>
+            <div class="section-title">Danh sách đơn hàng</div>
+            <div class="text-muted mt-1" style="font-size: 12px;">AOV: <strong id="val-aov-desc" class="text-primary">--</strong></div>
           </div>
         </div>
 
@@ -1024,13 +1009,15 @@
       tbody.innerHTML = products.map((p, idx) => {
         const views = p.views || 0;
         const cart = p.cart || 0;
-        const rate = views > 0 ? ((cart / views) * 100).toFixed(1) + '%' : '0%';
+        const orders = p.orders || 0;
+        const rate = views > 0 ? ((orders / views) * 100).toFixed(1) + '%' : '0%';
         return `
           <tr>
             <td class="text-muted">${idx + 1}</td>
             <td><strong>${p.name || 'Sản phẩm'}</strong></td>
-            <td class="text-center"><strong>${views}</strong> lượt xem</td>
-            <td class="text-center text-primary"><strong>${cart}</strong> lượt thêm</td>
+            <td class="text-center"><strong>${views}</strong></td>
+            <td class="text-center text-primary">${cart}</td>
+            <td class="text-center"><strong class="text-success">${orders}</strong> đơn</td>
             <td class="text-center"><span class="badge bg-light text-dark border">${rate}</span></td>
           </tr>
         `;
@@ -1087,7 +1074,12 @@
       }
 
       tbody.innerHTML = events.map(ev => {
-        const timeStr = ev.clientTime ? new Date(ev.clientTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : (ev.serverTime ? new Date(ev.serverTime).toLocaleTimeString('vi-VN') : 'Vừa xong');
+        const rawTime = ev.createdAt || ev.serverTime || ev.clientTime;
+        const timeDate = rawTime ? new Date(rawTime) : null;
+        const timeStr = timeDate && !isNaN(timeDate.getTime()) 
+          ? (timeDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' ' + timeDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }))
+          : 'Vừa xong';
+
         const evType = ev.eventType || 'event';
         let badgeType = 'badge bg-light text-dark border';
         let typeName = evType;
@@ -1098,18 +1090,42 @@
         else if (evType === 'purchase') { badgeType = 'badge bg-danger-subtle text-danger border border-danger-subtle'; typeName = 'Đặt Đơn Hàng'; }
 
         const tab = ev.tab ? ('/' + ev.tab) : (ev.provider ? ('Auth: ' + ev.provider) : 'Website');
-        const device = ev.device || 'Thiết bị di động';
+        
+        // Trích xuất thiết bị chuẩn xác (tránh [object Object])
+        let deviceName = 'Thiết bị di động';
+        let isDesktop = false;
+        if (ev.device) {
+          const rawDev = typeof ev.device === 'object' ? (ev.device.deviceType || '') : String(ev.device);
+          if (rawDev.toLowerCase().includes('desktop') || rawDev.toLowerCase().includes('windows') || rawDev.toLowerCase().includes('mac')) {
+            deviceName = 'Máy tính (Desktop)';
+            isDesktop = true;
+          } else if (rawDev.toLowerCase().includes('mobile') || rawDev.toLowerCase().includes('ios') || rawDev.toLowerCase().includes('android')) {
+            deviceName = 'Điện thoại (Mobile)';
+          } else if (rawDev.trim() !== '') {
+            deviceName = rawDev;
+          }
+        }
+
         const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
-        const utm = (ev.utm && ev.utm.source) || ev.utmSource || 'Trực tiếp';
+
+        // Chuẩn hóa tên kênh UTM
+        const rawUtm = (ev.utm && ev.utm.source) || ev.utmSource || 'direct';
+        let cleanUtm = String(rawUtm).toLowerCase().trim();
+        if (cleanUtm.includes('tiktok')) cleanUtm = 'TikTok';
+        else if (cleanUtm.includes('facebook')) cleanUtm = 'Facebook';
+        else if (cleanUtm.includes('instagram')) cleanUtm = 'Instagram';
+        else if (cleanUtm.includes('google')) cleanUtm = 'Google';
+        else if (cleanUtm.includes('zalo') || cleanUtm.includes('referral')) cleanUtm = 'Zalo Referral';
+        else cleanUtm = 'Trực tiếp (Direct)';
 
         return `
           <tr>
             <td class="text-muted"><i class="bi bi-clock me-1"></i><strong>${timeStr}</strong></td>
             <td><span class="${badgeType}">${typeName}</span></td>
             <td><code>${tab}</code></td>
-            <td><i class="bi bi-${String(device).toLowerCase().includes('desktop') ? 'laptop' : 'phone'} me-1"></i>${device}</td>
+            <td><i class="bi bi-${isDesktop ? 'laptop' : 'phone'} me-1"></i>${deviceName}</td>
             <td><strong>${visitor}</strong></td>
-            <td><span class="badge bg-light text-secondary border">${utm}</span></td>
+            <td><span class="badge bg-light text-secondary border">${cleanUtm}</span></td>
             <td class="text-center"><span class="badge bg-success-subtle text-success"><i class="bi bi-cloud-check me-1"></i>Atlas</span></td>
           </tr>
         `;
