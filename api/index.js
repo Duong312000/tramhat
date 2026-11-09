@@ -214,57 +214,6 @@ let memoryLeads = [];
 let memoryEvents = [];
 let memoryReviews = [];
 
-// Seed some initial real-looking leads
-if (memoryLeads.length === 0) {
-  memoryLeads = [
-    {
-      leadId: 'LEAD-90124',
-      id: 'LEAD-90124',
-      customerName: 'Nguyễn Thanh Vân',
-      name: 'Nguyễn Thanh Vân',
-      phone: '0903124567',
-      district: 'Quận 1, TP.HCM',
-      channel: 'TikTok',
-      utm: { source: 'tiktok', medium: 'short_video', campaign: 'ghe_tram_co_chuyen' },
-      interestedProduct: 'Sữa Điều Tự Nhiên, Sữa Óc Chó Mè Đen',
-      productInterest: 'Sữa Điều Tự Nhiên, Sữa Óc Chó Mè Đen',
-      aiScore: 85,
-      score: 85,
-      funnelStage: 'SQL',
-      stage: 'SQL',
-      status: 'Needs_Call',
-      history: [
-        { time: '08:15', action: 'Bấm link từ TikTok video #GheTramCoChuyen' },
-        { time: '08:16', action: 'Hoàn thành Quiz khẩu vị (chọn vị Trí Não)' },
-        { time: '08:18', action: 'Thêm 2 chai 330ml vào giỏ hàng' }
-      ],
-      createdAt: new Date(Date.now() - 3600 * 1000).toISOString()
-    },
-    {
-      leadId: 'LEAD-90125',
-      id: 'LEAD-90125',
-      customerName: 'Trần Minh Hoàng',
-      name: 'Trần Minh Hoàng',
-      phone: '0918765432',
-      district: 'Bình Thạnh, TP.HCM',
-      channel: 'Instagram',
-      utm: { source: 'instagram', medium: 'story', campaign: 'ghe_tram_co_chuyen' },
-      interestedProduct: 'Sữa Macca Yến Mạch',
-      productInterest: 'Sữa Macca Yến Mạch',
-      aiScore: 65,
-      score: 65,
-      funnelStage: 'SQL',
-      stage: 'SQL',
-      status: 'Needs_Call',
-      history: [
-        { time: '09:20', action: 'Duyệt bảng Calo & Đạm sữa Macca >60s' },
-        { time: '09:22', action: 'Điền SĐT nhận mã giảm giá Freeship' }
-      ],
-      createdAt: new Date(Date.now() - 1800 * 1000).toISOString()
-    }
-  ];
-}
-
 // 1. HEALTH CHECK & DATABASE STATUS
 app.get(['/api/health', '/health'], (req, res) => {
   const dbState = mongoose.connection ? mongoose.connection.readyState : 0;

@@ -1106,7 +1106,17 @@
           }
         }
 
-        const visitor = ev.userName ? (ev.userName + ' (' + (ev.phone || ev.userId || '') + ')') : (ev.visitorCode || ev.sessionId || 'Khách vãng lai');
+        let visitor = 'Khách chưa đăng nhập';
+        if (ev.userName && ev.phone) {
+          visitor = `${ev.userName} (${ev.phone})`;
+        } else if (ev.phone) {
+          visitor = ev.phone;
+        } else if (ev.userName) {
+          visitor = `${ev.userName}`;
+        } else {
+          const code = ev.visitorCode || ev.sessionId;
+          visitor = code ? `Khách chưa đăng nhập (${code})` : 'Khách chưa đăng nhập';
+        }
 
         // Chuẩn hóa tên kênh UTM
         const rawUtm = (ev.utm && ev.utm.source) || ev.utmSource || 'direct';
@@ -1260,6 +1270,7 @@
       filtered.forEach((l, idx) => {
         const name = l.customerName || 'Khách hàng';
         const phone = l.phone || '';
+        const phoneDisplay = phone ? `<code>${phone}</code>` : `<span class="text-muted fst-italic">Chưa đăng nhập / Chưa có SĐT</span>`;
         const addr = l.address || l.district || 'TP. Thủ Đức';
         const prod = l.interestedProduct || 'Sữa hạt tươi 250ml';
         const channel = l.channel || l.utmSource || 'Website Form';
@@ -1270,7 +1281,7 @@
           <tr>
             <td class="text-muted">${idx + 1}</td>
             <td><strong>${name}</strong></td>
-            <td><code>${phone}</code></td>
+            <td>${phoneDisplay}</td>
             <td class="text-muted">${addr}</td>
             <td>${prod}</td>
             <td><span class="badge bg-light text-dark border">${channel}</span></td>
@@ -1310,6 +1321,7 @@
         const id = ord.orderId || ord.id || 'TH-2610';
         const name = ord.customerName || ord.customer || ord.name || 'Khách hàng';
         const phone = ord.phone || '';
+        const phoneDisplay = phone ? `<code>${phone}</code>` : `<span class="text-muted fst-italic">Chưa đăng nhập</span>`;
         const addr = ord.address || ord.district || 'TP. Thủ Đức';
         const items = ord.itemsSummary || ord.items || 'Sữa hạt tươi (250ml)';
         const src = ord.utmSource || (ord.utm && ord.utm.source) || 'direct';
@@ -1320,7 +1332,7 @@
           <tr>
             <td><code>#${id}</code></td>
             <td><strong>${name}</strong></td>
-            <td><code>${phone}</code></td>
+            <td>${phoneDisplay}</td>
             <td class="text-muted">${addr}</td>
             <td>${typeof items === 'string' ? items : JSON.stringify(items)}</td>
             <td><code>${src}</code></td>
