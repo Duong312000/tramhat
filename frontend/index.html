@@ -6154,7 +6154,13 @@
             let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
             leads.unshift(lead);
             localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
-            if (window.TramHatAPI) window.TramHatAPI.submitLead(lead);
+
+            // Gửi trực tiếp Lead vào MongoDB Atlas qua API
+            fetch('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(lead)
+            }).catch(err => console.warn('[Leads API Error]:', err));
           } catch (e) { }
         }
 
@@ -6490,9 +6496,13 @@
               let leads = JSON.parse(localStorage.getItem('tramhat_crm_leads') || '[]');
               leads.unshift(lead);
               localStorage.setItem('tramhat_crm_leads', JSON.stringify(leads));
-              if (window.TramHatAPI && window.TramHatAPI.submitLead) {
-                window.TramHatAPI.submitLead(lead);
-              }
+
+              // Gửi trực tiếp Lead vào MongoDB Atlas qua API
+              fetch('/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lead)
+              }).catch(err => console.warn('[Leads API Error]:', err));
             } catch (e) { }
           } else if (qLower.includes('bao lâu') || qLower.includes('hạn dùng') || qLower.includes('bảo quản') || qLower.includes('tủ lạnh') || qLower.includes('để được')) {
             reply = "Sữa tươi Trạm Hạt nấu thủ công nguyên chất 100% không chất bảo quản, trữ lạnh sâu ở 2°C - 5°C và ngon nhất trong <strong>48 giờ</strong> kể từ lúc nấu xuất xưởng!";
