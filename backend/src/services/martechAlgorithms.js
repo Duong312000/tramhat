@@ -79,7 +79,7 @@ class MartechAlgorithmService {
       recommendedAction = 'Gửi thiệp điện tử dặn trữ tủ mát 2-5°C và tích lũy điểm Trạm Xanh.';
     } else if (score >= 60) {
       stage = 'SQL';
-      recommendedAction = 'Kích hoạt mã Freeship đơn đầu + Gửi link thanh toán VietQR Pro.';
+      recommendedAction = 'Kích hoạt mã Freeship đơn đầu + Xác nhận đơn giao lạnh COD tận nơi.';
     } else if (score >= 30) {
       stage = 'MQL';
       recommendedAction = 'AI Chatbot gửi menu điện tử tương tác và gợi ý 2 vị đối trọng.';

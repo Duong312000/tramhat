@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
   items: { type: String, required: true },
   total: { type: String },
   totalVND: { type: Number, required: true },
-  payment: { type: String, default: 'Chuyển Khoản VietQR' },
+  payment: { type: String, default: 'COD - Nhận hàng trả tiền' },
   time: { type: String },
   status: { type: String, default: 'Đang Xử Lý' },
   
